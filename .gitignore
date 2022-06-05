@@ -1,0 +1,12 @@
+*~
+*.swp
+npm-debug.log
+node_modules
+/core
+.eslintcache
+.npmrc
+.yarn-error.log
+.nyc_output
+!.github/
+/coverage
+/build

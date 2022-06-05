@@ -1,0 +1,26 @@
+{
+  "projectName": "modern-errors",
+  "projectOwner": "ehmicky",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "ehmicky",
+      "name": "ehmicky",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/8136211?v=4",
+      "profile": "https://twitter.com/ehmicky",
+      "contributions": [
+        "code",
+        "design",
+        "ideas",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

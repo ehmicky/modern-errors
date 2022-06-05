@@ -1,0 +1,45 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  combinations:
+    # git push --tags does not create any commits so should not trigger a new
+    # workflow. There are no ways to skip workflows, so we skip jobs instead
+    if: toJson(github.event.commits) != '[]'
+    strategy:
+      # Test on Windows/Mac/Linux using latest Node.js.
+      # Also test on Linux with older Node.js versions.
+      # We do not run each possible combination to make CI faster.
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        node: [18]
+        include:
+          - os: ubuntu-latest
+            node: 14.18.0
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    # We do not use @actions/cache because restoring/saving cache currently
+    # takes more time than the time saved on `npm ci`
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      # TODO: remove after dropping support for Node <15.0.0, i.e. ensuring
+      # npm v7 is used. We need npm v7 due to peerDependencies automatic
+      # installation
+      - name: Install latest npm
+        run: npm install -g npm
+        if: "${{ matrix.node == '14.18.0' }}"
+      - name: Install dependencies
+        run: npm ci
+      - name: Linting
+        run: npx gulp check
+      - name: Build
+        run: npx gulp build
+      - name: Tests
+        run: npx gulp unit
+      - name: Upload test coverage
+        run: npx gulp uploadCoverage

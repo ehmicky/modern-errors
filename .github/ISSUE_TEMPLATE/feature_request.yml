@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an idea for this project
+title: Please replace with a clear and descriptive title
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for suggesting a new feature!
+  - type: checkboxes
+    attributes:
+      label: Guidelines
+      options:
+        - label:
+            Please search other issues to make sure this feature has not already
+            been requested.
+          required: true
+  - type: textarea
+    attributes:
+      label: Which problem is this feature request solving?
+      placeholder: I'm always frustrated when [...]
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like
+      placeholder: This could be fixed by [...]
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description:
+        Pull requests are welcome! If you would like to help us fix this bug,
+        please check our [contributions
+        guidelines](../blob/main/CONTRIBUTING.md).
+      options:
+        - label: I can submit a pull request.
+          required: false
