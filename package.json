@@ -24,15 +24,15 @@
     "error-monitoring",
     "message",
     "error-handler",
-    "properties",
     "error-handling",
     "error",
     "code-quality",
     "cause",
     "error-reporting",
     "error-type",
-    "merge",
-    "exceptions"
+    "exceptions",
+    "create",
+    "normalization"
   ],
   "license": "Apache-2.0",
   "homepage": "https://bit.ly/3H9LaBc",
