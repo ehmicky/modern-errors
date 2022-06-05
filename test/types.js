@@ -6,6 +6,7 @@ each(
   [
     undefined,
     true,
+    'InputError',
     [true],
     ['SystemError'],
     ['InputError', 'SystemError'],
@@ -19,3 +20,12 @@ each(
     })
   },
 )
+
+test('Creates error types', (t) => {
+  const { InputError } = modernErrors(['InputError'])
+  const error = new InputError('message')
+  t.true(error instanceof Error)
+  t.true(error instanceof InputError)
+  t.is(error.name, 'InputError')
+  t.is(error.message, 'message')
+})
