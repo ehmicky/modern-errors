@@ -6,7 +6,7 @@ export const getOpts = function (opts = {}) {
 
   const { onCreate, bugsUrl } = opts
   validateOnCreate(onCreate)
-  const bugsUrlA = normalizeBugsUrl(bugsUrl)
+  const bugsUrlA = serializeBugsUrl(bugsUrl)
   return { onCreate, bugsUrl: bugsUrlA }
 }
 
@@ -20,17 +20,23 @@ const validateOnCreate = function (onCreate) {
   }
 }
 
+const serializeBugsUrl = function (bugsUrl) {
+  return bugsUrl === undefined ? undefined : String(normalizeBugsUrl(bugsUrl))
+}
+
 const normalizeBugsUrl = function (bugsUrl) {
-  if (bugsUrl === undefined) {
-    return
+  if (bugsUrl instanceof URL) {
+    return bugsUrl
   }
 
   if (typeof bugsUrl !== 'string') {
-    throw new TypeError(`"bugsUrl" option must be a string: ${bugsUrl}`)
+    throw new TypeError(
+      `"bugsUrl" option must be a string or a URL: ${bugsUrl}`,
+    )
   }
 
   try {
-    return String(new URL(bugsUrl))
+    return new URL(bugsUrl)
   } catch (error) {
     throw new Error(
       `"bugsUrl" option "${bugsUrl}" must be ${getUrlError(error, bugsUrl)}`,

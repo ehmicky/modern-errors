@@ -1,5 +1,6 @@
 import test from 'ava'
 import modernErrors from 'modern-errors'
+import { each } from 'test-each'
 
 test('onError() normalizes errors', (t) => {
   t.true(modernErrors([]).onError() instanceof Error)
@@ -22,10 +23,11 @@ test('onError() uses SystemError if not listed', (t) => {
   t.is(message, 'test')
 })
 
-test('SystemError uses bugsUrl if defined', (t) => {
-  const bugsUrl = import.meta.url
-  const { onError } = modernErrors([], { bugsUrl })
-  const { message } = onError(new Error('test'))
-  t.true(message.startsWith('test\n'))
-  t.true(message.includes(bugsUrl))
+each([import.meta.url, new URL(import.meta.url)], ({ title }, bugsUrl) => {
+  test(`SystemError uses bugsUrl if defined | ${title}`, (t) => {
+    const { onError } = modernErrors([], { bugsUrl })
+    const { message } = onError(new Error('test'))
+    t.true(message.startsWith('test\n'))
+    t.true(message.includes(String(bugsUrl)))
+  })
 })
