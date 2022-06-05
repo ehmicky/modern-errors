@@ -12,9 +12,6 @@ each(
     ['Error'],
     ['TypeError'],
     ['inputError'],
-    ['Input'],
-    ['Input_Error'],
-    ['Input1Error'],
   ],
   ({ title }, errorNames) => {
     test(`Validate error names | ${title}`, (t) => {
