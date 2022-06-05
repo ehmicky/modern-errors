@@ -48,4 +48,4 @@ const getUrlError = function (error, bugsUrl) {
   }
 }
 
-const EXAMPLE_ORIGIN = 'https://www.example.com'
+const EXAMPLE_ORIGIN = 'https://example.com'
