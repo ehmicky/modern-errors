@@ -29,3 +29,27 @@ test('Creates error types', (t) => {
   t.is(error.name, 'InputError')
   t.is(error.message, 'message')
 })
+
+test('Default onCreate() assigns properties', (t) => {
+  const { InputError } = modernErrors(['InputError'])
+  const { prop } = new InputError('message', { prop: true })
+  t.true(prop)
+})
+
+const ERROR_TYPES = {
+  InputError(error, params) {
+    error.params = params
+  },
+}
+
+const onCreate = function (error, params) {
+  ERROR_TYPES[error.name](error, params)
+}
+
+test('Can customize onCreate()', (t) => {
+  const { InputError } = modernErrors(['InputError'], { onCreate })
+  const {
+    params: { prop },
+  } = new InputError('message', { prop: true })
+  t.true(prop)
+})
