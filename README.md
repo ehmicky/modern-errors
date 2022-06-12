@@ -6,11 +6,11 @@
 
 Handle errors like it's 2022.
 
-Error handling framework that is small yet featureful.
+Error handling framework that is minimalist yet featureful.
 
 # Features
 
-- [Simple API](#api)
+- [Minimalist API](#api)
 - [Custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
 - Wrap any error's [message](#wrap-error-message), [type](#set-error-type) or
   [properties](#wrap-error-properties)
