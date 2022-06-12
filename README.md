@@ -205,14 +205,12 @@ and any [additional property](#setting-error-properties). This ensures:
 ### Wrapping error message
 
 ```js
-const readContents = async function (filePath) {
-  try {
-    return await readFile(filePath)
-  } catch (cause) {
-    throw new InputError(`Could not read ${filePath}`, { cause })
-    // InputError: File does not exist.
-    // Could not read /example/path
-  }
+try {
+  await readFile(filePath)
+} catch (cause) {
+  throw new InputError(`Could not read ${filePath}`, { cause })
+  // InputError: File does not exist.
+  // Could not read /example/path
 }
 ```
 
@@ -239,6 +237,21 @@ an error property.
 ```js
 const error = new InputError('Could not read the file', { filePath: '/path' })
 console.log(error.filePath) // '/path'
+```
+
+### Wrapping error properties
+
+Pass an empty `message` in order to set error properties without wrapping the
+`message`.
+
+<!-- eslint-disable unicorn/error-message -->
+
+```js
+try {
+  await readFile(filePath)
+} catch (cause) {
+  throw new Error('', { cause, filePath: '/path' })
+}
 ```
 
 # Support
