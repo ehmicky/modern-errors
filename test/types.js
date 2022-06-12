@@ -3,7 +3,7 @@ import modernErrors from 'modern-errors'
 import { each } from 'test-each'
 
 each(
-  ['SystemError', 'Error', 'TypeError', 'inputError', Symbol('InputError')],
+  ['InternalError', 'Error', 'TypeError', 'inputError', Symbol('InputError')],
   ({ title }, errorName) => {
     test(`Validate error names | ${title}`, (t) => {
       // eslint-disable-next-line max-nested-callbacks

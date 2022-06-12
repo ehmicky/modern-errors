@@ -18,9 +18,9 @@ Error handling framework that is minimalist yet featureful.
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
-- Automatically separate (unhandled) [system errors](#system-errors) from
+- Automatically separate (unhandled) [internal errors](#internal-errors) from
   (handled) user errors
-- System errors indicate where to [report bugs](#bug-reports)
+- Internal errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
 - Follow error handling
@@ -108,7 +108,7 @@ Error handler that [should wrap each main function](#error-handler).
 
 _Type_: `string | URL`
 
-URL where users should [report system errors/bugs](#bug-reports).
+URL where users should [report internal errors/bugs](#bug-reports).
 
 #### onCreate
 
@@ -267,7 +267,7 @@ Libraries should document their possible error names, but do not need to
 ```js
 if (error.name === 'InputError') {
   // ...
-} else if (error.name === 'SystemError') {
+} else if (error.name === 'InternalError') {
   // ...
 }
 ```
@@ -298,13 +298,13 @@ try {
 }
 ```
 
-### System errors
+### Internal errors
 
-System errors/bugs can be distinguished from user errors by
+Internal errors/bugs can be distinguished from user errors by
 [handling any possible errors](#re-throw-errors) in `try {} catch {}` and
 [re-throwing](#re-throw-errors) them
 [with a specific error type](#set-error-type). The
-[`errorHandler()`](#error-handler) assigns the `SystemError` type to any error
+[`errorHandler()`](#error-handler) assigns the `InternalError` type to any error
 with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
@@ -314,7 +314,7 @@ const getUserId = function (user) {
   return user.id
 }
 
-getUserId(null) // SystemError: Cannot read properties of null (reading 'id')
+getUserId(null) // InternalError: Cannot read properties of null (reading 'id')
 ```
 
 ### Bug reports
@@ -325,7 +325,7 @@ If the [`bugsUrl` option](#bugsurl) is used,
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
 ```
 
-any [system error](#system-errors) will include the following message.
+any [internal error](#internal-errors) will include the following message.
 
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues

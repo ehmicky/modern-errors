@@ -2,7 +2,7 @@ import { ErrorName, OnCreate, ErrorType, ErrorParams } from 'error-type'
 
 export interface Options<T extends ErrorParams = ErrorParams> {
   /**
-   * URL where users should report system errors/bugs.
+   * URL where users should report internal errors/bugs.
    *
    * @example 'https://github.com/my-name/my-project/issues'
    */
