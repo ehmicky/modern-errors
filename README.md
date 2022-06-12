@@ -229,6 +229,8 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // File does not exist.
 ```
 
+## Error properties
+
 ### Setting error properties
 
 Unless the [`onCreate()` option](#oncreate) is defined, any parameter is set as
@@ -253,6 +255,8 @@ try {
   throw new Error('', { cause, filePath: '/path' })
 }
 ```
+
+## Error types
 
 ### Setting error type
 
@@ -309,6 +313,33 @@ any system error will include the following message:
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues
 ```
+
+### Testing error type
+
+Once [`errorHandler`](#error-handler) has been applied, the error type can be
+checked by its `name` (as opposed to `instanceof`). Libraries should document
+the possible error names, but do not need to export the error types.
+
+```js
+if (error.name === 'InputError') {
+  // ...
+} else if (error.name === 'SystemError') {
+  // ...
+}
+```
+
+## Miscellaneous
+
+### Source maps
+
+Source maps can be enabled in:
+
+- Node.js:
+  [`--enable-source-maps` CLI flag](https://nodejs.org/api/cli.html#--enable-source-maps)
+- Chrome:
+  [`node-source-map-support`](https://github.com/evanw/node-source-map-support)
+- Other browsers:
+  [`stacktrace.js`](https://github.com/stacktracejs/stacktrace.js)
 
 # Support
 
