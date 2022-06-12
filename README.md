@@ -194,7 +194,7 @@ single error, including their
 [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name)
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any additional property. This ensures:
+and any [additional property](#setting-error-properties). This ensures:
 
 - There is no need to
   [traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
@@ -229,6 +229,16 @@ throw new InputError(`Could not read ${filePath}:`, { cause })
 throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // InputError: Could not read /example/path:
 // File does not exist.
+```
+
+### Setting error properties
+
+Unless the [`onCreate()` option](#oncreate) is defined, any parameter is set as
+an error property.
+
+```js
+const error = new InputError('Could not read the file', { filePath: '/path' })
+console.log(error.filePath) // '/path'
 ```
 
 # Support
