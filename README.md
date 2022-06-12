@@ -48,7 +48,7 @@ export const main = async function (filePath) {
 }
 ```
 
-Throw errors.
+Throw/rethrow errors.
 
 ```js
 import { InputError } from './error.js'
