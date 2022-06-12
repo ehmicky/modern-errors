@@ -16,6 +16,7 @@ import {
 // Consumers should check for `error.name`
 //  - As opposed to using `instanceof`
 //  - This removes the need to import/export error types
+//  - This also works cross-realm
 // There is no source maps support: instead users can use:
 //  - Node.js: `--enable-source-maps` flag
 //  - Chrome: `node-source-map-support`
