@@ -91,7 +91,8 @@ Creates the [error types](#any-error-type) and [handler](#errorhandler).
 _Type_: `ErrorType`
 
 Any error type [can be retrieved](#create-error-types-and-handler) from the
-return value. For example: `InputError`, `AuthError`, etc.
+return value. The name must end with `Error`. For example: `InputError`,
+`AuthError`, etc.
 
 #### errorHandler
 
@@ -130,6 +131,7 @@ creates them. ✨
 // error.js
 import modernErrors from 'modern-errors'
 
+// The error types are examples: any name ending with "Error" can be specified
 export const { errorHandler, InputError, AuthError, DatabaseError } =
   modernErrors()
 ```
