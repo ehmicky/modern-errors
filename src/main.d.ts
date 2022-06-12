@@ -1,4 +1,17 @@
-import { ErrorName, OnCreate, ErrorType } from 'error-type'
+import { ErrorName, OnCreate, ErrorType, ErrorParams } from 'error-type'
+
+export interface Options<T extends ErrorParams = ErrorParams> {
+  bugsUrl?: string | URL
+  onCreate?: OnCreate<T>
+}
+
+export type Result<T extends ErrorParams = ErrorParams> = {
+  [errorName in ErrorName]: ErrorType<T>
+} & { errorHandler: ErrorHandler }
+
+export type ErrorHandler = (error: unknown) => Error
+
+export type { ErrorName, OnCreate, ErrorType }
 
 /**
  *
@@ -6,17 +19,6 @@ import { ErrorName, OnCreate, ErrorType } from 'error-type'
  * ```js
  * ```
  */
-export default function modernErrors(options?: Options): Result
-
-export interface Options {
-  bugsUrl?: string | URL
-  onCreate?: OnCreate
-}
-
-export type Result = { [errorName in ErrorName]: ErrorType } & {
-  errorHandler: ErrorHandler
-}
-
-export type ErrorHandler = (error: unknown) => Error
-
-export type { ErrorName, OnCreate, ErrorType }
+export default function modernErrors<T extends ErrorParams = ErrorParams>(
+  options?: Options<T>,
+): Result<T>

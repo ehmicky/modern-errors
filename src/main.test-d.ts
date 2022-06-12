@@ -57,3 +57,10 @@ expectNotAssignable<ErrorName>(Symbol('InputError'))
 expectAssignable<ErrorType>(TestError)
 expectAssignable<ErrorType>(Error)
 expectNotAssignable<ErrorType>(() => {})
+
+const { InputError } = modernErrors({
+  onCreate: (_: Error, __: { test?: boolean }) => {},
+})
+new InputError('message', { test: true })
+expectError(new InputError('message', { test: 'true' }))
+expectError(new InputError('message', { other: true }))
