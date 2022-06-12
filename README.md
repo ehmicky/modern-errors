@@ -215,11 +215,11 @@ single error, including their
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 and any [additional property](#set-error-properties). This ensures:
 
-- There is no need to
-  [traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
-- The
-  [stack trace](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace)
-  is simple while still keeping all information
+- `error.cause` does not need to be
+  [traversed](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
+- The stack trace is neither
+  [verbose nor redundant](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace),
+  while still keeping all information
 
 ### Wrap error message
 
@@ -307,6 +307,30 @@ const error = new InputError('Could not read the file.', {
 console.log(error.filePath) // '/path'
 console.log(error.hasFilePath) // true
 console.log(error.unknownParam) // undefined
+```
+
+### Type-specific logic
+
+The [`onCreate()` option](#oncreate) can trigger different logic per error type.
+
+<!-- eslint-disable n/handle-callback-err -->
+
+```js
+const onCreateError = {
+  InputError(error, parameters) {
+    // ...
+  },
+  AuthError(error, parameters) {
+    // ...
+  },
+  // ...
+}
+
+modernErrors({
+  onCreate(error, parameters) {
+    onCreateError[error.name](error, parameters)
+  },
+})
 ```
 
 ### Error type properties
