@@ -1,4 +1,4 @@
-import { OnCreate } from 'error-type'
+import { ErrorName, OnCreate, ErrorType } from 'error-type'
 
 /**
  *
@@ -8,13 +8,37 @@ import { OnCreate } from 'error-type'
  */
 export default function modernErrors(options?: Options): Result
 
+/**
+ *
+ */
 export interface Options {
   bugsUrl?: string | URL
   onCreate?: OnCreate
 }
 
-export interface Result {
-  errorHandler: ErrorHandler
+/**
+ *
+ */
+export type Result = { errorHandler: ErrorHandler } & {
+  [errorName in ErrorName]: ErrorType
 }
 
+/**
+ *
+ */
 export type ErrorHandler = (error: any) => Error
+
+/**
+ *
+ */
+export type { ErrorName }
+
+/**
+ *
+ */
+export type { OnCreate }
+
+/**
+ *
+ */
+export type { ErrorType }
