@@ -12,7 +12,7 @@ Error handling framework that is minimalist yet featureful.
 
 - [Minimalist API](#api)
 - [Custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
-- Wrap any error's [message](#wrap-error-message), [type](#set-error-type) or
+- Wrap any error's [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
@@ -192,7 +192,7 @@ export const main = function (filePath) {
 Errors are re-thrown using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 This allows wrapping the error [message](#wrap-error-message),
-[properties](#wrap-error-properties) and [type](#set-error-type).
+[properties](#wrap-error-properties), or [type](#set-error-type).
 
 ```js
 import { InputError } from './error.js'
@@ -235,7 +235,7 @@ try {
 }
 ```
 
-If the outer error message ends with `:`, that message is prepended instead.
+If the outer error message ends with `:`, it is prepended instead.
 
 ```js
 throw new InputError(`Could not read ${filePath}:`, { cause })
