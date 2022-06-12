@@ -12,14 +12,14 @@ Error handling framework that is small yet featureful.
 
 - [Simple API](#api)
 - [Custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
-- Wrap error [message](#wrap-error-message), [type](#set-error-type) and
+- Wrap errors' [message](#wrap-error-message), [type](#set-error-type) and
   [properties](#wrap-error-properties)
 - Set properties on [new errors](#set-error-properties) or on
   [all errors of the same type](#error-type-properties)
 - Automatically separate [system errors/bugs](#system-errors) from user errors
 - System errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
-  properties, etc.)
+  stack, etc.)
 - Follows error handling
   [best practices](https://github.com/ehmicky/error-type#best-practices)
 
