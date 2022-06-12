@@ -31,3 +31,11 @@ each([import.meta.url, new URL(import.meta.url)], ({ title }, bugsUrl) => {
     t.true(message.includes(String(bugsUrl)))
   })
 })
+
+test('Subclassing errors is not supported', (t) => {
+  const { onError, InputError } = modernErrors(['InputError'])
+  // eslint-disable-next-line unicorn/custom-error-definition, fp/no-class
+  class InputChildError extends InputError {}
+  t.not(onError(new InputError('test')).name, 'SystemError')
+  t.is(onError(new InputChildError('test')).name, 'SystemError')
+})

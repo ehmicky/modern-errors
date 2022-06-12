@@ -3,13 +3,16 @@ import mergeErrorCause from 'merge-error-cause'
 // Error handler that normalizes an error, merge its `error.cause` and ensure
 // its type is among an allowed list of types.
 // Otherwise, assign a default SystemError type.
+// We purposely do not support subclassing Error types:
+//  - This is usually not needed and the end result can be achieved differently
+//  - This only adds complexity
 export const onErrorHandler = function (
   { ErrorTypes, SystemError, bugsUrl },
   error,
 ) {
   const errorA = mergeErrorCause(error)
 
-  if (ErrorTypes.some((ErrorType) => errorA instanceof ErrorType)) {
+  if (ErrorTypes.includes(errorA.constructor)) {
     return errorA
   }
 
