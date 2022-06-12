@@ -81,19 +81,7 @@ not `require()`.
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
-### Options
-
-#### bugsUrl
-
-_Type_: `string | URL`
-
-#### onCreate
-
-_Type_: `(error, params) => void`
-
-Called on `new ErrorType('message', params)`.
-
-By default, any `params` are set as error properties.
+Creates the [error types](#any-error-type) and [handler](#errorhandler).
 
 ### Return value
 
@@ -101,15 +89,39 @@ By default, any `params` are set as error properties.
 
 _Type_: `(anyException) => Error`
 
+Error handler that [should wrap each main function](#error-handler).
+
 #### Any error type
 
 _Type_: `ErrorType`
+
+Any error type [can be retrieved](#creating-error-types-and-handler) from the
+return value, such as `InputError`.
+
+### Options
+
+#### bugsUrl
+
+_Type_: `string | URL`
+
+URL where users should [report system errors/bugs](#bug-reports).
+
+#### onCreate
+
+_Type_: `(error, parameters) => void`
+
+Called on any `new ErrorType('message', parameters)`. By default, any
+`parameters` are [set as error properties](##setting-error-properties). Can be
+used to [customize error parameters](#customizing-error-parameters) or to set
+[error type properties](#error-type-properties).
 
 # Usage
 
 ## Setup
 
 ### Creating error types and handler
+
+✨ Retrieving the error types automatically creates them. ✨
 
 ```js
 // error.js
@@ -130,6 +142,7 @@ export const main = async function (filePath) {
   try {
     return await readContents(filePath)
   } catch (error) {
+    // `errorHandler()` returns `error`, so `throw` must be used
     throw errorHandler(error)
   }
 }
@@ -259,14 +272,14 @@ try {
 ### Customizing error parameters
 
 The [`onCreate()` option](#oncreate) can be used to validate and transform error
-parameters.
+`parameters`.
 
 <!-- eslint-disable fp/no-mutating-assign -->
 
 ```js
 modernErrors({
-  onCreate(error, params) {
-    const { filePath } = params
+  onCreate(error, parameters) {
+    const { filePath } = parameters
 
     if (typeof filePath !== 'string') {
       throw new TypeError('filePath must be a string.')
@@ -290,6 +303,8 @@ console.log(error.unknownParam) // undefined
 
 ### Error type properties
 
+By default, error types are the same except for their
+[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name).
 The [`onCreate()` option](#oncreate) can also be used to set properties for all
 instances of a given error type.
 
@@ -297,8 +312,8 @@ instances of a given error type.
 
 ```js
 modernErrors({
-  onCreate(error, params) {
-    Object.assign(error, params, ERROR_PROPS[error.name])
+  onCreate(error, parameters) {
+    Object.assign(error, parameters, ERROR_PROPS[error.name])
   },
 })
 
