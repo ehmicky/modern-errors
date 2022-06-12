@@ -278,7 +278,7 @@ try {
 The [`onCreate()` option](#oncreate) can be used to validate and transform error
 `parameters`.
 
-<!-- eslint-disable fp/no-mutating-assign -->
+<!-- eslint-disable fp/no-mutating-assign, unicorn/prefer-type-error -->
 
 ```js
 modernErrors({
@@ -286,7 +286,7 @@ modernErrors({
     const { filePath } = parameters
 
     if (typeof filePath !== 'string') {
-      throw new TypeError('filePath must be a string.')
+      throw new Error('filePath must be a string.')
     }
 
     const hasFilePath = filePath !== undefined
@@ -307,9 +307,9 @@ console.log(error.unknownParam) // undefined
 
 ### Error type properties
 
-By default, error types are the same except for their
+By default, error types are very similar except for their
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name).
-The [`onCreate()` option](#oncreate) can also be used to set properties for all
+The [`onCreate()` option](#oncreate) can be used to set properties on all
 instances of a given error type.
 
 <!-- eslint-disable fp/no-mutating-assign -->
@@ -338,8 +338,10 @@ console.log(error.isUser) // true
 ### Test error type
 
 Once [`errorHandler`](#error-handler) has been applied, the error type can be
-checked by its `name` (as opposed to `instanceof`). Libraries should document
-the possible error names, but do not need to export the error types.
+checked by its `name` (as opposed to
+[`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
+Libraries should document their possible error names, but do not need to
+`export` the error types.
 
 ```js
 if (error.name === 'InputError') {
@@ -359,29 +361,28 @@ try {
   throw new AuthError('Could not authenticate.')
 } catch (cause) {
   throw new InputError('Could not read the file.', { cause })
-  // The error is now an InputError
+  // Now an InputError
 }
 ```
 
-However, the inner error type is kept if the type is `Error` or
-[`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-instead.
+However, the inner error type is kept if the outer one is `Error` or
+[`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError).
 
 ```js
 try {
   throw new AuthError('Could not authenticate.')
 } catch (cause) {
   throw new Error('Could not read the file.', { cause })
-  // The error is still an AuthError
+  // Still an AuthError
 }
 ```
 
 ### System errors
 
 System errors/bugs can be distinguished from user errors by handling any user
-error in `try {} catch {}` and [re-throwing](#re-throw-errors) it with an error
-type. The [`errorHandler`](#error-handler) assigns the `SystemError` type to any
-error with an unknown type.
+errors in `try {} catch {}` and [re-throwing](#re-throw-errors) them
+[with an error type](#set-error-type). The [`errorHandler`](#error-handler)
+assigns the `SystemError` type to any error with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -401,7 +402,7 @@ If the `bugsUrl` option is used,
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
 ```
 
-any system error will include the following message:
+any [system error](#system-errors) will include the following message.
 
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues
@@ -411,7 +412,9 @@ Please report this bug at: https://github.com/my-name/my-project/issues
 
 ### Source maps
 
-Source maps can be enabled in:
+When using a build step (Babel, TypeScript, etc.), the error stack traces refer
+to the built files/lines instead of the source. This can be fixed by using
+source maps:
 
 - Node.js:
   [`--enable-source-maps` CLI flag](https://nodejs.org/api/cli.html#--enable-source-maps)
