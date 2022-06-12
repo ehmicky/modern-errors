@@ -4,10 +4,7 @@
  * ```js
  * ```
  */
-export default function modernErrors(
-  errorNames: string[],
-  options?: Options,
-): Result
+export default function modernErrors(options?: Options): Result
 
 export interface Options {}
 
