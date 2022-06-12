@@ -256,7 +256,79 @@ try {
 }
 ```
 
+### Customizing error parameters
+
+The [`onCreate()` option](#oncreate) can be used to validate and transform error
+parameters.
+
+<!-- eslint-disable fp/no-mutating-assign -->
+
+```js
+modernErrors({
+  onCreate(error, params) {
+    const { filePath } = params
+
+    if (typeof filePath !== 'string') {
+      throw new TypeError('filePath must be a string.')
+    }
+
+    const hasFilePath = filePath !== undefined
+    Object.assign(error, { filePath, hasFilePath })
+  },
+})
+```
+
+```js
+const error = new InputError('Could not read the file.', {
+  filePath: '/path',
+  unknownParam: true,
+})
+console.log(error.filePath) // '/path'
+console.log(error.hasFilePath) // true
+console.log(error.unknownParam) // undefined
+```
+
+### Error type properties
+
+The [`onCreate()` option](#oncreate) can also be used to set properties for all
+instances of a given error type.
+
+<!-- eslint-disable fp/no-mutating-assign -->
+
+```js
+modernErrors({
+  onCreate(error, params) {
+    Object.assign(error, params, ERROR_PROPS[error.name])
+  },
+})
+
+const ERROR_PROPS = {
+  InputError: { isUser: true },
+  AuthError: { isUser: true },
+  DatabaseError: { isUser: false },
+}
+```
+
+```js
+const error = new InputError('Could not read the file.')
+console.log(error.isUser) // true
+```
+
 ## Error types
+
+### Testing error type
+
+Once [`errorHandler`](#error-handler) has been applied, the error type can be
+checked by its `name` (as opposed to `instanceof`). Libraries should document
+the possible error names, but do not need to export the error types.
+
+```js
+if (error.name === 'InputError') {
+  // ...
+} else if (error.name === 'SystemError') {
+  // ...
+}
+```
 
 ### Setting error type
 
@@ -272,7 +344,9 @@ try {
 }
 ```
 
-However, the inner error type is kept if the type is `Error` instead.
+However, the inner error type is kept if the type is `Error` or
+[`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
+instead.
 
 ```js
 try {
@@ -312,20 +386,6 @@ any system error will include the following message:
 
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues
-```
-
-### Testing error type
-
-Once [`errorHandler`](#error-handler) has been applied, the error type can be
-checked by its `name` (as opposed to `instanceof`). Libraries should document
-the possible error names, but do not need to export the error types.
-
-```js
-if (error.name === 'InputError') {
-  // ...
-} else if (error.name === 'SystemError') {
-  // ...
-}
 ```
 
 ## Miscellaneous
