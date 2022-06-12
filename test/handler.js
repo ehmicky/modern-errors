@@ -34,7 +34,7 @@ each([import.meta.url, new URL(import.meta.url)], ({ title }, bugsUrl) => {
 
 test('Subclassing errors is not supported', (t) => {
   const { errorHandler, InputError } = modernErrors()
-  // eslint-disable-next-line unicorn/custom-error-definition, fp/no-class
+  // eslint-disable-next-line fp/no-class
   class InputChildError extends InputError {}
   t.not(errorHandler(new InputError('test')).name, 'InternalError')
   t.is(errorHandler(new InputChildError('test')).name, 'InternalError')
