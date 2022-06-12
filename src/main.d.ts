@@ -1,3 +1,5 @@
+import { OnCreate } from 'error-type'
+
 /**
  *
  * @example
@@ -6,6 +8,9 @@
  */
 export default function modernErrors(options?: Options): Result
 
-export interface Options {}
+export interface Options {
+  bugsUrl?: string | URL
+  onCreate?: OnCreate
+}
 
 export interface Result {}

@@ -1,9 +1,13 @@
 import modernErrors from 'modern-errors'
 import { expectType, expectError } from 'tsd'
 
-expectType<{}>(modernErrors([]))
-modernErrors(undefined)
-modernErrors('test')
+expectType<{}>(modernErrors())
+modernErrors({})
+modernErrors({ bugsUrl: '' })
+modernErrors({ bugsUrl: new URL('') })
+modernErrors({ onCreate: (_: Error, __: { anyProp?: boolean }) => {} })
 
-expectError(modernErrors())
-expectError(modernErrors(new Error('test'), {}))
+expectError(modernErrors(true))
+expectError(modernErrors({ bugsUrl: true }))
+expectError(modernErrors({ onCreate: true }))
+expectError(modernErrors({ onCreate: (_: boolean) => {} }))
