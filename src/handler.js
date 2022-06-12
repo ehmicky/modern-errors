@@ -6,7 +6,9 @@ import mergeErrorCause from 'merge-error-cause'
 // We purposely do not support subclassing Error types:
 //  - This is usually not needed and the end result can be achieved differently
 //  - This only adds complexity
-export const onErrorHandler = function (
+// This returns the `error` instead of throwing it so the user can handle it
+// before re-throwing it if needed.
+export const callErrorHandler = function (
   { ErrorTypes, SystemError, bugsUrl },
   error,
 ) {

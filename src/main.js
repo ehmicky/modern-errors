@@ -2,7 +2,7 @@
 // eslint-disable-next-line n/file-extension-in-import, import/no-unassigned-import
 import 'error-cause/auto'
 
-import { onErrorHandler } from './handler.js'
+import { callErrorHandler } from './handler.js'
 import { getOpts } from './opts.js'
 import {
   validateErrorNames,
@@ -11,7 +11,7 @@ import {
 } from './types.js'
 
 // Create error types by passing an array of error names.
-// Also returns an `onError(error) => error` function to use as a top-level
+// Also returns an `errorHandler(error) => error` function to use as a top-level
 // error handler.
 // Consumers should check for `error.name`
 //  - As opposed to using `instanceof`
@@ -26,10 +26,10 @@ export default function modernErrors(errorNames, opts) {
   const { onCreate, bugsUrl } = getOpts(opts)
   const SystemError = createSystemError()
   const ErrorTypes = createErrorTypes(errorNames, onCreate)
-  const onError = onErrorHandler.bind(undefined, {
+  const errorHandler = callErrorHandler.bind(undefined, {
     ErrorTypes: Object.values(ErrorTypes),
     SystemError,
     bugsUrl,
   })
-  return { ...ErrorTypes, onError }
+  return { ...ErrorTypes, errorHandler }
 }
