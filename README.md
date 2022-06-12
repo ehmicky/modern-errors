@@ -8,17 +8,17 @@ Handle errors like it's 2022.
 
 # Example
 
-Create the error types and error handler:
+Create the error types and error handler.
 
 ```js
 // `error.js`
 import modernErrors from 'modern-errors'
 
-const { errorHandler, InputError, AuthError, DatabaseError } = modernErrors()
-export { errorHandler, InputError, AuthError, DatabaseError }
+export const { errorHandler, InputError, AuthError, DatabaseError } =
+  modernErrors()
 ```
 
-Wrap each main function with the error handler:
+Wrap each main function with the error handler.
 
 ```js
 import { errorHandler } from './error.js'
@@ -32,7 +32,7 @@ export const main = async function (filePath) {
 }
 ```
 
-Throw errors:
+Throw errors.
 
 ```js
 import { InputError } from './error.js'
