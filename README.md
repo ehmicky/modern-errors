@@ -144,7 +144,7 @@ import { InputError } from './error.js'
 
 const validateFilePath = function (filePath) {
   if (filePath === '') {
-    throw new InputError('Missing file path')
+    throw new InputError('Missing file path.')
   }
 }
 ```
@@ -163,7 +163,7 @@ import { errorHandler } from './error.js'
 
 export const main = function (filePath) {
   try {
-    throw 'message'
+    throw 'Missing file path.'
   } catch (error) {
     throw errorHandler(error) // Normalized to an `Error` instance
   }
@@ -235,7 +235,7 @@ Unless the [`onCreate()` option](#oncreate) is defined, any parameter is set as
 an error property.
 
 ```js
-const error = new InputError('Could not read the file', { filePath: '/path' })
+const error = new InputError('Could not read the file.', { filePath: '/path' })
 console.log(error.filePath) // '/path'
 ```
 
@@ -251,6 +251,31 @@ try {
   await readFile(filePath)
 } catch (cause) {
   throw new Error('', { cause, filePath: '/path' })
+}
+```
+
+### Setting error type
+
+When [wrapping errors](#wrapping-errors), the outer error type overrides the
+inner one.
+
+```js
+try {
+  throw new AuthError('Could not authenticate.')
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
+  // The error is now an InputError
+}
+```
+
+However, the inner error type is kept if the type is `Error` instead.
+
+```js
+try {
+  throw new AuthError('Could not authenticate.')
+} catch (cause) {
+  throw new Error('Could not read the file.', { cause })
+  // The error is still an AuthError
 }
 ```
 
