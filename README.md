@@ -121,7 +121,7 @@ export const { errorHandler, InputError, AuthError, DatabaseError } =
 
 ### Error handler
 
-Each main function should be wrapped with the `errorHandler`.
+Each main function should be wrapped with the [`errorHandler`](#errorhandler).
 
 ```js
 import { errorHandler } from './error.js'
@@ -152,13 +152,14 @@ const validateFilePath = function (filePath) {
 ### Invalid errors
 
 Invalid errors [are normalized](https://github.com/ehmicky/normalize-exception)
-by `errorHandler`. This includes errors that are not an `Error` instance or that
-have wrong/missing properties.
+by `errorHandler`. This includes errors that are not an
+[`Error` instance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+or that have wrong/missing properties.
 
 <!-- eslint-disable no-throw-literal -->
 
 ```js
-import { InputError, errorHandler } from './error.js'
+import { errorHandler } from './error.js'
 
 export const main = function (filePath) {
   try {
@@ -204,9 +205,15 @@ and any additional property. This ensures:
 ### Wrapping error message
 
 ```js
-throw new InputError(`Could not read ${filePath}`, { cause })
-// InputError: File does not exist.
-// Could not read /example/path
+const readContents = async function (filePath) {
+  try {
+    return await readFile(filePath)
+  } catch (cause) {
+    throw new InputError(`Could not read ${filePath}`, { cause })
+    // InputError: File does not exist.
+    // Could not read /example/path
+  }
+}
 ```
 
 If the parent error message ends with `:`, that message is prepended instead.
