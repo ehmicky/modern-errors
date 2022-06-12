@@ -187,6 +187,8 @@ export const main = function (filePath) {
 
 Errors are re-thrown using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
+This allows wrapping the error [message](#wrap-error-message),
+[properties](#wrap-error-properties) and [type](#set-error-type).
 
 ```js
 import { InputError } from './error.js'
