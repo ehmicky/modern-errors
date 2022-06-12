@@ -279,6 +279,37 @@ try {
 }
 ```
 
+### System errors
+
+System errors/bugs can be distinguished from user errors by handling any user
+error in `try {} catch {}` and [wrap](#wrapping-errors) it with an error type.
+The [`errorHandler`](#error-handler) assigns the `SystemError` type to any error
+with an unknown type.
+
+<!-- eslint-disable unicorn/no-null -->
+
+```js
+const getUserId = function (user) {
+  return user.id
+}
+
+getUserId(null) // SystemError: Cannot read properties of null (reading 'id')
+```
+
+### Bug reports
+
+If the `bugsUrl` option is used,
+
+```js
+modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
+```
+
+any system error will include the following message:
+
+```
+Please report this bug at: https://github.com/my-name/my-project/issues
+```
+
 # Support
 
 For any question, _don't hesitate_ to [submit an issue on GitHub](../../issues).
