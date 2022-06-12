@@ -85,18 +85,18 @@ Creates the [error types](#any-error-type) and [handler](#errorhandler).
 
 ### Return value
 
+#### Any error type
+
+_Type_: `ErrorType`
+
+Any error type [can be retrieved](#create-error-types-and-handler) from the
+return value, such as `InputError`.
+
 #### errorHandler
 
 _Type_: `(anyException) => Error`
 
 Error handler that [should wrap each main function](#error-handler).
-
-#### Any error type
-
-_Type_: `ErrorType`
-
-Any error type [can be retrieved](#creating-error-types-and-handler) from the
-return value, such as `InputError`.
 
 ### Options
 
@@ -110,16 +110,16 @@ URL where users should [report system errors/bugs](#bug-reports).
 
 _Type_: `(error, parameters) => void`
 
-Called on any `new ErrorType('message', parameters)`. By default, any
-`parameters` are [set as error properties](##setting-error-properties). Can be
-used to [customize error parameters](#customizing-error-parameters) or to set
-[error type properties](#error-type-properties).
+Called on any `new ErrorType('message', parameters)`. Can be used to
+[customize error parameters](#customize-error-parameters) or to set
+[error type properties](#error-type-properties). By default, any `parameters`
+are [set as error properties](#set-error-properties).
 
 # Usage
 
 ## Setup
 
-### Creating error types and handler
+### Create error types and handler
 
 ✨ Retrieving the error types automatically creates them. ✨
 
@@ -148,7 +148,7 @@ export const main = async function (filePath) {
 }
 ```
 
-## Throwing errors
+## Throw errors
 
 ### Simple errors
 
@@ -183,7 +183,7 @@ export const main = function (filePath) {
 }
 ```
 
-### Wrapping errors
+### Wrap errors
 
 Errors are wrapped by using the
 [`cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
@@ -207,7 +207,7 @@ single error, including their
 [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name)
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any [additional property](#setting-error-properties). This ensures:
+and any [additional property](#set-error-properties). This ensures:
 
 - There is no need to
   [traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
@@ -215,7 +215,7 @@ and any [additional property](#setting-error-properties). This ensures:
   [stack trace](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace)
   is simple while still keeping all information
 
-### Wrapping error message
+### Wrap error message
 
 ```js
 try {
@@ -244,7 +244,7 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 
 ## Error properties
 
-### Setting error properties
+### Set error properties
 
 Unless the [`onCreate()` option](#oncreate) is defined, any parameter is set as
 an error property.
@@ -254,7 +254,7 @@ const error = new InputError('Could not read the file.', { filePath: '/path' })
 console.log(error.filePath) // '/path'
 ```
 
-### Wrapping error properties
+### Wrap error properties
 
 Pass an empty `message` in order to set error properties without wrapping the
 `message`.
@@ -269,7 +269,7 @@ try {
 }
 ```
 
-### Customizing error parameters
+### Customize error parameters
 
 The [`onCreate()` option](#oncreate) can be used to validate and transform error
 `parameters`.
@@ -331,7 +331,7 @@ console.log(error.isUser) // true
 
 ## Error types
 
-### Testing error type
+### Test error type
 
 Once [`errorHandler`](#error-handler) has been applied, the error type can be
 checked by its `name` (as opposed to `instanceof`). Libraries should document
@@ -345,10 +345,10 @@ if (error.name === 'InputError') {
 }
 ```
 
-### Setting error type
+### Set error type
 
-When [wrapping errors](#wrapping-errors), the outer error type overrides the
-inner one.
+When [wrapping errors](#wrap-errors), the outer error type overrides the inner
+one.
 
 ```js
 try {
@@ -375,8 +375,8 @@ try {
 ### System errors
 
 System errors/bugs can be distinguished from user errors by handling any user
-error in `try {} catch {}` and [wrap](#wrapping-errors) it with an error type.
-The [`errorHandler`](#error-handler) assigns the `SystemError` type to any error
+error in `try {} catch {}` and [wrap](#wrap-errors) it with an error type. The
+[`errorHandler`](#error-handler) assigns the `SystemError` type to any error
 with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
