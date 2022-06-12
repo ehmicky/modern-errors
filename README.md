@@ -8,8 +8,42 @@ Handle errors like it's 2022.
 
 # Example
 
-```js
+Create the error types and error handler:
 
+```js
+// `error.js`
+import modernErrors from 'modern-errors'
+
+const { errorHandler, InputError, AuthError, DatabaseError } = modernErrors()
+export { errorHandler, InputError, AuthError, DatabaseError }
+```
+
+Wrap each main function with the error handler:
+
+```js
+import { errorHandler } from './error.js'
+
+export const main = async function (filePath) {
+  try {
+    return await readContents(filePath)
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+```
+
+Throw errors:
+
+```js
+import { InputError } from './error.js'
+
+const readContents = async function (filePath) {
+  try {
+    return await readFile(filePath)
+  } catch (cause) {
+    throw new InputError(`Could not read ${filePath}`, { cause })
+  }
+}
 ```
 
 # Install
@@ -24,9 +58,8 @@ not `require()`.
 
 # API
 
-## modernErrors(errorNames, options?)
+## modernErrors(options?)
 
-`errorNames` `string[]`\
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
@@ -41,6 +74,14 @@ _Type_: `string | URL`
 _Type_: `(error, params) => void`
 
 ### Return value
+
+#### errorHandler
+
+_Type_: `(anyException) => Error`
+
+#### Any error type
+
+_Type_: `ErrorType`
 
 # Support
 
