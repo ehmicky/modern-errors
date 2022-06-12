@@ -33,8 +33,8 @@ export interface Options<T extends ErrorParams = ErrorParams> {
 }
 
 /**
- * Any error type can be retrieved from the return value, such as
- * `InputError`.
+ * Any error type can be retrieved from the return value.
+ * For example, `InputError`, `AuthError`, etc.
  *
  * @example
  * ```js

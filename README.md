@@ -16,12 +16,12 @@ Error handling framework that is minimalist yet featureful.
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
-- Automatically separate [(unhandled) system errors](#system-errors) from
+- Automatically separate (unhandled) [system errors](#system-errors) from
   (handled) user errors
 - System errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
-- Follows error handling
+- Follow error handling
   [best practices](https://github.com/ehmicky/error-type#best-practices)
 - Based on [modern JavaScript features](https://github.com/es-shims/error-cause)
 
@@ -51,7 +51,7 @@ export const main = async function (filePath) {
 }
 ```
 
-Throw/rethrow errors.
+Throw/re-throw errors.
 
 ```js
 import { InputError } from './error.js'
@@ -91,7 +91,7 @@ Creates the [error types](#any-error-type) and [handler](#errorhandler).
 _Type_: `ErrorType`
 
 Any error type [can be retrieved](#create-error-types-and-handler) from the
-return value, such as `InputError`.
+return value. For example: `InputError`, `AuthError`, etc.
 
 #### errorHandler
 
@@ -111,8 +111,8 @@ URL where users should [report system errors/bugs](#bug-reports).
 
 _Type_: `(error, parameters) => void`
 
-Called on any `new ErrorType('message', parameters)`. Can be used to
-[customize error parameters](#customize-error-parameters) or to set
+Called on any [`new ErrorType('message', parameters)`](#set-error-properties).
+Can be used to [customize error parameters](#customize-error-parameters) or set
 [error type properties](#error-type-properties). By default, any `parameters`
 are [set as error properties](#set-error-properties).
 
@@ -122,7 +122,9 @@ are [set as error properties](#set-error-properties).
 
 ### Create error types and handler
 
-✨ Retrieving the error types automatically creates them. ✨
+✨ Retrieving the error types
+[automatically](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+creates them. ✨
 
 ```js
 // error.js
@@ -134,7 +136,7 @@ export const { errorHandler, InputError, AuthError, DatabaseError } =
 
 ### Error handler
 
-Each main function should be wrapped with the [`errorHandler`](#errorhandler).
+Each main function should be wrapped with the [`errorHandler()`](#errorhandler).
 
 ```js
 import { errorHandler } from './error.js'
@@ -166,9 +168,10 @@ const validateFilePath = function (filePath) {
 ### Invalid errors
 
 Invalid errors [are normalized](https://github.com/ehmicky/normalize-exception)
-by `errorHandler`. This includes errors that are not an
+by [`errorHandler()`](#error-handler). This includes errors that are not an
 [`Error` instance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
-or that have wrong/missing properties.
+or that have
+[wrong/missing properties](https://github.com/ehmicky/normalize-exception#examples).
 
 <!-- eslint-disable no-throw-literal -->
 
@@ -203,7 +206,7 @@ const readContents = async function (filePath) {
 }
 ```
 
-The [`errorHandler`](#error-handler)
+The [`errorHandler()`](#error-handler)
 [merges all error `cause`](https://github.com/ehmicky/merge-error-cause) into a
 single error, including their
 [`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
@@ -338,7 +341,7 @@ console.log(error.isUser) // true
 
 ### Test error type
 
-Once [`errorHandler`](#error-handler) has been applied, the error type can be
+Once [`errorHandler()`](#error-handler) has been applied, the error type can be
 checked by its `name` (as opposed to
 [`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
 Libraries should document their possible error names, but do not need to
@@ -382,7 +385,7 @@ try {
 
 System errors/bugs can be distinguished from user errors by handling any user
 errors in `try {} catch {}` and [re-throwing](#re-throw-errors) them
-[with an error type](#set-error-type). The [`errorHandler`](#error-handler)
+[with an error type](#set-error-type). The [`errorHandler()`](#error-handler)
 assigns the `SystemError` type to any error with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
