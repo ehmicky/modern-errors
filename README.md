@@ -27,16 +27,10 @@ not `require()`.
 ## modernErrors(errorNames, options?)
 
 `errorNames` `string[]`\
-`options` [`Options`](#options)\
-_Return value_: [`Result`](#return-value)
-
-### Return value
-
-The return value is an object.
+[`options` `object`](#options)\
+[_Return value_: `object`](#return-value)
 
 ### Options
-
-Options are an optional plain object.
 
 #### bugsUrl
 
@@ -45,6 +39,8 @@ _Type_: `string | URL`
 #### onCreate
 
 _Type_: `(error, params) => void`
+
+### Return value
 
 # Support
 
