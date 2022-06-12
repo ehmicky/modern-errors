@@ -1,6 +1,8 @@
+import isPlainObj from 'is-plain-obj'
+
 // Normalize and retrieve options
 export const getOpts = function (opts = {}) {
-  if (!isObject(opts)) {
+  if (!isPlainObj(opts)) {
     throw new TypeError(`Options must be a plain object: ${opts}`)
   }
 
@@ -8,10 +10,6 @@ export const getOpts = function (opts = {}) {
   validateOnCreate(onCreate)
   const bugsUrlA = serializeBugsUrl(bugsUrl)
   return { onCreate, bugsUrl: bugsUrlA }
-}
-
-const isObject = function (value) {
-  return typeof value === 'object' && value !== null
 }
 
 const validateOnCreate = function (onCreate) {

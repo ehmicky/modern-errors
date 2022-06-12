@@ -48,6 +48,7 @@
   "dependencies": {
     "error-cause": "^1.0.4",
     "error-type": "^1.1.2",
+    "is-plain-obj": "^4.0.0",
     "merge-error-cause": "^1.1.0"
   },
   "devDependencies": {
