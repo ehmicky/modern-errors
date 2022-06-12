@@ -6,6 +6,8 @@
 
 Handle errors like it's 2022.
 
+Error handling framework that is small yet featureful.
+
 <!--
 
 # Features
@@ -24,7 +26,7 @@ Handle errors like it's 2022.
 
 # Example
 
-Create the error types and error handler.
+Create the error types and handler.
 
 ```js
 // `error.js`
@@ -34,7 +36,7 @@ export const { errorHandler, InputError, AuthError, DatabaseError } =
   modernErrors()
 ```
 
-Wrap each main function with the error handler.
+Wrap the main function with the error handler.
 
 ```js
 import { errorHandler } from './error.js'
@@ -89,10 +91,9 @@ _Type_: `string | URL`
 
 _Type_: `(error, params) => void`
 
-This is called on `new ErrorType('message', params)`.
+Called on `new ErrorType('message', params)`.
 
-By default, it sets any `params` as error properties. However, you can override
-it with any custom logic to validate, normalize params, etc.
+By default, any `params` are set as error properties.
 
 ### Return value
 
@@ -106,7 +107,9 @@ _Type_: `ErrorType`
 
 # Usage
 
-## Creating error types and handler
+## Setup
+
+### Creating error types and handler
 
 ```js
 // error.js
@@ -116,9 +119,9 @@ export const { errorHandler, InputError, AuthError, DatabaseError } =
   modernErrors()
 ```
 
-## Error handler
+### Error handler
 
-Each main function should be wrapped with the error handler.
+Each main function should be wrapped with the `errorHandler`.
 
 ```js
 import { errorHandler } from './error.js'
@@ -134,6 +137,8 @@ export const main = async function (filePath) {
 
 ## Throwing errors
 
+### Simple errors
+
 ```js
 import { InputError } from './error.js'
 
@@ -144,11 +149,11 @@ const validateFilePath = function (filePath) {
 }
 ```
 
-## Invalid errors
+### Invalid errors
 
-Exceptions that are an `Error` instance or have invalid/missing error properties
-[are normalized](https://github.com/ehmicky/normalize-exception) by
-`errorHandler`.
+Invalid errors [are normalized](https://github.com/ehmicky/normalize-exception)
+by `errorHandler`. This includes errors that are not an `Error` instance or that
+have wrong/missing properties.
 
 <!-- eslint-disable no-throw-literal -->
 
@@ -164,7 +169,10 @@ export const main = function (filePath) {
 }
 ```
 
-## Wrapping error message
+### Wrapping errors
+
+Errors are wrapped by using the
+[`cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 
 ```js
 import { InputError } from './error.js'
@@ -174,10 +182,31 @@ const readContents = async function (filePath) {
     return await readFile(filePath)
   } catch (cause) {
     throw new InputError(`Could not read ${filePath}`, { cause })
-    // InputError: File does not exist.
-    // Could not read /example/path
   }
 }
+```
+
+The [`errorHandler`](#error-handler)
+[merges all error `cause`](https://github.com/ehmicky/merge-error-cause) into a
+single error, including their
+[`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
+[`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
+[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name)
+[`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
+and any additional property. This ensures:
+
+- There is no need to
+  [traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
+- The
+  [stack trace](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace)
+  is simple while still keeping all information
+
+### Wrapping error message
+
+```js
+throw new InputError(`Could not read ${filePath}`, { cause })
+// InputError: File does not exist.
+// Could not read /example/path
 ```
 
 If the parent error message ends with `:`, that message is prepended instead.
@@ -193,55 +222,6 @@ throw new InputError(`Could not read ${filePath}:`, { cause })
 throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // InputError: Could not read /example/path:
 // File does not exist.
-```
-
-## Catching errors
-
-The `errorHandler`
-[merges all error `cause`](https://github.com/ehmicky/merge-error-cause) so
-there is no need to
-[traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause).
-All properties are merged:
-[`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
-[`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
-[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name)
-[`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any additional property. The
-[final stack trace](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace)
-is simple yet keeps all information.
-
-```js
-import { InputError, errorHandler } from './error.js'
-
-export const exampleLibrary = async function (filePath) {
-  try {
-    return await readContents(filePath)
-  } catch (error) {
-    throw errorHandler(error)
-  }
-}
-
-const readContents = async function (filePath) {
-  try {
-    return await readFile(filePath)
-  } catch (cause) {
-    throw new InputError(`Could not read ${filePath}`, { cause })
-  }
-}
-```
-
-```js
-import exampleLibrary from 'example-library'
-
-const callLib = async function (filePath) {
-  try {
-    return await exampleLibrary(filePath)
-  } catch (error) {
-    // No need to look for `error.cause`.
-    // All `error.cause` have already been merged by `example-library`.
-    console.log(error)
-  }
-}
 ```
 
 # Support
