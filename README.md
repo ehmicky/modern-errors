@@ -207,7 +207,7 @@ The [`errorHandler`](#error-handler)
 single error, including their
 [`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
 [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
-[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name)
+[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 and any [additional property](#set-error-properties). This ensures:
 
@@ -219,6 +219,8 @@ and any [additional property](#set-error-properties). This ensures:
 
 ### Wrap error message
 
+The outer error message is appended.
+
 ```js
 try {
   await readFile(filePath)
@@ -229,7 +231,7 @@ try {
 }
 ```
 
-If the parent error message ends with `:`, that message is prepended instead.
+If the outer error message ends with `:`, that message is prepended instead.
 
 ```js
 throw new InputError(`Could not read ${filePath}:`, { cause })
