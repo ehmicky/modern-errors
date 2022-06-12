@@ -13,4 +13,8 @@ export interface Options {
   onCreate?: OnCreate
 }
 
-export interface Result {}
+export interface Result {
+  errorHandler: ErrorHandler
+}
+
+export type ErrorHandler = (error: any) => Error
