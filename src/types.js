@@ -13,9 +13,9 @@ export const createSystemError = function () {
 
 const SYSTEM_ERROR_NAME = 'SystemError'
 
-// Custom error `onCreate()` logic can be specified
-//  - To make it type-specific, an object of functions should be used, then
-//    `object[error.name]` should be used inside `onCreate()`
+// Custom error `onCreate()` logic can be specified.
+// To make it type-specific, an object of functions should be used, then
+// `object[error.name]` should be used inside `onCreate()`.
 export const createCustomError = function (errorName, onCreate) {
   validateErrorName(errorName)
   return errorType(errorName, onCreate)

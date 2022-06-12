@@ -8,21 +8,20 @@ Handle errors like it's 2022.
 
 Error handling framework that is small yet featureful.
 
-<!--
-
 # Features
 
 - [Simple API](#api)
-- Follows [best practices](https://github.com/ehmicky/error-type#best-practices)
-- Error initialization parameters [are automatically set](#oncreate):
-  `new CustomError('message', { exampleProp: true })`
-- Polyfills
-  [`error.cause`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause)
-  on
-  [older Node.js and browsers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause#browser_compatibility)
-- Optional [custom initialization logic](#oncreate)
-
--->
+- [Custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
+- Wrap error [message](#wrap-error-message), [type](#set-error-type) and
+  [properties](#wrap-error-properties)
+- Set properties on [new errors](#set-error-properties) or on
+  [all errors of the same type](#error-type-properties)
+- Automatically separate [system errors/bugs](#system-errors) from user errors
+- System errors indicate where to [report bugs](#bug-reports)
+- Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
+  properties, etc.)
+- Follows error handling
+  [best practices](https://github.com/ehmicky/error-type#best-practices)
 
 # Example
 
