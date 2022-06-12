@@ -254,6 +254,83 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // File does not exist.
 ```
 
+## Error types
+
+### Test error type
+
+Once [`errorHandler()`](#error-handler) has been applied, the error type can be
+checked by its `name` (as opposed to
+[`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
+Libraries should document their possible error names, but do not need to
+`export` their error types.
+
+```js
+if (error.name === 'InputError') {
+  // ...
+} else if (error.name === 'SystemError') {
+  // ...
+}
+```
+
+### Set error type
+
+When [re-throwing errors](#re-throw-errors), the outer error type overrides the
+inner one.
+
+```js
+try {
+  throw new AuthError('Could not authenticate.')
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
+  // Now an InputError
+}
+```
+
+However, the inner error type is kept if the outer one is `Error` or
+[`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError).
+
+```js
+try {
+  throw new AuthError('Could not authenticate.')
+} catch (cause) {
+  throw new Error('Could not read the file.', { cause })
+  // Still an AuthError
+}
+```
+
+### System errors
+
+System errors/bugs can be distinguished from user errors by
+[handling any possible errors](#re-throw-errors) in `try {} catch {}` and
+[re-throwing](#re-throw-errors) them
+[with a specific error type](#set-error-type). The
+[`errorHandler()`](#error-handler) assigns the `SystemError` type to any error
+with an unknown type.
+
+<!-- eslint-disable unicorn/no-null -->
+
+```js
+const getUserId = function (user) {
+  return user.id
+}
+
+getUserId(null) // SystemError: Cannot read properties of null (reading 'id')
+```
+
+### Bug reports
+
+If the [`bugsUrl` option](#bugsurl) is used,
+
+```js
+modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
+```
+
+any [system error](#system-errors) will include the following message.
+
+```
+Please report this bug at: https://github.com/my-name/my-project/issues
+```
+
 ## Error properties
 
 ### Set error properties
@@ -363,83 +440,6 @@ const ERROR_PROPS = {
 ```js
 const error = new InputError('Could not read the file.')
 console.log(error.isUser) // true
-```
-
-## Error types
-
-### Test error type
-
-Once [`errorHandler()`](#error-handler) has been applied, the error type can be
-checked by its `name` (as opposed to
-[`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
-Libraries should document their possible error names, but do not need to
-`export` their error types.
-
-```js
-if (error.name === 'InputError') {
-  // ...
-} else if (error.name === 'SystemError') {
-  // ...
-}
-```
-
-### Set error type
-
-When [re-throwing errors](#re-throw-errors), the outer error type overrides the
-inner one.
-
-```js
-try {
-  throw new AuthError('Could not authenticate.')
-} catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
-  // Now an InputError
-}
-```
-
-However, the inner error type is kept if the outer one is `Error` or
-[`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError).
-
-```js
-try {
-  throw new AuthError('Could not authenticate.')
-} catch (cause) {
-  throw new Error('Could not read the file.', { cause })
-  // Still an AuthError
-}
-```
-
-### System errors
-
-System errors/bugs can be distinguished from user errors by
-[handling any possible errors](#re-throw-errors) in `try {} catch {}` and
-[re-throwing](#re-throw-errors) them
-[with a specific error type](#set-error-type). The
-[`errorHandler()`](#error-handler) assigns the `SystemError` type to any error
-with an unknown type.
-
-<!-- eslint-disable unicorn/no-null -->
-
-```js
-const getUserId = function (user) {
-  return user.id
-}
-
-getUserId(null) // SystemError: Cannot read properties of null (reading 'id')
-```
-
-### Bug reports
-
-If the [`bugsUrl` option](#bugsurl) is used,
-
-```js
-modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
-```
-
-any [system error](#system-errors) will include the following message.
-
-```
-Please report this bug at: https://github.com/my-name/my-project/issues
 ```
 
 ## Miscellaneous
