@@ -16,8 +16,8 @@ Error handling framework that is minimalist yet featureful.
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
-- Automatically separate [system/unhandled errors](#system-errors) from
-  user/handled errors
+- Automatically separate [(unhandled) system errors](#system-errors) from
+  (handled) user errors
 - System errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
