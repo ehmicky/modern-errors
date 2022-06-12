@@ -8,6 +8,8 @@ import mergeErrorCause from 'merge-error-cause'
 //  - This only adds complexity
 // This returns the `error` instead of throwing it so the user can handle it
 // before re-throwing it if needed.
+// This is called `errorHandler` so it does not end with `*Error` like the error
+// types.
 export const callErrorHandler = function (
   { ErrorTypes, SystemError, bugsUrl },
   error,
