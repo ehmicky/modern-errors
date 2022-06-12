@@ -6,6 +6,22 @@
 
 Handle errors like it's 2022.
 
+<!--
+
+# Features
+
+- [Simple API](#api)
+- Follows [best practices](https://github.com/ehmicky/error-type#best-practices)
+- Error initialization parameters [are automatically set](#oncreate):
+  `new CustomError('message', { exampleProp: true })`
+- Polyfills
+  [`error.cause`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause)
+  on
+  [older Node.js and browsers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause#browser_compatibility)
+- Optional [custom initialization logic](#oncreate)
+
+-->
+
 # Example
 
 Create the error types and error handler.
@@ -73,6 +89,11 @@ _Type_: `string | URL`
 
 _Type_: `(error, params) => void`
 
+This is called on `new ErrorType('message', params)`.
+
+By default, it sets any `params` as error properties. However, you can override
+it with any custom logic to validate, normalize params, etc.
+
 ### Return value
 
 #### errorHandler
@@ -82,6 +103,73 @@ _Type_: `(anyException) => Error`
 #### Any error type
 
 _Type_: `ErrorType`
+
+# Usage
+
+## Creating error types and handler
+
+```js
+// error.js
+import modernErrors from 'modern-errors'
+
+export const { errorHandler, InputError, AuthError, DatabaseError } =
+  modernErrors()
+```
+
+## Error handler
+
+Each main function should be wrapped with the error handler.
+
+```js
+import { errorHandler } from './error.js'
+
+export const main = async function (filePath) {
+  try {
+    return await readContents(filePath)
+  } catch (error) {
+    throw errorHandler(error)
+  }
+}
+```
+
+The `errorHandler`
+[normalizes the `error`](https://github.com/ehmicky/normalize-exception) if it
+is not an `Error` instance or has invalid/missing error properties.
+
+## Throwing errors
+
+```js
+import { InputError } from './error.js'
+
+const validateFilePath = function (filePath) {
+  if (filePath === '') {
+    throw new InputError('Missing file path')
+  }
+}
+```
+
+## Wrapping errors
+
+```js
+import { InputError } from './error.js'
+
+const readContents = async function (filePath) {
+  try {
+    return await readFile(filePath)
+  } catch (cause) {
+    throw new InputError(`Could not read ${filePath}`, { cause })
+  }
+}
+```
+
+The `errorHandler`
+[merges all error `cause`](https://github.com/ehmicky/merge-error-cause) to
+prevent:
+
+- [Verbose stack traces](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace)
+- Having to
+  [traverse `error.cause`](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
+  when catching `error`
 
 # Support
 
