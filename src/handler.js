@@ -11,12 +11,12 @@ import mergeErrorCause from 'merge-error-cause'
 // This is called `errorHandler` so it does not end with `*Error` like the error
 // types.
 export const callErrorHandler = function (
-  { ErrorTypes, SystemError, bugsUrl },
+  { state, SystemError, bugsUrl },
   error,
 ) {
   const errorA = mergeErrorCause(error)
 
-  if (ErrorTypes.includes(errorA.constructor)) {
+  if (Object.values(state).includes(errorA.constructor)) {
     return errorA
   }
 

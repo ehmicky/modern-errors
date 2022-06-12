@@ -4,13 +4,10 @@ import 'error-cause/auto'
 
 import { callErrorHandler } from './handler.js'
 import { getOpts } from './opts.js'
-import {
-  validateErrorNames,
-  createSystemError,
-  createErrorTypes,
-} from './types.js'
+import { createProxy } from './proxy.js'
+import { createSystemError } from './types.js'
 
-// Create error types by passing an array of error names.
+// Create error.
 // Also returns an `errorHandler(error) => error` function to use as a top-level
 // error handler.
 // Consumers should check for `error.name`
@@ -21,15 +18,14 @@ import {
 //  - Node.js: `--enable-source-maps` flag
 //  - Chrome: `node-source-map-support`
 //  - Any browsers: `stacktrace.js`
-export default function modernErrors(errorNames, opts) {
-  validateErrorNames(errorNames)
+export default function modernErrors(opts) {
   const { onCreate, bugsUrl } = getOpts(opts)
   const SystemError = createSystemError()
-  const ErrorTypes = createErrorTypes(errorNames, onCreate)
-  const errorHandler = callErrorHandler.bind(undefined, {
-    ErrorTypes: Object.values(ErrorTypes),
+  const state = {}
+  state.errorHandler = callErrorHandler.bind(undefined, {
+    state,
     SystemError,
     bugsUrl,
   })
-  return { ...ErrorTypes, errorHandler }
+  return createProxy(state, onCreate)
 }

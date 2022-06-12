@@ -14,7 +14,7 @@ each(
   ],
   ({ title }, opts) => {
     test(`Validate options | ${title}`, (t) => {
-      t.throws(modernErrors.bind(undefined, [], opts))
+      t.throws(modernErrors.bind(undefined, opts))
     })
   },
 )

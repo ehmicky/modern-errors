@@ -3,26 +3,17 @@ import modernErrors from 'modern-errors'
 import { each } from 'test-each'
 
 each(
-  [
-    undefined,
-    true,
-    'InputError',
-    [true],
-    ['SystemError'],
-    ['InputError', 'SystemError'],
-    ['Error'],
-    ['TypeError'],
-    ['inputError'],
-  ],
-  ({ title }, errorNames) => {
+  ['SystemError', 'Error', 'TypeError', 'inputError', Symbol('InputError')],
+  ({ title }, errorName) => {
     test(`Validate error names | ${title}`, (t) => {
-      t.throws(modernErrors.bind(undefined, errorNames))
+      // eslint-disable-next-line max-nested-callbacks
+      t.throws(() => modernErrors()[errorName])
     })
   },
 )
 
 test('Creates error types', (t) => {
-  const { InputError } = modernErrors(['InputError'])
+  const { InputError } = modernErrors()
   const error = new InputError('message')
   t.true(error instanceof Error)
   t.true(error instanceof InputError)
@@ -31,7 +22,7 @@ test('Creates error types', (t) => {
 })
 
 test('Default onCreate() assigns properties', (t) => {
-  const { InputError } = modernErrors(['InputError'])
+  const { InputError } = modernErrors()
   const { prop } = new InputError('message', { prop: true })
   t.true(prop)
 })
@@ -47,7 +38,7 @@ const onCreate = function (error, params) {
 }
 
 test('Can customize onCreate()', (t) => {
-  const { InputError } = modernErrors(['InputError'], { onCreate })
+  const { InputError } = modernErrors({ onCreate })
   const {
     params: { prop },
   } = new InputError('message', { prop: true })
