@@ -183,10 +183,10 @@ export const main = function (filePath) {
 }
 ```
 
-### Wrap errors
+### Re-throw errors
 
-Errors are wrapped by using the
-[`cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
+Errors are re-thrown using the
+[standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 
 ```js
 import { InputError } from './error.js'
@@ -347,8 +347,8 @@ if (error.name === 'InputError') {
 
 ### Set error type
 
-When [wrapping errors](#wrap-errors), the outer error type overrides the inner
-one.
+When [re-throwing errors](#re-throw-errors), the outer error type overrides the
+inner one.
 
 ```js
 try {
@@ -375,9 +375,9 @@ try {
 ### System errors
 
 System errors/bugs can be distinguished from user errors by handling any user
-error in `try {} catch {}` and [wrap](#wrap-errors) it with an error type. The
-[`errorHandler`](#error-handler) assigns the `SystemError` type to any error
-with an unknown type.
+error in `try {} catch {}` and [re-throwing](#re-throw-errors) it with an error
+type. The [`errorHandler`](#error-handler) assigns the `SystemError` type to any
+error with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
 
