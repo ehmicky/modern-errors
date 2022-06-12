@@ -311,11 +311,17 @@ console.log(error.unknownParam) // undefined
 
 ### Type-specific logic
 
-The [`onCreate()` option](#oncreate) can trigger different logic per error type.
+The [`onCreate()` option](#oncreate) can trigger error type-specific logic.
 
 <!-- eslint-disable n/handle-callback-err -->
 
 ```js
+modernErrors({
+  onCreate(error, parameters) {
+    onCreateError[error.name](error, parameters)
+  },
+})
+
 const onCreateError = {
   InputError(error, parameters) {
     // ...
@@ -325,12 +331,6 @@ const onCreateError = {
   },
   // ...
 }
-
-modernErrors({
-  onCreate(error, parameters) {
-    onCreateError[error.name](error, parameters)
-  },
-})
 ```
 
 ### Error type properties
@@ -369,7 +369,7 @@ Once [`errorHandler()`](#error-handler) has been applied, the error type can be
 checked by its `name` (as opposed to
 [`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
 Libraries should document their possible error names, but do not need to
-`export` the error types.
+`export` their error types.
 
 ```js
 if (error.name === 'InputError') {
@@ -407,10 +407,12 @@ try {
 
 ### System errors
 
-System errors/bugs can be distinguished from user errors by handling any user
-errors in `try {} catch {}` and [re-throwing](#re-throw-errors) them
-[with an error type](#set-error-type). The [`errorHandler()`](#error-handler)
-assigns the `SystemError` type to any error with an unknown type.
+System errors/bugs can be distinguished from user errors by
+[handling any possible errors](#re-throw-errors) in `try {} catch {}` and
+[re-throwing](#re-throw-errors) them
+[with a specific error type](#set-error-type). The
+[`errorHandler()`](#error-handler) assigns the `SystemError` type to any error
+with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -424,7 +426,7 @@ getUserId(null) // SystemError: Cannot read properties of null (reading 'id')
 
 ### Bug reports
 
-If the `bugsUrl` option is used,
+If the [`bugsUrl` option](#bugsurl) is used,
 
 ```js
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
