@@ -456,6 +456,17 @@ source maps:
 - Other browsers:
   [`stacktrace.js`](https://github.com/stacktracejs/stacktrace.js)
 
+# Related projects
+
+- [`error-type`](https://github.com/ehmicky/error-type): Create custom error
+  types
+- [`normalize-exception`](https://github.com/ehmicky/normalize-exception):
+  Normalize exceptions/errors
+- [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
+  error with its `cause`
+- [`error-cause-polyfill`](https://github.com/ehmicky/error-cause-polyfill):
+  Polyfill `error.cause`
+
 # Support
 
 For any question, _don't hesitate_ to [submit an issue on GitHub](../../issues).
