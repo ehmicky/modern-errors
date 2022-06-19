@@ -260,10 +260,8 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 ### Test error type
 
 Once [`errorHandler()`](#error-handler) has been applied, the error type can be
-checked by its `name` (as opposed to
-[`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)).
-Libraries should document their possible error names, but do not need to
-`export` their error types.
+checked by its `name`. Libraries should document their possible error names, but
+do not need to `export` their error types.
 
 ```js
 if (error.name === 'InputError') {
