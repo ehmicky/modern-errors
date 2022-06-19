@@ -49,7 +49,7 @@
     "error-cause-polyfill": "^1.0.1",
     "error-type": "^1.1.9",
     "is-plain-obj": "^4.1.0",
-    "merge-error-cause": "^1.1.4"
+    "merge-error-cause": "^1.1.5"
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.77",
