@@ -1,6 +1,6 @@
 // Include a polyfill for `error.cause` for Node.js <16.9.0 and old browsers.
-// eslint-disable-next-line n/file-extension-in-import, import/no-unassigned-import
-import 'error-cause/auto'
+// eslint-disable-next-line n/file-extension-in-import, import/no-unassigned-import, import/no-unresolved
+import 'error-cause-polyfill/auto'
 
 import { callErrorHandler } from './handler.js'
 import { getOpts } from './opts.js'

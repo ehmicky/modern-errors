@@ -25,7 +25,8 @@ Error handling framework that is minimalist yet featureful.
   stack, etc.)
 - Follow error handling
   [best practices](https://github.com/ehmicky/error-type#best-practices)
-- Based on [modern JavaScript features](https://github.com/es-shims/error-cause)
+- Based on
+  [modern JavaScript features](https://github.com/ehmicky/error-cause-polyfill)
 
 # Example
 
