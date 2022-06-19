@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "error-cause-polyfill": "^1.0.3",
-    "error-type": "^1.1.9",
+    "error-type": "^1.1.10",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^1.1.5"
   },
