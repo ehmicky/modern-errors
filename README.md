@@ -176,7 +176,7 @@ Invalid errors [are normalized](https://github.com/ehmicky/normalize-exception)
 by [`errorHandler()`](#error-handler). This includes errors that are not an
 [`Error` instance](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 or that have
-[wrong/missing properties](https://github.com/ehmicky/normalize-exception#examples).
+[wrong/missing properties](https://github.com/ehmicky/normalize-exception#features).
 
 <!-- eslint-disable no-throw-literal -->
 
