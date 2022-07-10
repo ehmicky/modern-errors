@@ -13,7 +13,7 @@ Error handling framework that is minimalist yet featureful.
 # Features
 
 - [Minimalist API](#api)
-- [Custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
+- [Create custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
 - Wrap any error's [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
