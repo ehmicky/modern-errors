@@ -460,7 +460,7 @@ type by using [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
 #!/usr/bin/env node
 import handleCliError from 'handle-cli-error'
 
-// Must use `modern-errors`'s `errorHandler`
+// `programmaticMain()` must use `modern-errors`'s `errorHandler`
 import programmaticMain from './main.js'
 
 const cliMain = function () {
@@ -472,7 +472,7 @@ const cliMain = function () {
     handleCliError(error, {
       InputError: { exitCode: 1, short: true },
       DatabaseError: { exitCode: 2, short: true },
-      InternalError: { exitCode: 3 },
+      default: { exitCode: 3 },
     })
   }
 }
