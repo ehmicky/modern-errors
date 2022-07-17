@@ -31,6 +31,11 @@ Error handling framework that is minimalist yet featureful.
 - Based on
   [modern JavaScript features](https://github.com/ehmicky/error-cause-polyfill)
 
+The framework integrates well with [other libraries](#miscellaneous) to:
+
+- Handle [CLI errors](#cli-errors)
+- Use [source maps](#source-maps) on stack traces
+
 # Example
 
 Create the error types and handler.
@@ -445,6 +450,32 @@ console.log(error.isUser) // true
 ```
 
 ## Miscellaneous
+
+### CLI errors
+
+CLI applications can assign different exit codes and log verbosity for each
+error type using
+[`handle-cli-error`](https://github.com/ehmicky/handle-cli-error):
+
+```js
+#!/usr/bin/env node
+import handleCliError from 'handle-cli-error'
+
+const cliMain = function () {
+  try {
+    // ...
+  } catch (error) {
+    // Print `error` then exit the process
+    handleCliError(error, {
+      InputError: { exitCode: 1, short: true },
+      DatabaseError: { exitCode: 2, short: true },
+      InternalError: { exitCode: 3 },
+    })
+  }
+}
+
+cliMain()
+```
 
 ### Source maps
 
