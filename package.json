@@ -52,7 +52,7 @@
     "merge-error-cause": "^1.2.0"
   },
   "devDependencies": {
-    "@ehmicky/dev-tasks": "^1.0.83",
+    "@ehmicky/dev-tasks": "^1.0.84",
     "test-each": "^5.1.1"
   },
   "engines": {
