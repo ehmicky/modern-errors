@@ -453,9 +453,8 @@ console.log(error.isUser) // true
 
 ### CLI errors
 
-CLI applications can assign different exit codes and log verbosity for each
-error type using
-[`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
+CLI applications can assign a different exit code and log verbosity per error
+type by using [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
 
 ```js
 #!/usr/bin/env node
