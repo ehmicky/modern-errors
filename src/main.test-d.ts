@@ -36,7 +36,7 @@ expectType<Result>(modernErrors())
 expectAssignable<Result>({ errorHandler: () => new Error('test') })
 expectAssignable<Result>({
   errorHandler: () => new Error('test'),
-  TestError,
+  TestError: TestError!,
 })
 expectNotAssignable<Result>({ errorHandler: () => {} })
 expectNotAssignable<Result>({})
@@ -54,13 +54,13 @@ expectAssignable<ErrorName>('InputError')
 expectNotAssignable<ErrorName>('test')
 expectNotAssignable<ErrorName>(Symbol('InputError'))
 
-expectAssignable<ErrorType>(TestError)
+expectAssignable<ErrorType>(TestError!)
 expectAssignable<ErrorType>(Error)
 expectNotAssignable<ErrorType>(() => {})
 
 const { InputError } = modernErrors({
   onCreate: (_: Error, __: { test?: boolean }) => {},
 })
-new InputError('message', { test: true })
-expectError(new InputError('message', { test: 'true' }))
-expectError(new InputError('message', { other: true }))
+new InputError!('message', { test: true })
+expectError(new InputError!('message', { test: 'true' }))
+expectError(new InputError!('message', { other: true }))

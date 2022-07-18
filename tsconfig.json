@@ -5,6 +5,8 @@
     "target": "esnext",
     "lib": ["esnext"],
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
