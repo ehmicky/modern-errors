@@ -7,6 +7,7 @@
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
