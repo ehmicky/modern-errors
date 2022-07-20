@@ -1,3 +1,10 @@
+import {
+  expectType,
+  expectError,
+  expectAssignable,
+  expectNotAssignable,
+} from 'tsd'
+
 import modernErrors, {
   ErrorHandler,
   Options,
@@ -5,13 +12,7 @@ import modernErrors, {
   ErrorName,
   OnCreate,
   ErrorType,
-} from 'modern-errors'
-import {
-  expectType,
-  expectError,
-  expectAssignable,
-  expectNotAssignable,
-} from 'tsd'
+} from './main.js'
 
 const result = modernErrors()
 const { TestError, errorHandler } = result

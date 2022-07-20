@@ -8,10 +8,6 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
     "useUnknownInCatchVariables": true,
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "modern-errors": ["."]
-    }
+    "noEmit": true
   }
 }
