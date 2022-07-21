@@ -39,6 +39,8 @@ jobs:
         run: npx gulp check
       - name: Build
         run: npx gulp build
+      - name: Types
+        run: npx gulp type
       - name: Tests
         run: npx gulp unit
       - name: Upload test coverage
