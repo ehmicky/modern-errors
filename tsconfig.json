@@ -1,12 +1,3 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "useUnknownInCatchVariables": true,
-    "noEmit": true
-  }
+  "extends": "@ehmicky/dev-tasks"
 }
