@@ -15,7 +15,6 @@ Error handling framework that is minimalist yet featureful.
 
 # Features
 
-- [Minimalist API](#api)
 - [Create custom error types](https://github.com/ehmicky/modern-errors#create-error-types-and-handler)
 - Wrap any error's [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
@@ -26,10 +25,6 @@ Error handling framework that is minimalist yet featureful.
 - Internal errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
-- Follow error handling
-  [best practices](https://github.com/ehmicky/error-type#best-practices)
-- Based on
-  [modern JavaScript features](https://github.com/ehmicky/error-cause-polyfill)
 
 The framework integrates with [other libraries](#miscellaneous) to also:
 
