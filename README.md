@@ -44,8 +44,14 @@ Create the error types and handler.
 // `error.js`
 import modernErrors from 'modern-errors'
 
-export const { errorHandler, InputError, AuthError, DatabaseError } =
-  modernErrors()
+export const {
+  errorHandler,
+  // Those error types are examples.
+  // Any name ending with "Error" can be specified.
+  InputError,
+  AuthError,
+  DatabaseError,
+} = modernErrors()
 ```
 
 Wrap the main function with the error handler.
@@ -142,9 +148,14 @@ creates them. ✨
 // error.js
 import modernErrors from 'modern-errors'
 
-// The error types are examples: any name ending with "Error" can be specified
-export const { errorHandler, InputError, AuthError, DatabaseError } =
-  modernErrors()
+export const {
+  errorHandler,
+  // Those error types are examples.
+  // Any name ending with "Error" can be specified.
+  InputError,
+  AuthError,
+  DatabaseError,
+} = modernErrors()
 ```
 
 ### Error handler
@@ -470,9 +481,11 @@ const cliMain = function () {
   } catch (error) {
     // Print `error` then exit the process
     handleCliError(error, {
-      InputError: { exitCode: 1, short: true },
-      DatabaseError: { exitCode: 2, short: true },
-      default: { exitCode: 3 },
+      types: {
+        InputError: { exitCode: 1, short: true },
+        DatabaseError: { exitCode: 2, short: true },
+        default: { exitCode: 3 },
+      },
     })
   }
 }
