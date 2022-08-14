@@ -551,7 +551,10 @@ const newDeepObject = JSON.parse(jsonString, (key, value) => parse(value))
 console.log(newDeepObject[1].error) // InputError: Could not read the file.
 ```
 
-# Related projects
+# Modules
+
+This framework brings together a collection of modules which can also be used
+individually:
 
 - [`create-error-types`](https://github.com/ehmicky/create-error-types): Create
   multiple error types
@@ -566,6 +569,9 @@ console.log(newDeepObject[1].error) // InputError: Could not read the file.
   Polyfill `error.cause`
 - [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error): 💣 Error
   handler for CLI applications 💥
+
+# Related projects
+
 - [`log-process-errors`](https://github.com/ehmicky/log-process-errors): Show
   some ❤ to Node.js process errors
 
