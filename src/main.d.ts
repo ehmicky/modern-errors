@@ -91,7 +91,7 @@ export type Result<
   errorHandler: ErrorHandler<ErrorNames, ErrorParamsArg>
 
   /**
-   * Convert an error plain object into an Error instance.
+   * Convert an error plain object into an `Error` instance.
    *
    * @example
    * ```js
@@ -129,10 +129,12 @@ export declare class CustomError<
 > extends RawCustomError<ErrorNames, ErrorParamsArg> {
   /**
    * Convert errors to plain objects that are
-   * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
-   * serialize with JSON
+   * [serializable](https://github.com/ehmicky/error-serializer#json-safety) to
+   * JSON
    * ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
-   * etc.). All error properties
+   * etc.). It is
+   * [automatically called](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior)
+   * by `JSON.stringify()`. All error properties
    * [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
    * including
    * [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
