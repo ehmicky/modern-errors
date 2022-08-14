@@ -16,7 +16,9 @@ Error handling framework that is minimalist yet featureful.
 # Features
 
 - [Create custom error types](#create-error-types-and-handler)
-- Wrap any error's [message](#wrap-error-message), [type](#set-error-type), or
+- Handle errors from both [programmatic](#error-handler) and [CLI](#cli-errors)
+  modules
+- Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
@@ -25,11 +27,6 @@ Error handling framework that is minimalist yet featureful.
 - Internal errors indicate where to [report bugs](#bug-reports)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
-
-The framework integrates with [other libraries](#miscellaneous) to also:
-
-- Handle [CLI errors](#cli-errors)
-- Use [source maps](#source-maps) on stack traces
 
 # Example
 
@@ -454,9 +451,7 @@ const error = new InputError('Could not read the file.')
 console.log(error.isUser) // true
 ```
 
-## Miscellaneous
-
-### CLI errors
+## CLI errors
 
 CLI applications can assign a different exit code and log verbosity per error
 type by using [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
@@ -486,19 +481,6 @@ const cliMain = function () {
 
 cliMain()
 ```
-
-### Source maps
-
-When using a build step (Babel, TypeScript, etc.), the error stack traces refer
-to the built files/lines instead of the source. This can be fixed by using
-source maps:
-
-- Node.js:
-  [`--enable-source-maps` CLI flag](https://nodejs.org/api/cli.html#--enable-source-maps)
-- Chrome:
-  [`node-source-map-support`](https://github.com/evanw/node-source-map-support)
-- Other browsers:
-  [`stacktrace.js`](https://github.com/stacktracejs/stacktrace.js)
 
 # Related projects
 
