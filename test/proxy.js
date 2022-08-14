@@ -3,15 +3,23 @@ import modernErrors from 'modern-errors'
 
 test('Can enumerate new error types', (t) => {
   const returnValue = modernErrors()
+  t.is(returnValue.unknown, undefined)
   t.deepEqual(Object.keys(returnValue), ['errorHandler'])
-  t.false('InputError' in returnValue)
   t.true(new returnValue.InputError('test') instanceof Error)
   t.deepEqual(Object.keys(returnValue), ['errorHandler', 'InputError'])
-  t.true('InputError' in returnValue)
 })
 
-test('Can return undefined properties', (t) => {
+test('Can use "in" with return value', (t) => {
   const returnValue = modernErrors()
-  t.is(returnValue.unknown, undefined)
   t.false('unknown' in returnValue)
+  t.true('InputError' in returnValue)
+  t.deepEqual(Object.keys(returnValue), ['errorHandler', 'InputError'])
+})
+
+test('Can use "getOwnPropertyDescriptor()" with return value', (t) => {
+  const returnValue = modernErrors()
+  t.is(Object.getOwnPropertyDescriptor(returnValue, 'unknown'), undefined)
+  const { value } = Object.getOwnPropertyDescriptor(returnValue, 'InputError')
+  t.is(typeof value, 'function')
+  t.deepEqual(Object.keys(returnValue), ['errorHandler', 'InputError'])
 })
