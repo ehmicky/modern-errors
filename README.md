@@ -15,7 +15,7 @@ Error handling framework that is minimalist yet featureful.
 
 # Features
 
-- Create [custom error types](#create-error-types-and-handler)
+- Create [custom error types](#create-custom-error-types)
 - Handle errors from both [programmatic](#error-handler) and [CLI](#cli-errors)
   modules
 - Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
@@ -31,21 +31,14 @@ Error handling framework that is minimalist yet featureful.
 
 # Example
 
-Create the error types and handler.
+Create custom error types.
 
 ```js
 // `error.js`
 import modernErrors from 'modern-errors'
 
-export const {
-  errorHandler,
-  parse,
-  // Those error types are examples.
-  // Any name ending with "Error" can be specified.
-  InputError,
-  AuthError,
-  DatabaseError,
-} = modernErrors()
+export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
+  modernErrors(['InputError', 'AuthError', 'DatabaseError'])
 ```
 
 Wrap the main function with the error handler.
@@ -88,8 +81,9 @@ not `require()`.
 
 # API
 
-## modernErrors(options?)
+## modernErrors(errorNames, options?)
 
+`errorNames` `string[]`\
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
@@ -101,9 +95,7 @@ Creates custom [error types](#any-error-type).
 
 _Type_: `ErrorType`
 
-Any error type [can be retrieved](#create-error-types-and-handler) from the
-return value. The name must end with `Error`. For example: `InputError`,
-`AuthError`, etc.
+Any error name passed as argument is returned as an error type.
 
 #### errorHandler
 
@@ -138,24 +130,14 @@ are [set as error properties](#set-error-properties).
 
 ## Setup
 
-### Create error types and handler
-
-✨ Retrieving the error types
-[automatically](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
-creates them. ✨
+### Create custom error types
 
 ```js
 // error.js
 import modernErrors from 'modern-errors'
 
-export const {
-  errorHandler,
-  // Those error types are examples.
-  // Any name ending with "Error" can be specified.
-  InputError,
-  AuthError,
-  DatabaseError,
-} = modernErrors()
+export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
+  modernErrors(['InputError', 'AuthError', 'DatabaseError'])
 ```
 
 ### Error handler

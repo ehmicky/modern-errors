@@ -55,18 +55,12 @@ export interface Options<
 }
 
 /**
- * Any error type can be retrieved from the return value.
- * For example, `InputError`, `AuthError`, etc.
+ * Any error name passed as argument is returned as an error type.
  *
  * @example
  * ```js
- * export const {
- *   errorHandler,
- *   parse,
- *   InputError,
- *   AuthError,
- *   DatabaseError,
- * } = modernErrors()
+ * export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
+ *   modernErrors(['InputError', 'AuthError', 'DatabaseError'])
  * ```
  */
 export type Result<
@@ -192,13 +186,8 @@ export type { ErrorName, ErrorObject, ErrorParams }
  *
  * @example
  * ```js
- * export const {
- *   errorHandler,
- *   parse,
- *   InputError,
- *   AuthError,
- *   DatabaseError,
- * } = modernErrors()
+ * export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
+ *   modernErrors(['InputError', 'AuthError', 'DatabaseError'])
  * ```
  */
 export default function modernErrors<
