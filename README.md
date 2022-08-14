@@ -313,12 +313,14 @@ try {
 
 ### Internal errors
 
-Internal errors/bugs can be distinguished from user errors by
-[handling any possible errors](#re-throw-errors) in `try {} catch {}` and
-[re-throwing](#re-throw-errors) them
-[with a specific error type](#set-error-type). The
-[`errorHandler()`](#error-handler) assigns the `InternalError` type to any error
-with an unknown type.
+Internal errors/bugs can be distinguished from user errors by:
+
+- [Handling any possible errors](#re-throw-errors) in `try {} catch {}`
+- [Re-throwing](#re-throw-errors) them
+  [with a specific error type](#set-error-type).
+
+The [`errorHandler()`](#error-handler) assigns the `InternalError` type to any
+error with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -429,8 +431,6 @@ const onCreateError = {
 
 ### Error type properties
 
-By default, error types are very similar except for their
-[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name).
 The [`onCreate()` option](#oncreate) can be used to set properties on all
 instances of a given error type.
 
