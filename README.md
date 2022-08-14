@@ -488,7 +488,7 @@ including
 
 The `error` must be from a [_known type_](#unknown-errors). However, any other
 error (including `Error`, `TypeError`, etc.) is also serializable providing it
-has been either handled by [`errorHandler()`](#errorhandler), or wrapped
+has been either passed to [`errorHandler()`](#errorhandler), or wrapped
 [as an `error.cause`](#re-throw-errors).
 
 ```js
@@ -518,8 +518,8 @@ try {
 identical error instances.
 
 The original error type is generically preserved. However, it is converted to a
-generic `Error` if it is neither [_known_](#unknown-errors) nor native (`Error`,
-`TypeError`, etc.).
+generic `Error` if it is neither a [_known type_](#unknown-errors) nor a native
+type (`Error`, `TypeError`, etc.).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
