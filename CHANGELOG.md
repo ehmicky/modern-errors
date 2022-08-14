@@ -1,3 +1,10 @@
+# 3.0.0
+
+## Breaking changes
+
+- The `InternalError` type has been renamed to
+  [`UnknownError`](README.md#unknown-errors)
+
 # 2.0.2
 
 ## Bug fixes
