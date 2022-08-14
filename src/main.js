@@ -3,20 +3,18 @@ import { polyfill } from 'error-cause-polyfill'
 import isPlainObj from 'is-plain-obj'
 import mergeErrorCause from 'merge-error-cause'
 
+import { proxyProps } from './proxy.js'
+
 // Create error types and returns an `errorHandler(error) => error` function to
 // use as a top-level error handler.
 // Also:
 //  - merge `error.cause`, and polyfill it if unsupported
-// `create-error-types` return value is a `Proxy`. We return it as is, but add
-// more properties. We use inheritance to do so.
 export default function modernErrors(opts) {
   polyfill()
   const { onCreate, bugsUrl } = getOpts(opts)
-  const proxy = createErrorTypes({ onCreate, bugsUrl })
-  const errorHandler = callErrorHandler.bind(undefined, proxy)
-  const returnValue = { errorHandler }
-  // eslint-disable-next-line fp/no-mutating-methods
-  return Object.setPrototypeOf(returnValue, proxy)
+  const innerProxy = createErrorTypes({ onCreate, bugsUrl })
+  const errorHandler = callErrorHandler.bind(undefined, innerProxy)
+  return proxyProps({ errorHandler }, innerProxy)
 }
 
 // Normalize and retrieve options
@@ -30,8 +28,8 @@ const getOpts = function (opts = {}) {
 }
 
 // Apply `create-error-types` error handler and merge any `error.cause`.
-const callErrorHandler = function (proxy, error) {
+const callErrorHandler = function (innerProxy, error) {
   const errorA = mergeErrorCause(error)
-  const errorB = proxy.errorHandler(errorA)
+  const errorB = innerProxy.errorHandler(errorA)
   return errorB.name === 'InternalError' ? mergeErrorCause(errorB) : errorB
 }
