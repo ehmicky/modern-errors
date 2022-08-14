@@ -60,7 +60,7 @@ expectType<Error>(parse({ name: 'InputError', message: '', stack: '' }))
 const error = new TestError!('test')
 expectType<ErrorInstance>(error)
 const errorObject = error.toJSON()
-expectType<ErrorObject>(errorObject)
+expectAssignable<ErrorObject>(errorObject)
 expectType<Error>(parse(errorObject))
 
 expectError(result.test)

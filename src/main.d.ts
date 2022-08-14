@@ -6,7 +6,7 @@ import {
   ErrorParams,
   Options as CreateErrorTypesOptions,
 } from 'create-error-types'
-import { parse, ErrorObject } from 'error-serializer'
+import { serialize, parse, ErrorObject } from 'error-serializer'
 
 export interface Options<
   ErrorNamesArg extends ErrorName = ErrorName,
@@ -107,7 +107,7 @@ export type ErrorInstance<ErrorNamesArg extends ErrorName = ErrorName> =
      * ```js
      * ```
      */
-    toJSON: () => ErrorObject
+    toJSON: () => ReturnType<typeof serialize<RawErrorInstance<ErrorNamesArg>>>
   }
 
 /**
@@ -120,9 +120,9 @@ export type ErrorHandler<ErrorNamesArg extends ErrorName = ErrorName> = (
 /**
  * Type of `parse()`
  */
-export type Parse = <T>(
-  value: T,
-) => ReturnType<typeof parse<T, { loose: true }>>
+export type Parse = <ArgType>(
+  value: ArgType,
+) => ReturnType<typeof parse<ArgType, { loose: true }>>
 
 export type { ErrorName, ErrorObject, ErrorParams }
 
