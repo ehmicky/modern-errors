@@ -46,7 +46,7 @@
     "test": "test"
   },
   "dependencies": {
-    "error-cause-polyfill": "^1.0.4",
+    "error-cause-polyfill": "^1.1.0",
     "error-type": "^1.2.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^1.2.0"
