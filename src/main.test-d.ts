@@ -53,8 +53,8 @@ expectAssignable<Error>(testError)
 expectType<'TestError'>(testError.name)
 
 expectAssignable<ErrorHandler>(errorHandler)
-expectType<CustomError<'TestError' | 'InternalError'>>(errorHandler(undefined))
-expectType<CustomError<'TestError' | 'InternalError'>>(
+expectType<CustomError<'TestError' | 'UnknownError'>>(errorHandler(undefined))
+expectType<CustomError<'TestError' | 'UnknownError'>>(
   errorHandler(new Error('test')),
 )
 expectError(errorHandler(new Error('test'), true))

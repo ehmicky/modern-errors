@@ -35,5 +35,5 @@ const getOpts = function (opts = {}) {
 const callErrorHandler = function (innerHandler, error) {
   const errorA = mergeErrorCause(error)
   const errorB = innerHandler(errorA)
-  return errorB.name === 'InternalError' ? mergeErrorCause(errorB) : errorB
+  return errorB.name === 'UnknownError' ? mergeErrorCause(errorB) : errorB
 }

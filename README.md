@@ -268,7 +268,7 @@ do not need to `export` their error types.
 ```js
 if (error.name === 'InputError') {
   // ...
-} else if (error.name === 'InternalError') {
+} else if (error.name === 'UnknownError') {
   // ...
 }
 ```
@@ -306,7 +306,7 @@ Internal errors/bugs can be distinguished from user errors by:
 - [Handling any possible errors](#re-throw-errors) in `try {} catch {}`
 - Re-throwing them [with a known error type](#set-error-type)
 
-The [`errorHandler()`](#error-handler) assigns the `InternalError` type to any
+The [`errorHandler()`](#error-handler) assigns the `UnknownError` type to any
 error with an unknown type.
 
 <!-- eslint-disable unicorn/no-null -->
@@ -316,7 +316,7 @@ const getUserId = function (user) {
   return user.id
 }
 
-getUserId(null) // InternalError: Cannot read properties of null (reading 'id')
+getUserId(null) // UnknownError: Cannot read properties of null (reading 'id')
 ```
 
 ### Bug reports
