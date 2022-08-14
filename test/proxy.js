@@ -9,3 +9,9 @@ test('Can enumerate new error types', (t) => {
   t.deepEqual(Object.keys(returnValue), ['errorHandler', 'InputError'])
   t.true('InputError' in returnValue)
 })
+
+test('Can return undefined properties', (t) => {
+  const returnValue = modernErrors()
+  t.is(returnValue.unknown, undefined)
+  t.false('unknown' in returnValue)
+})
