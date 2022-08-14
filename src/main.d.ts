@@ -11,7 +11,7 @@ import { serialize, parse, ErrorObject } from 'error-serializer'
  * `modern-errors` options
  */
 export interface Options<
-  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > {
   /**
@@ -43,16 +43,14 @@ export interface Options<
    * ```
    */
   readonly onCreate?: (
-    error: ErrorInstance<ErrorNamesArg>,
+    error: ErrorInstance<ErrorNames>,
     params: Parameters<
       NonNullable<
-        CreateErrorTypesOptions<ErrorNamesArg, ErrorParamsArg>['onCreate']
+        CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']
       >
     >[1],
   ) => ReturnType<
-    NonNullable<
-      CreateErrorTypesOptions<ErrorNamesArg, ErrorParamsArg>['onCreate']
-    >
+    NonNullable<CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']>
   >
 }
 
@@ -72,10 +70,10 @@ export interface Options<
  * ```
  */
 export type Result<
-  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > = {
-  [errorName in ErrorNamesArg]: ErrorConstructor<errorName, ErrorParamsArg>
+  [errorName in ErrorNames]: ErrorConstructor<errorName, ErrorParamsArg>
 } & {
   /**
    * Error handler that should wrap each main function.
@@ -92,7 +90,7 @@ export type Result<
    * }
    * ```
    */
-  errorHandler: ErrorHandler<ErrorNamesArg>
+  errorHandler: ErrorHandler<ErrorNames>
 
   /**
    * Convert an error plain object into an Error instance.
@@ -128,16 +126,16 @@ export type Result<
 }
 
 export type ErrorConstructor<
-  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > = new (
   ...args: ConstructorParameters<
-    RawErrorConstructor<ErrorNamesArg, ErrorParamsArg>
+    RawErrorConstructor<ErrorNames, ErrorParamsArg>
   >
-) => ErrorInstance<ErrorNamesArg>
+) => ErrorInstance<ErrorNames>
 
-export type ErrorInstance<ErrorNamesArg extends ErrorName = ErrorName> =
-  RawErrorInstance<ErrorNamesArg> & {
+export type ErrorInstance<ErrorNames extends ErrorName = ErrorName> =
+  RawErrorInstance<ErrorNames> & {
     /**
      * Convert errors to plain objects that are
      * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
@@ -170,15 +168,15 @@ export type ErrorInstance<ErrorNamesArg extends ErrorName = ErrorName> =
      * }
      * ```
      */
-    toJSON: () => ReturnType<typeof serialize<RawErrorInstance<ErrorNamesArg>>>
+    toJSON: () => ReturnType<typeof serialize<RawErrorInstance<ErrorNames>>>
   }
 
 /**
  * Type of `errorHandler()`
  */
-export type ErrorHandler<ErrorNamesArg extends ErrorName = ErrorName> = (
+export type ErrorHandler<ErrorNames extends ErrorName = ErrorName> = (
   error: unknown,
-) => ErrorInstance<ErrorNamesArg>
+) => ErrorInstance<ErrorNames>
 
 /**
  * Type of `parse()`
@@ -204,8 +202,9 @@ export type { ErrorName, ErrorObject, ErrorParams }
  * ```
  */
 export default function modernErrors<
-  ErrorNamesArg extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
+  ErrorNames extends ErrorName[] = [],
 >(
-  options?: Options<ErrorNamesArg, ErrorParamsArg>,
-): Result<ErrorNamesArg, ErrorParamsArg>
+  errorNames: ErrorNames,
+  options?: Options<ErrorNames[number], ErrorParamsArg>,
+): Result<ErrorNames[number], ErrorParamsArg>
