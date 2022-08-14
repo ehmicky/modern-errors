@@ -1,3 +1,9 @@
+# 1.5.0
+
+## Features
+
+- [Serialize/parse](README.md#serializationparsing) errors
+
 # 1.4.1
 
 ## Bug fixes
