@@ -9,10 +9,6 @@ each([true, null], ({ title }, opts) => {
   })
 })
 
-test('Validate error name', (t) => {
-  t.throws(() => modernErrors().InternalError)
-})
-
 test('Creates error types', (t) => {
   const { InputError } = modernErrors()
   const error = new InputError('message')
