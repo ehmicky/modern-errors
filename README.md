@@ -20,9 +20,9 @@ Error handling framework that is minimalist yet featureful.
   modules
 - Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
-- Automatically separate (unhandled) [internal errors](#internal-errors) from
+- Automatically separate (unhandled) [unknown errors](#unknown-errors) from
   (handled) user errors
-- Internal errors indicate where to [report bugs](#bug-reports)
+- Unknown errors indicate where to [report bugs](#bug-reports)
 - [Serialize/parse](#serializationparsing) errors
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
@@ -115,7 +115,7 @@ Convert an [error plain object](#serialize) into [an Error instance](#parse-1).
 
 _Type_: `string | URL`
 
-URL where users should [report internal errors/bugs](#bug-reports).
+URL where users should [report unknown errors](#bug-reports).
 
 #### onCreate
 
@@ -299,9 +299,9 @@ try {
 }
 ```
 
-### Internal errors
+### Unknown errors
 
-Internal errors/bugs can be distinguished from user errors by:
+Unknown errors/bugs can be distinguished from user errors by:
 
 - [Handling any possible errors](#re-throw-errors) in `try {} catch {}`
 - Re-throwing them [with a known error type](#set-error-type)
@@ -327,7 +327,7 @@ If the [`bugsUrl` option](#bugsurl) is used,
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
 ```
 
-any [internal error](#internal-errors) will include the following message.
+any [unknown error](#unknown-errors) will include the following message.
 
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues

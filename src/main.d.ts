@@ -14,7 +14,7 @@ export interface Options<
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > {
   /**
-   * URL where users should report internal errors/bugs.
+   * URL where users should report unknown errors.
    *
    * @example 'https://github.com/my-name/my-project/issues'
    */
