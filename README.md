@@ -494,7 +494,7 @@ cliMain()
 
 ### Serialize
 
-`error.toJSON()` converts errors to plain objects that are
+`error.toJSON()` converts custom errors to plain objects that are
 [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
 serialize with JSON
 ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
