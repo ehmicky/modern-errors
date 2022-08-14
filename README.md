@@ -488,10 +488,11 @@ including
 
 The `error` must be from [one of the types](#any-error-type) created by
 [`modernErrors()`](#modernerrorserrornames-options). However, any other error
-type (including `Error`, `TypeError`, etc.) is also serializable if either:
+type (including `Error`, `TypeError`, etc.) is also serializable if it has been
+either:
 
-- It has been handled by [`errorHandler()`](#errorhandler)
-- It is wrapped [as an `error.cause`](#re-throw-errors)
+- Handled by [`errorHandler()`](#errorhandler)
+- Wrapped [as an `error.cause`](#re-throw-errors)
 
 ```js
 try {
@@ -521,9 +522,9 @@ identical error instances.
 
 The original error type is preserved providing it is either:
 
-- A [custom error](#any-error-type) created by
+- From [one of the types](#any-error-type) created by
   [`modernErrors()`](#modernerrorserrornames-options)
-- A native error type (`Error`, `TypeError`, etc.)
+- Native (`Error`, `TypeError`, etc.)
 
 ```js
 const newErrorObject = JSON.parse(errorString)
