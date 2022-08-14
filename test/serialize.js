@@ -29,3 +29,29 @@ test('Can use serialize and parse deeply', (t) => {
   t.true(parsedValue[0].prop)
   t.deepEqual(parsedValue[0].error, error)
 })
+
+test('error.toJSON() is not enumerable', (t) => {
+  const { InputError } = modernErrors()
+  const error = new InputError('test')
+  t.false(
+    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(error), 'toJSON')
+      .enumerable,
+  )
+})
+
+test('parse() is a noop on non-error plain objects', (t) => {
+  t.true(modernErrors().parse(true))
+})
+
+test('parse() handles unknown error types', (t) => {
+  const errorObject = { name: 'InputError', message: 'test', stack: '' }
+  const error = modernErrors().parse(errorObject)
+  t.true(error instanceof Error)
+  t.is(error.name, 'Error')
+  t.is(error.message, errorObject.message)
+})
+
+test('parse() does not consider return properties to be error types', (t) => {
+  const errorObject = { name: 'errorHandler', message: 'test', stack: '' }
+  t.is(modernErrors().parse(errorObject).name, 'Error')
+})
