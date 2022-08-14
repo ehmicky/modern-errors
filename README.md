@@ -20,7 +20,7 @@ Error handling framework that is minimalist yet featureful.
   modules
 - Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
-- Automatically known and [unknown errors](#unknown-errors)
+- Automatically separate known and [unknown errors](#unknown-errors)
 - Unknown errors indicate where to [report bugs](#bug-reports)
 - [Serialize/parse](#serializationparsing) errors
 - Set properties on [individual errors](#set-error-properties), or on
@@ -488,10 +488,8 @@ including
 
 The `error` must be from a [_known type_](#unknown-errors). However, any other
 error (including `Error`, `TypeError`, etc.) is also serializable providing it
-has been either:
-
-- Handled by [`errorHandler()`](#errorhandler)
-- Wrapped [as an `error.cause`](#re-throw-errors)
+has been either handled by [`errorHandler()`](#errorhandler), or wrapped
+[as an `error.cause`](#re-throw-errors).
 
 ```js
 try {
