@@ -93,7 +93,7 @@ not `require()`.
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
-Creates the [error types](#any-error-type).
+Creates custom [error types](#any-error-type).
 
 ### Return value
 
@@ -530,8 +530,8 @@ try {
 identical error instances.
 
 ```js
-const errorObject = JSON.parse(errorString)
-const error = parse(errorObject)
+const newErrorObject = JSON.parse(errorString)
+const newError = parse(newErrorObject)
 // InputError: Could not read the file.
 //   filePath: '/path'
 //   [cause]: Error: ...

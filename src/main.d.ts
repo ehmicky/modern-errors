@@ -95,8 +95,33 @@ export type Result<
   errorHandler: ErrorHandler<ErrorNamesArg>
 
   /**
+   * Convert an error plain object into an Error instance.
+   *
    * @example
    * ```js
+   * try {
+   *   await readFile(filePath)
+   * } catch (cause) {
+   *   const error = new InputError('Could not read the file.', {
+   *     cause,
+   *     filePath: '/path',
+   *   })
+   *   const errorObject = error.toJSON()
+   *   // {
+   *   //   name: 'InputError',
+   *   //   message: 'Could not read the file',
+   *   //   stack: '...',
+   *   //   cause: { name: 'Error', ... },
+   *   //   filePath: '/path'
+   *   // }
+   *   const errorString = JSON.stringify(error)
+   *   // '{"name":"InputError",...}'
+   *   const newErrorObject = JSON.parse(errorString)
+   *   const newError = parse(newErrorObject)
+   *   // InputError: Could not read the file.
+   *   //   filePath: '/path'
+   *   //   [cause]: Error: ...
+   * }
    * ```
    */
   parse: Parse
@@ -114,8 +139,35 @@ export type ErrorConstructor<
 export type ErrorInstance<ErrorNamesArg extends ErrorName = ErrorName> =
   RawErrorInstance<ErrorNamesArg> & {
     /**
+     * Convert errors to plain objects that are
+     * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
+     * serialize with JSON
+     * ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
+     * etc.). All error properties
+     * [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
+     * including
+     * [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
+     *
      * @example
      * ```js
+     * try {
+     *   await readFile(filePath)
+     * } catch (cause) {
+     *   const error = new InputError('Could not read the file.', {
+     *     cause,
+     *     filePath: '/path',
+     *   })
+     *   const errorObject = error.toJSON()
+     *   // {
+     *   //   name: 'InputError',
+     *   //   message: 'Could not read the file',
+     *   //   stack: '...',
+     *   //   cause: { name: 'Error', ... },
+     *   //   filePath: '/path'
+     *   // }
+     *   const errorString = JSON.stringify(error)
+     *   // '{"name":"InputError",...}'
+     * }
      * ```
      */
     toJSON: () => ReturnType<typeof serialize<RawErrorInstance<ErrorNamesArg>>>
@@ -138,7 +190,7 @@ export type Parse = <ArgType>(
 export type { ErrorName, ErrorObject, ErrorParams }
 
 /**
- * Creates the error types and handler.
+ * Creates custom error types.
  *
  * @example
  * ```js
