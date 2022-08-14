@@ -1,3 +1,10 @@
+# 3.1.0
+
+## Features
+
+- Allow the [`bugsUrl` option](README.md#bugsurl) to
+  [be a function](README.md#bug-reports)
+
 # 3.0.0
 
 ## Breaking changes
