@@ -9,17 +9,9 @@ export const proxyProps = function (returnValue, innerProxy) {
 
 // eslint-disable-next-line max-params
 const getProxyProp = function (innerProxy, target, propName, receiver) {
-  if (!(propName in target)) {
-    setProxyProp({ innerProxy, target, propName, receiver })
+  if (!(propName in target) && propName in innerProxy) {
+    Reflect.set(target, propName, innerProxy[propName], receiver)
   }
 
   return Reflect.get(target, propName, receiver)
-}
-
-const setProxyProp = function ({ innerProxy, target, propName, receiver }) {
-  const ErrorType = innerProxy[propName]
-
-  if (ErrorType !== undefined) {
-    Reflect.set(target, propName, ErrorType, receiver)
-  }
 }
