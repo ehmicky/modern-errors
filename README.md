@@ -23,6 +23,7 @@ Error handling framework that is minimalist yet featureful.
 - Automatically separate (unhandled) [internal errors](#internal-errors) from
   (handled) user errors
 - Internal errors indicate where to [report bugs](#bug-reports)
+- [Serialize/parse](#serializationparsing) errors
 - Set properties on [individual errors](#set-error-properties), or on
   [all errors of the same type](#error-type-properties)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
@@ -38,6 +39,7 @@ import modernErrors from 'modern-errors'
 
 export const {
   errorHandler,
+  parse,
   // Those error types are examples.
   // Any name ending with "Error" can be specified.
   InputError,
@@ -108,6 +110,12 @@ return value. The name must end with `Error`. For example: `InputError`,
 _Type_: `(anyException) => Error`
 
 Error handler that [should wrap each main function](#error-handler).
+
+#### parse
+
+_Type_: `(errorObject) => Error`
+
+Convert an [error plain object](#serialize) into [an Error instance](#parse-1).
 
 ### Options
 
@@ -480,6 +488,66 @@ const cliMain = function () {
 }
 
 cliMain()
+```
+
+## Serialization/parsing
+
+### Serialize
+
+`error.toJSON()` converts errors to plain objects that are
+[always safe](https://github.com/ehmicky/error-serializer#json-safety) to
+serialize with JSON
+([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
+etc.). All error properties
+[are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
+including
+[`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
+
+```js
+try {
+  await readFile(filePath)
+} catch (cause) {
+  const error = new InputError('Could not read the file.', {
+    cause,
+    filePath: '/path',
+  })
+  const errorObject = error.toJSON()
+  // {
+  //   name: 'InputError',
+  //   message: 'Could not read the file',
+  //   stack: '...',
+  //   cause: { ... },
+  //   filePath: '/path'
+  // }
+  const errorString = JSON.stringify(error)
+}
+```
+
+### Parse
+
+[`parse(errorObject)`](#parse) converts those error plain objects back to
+identical error instances.
+
+```js
+const errorObject = JSON.parse(errorString)
+const error = parse(errorObject)
+// InputError: Could not read the file
+//   [cause]: ...
+//   filePath: '/path'
+```
+
+### Deep serialization/parsing
+
+Objects and arrays containing custom errors can be deeply serialized to JSON,
+then parsed back using
+[`JSON.parse()`'s reviver](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter).
+
+```js
+const error = new InputError('Could not read the file.')
+const deepObject = [{}, { error }]
+const jsonString = JSON.stringify(deepObject)
+const newDeepObject = JSON.parse(jsonString, (key, value) => parse(value))
+console.log(newDeepObject[1].error) // InputError: Could not read the file.
 ```
 
 # Related projects

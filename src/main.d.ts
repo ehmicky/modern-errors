@@ -64,6 +64,7 @@ export interface Options<
  * ```js
  * export const {
  *   errorHandler,
+ *   parse,
  *   InputError,
  *   AuthError,
  *   DatabaseError,
@@ -143,6 +144,7 @@ export type { ErrorName, ErrorObject, ErrorParams }
  * ```js
  * export const {
  *   errorHandler,
+ *   parse,
  *   InputError,
  *   AuthError,
  *   DatabaseError,
