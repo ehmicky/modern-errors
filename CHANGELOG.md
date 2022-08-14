@@ -1,3 +1,9 @@
+# 1.4.1
+
+## Bug fixes
+
+- Fix using the `in` operator on the return value
+
 # 1.4.0
 
 ## Features
