@@ -53,6 +53,13 @@ export interface Options<
   >
 }
 
+type CustomErrors<
+  ErrorNames extends ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = {
+  [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
+}
+
 /**
  * Any error name passed as argument is returned as an error type.
  *
@@ -65,9 +72,7 @@ export interface Options<
 export type Result<
   ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = {
-  [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
-} & {
+> = CustomErrors<ErrorNames, ErrorParamsArg> & {
   /**
    * Error handler that should wrap each main function.
    *
@@ -175,15 +180,12 @@ export type ErrorHandler<
 export type Parse<
   ErrorNames extends ErrorName = never,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = <ArgType>(value: ArgType) => ReturnType<
+> = <ArgType>(
+  value: ArgType,
+) => ReturnType<
   typeof parse<
     ArgType,
-    {
-      loose: true
-      types: {
-        [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
-      }
-    }
+    { loose: true; types: CustomErrors<ErrorNames, ErrorParamsArg> }
   >
 >
 
