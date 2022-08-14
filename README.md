@@ -483,6 +483,8 @@ etc.). All error properties
 [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
 including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
+[`error.toJSON()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior)
+is automatically called by `JSON.strigify()`.
 
 `error` must be a [custom error](#any-error-type) created by
 [`modernErrors()`](#modernerrorserrornames-options). However, any other error
