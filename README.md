@@ -520,7 +520,8 @@ try {
 [`parse(errorObject)`](#parse) converts those error plain objects back to
 identical error instances.
 
-The original error type is preserved providing it is either:
+The original error type is generically preserved. However, it is converted to a
+generic `Error` if it is neither:
 
 - From [one of the types](#any-error-type) created by
   [`modernErrors()`](#modernerrorserrornames-options)
