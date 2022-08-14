@@ -15,8 +15,7 @@ test('Can serialize with error.toJSON()', (t) => {
 
 test('Can use parse()', (t) => {
   const { InputError, parse } = modernErrors()
-  const cause = new Error('innerTest')
-  const error = new InputError('test', { cause })
+  const error = new InputError('test', { cause: new Error('innerTest') })
   t.deepEqual(parse(error.toJSON()), error)
 })
 
