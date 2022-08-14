@@ -1,6 +1,4 @@
-// Include a polyfill for `error.cause` for Node.js <16.9.0 and old browsers.
-// eslint-disable-next-line n/file-extension-in-import, import/no-unassigned-import, import/no-unresolved
-import 'error-cause-polyfill/auto'
+import { polyfill } from 'error-cause-polyfill'
 
 import { callErrorHandler } from './handler.js'
 import { getOpts } from './opts.js'
@@ -11,6 +9,7 @@ import { createInternalError } from './types.js'
 // Also returns an `errorHandler(error) => error` function to use as a top-level
 // error handler.
 export default function modernErrors(opts) {
+  polyfill()
   const { onCreate, bugsUrl } = getOpts(opts)
   const InternalError = createInternalError()
   const state = {}
