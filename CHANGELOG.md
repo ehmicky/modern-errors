@@ -1,3 +1,10 @@
+# 2.0.0
+
+## Breaking changes
+
+- The error names must now be
+  [passed as argument](README.md#modernerrorserrornames-options)
+
 # 1.5.0
 
 ## Features
