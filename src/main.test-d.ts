@@ -1,5 +1,6 @@
 import {
   expectType,
+  expectNotType,
   expectError,
   expectAssignable,
   expectNotAssignable,
@@ -7,15 +8,17 @@ import {
 
 import modernErrors, {
   ErrorHandler,
+  Parse,
   Options,
   Result,
   ErrorName,
   OnCreate,
+  ErrorObject,
   ErrorType,
 } from './main.js'
 
 const result = modernErrors()
-const { TestError, errorHandler } = result
+const { TestError, errorHandler, parse } = result
 
 modernErrors()
 modernErrors({})
@@ -34,30 +37,36 @@ expectAssignable<OnCreate>((_: Error, __: { test?: boolean }) => {})
 expectNotAssignable<OnCreate>((_: boolean) => {})
 
 expectType<Result>(modernErrors())
-expectAssignable<Result>({ errorHandler: () => new Error('test') })
-expectAssignable<Result>({
-  errorHandler: () => new Error('test'),
-  TestError: TestError!,
-})
-expectNotAssignable<Result>({ errorHandler: () => {} })
 expectNotAssignable<Result>({})
 expectNotAssignable<Result>({ test: true })
+expectAssignable<Result['TestError']>(TestError!)
 
 expectType<ErrorHandler>(errorHandler)
-expectType<Error>(errorHandler(undefined))
-expectType<Error>(errorHandler(new Error('test')))
+expectType<ErrorType>(errorHandler(undefined))
+expectType<ErrorType>(errorHandler(new Error('test')))
 expectError(errorHandler(new Error('test'), true))
-expectAssignable<ErrorHandler>(() => new Error('test'))
+expectAssignable<ErrorHandler>(() => new TestError!('test'))
 expectNotAssignable<ErrorHandler>(() => {})
+
+expectType<Parse>(parse)
+expectType<true>(parse(true))
+expectType<Set<never>>(parse(new Set([])))
+expectType<Error>(parse(new Error('test')))
+expectNotType<Error>(parse({ name: 'InputError', message: '' }))
+expectType<Error>(parse({ name: 'InputError', message: '', stack: '' }))
+
+const error = new TestError!('test')
+const errorObject = error.toJSON()
+expectType<ErrorObject>(errorObject)
+expectType<Error>(parse(errorObject))
 
 expectError(result.test)
 expectAssignable<ErrorName>('InputError')
 expectNotAssignable<ErrorName>('test')
 expectNotAssignable<ErrorName>(Symbol('InputError'))
 
-expectAssignable<ErrorType>(TestError!)
-expectAssignable<ErrorType>(Error)
-expectNotAssignable<ErrorType>(() => {})
+expectAssignable<typeof ErrorType>(TestError!)
+expectNotAssignable<typeof ErrorType>(() => {})
 
 const { InputError } = modernErrors({
   onCreate: (_: Error, __: { test?: boolean }) => {},

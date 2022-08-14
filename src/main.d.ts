@@ -1,4 +1,10 @@
-import { ErrorName, OnCreate, ErrorType, ErrorParams } from 'error-type'
+import {
+  ErrorName,
+  OnCreate,
+  ErrorType as RawErrorType,
+  ErrorParams,
+} from 'create-error-types'
+import { parse, ErrorObject } from 'error-serializer'
 
 export interface Options<T extends ErrorParams = ErrorParams> {
   /**
@@ -47,7 +53,7 @@ export interface Options<T extends ErrorParams = ErrorParams> {
  * ```
  */
 export type Result<T extends ErrorParams = ErrorParams> = {
-  [errorName in ErrorName]: ErrorType<T>
+  [errorName in ErrorName]: typeof ErrorType<T>
 } & {
   /**
    * Error handler that should wrap each main function.
@@ -65,11 +71,42 @@ export type Result<T extends ErrorParams = ErrorParams> = {
    * ```
    */
   errorHandler: ErrorHandler
+
+  /**
+   * @example
+   * ```js
+   * ```
+   */
+  parse: Parse
 }
 
-export type ErrorHandler = (error: unknown) => Error
+/**
+ *
+ */
+export class ErrorType<
+  T extends ErrorParams = ErrorParams,
+> extends RawErrorType<T> {
+  /**
+   * @example
+   * ```js
+   * ```
+   */
+  toJSON: () => ErrorObject
+}
 
-export type { ErrorName, OnCreate, ErrorType }
+/**
+ * Type of `errorHandler()`
+ */
+export type ErrorHandler = (error: unknown) => ErrorType
+
+/**
+ * Type of `parse()`
+ */
+export type Parse = <T>(
+  value: T,
+) => ReturnType<typeof parse<T, { loose: true }>>
+
+export type { ErrorName, OnCreate, ErrorObject }
 
 /**
  * Creates the error types and handler.
