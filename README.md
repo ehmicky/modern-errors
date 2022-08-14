@@ -486,12 +486,12 @@ by `JSON.stringify()`. All error properties
 including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
 
-`error` must be a [custom error](#any-error-type) created by
+The `error` must be from [one of the types](#any-error-type) created by
 [`modernErrors()`](#modernerrorserrornames-options). However, any other error
-types (including `Error`, `TypeError`, etc.) is also serializable if either:
+type (including `Error`, `TypeError`, etc.) is also serializable if either:
 
-- It has been converted to a custom error by [`errorHandler()`](#errorhandler)
-- It is [wrapped as an `error.cause`](#re-throw-errors)
+- It has been handled by [`errorHandler()`](#errorhandler)
+- It is wrapped [as an `error.cause`](#re-throw-errors)
 
 ```js
 try {
