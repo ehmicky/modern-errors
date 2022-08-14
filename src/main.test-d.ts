@@ -56,18 +56,6 @@ expectError(errorHandler(new Error('test'), true))
 expectAssignable<ErrorHandler>(() => new TestError('test'))
 expectNotAssignable<ErrorHandler>(() => {})
 
-expectType<Parse>(parse)
-expectType<true>(parse(true))
-expectType<Set<never>>(parse(new Set([])))
-expectType<Error>(parse(new Error('test')))
-expectNotType<Error>(parse({ name: 'InputError', message: '' }))
-expectType<Error>(parse({ name: 'InputError', message: '', stack: '' }))
-
-const errorObject = error.toJSON()
-expectAssignable<ErrorObject>(errorObject)
-expectType<'TestError'>(errorObject.name)
-expectType<Error>(parse(errorObject))
-
 expectAssignable<ErrorName>('InputError')
 expectNotAssignable<ErrorName>('test')
 expectNotAssignable<ErrorName>(Symbol('InputError'))
@@ -92,3 +80,15 @@ expectError(
     onCreate: (_: ErrorInstance & { name: 'OtherError' }) => {},
   }),
 )
+
+expectType<Parse>(parse)
+expectType<true>(parse(true))
+expectType<Set<never>>(parse(new Set([])))
+expectType<Error>(parse(new Error('test')))
+expectNotType<Error>(parse({ name: 'InputError', message: '' }))
+expectType<Error>(parse({ name: 'InputError', message: '', stack: '' }))
+
+const errorObject = error.toJSON()
+expectAssignable<ErrorObject>(errorObject)
+expectType<'TestError'>(errorObject.name)
+expectType<Error>(parse(errorObject))
