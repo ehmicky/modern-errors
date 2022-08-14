@@ -1,56 +1,84 @@
 import test from 'ava'
+import { serialize } from 'error-serializer'
 import modernErrors from 'modern-errors'
+import { each } from 'test-each'
+
+const nativeError = new TypeError('nativeTest')
+
+// eslint-disable-next-line fp/no-class
+class UnknownError extends Error {}
+const unknownError = new UnknownError('otherTest')
+
+const { InputError, parse } = modernErrors(['InputError'])
+const inputError = new InputError('test')
 
 test('Can serialize with error.toJSON()', (t) => {
-  const { InputError } = modernErrors(['InputError'])
-  const cause = new Error('innerTest')
-  const error = new InputError('test', { cause })
-  t.deepEqual(error.toJSON(), {
-    name: 'InputError',
-    message: error.message,
-    stack: error.stack,
-    cause: { name: 'Error', message: cause.message, stack: cause.stack },
+  t.deepEqual(inputError.toJSON(), {
+    name: inputError.name,
+    message: inputError.message,
+    stack: inputError.stack,
+  })
+})
+
+test('error.toJSON() is not enumerable', (t) => {
+  t.false(
+    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(inputError), 'toJSON')
+      .enumerable,
+  )
+})
+
+each([nativeError, unknownError], ({ title }, error) => {
+  test(`Can only serialize top-level custom errors | ${title}`, (t) => {
+    t.is(JSON.stringify(error), '{}')
+  })
+})
+
+each([inputError, nativeError, unknownError], ({ title }, cause) => {
+  test(`Can serialize nested errors | ${title}`, (t) => {
+    const error = new InputError('test', { cause })
+    t.deepEqual(error.toJSON().cause, {
+      name: cause.name,
+      message: cause.message,
+      stack: cause.stack,
+    })
   })
 })
 
 test('Can use parse()', (t) => {
-  const { InputError, parse } = modernErrors(['InputError'])
-  const error = new InputError('test', { cause: new Error('innerTest') })
+  const error = new InputError('test', { cause: nativeError })
   t.deepEqual(parse(error.toJSON()), error)
-})
-
-test('Can use serialize and parse deeply', (t) => {
-  const { InputError, parse } = modernErrors(['InputError'])
-  const cause = new Error('innerTest')
-  const error = new InputError('test', { cause })
-  const jsonString = JSON.stringify([{ error, prop: true }])
-  const parsedValue = JSON.parse(jsonString, (key, value) => parse(value))
-  t.true(parsedValue[0].prop)
-  t.deepEqual(parsedValue[0].error, error)
-})
-
-test('error.toJSON() is not enumerable', (t) => {
-  const { InputError } = modernErrors(['InputError'])
-  const error = new InputError('test')
-  t.false(
-    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(error), 'toJSON')
-      .enumerable,
-  )
 })
 
 test('parse() is a noop on non-error plain objects', (t) => {
   t.true(modernErrors([]).parse(true))
 })
 
-test('parse() handles unknown error types', (t) => {
-  const errorObject = { name: 'InputError', message: 'test', stack: '' }
-  const error = modernErrors([]).parse(errorObject)
-  t.true(error instanceof Error)
-  t.is(error.name, 'Error')
-  t.is(error.message, errorObject.message)
-})
+each(
+  [
+    { error: nativeError, name: nativeError.name },
+    { error: unknownError, name: 'Error' },
+  ],
+  ({ title }, { error, name }) => {
+    test(`parse() handles native and unknown error types | ${title}`, (t) => {
+      const errorObject = serialize(error)
+      const newError = modernErrors([]).parse(errorObject)
+      t.true(newError instanceof Error)
+      t.is(newError.name, name)
+      t.is(newError.message, errorObject.message)
+      t.is(newError.stack, errorObject.stack)
+    })
+  },
+)
 
 test('parse() does not consider return properties to be error types', (t) => {
   const errorObject = { name: 'errorHandler', message: 'test', stack: '' }
   t.is(modernErrors([]).parse(errorObject).name, 'Error')
+})
+
+test('Can use serialize and parse deeply', (t) => {
+  const error = new InputError('test', { cause: nativeError })
+  const jsonString = JSON.stringify([{ error, prop: true }])
+  const parsedValue = JSON.parse(jsonString, (key, value) => parse(value))
+  t.true(parsedValue[0].prop)
+  t.deepEqual(parsedValue[0].error, error)
 })
