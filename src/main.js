@@ -4,6 +4,7 @@ import isPlainObj from 'is-plain-obj'
 import mergeErrorCause from 'merge-error-cause'
 
 import { proxyProps } from './proxy.js'
+import { parse } from './serialize.js'
 
 // Create error types and returns an `errorHandler(error) => error` function to
 // use as a top-level error handler.
@@ -14,7 +15,10 @@ export default function modernErrors(opts) {
   const { onCreate, bugsUrl } = getOpts(opts)
   const innerProxy = createErrorTypes({ onCreate, bugsUrl })
   const errorHandler = callErrorHandler.bind(undefined, innerProxy)
-  return proxyProps({ errorHandler }, innerProxy)
+  const proxy = proxyProps({ errorHandler }, innerProxy)
+  // eslint-disable-next-line fp/no-mutation
+  proxy.parse = parse.bind(undefined, proxy)
+  return proxy
 }
 
 // Normalize and retrieve options

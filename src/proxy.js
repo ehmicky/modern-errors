@@ -1,3 +1,5 @@
+import { setErrorTypeToJSON } from './serialize.js'
+
 // `create-error-types` return value is a `Proxy`. We return it as is, but add
 // more properties. We use an outer `Proxy` to do so.
 export const proxyProps = function (returnValue, innerProxy) {
@@ -25,7 +27,9 @@ const getProxyProp = function (
   ...args
 ) {
   if (!(propName in target) && propName in innerProxy) {
-    Reflect.set(target, propName, innerProxy[propName], ...args)
+    const ErrorType = innerProxy[propName]
+    setErrorTypeToJSON(ErrorType)
+    Reflect.set(target, propName, ErrorType, ...args)
   }
 
   return Reflect[hookName](target, propName, ...args)
