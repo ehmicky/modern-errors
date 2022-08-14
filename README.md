@@ -113,7 +113,7 @@ Convert an [error plain object](#serialize) into
 
 #### bugsUrl
 
-_Type_: `string | URL`
+_Type_: `string | URL | ((error: Error) => string | URL | void)`
 
 URL where users should [report unknown errors](#bug-reports).
 
@@ -321,16 +321,30 @@ getUserId(null) // UnknownError: Cannot read properties of null (reading 'id')
 
 ### Bug reports
 
-If the [`bugsUrl` option](#bugsurl) is used,
+If the [`bugsUrl` option](#bugsurl) is a string or URL, any
+[_unknown error_](#unknown-errors) will include the following message.
 
 ```js
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
 ```
 
-any [unknown error](#unknown-errors) will include the following message.
-
 ```
 Please report this bug at: https://github.com/my-name/my-project/issues
+```
+
+If the `bugsUrl` option is a function returning a string or URL, any error
+([_known_ or _unknown_](#unknown-errors)) will include it, unless the return
+value is `undefined`.
+
+<!-- eslint-disable n/handle-callback-err -->
+
+```js
+createErrorTypes({
+  bugsUrl: (error) =>
+    error.name === 'UnknownError' || error.name === 'PluginError'
+      ? 'https://github.com/my-name/my-project/issues'
+      : undefined,
+})
 ```
 
 ## Error properties
