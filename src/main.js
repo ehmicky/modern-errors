@@ -28,8 +28,7 @@ const getOpts = function (opts = {}) {
     throw new TypeError(`Options must be a plain object: ${opts}`)
   }
 
-  const { onCreate, bugsUrl } = opts
-  return { onCreate, bugsUrl }
+  return opts
 }
 
 // Apply `create-error-types` error handler and merge any `error.cause`.
