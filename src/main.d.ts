@@ -1,6 +1,5 @@
 import {
   ErrorName,
-  OnCreate as RawOnCreate,
   ErrorConstructor as RawErrorConstructor,
   ErrorInstance as RawErrorInstance,
   ErrorParams,
@@ -45,8 +44,16 @@ export interface Options<
    */
   readonly onCreate?: (
     error: ErrorInstance<ErrorNamesArg>,
-    params: Parameters<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>[1],
-  ) => ReturnType<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>
+    params: Parameters<
+      NonNullable<
+        CreateErrorTypesOptions<ErrorNamesArg, ErrorParamsArg>['onCreate']
+      >
+    >[1],
+  ) => ReturnType<
+    NonNullable<
+      CreateErrorTypesOptions<ErrorNamesArg, ErrorParamsArg>['onCreate']
+    >
+  >
 }
 
 /**
