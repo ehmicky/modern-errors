@@ -115,7 +115,7 @@ export type Result<
    * }
    * ```
    */
-  parse: Parse
+  parse: Parse<ErrorNames, ErrorParamsArg>
 }
 
 export declare class CustomError<
@@ -172,9 +172,20 @@ export type ErrorHandler<
 /**
  * Type of `parse()`
  */
-export type Parse = <ArgType>(
-  value: ArgType,
-) => ReturnType<typeof parse<ArgType, { loose: true }>>
+export type Parse<
+  ErrorNames extends ErrorName = never,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = <ArgType>(value: ArgType) => ReturnType<
+  typeof parse<
+    ArgType,
+    {
+      loose: true
+      types: {
+        [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
+      }
+    }
+  >
+>
 
 export type { ErrorName, ErrorObject, ErrorParams }
 
