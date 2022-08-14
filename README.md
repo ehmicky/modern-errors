@@ -316,8 +316,7 @@ try {
 Internal errors/bugs can be distinguished from user errors by:
 
 - [Handling any possible errors](#re-throw-errors) in `try {} catch {}`
-- [Re-throwing](#re-throw-errors) them
-  [with a specific error type](#set-error-type).
+- Re-throwing them [with a specific error type](#set-error-type)
 
 The [`errorHandler()`](#error-handler) assigns the `InternalError` type to any
 error with an unknown type.
