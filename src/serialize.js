@@ -1,8 +1,11 @@
 import { serialize, parse as parseLib } from 'error-serializer'
-import { excludeKeys } from 'filter-obj'
 
 // Set `error.toJSON()` so errors are automatically, deeply serializable
-export const setErrorTypeToJSON = function (ErrorType) {
+export const setErrorTypesToJSON = function (ErrorTypes) {
+  Object.values(ErrorTypes).forEach(setErrorTypeToJSON)
+}
+
+const setErrorTypeToJSON = function (ErrorType) {
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(ErrorType.prototype, 'toJSON', {
     value: toJSON,
@@ -18,10 +21,6 @@ const toJSON = function () {
 }
 
 // Parse serialized error deeply
-export const parse = function (proxy, value) {
-  const types = excludeKeys(proxy, NON_ERROR_TYPES)
-  return parseLib(value, { types, loose: true })
+export const parseValue = function (ErrorTypes, value) {
+  return parseLib(value, { types: ErrorTypes, loose: true })
 }
-
-// Returned properties that are not error types
-const NON_ERROR_TYPES = ['errorHandler', 'parse']

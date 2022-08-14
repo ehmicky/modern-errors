@@ -2,7 +2,7 @@ import test from 'ava'
 import modernErrors from 'modern-errors'
 
 test('Can serialize with error.toJSON()', (t) => {
-  const { InputError } = modernErrors()
+  const { InputError } = modernErrors(['InputError'])
   const cause = new Error('innerTest')
   const error = new InputError('test', { cause })
   t.deepEqual(error.toJSON(), {
@@ -14,13 +14,13 @@ test('Can serialize with error.toJSON()', (t) => {
 })
 
 test('Can use parse()', (t) => {
-  const { InputError, parse } = modernErrors()
+  const { InputError, parse } = modernErrors(['InputError'])
   const error = new InputError('test', { cause: new Error('innerTest') })
   t.deepEqual(parse(error.toJSON()), error)
 })
 
 test('Can use serialize and parse deeply', (t) => {
-  const { InputError, parse } = modernErrors()
+  const { InputError, parse } = modernErrors(['InputError'])
   const cause = new Error('innerTest')
   const error = new InputError('test', { cause })
   const jsonString = JSON.stringify([{ error, prop: true }])
@@ -30,7 +30,7 @@ test('Can use serialize and parse deeply', (t) => {
 })
 
 test('error.toJSON() is not enumerable', (t) => {
-  const { InputError } = modernErrors()
+  const { InputError } = modernErrors(['InputError'])
   const error = new InputError('test')
   t.false(
     Object.getOwnPropertyDescriptor(Object.getPrototypeOf(error), 'toJSON')
@@ -39,12 +39,12 @@ test('error.toJSON() is not enumerable', (t) => {
 })
 
 test('parse() is a noop on non-error plain objects', (t) => {
-  t.true(modernErrors().parse(true))
+  t.true(modernErrors([]).parse(true))
 })
 
 test('parse() handles unknown error types', (t) => {
   const errorObject = { name: 'InputError', message: 'test', stack: '' }
-  const error = modernErrors().parse(errorObject)
+  const error = modernErrors([]).parse(errorObject)
   t.true(error instanceof Error)
   t.is(error.name, 'Error')
   t.is(error.message, errorObject.message)
@@ -52,5 +52,5 @@ test('parse() handles unknown error types', (t) => {
 
 test('parse() does not consider return properties to be error types', (t) => {
   const errorObject = { name: 'errorHandler', message: 'test', stack: '' }
-  t.is(modernErrors().parse(errorObject).name, 'Error')
+  t.is(modernErrors([]).parse(errorObject).name, 'Error')
 })

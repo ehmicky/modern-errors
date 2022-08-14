@@ -3,14 +3,14 @@ import modernErrors from 'modern-errors'
 import { each } from 'test-each'
 
 // eslint-disable-next-line unicorn/no-null
-each([true, null], ({ title }, opts) => {
-  test(`Validate options | ${title}`, (t) => {
-    t.throws(modernErrors.bind(undefined, opts))
+each([[], ['InputError'], [[], true], [[], null]], ({ title }, args) => {
+  test(`Validate arguments | ${title}`, (t) => {
+    t.throws(modernErrors.bind(undefined, ...args))
   })
 })
 
 test('Creates error types', (t) => {
-  const { InputError } = modernErrors()
+  const { InputError } = modernErrors(['InputError'])
   const error = new InputError('message')
   t.true(error instanceof Error)
   t.true(error instanceof InputError)
@@ -19,7 +19,7 @@ test('Creates error types', (t) => {
 })
 
 test('Passes onCreate()', (t) => {
-  const { InputError } = modernErrors({
+  const { InputError } = modernErrors(['InputError'], {
     onCreate(error, params) {
       error.args = params
     },
@@ -32,16 +32,16 @@ test('Passes onCreate()', (t) => {
 
 test('errorHandler() merges error.cause', (t) => {
   const error = new Error('test', { cause: new Error('cause') })
-  t.is(modernErrors().errorHandler(error).message, 'cause\ntest')
+  t.is(modernErrors([]).errorHandler(error).message, 'cause\ntest')
 })
 
 test('errorHandler() keeps error type if listed', (t) => {
-  const { InputError, errorHandler } = modernErrors()
+  const { InputError, errorHandler } = modernErrors(['InputError'])
   t.is(errorHandler(new InputError('test')).name, 'InputError')
 })
 
 test('errorHandler() uses InternalError if not listed', (t) => {
-  const { errorHandler } = modernErrors()
+  const { errorHandler } = modernErrors([])
   const { name, message } = errorHandler(new Error('test'))
   t.is(name, 'InternalError')
   t.is(message, 'test')
@@ -49,7 +49,7 @@ test('errorHandler() uses InternalError if not listed', (t) => {
 
 test('InternalError uses bugsUrl if defined', (t) => {
   const bugsUrl = import.meta.url
-  const { errorHandler } = modernErrors({ bugsUrl })
+  const { errorHandler } = modernErrors([], { bugsUrl })
   const { message } = errorHandler(new Error('test'))
   t.true(message.startsWith('test\n'))
   t.true(message.includes(bugsUrl))
