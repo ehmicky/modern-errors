@@ -518,8 +518,8 @@ try {
 identical error instances.
 
 The original error type is generically preserved. However, it is converted to a
-generic `Error` if it is neither a [_known type_](#unknown-errors) nor a native
-type (`Error`, `TypeError`, etc.).
+generic `Error` if it is neither a native type (`Error`, `TypeError`, etc.) nor
+a [_known type_](#unknown-errors).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
