@@ -8,43 +8,46 @@ import {
 } from 'create-error-types'
 import { serialize, parse, ErrorObject } from 'error-serializer'
 
+/**
+ * `modern-errors` options
+ */
 export interface Options<
   ErrorNamesArg extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > {
+  /**
+   * URL where users should report internal errors/bugs.
+   *
+   * @example 'https://github.com/my-name/my-project/issues'
+   */
   readonly bugsUrl?: CreateErrorTypesOptions['bugsUrl']
 
-  readonly onCreate?: OnCreate<ErrorNamesArg, ErrorParamsArg>
+  /**
+   * Called on any `new ErrorType('message', parameters)`.
+   * Can be used to customize error parameters or to set error type properties.
+   * By default, any `parameters` are set as error properties.
+   *
+   * @example
+   * ```js
+   * modernErrors({
+   *   onCreate(error, parameters) {
+   *     const { filePath } = parameters
+   *
+   *     if (typeof filePath !== 'string') {
+   *       throw new Error('filePath must be a string.')
+   *     }
+   *
+   *     const hasFilePath = filePath !== undefined
+   *     Object.assign(error, { filePath, hasFilePath })
+   *   },
+   * })
+   * ```
+   */
+  readonly onCreate?: (
+    error: ErrorInstance<ErrorNamesArg>,
+    params: Parameters<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>[1],
+  ) => ReturnType<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>
 }
-
-/**
- * Called on any `new ErrorType('message', parameters)`.
- * Can be used to customize error parameters or to set error type properties.
- * By default, any `parameters` are set as error properties.
- *
- * @example
- * ```js
- * modernErrors({
- *   onCreate(error, parameters) {
- *     const { filePath } = parameters
- *
- *     if (typeof filePath !== 'string') {
- *       throw new Error('filePath must be a string.')
- *     }
- *
- *     const hasFilePath = filePath !== undefined
- *     Object.assign(error, { filePath, hasFilePath })
- *   },
- * })
- * ```
- */
-export type OnCreate<
-  ErrorNamesArg extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = (
-  error: ErrorInstance<ErrorNamesArg>,
-  params: Parameters<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>[1],
-) => ReturnType<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>
 
 /**
  * Any error type can be retrieved from the return value.

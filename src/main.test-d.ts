@@ -12,7 +12,6 @@ import modernErrors, {
   Options,
   Result,
   ErrorName,
-  OnCreate,
   ErrorObject,
   ErrorInstance,
   ErrorConstructor,
@@ -35,8 +34,6 @@ expectError(modernErrors({ bugsUrl: true }))
 modernErrors({ onCreate: (_: ErrorInstance, __: { test?: boolean }) => {} })
 expectError(modernErrors({ onCreate: true }))
 expectError(modernErrors({ onCreate: (_: boolean) => {} }))
-expectAssignable<OnCreate>((_: ErrorInstance, __: { test?: boolean }) => {})
-expectNotAssignable<OnCreate>((_: boolean) => {})
 
 expectType<Result>(modernErrors())
 expectNotAssignable<Result>({})
