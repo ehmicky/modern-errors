@@ -42,7 +42,7 @@ export interface Options<
    * ```
    */
   readonly onCreate?: (
-    error: ErrorInstance<ErrorNames, ErrorParamsArg>,
+    error: CustomError<ErrorNames, ErrorParamsArg>,
     params: Parameters<
       NonNullable<
         CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']
@@ -66,7 +66,7 @@ export type Result<
   ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > = {
-  [errorName in ErrorNames]: ErrorConstructor<errorName, ErrorParamsArg>
+  [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
 } & {
   /**
    * Error handler that should wrap each main function.
@@ -118,19 +118,10 @@ export type Result<
   parse: Parse
 }
 
-export type ErrorConstructor<
+export declare class CustomError<
   ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = new (
-  ...args: ConstructorParameters<
-    typeof RawCustomError<ErrorNames, ErrorParamsArg>
-  >
-) => ErrorInstance<ErrorNames, ErrorParamsArg>
-
-export type ErrorInstance<
-  ErrorNames extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = RawCustomError<ErrorNames, ErrorParamsArg> & {
+> extends RawCustomError<ErrorNames, ErrorParamsArg> {
   /**
    * Convert errors to plain objects that are
    * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
@@ -174,7 +165,7 @@ export type ErrorInstance<
 export type ErrorHandler<
   ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = (error: unknown) => ErrorInstance<ErrorNames, ErrorParamsArg>
+> = (error: unknown) => CustomError<ErrorNames, ErrorParamsArg>
 
 /**
  * Type of `parse()`
