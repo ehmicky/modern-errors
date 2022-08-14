@@ -1,5 +1,38 @@
 import test from 'ava'
 import modernErrors from 'modern-errors'
+import { each } from 'test-each'
+
+// eslint-disable-next-line unicorn/no-null
+each([true, null], ({ title }, opts) => {
+  test(`Validate options | ${title}`, (t) => {
+    t.throws(modernErrors.bind(undefined, opts))
+  })
+})
+
+test('Validate error name', (t) => {
+  t.throws(() => modernErrors().InternalError)
+})
+
+test('Creates error types', (t) => {
+  const { InputError } = modernErrors()
+  const error = new InputError('message')
+  t.true(error instanceof Error)
+  t.true(error instanceof InputError)
+  t.is(error.name, 'InputError')
+  t.is(error.message, 'message')
+})
+
+test('Passes onCreate()', (t) => {
+  const { InputError } = modernErrors({
+    onCreate(error, params) {
+      error.args = params
+    },
+  })
+  const {
+    args: { prop },
+  } = new InputError('message', { prop: true })
+  t.true(prop)
+})
 
 test('errorHandler() merges error.cause', (t) => {
   const error = new Error('test', { cause: new Error('cause') })
