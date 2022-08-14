@@ -1,47 +1,50 @@
 import {
   ErrorName,
   OnCreate as RawOnCreate,
-  ErrorType as RawErrorType,
+  ErrorConstructor as RawErrorConstructor,
+  ErrorInstance as RawErrorInstance,
   ErrorParams,
+  Options as CreateErrorTypesOptions,
 } from 'create-error-types'
 import { parse, ErrorObject } from 'error-serializer'
 
-export interface Options<T extends ErrorParams = ErrorParams> {
-  /**
-   * URL where users should report internal errors/bugs.
-   *
-   * @example 'https://github.com/my-name/my-project/issues'
-   */
-  bugsUrl?: string | URL
+export interface Options<
+  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> {
+  readonly bugsUrl?: CreateErrorTypesOptions['bugsUrl']
 
-  /**
-   * Called on any `new ErrorType('message', parameters)`.
-   * Can be used to customize error parameters or to set error type properties.
-   * By default, any `parameters` are set as error properties.
-   *
-   * @example
-   * ```js
-   * modernErrors({
-   *   onCreate(error, parameters) {
-   *     const { filePath } = parameters
-   *
-   *     if (typeof filePath !== 'string') {
-   *       throw new Error('filePath must be a string.')
-   *     }
-   *
-   *     const hasFilePath = filePath !== undefined
-   *     Object.assign(error, { filePath, hasFilePath })
-   *   },
-   * })
-   * ```
-   */
-  onCreate?: OnCreate<T>
+  readonly onCreate?: OnCreate<ErrorNamesArg, ErrorParamsArg>
 }
 
-export type OnCreate<T extends ErrorParams = ErrorParams> = (
-  error: ErrorType<T>,
-  params: Parameters<RawOnCreate<T>>[1],
-) => ReturnType<RawOnCreate<T>>
+/**
+ * Called on any `new ErrorType('message', parameters)`.
+ * Can be used to customize error parameters or to set error type properties.
+ * By default, any `parameters` are set as error properties.
+ *
+ * @example
+ * ```js
+ * modernErrors({
+ *   onCreate(error, parameters) {
+ *     const { filePath } = parameters
+ *
+ *     if (typeof filePath !== 'string') {
+ *       throw new Error('filePath must be a string.')
+ *     }
+ *
+ *     const hasFilePath = filePath !== undefined
+ *     Object.assign(error, { filePath, hasFilePath })
+ *   },
+ * })
+ * ```
+ */
+export type OnCreate<
+  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = (
+  error: ErrorInstance<ErrorNamesArg>,
+  params: Parameters<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>[1],
+) => ReturnType<RawOnCreate<ErrorNamesArg, ErrorParamsArg>>
 
 /**
  * Any error type can be retrieved from the return value.
@@ -57,8 +60,11 @@ export type OnCreate<T extends ErrorParams = ErrorParams> = (
  * } = modernErrors()
  * ```
  */
-export type Result<T extends ErrorParams = ErrorParams> = {
-  [errorName in ErrorName]: typeof ErrorType<T>
+export type Result<
+  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = {
+  [errorName in ErrorNamesArg]: ErrorConstructor<errorName, ErrorParamsArg>
 } & {
   /**
    * Error handler that should wrap each main function.
@@ -75,7 +81,7 @@ export type Result<T extends ErrorParams = ErrorParams> = {
    * }
    * ```
    */
-  errorHandler: ErrorHandler
+  errorHandler: ErrorHandler<ErrorNamesArg>
 
   /**
    * @example
@@ -85,24 +91,31 @@ export type Result<T extends ErrorParams = ErrorParams> = {
   parse: Parse
 }
 
-/**
- *
- */
-export class ErrorType<
-  T extends ErrorParams = ErrorParams,
-> extends RawErrorType<T> {
-  /**
-   * @example
-   * ```js
-   * ```
-   */
-  toJSON: () => ErrorObject
-}
+export type ErrorConstructor<
+  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = new (
+  ...args: ConstructorParameters<
+    RawErrorConstructor<ErrorNamesArg, ErrorParamsArg>
+  >
+) => ErrorInstance<ErrorNamesArg>
+
+export type ErrorInstance<ErrorNamesArg extends ErrorName = ErrorName> =
+  RawErrorInstance<ErrorNamesArg> & {
+    /**
+     * @example
+     * ```js
+     * ```
+     */
+    toJSON: () => ErrorObject
+  }
 
 /**
  * Type of `errorHandler()`
  */
-export type ErrorHandler = (error: unknown) => ErrorType
+export type ErrorHandler<ErrorNamesArg extends ErrorName = ErrorName> = (
+  error: unknown,
+) => ErrorInstance<ErrorNamesArg>
 
 /**
  * Type of `parse()`
@@ -111,7 +124,7 @@ export type Parse = <T>(
   value: T,
 ) => ReturnType<typeof parse<T, { loose: true }>>
 
-export type { ErrorName, ErrorObject }
+export type { ErrorName, ErrorObject, ErrorParams }
 
 /**
  * Creates the error types and handler.
@@ -126,6 +139,9 @@ export type { ErrorName, ErrorObject }
  * } = modernErrors()
  * ```
  */
-export default function modernErrors<T extends ErrorParams = ErrorParams>(
-  options?: Options<T>,
-): Result<T>
+export default function modernErrors<
+  ErrorNamesArg extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+>(
+  options?: Options<ErrorNamesArg, ErrorParamsArg>,
+): Result<ErrorNamesArg, ErrorParamsArg>
