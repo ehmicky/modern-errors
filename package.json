@@ -1,6 +1,6 @@
 {
   "name": "modern-errors",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "exports": "./build/src/main.js",
   "main": "./build/src/main.js",
