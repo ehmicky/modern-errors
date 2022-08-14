@@ -20,8 +20,7 @@ Error handling framework that is minimalist yet featureful.
   modules
 - Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
-- Automatically separate (unhandled) [unknown errors](#unknown-errors) from
-  (handled) user errors
+- Automatically known and [unknown errors](#unknown-errors)
 - Unknown errors indicate where to [report bugs](#bug-reports)
 - [Serialize/parse](#serializationparsing) errors
 - Set properties on [individual errors](#set-error-properties), or on
@@ -301,13 +300,13 @@ try {
 
 ### Unknown errors
 
-Unknown errors/bugs can be distinguished from user errors by:
-
-- [Handling any possible errors](#re-throw-errors) in `try {} catch {}`
-- Re-throwing them [with a known error type](#set-error-type)
+All errors should use _known types_: the ones returned by
+[`modernErrors()`](#create-custom-error-types). Errors with an _unknown type_
+should be handled in `try {} catch {}` and [re-thrown](#set-error-type) with a
+_known type_ instead.
 
 The [`errorHandler()`](#error-handler) assigns the `UnknownError` type to any
-error with an unknown type.
+error with an _unknown type_.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -487,10 +486,9 @@ by `JSON.stringify()`. All error properties
 including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
 
-The `error` must be from [one of the types](#any-error-type) created by
-[`modernErrors()`](#modernerrorserrornames-options). However, any other error
-type (including `Error`, `TypeError`, etc.) is also serializable if it has been
-either:
+The `error` must be from a [_known type_](#unknown-errors). However, any other
+error (including `Error`, `TypeError`, etc.) is also serializable providing it
+has been either:
 
 - Handled by [`errorHandler()`](#errorhandler)
 - Wrapped [as an `error.cause`](#re-throw-errors)
@@ -522,11 +520,8 @@ try {
 identical error instances.
 
 The original error type is generically preserved. However, it is converted to a
-generic `Error` if it is neither:
-
-- From [one of the types](#any-error-type) created by
-  [`modernErrors()`](#modernerrorserrornames-options)
-- Native (`Error`, `TypeError`, etc.)
+generic `Error` if it is neither [_known_](#unknown-errors) nor native (`Error`,
+`TypeError`, etc.).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
