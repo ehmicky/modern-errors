@@ -53,8 +53,10 @@ expectAssignable<Error>(testError)
 expectType<'TestError'>(testError.name)
 
 expectAssignable<ErrorHandler>(errorHandler)
-expectType<typeof testError>(errorHandler(undefined))
-expectType<typeof testError>(errorHandler(new Error('test')))
+expectType<CustomError<'TestError' | 'InternalError'>>(errorHandler(undefined))
+expectType<CustomError<'TestError' | 'InternalError'>>(
+  errorHandler(new Error('test')),
+)
 expectError(errorHandler(new Error('test'), true))
 expectAssignable<ErrorHandler>(() => new TestError('test'))
 expectNotAssignable<ErrorHandler>(() => {})
@@ -78,8 +80,8 @@ expectError(new InputError('message', { other: true }))
 expectAssignable<ErrorParams>({ anyProp: true })
 expectNotAssignable<ErrorParams>(true)
 
-modernErrors(['TestError'], {
-  onCreate: (_: CustomError<'TestError'>) => {},
+modernErrors(['TestError', 'TestTwoError'], {
+  onCreate: (_: CustomError<'TestError' | 'TestTwoError'>) => {},
 })
 
 const { TestTwoError } = modernErrors(['TestTwoError'])

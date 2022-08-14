@@ -165,7 +165,9 @@ export declare class CustomError<
 export type ErrorHandler<
   ErrorNames extends ErrorName = ErrorName,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = (error: unknown) => CustomError<ErrorNames, ErrorParamsArg>
+> = (
+  error: unknown,
+) => CustomError<ErrorNames | 'InternalError', ErrorParamsArg>
 
 /**
  * Type of `parse()`
