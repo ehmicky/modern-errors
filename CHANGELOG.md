@@ -1,3 +1,9 @@
+# 2.0.2
+
+## Bug fixes
+
+- Fix TypeScript types of `parse()`
+
 # 2.0.1
 
 ## Bug fixes
