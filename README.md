@@ -93,7 +93,7 @@ not `require()`.
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
-Creates the [error types](#any-error-type) and [handler](#errorhandler).
+Creates the [error types](#any-error-type).
 
 ### Return value
 
@@ -516,10 +516,11 @@ try {
   //   name: 'InputError',
   //   message: 'Could not read the file',
   //   stack: '...',
-  //   cause: { ... },
+  //   cause: { name: 'Error', ... },
   //   filePath: '/path'
   // }
   const errorString = JSON.stringify(error)
+  // '{"name":"InputError",...}'
 }
 ```
 
@@ -531,15 +532,15 @@ identical error instances.
 ```js
 const errorObject = JSON.parse(errorString)
 const error = parse(errorObject)
-// InputError: Could not read the file
-//   [cause]: ...
+// InputError: Could not read the file.
 //   filePath: '/path'
+//   [cause]: Error: ...
 ```
 
 ### Deep serialization/parsing
 
-Objects and arrays containing custom errors can be deeply serialized to JSON,
-then parsed back using
+Objects and arrays containing custom errors can be deeply serialized to JSON.
+They can then be deeply parsed back using
 [`JSON.parse()`'s reviver](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter).
 
 ```js
