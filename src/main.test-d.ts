@@ -13,13 +13,13 @@ import modernErrors, {
   Result,
   ErrorName,
   ErrorObject,
-  ErrorInstance,
-  ErrorConstructor,
+  CustomError,
   ErrorParams,
 } from './main.js'
 
 const result = modernErrors(['TestError'])
 const { TestError, errorHandler, parse } = result
+const testError = new TestError('test')
 
 expectError(modernErrors())
 expectError(modernErrors('TestError'))
@@ -35,7 +35,7 @@ modernErrors([], { bugsUrl: '' })
 modernErrors([], { bugsUrl: new URL('') })
 expectError(modernErrors([], { bugsUrl: true }))
 
-modernErrors([], { onCreate: (_: ErrorInstance, __: { test?: boolean }) => {} })
+modernErrors([], { onCreate: (_: CustomError, __: { test?: boolean }) => {} })
 expectError(modernErrors([], { onCreate: true }))
 expectError(modernErrors([], { onCreate: (_: boolean) => {} }))
 
@@ -45,13 +45,15 @@ expectNotAssignable<Result>({ test: true })
 expectAssignable<Result['TestError']>(TestError)
 expectError(result.OtherError)
 
-const error = new TestError('test')
-expectAssignable<ErrorInstance>(error)
-expectType<'TestError'>(error.name)
+expectType<CustomError<'TestError'>>(testError)
+expectType<InstanceType<typeof TestError>>(testError)
+expectType<typeof testError>(testError)
+expectAssignable<Error>(testError)
+expectType<'TestError'>(testError.name)
 
 expectAssignable<ErrorHandler>(errorHandler)
-expectType<typeof error>(errorHandler(undefined))
-expectType<typeof error>(errorHandler(new Error('test')))
+expectType<typeof testError>(errorHandler(undefined))
+expectType<typeof testError>(errorHandler(new Error('test')))
 expectError(errorHandler(new Error('test'), true))
 expectAssignable<ErrorHandler>(() => new TestError('test'))
 expectNotAssignable<ErrorHandler>(() => {})
@@ -60,11 +62,13 @@ expectAssignable<ErrorName>('InputError')
 expectNotAssignable<ErrorName>('test')
 expectNotAssignable<ErrorName>(Symbol('InputError'))
 
-expectAssignable<ErrorConstructor>(TestError)
-expectNotAssignable<ErrorConstructor>(() => {})
+expectType<typeof CustomError<'TestError'>>(TestError)
+expectType<typeof TestError>(TestError)
+expectNotAssignable<typeof CustomError<'TestError'>>(Error)
+expectNotAssignable<typeof CustomError>(() => {})
 
 const { InputError } = modernErrors(['InputError'], {
-  onCreate: (_: ErrorInstance, __: { test?: boolean }) => {},
+  onCreate: (_: CustomError, __: { test?: boolean }) => {},
 })
 new InputError('message', { test: true })
 expectError(new InputError('message', { test: 'true' }))
@@ -73,13 +77,8 @@ expectAssignable<ErrorParams>({ anyProp: true })
 expectNotAssignable<ErrorParams>(true)
 
 modernErrors(['TestError'], {
-  onCreate: (_: ErrorInstance & { name: 'TestError' }) => {},
+  onCreate: (_: CustomError<'TestError'>) => {},
 })
-expectError(
-  modernErrors(['TestError'], {
-    onCreate: (_: ErrorInstance & { name: 'OtherError' }) => {},
-  }),
-)
 
 expectType<Parse>(parse)
 expectType<true>(parse(true))
@@ -88,7 +87,7 @@ expectType<Error>(parse(new Error('test')))
 expectNotType<Error>(parse({ name: 'InputError', message: '' }))
 expectType<Error>(parse({ name: 'InputError', message: '', stack: '' }))
 
-const errorObject = error.toJSON()
+const errorObject = testError.toJSON()
 expectAssignable<ErrorObject>(errorObject)
 expectType<'TestError'>(errorObject.name)
 expectType<Error>(parse(errorObject))

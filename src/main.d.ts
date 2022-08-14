@@ -1,7 +1,6 @@
 import {
   ErrorName,
-  ErrorConstructor as RawErrorConstructor,
-  ErrorInstance as RawErrorInstance,
+  CustomError as RawCustomError,
   ErrorParams,
   Options as CreateErrorTypesOptions,
 } from 'create-error-types'
@@ -22,7 +21,7 @@ export interface Options<
   readonly bugsUrl?: CreateErrorTypesOptions['bugsUrl']
 
   /**
-   * Called on any `new ErrorType('message', parameters)`.
+   * Called on any `new CustomErrorType('message', parameters)`.
    * Can be used to customize error parameters or to set error type properties.
    * By default, any `parameters` are set as error properties.
    *
@@ -43,7 +42,7 @@ export interface Options<
    * ```
    */
   readonly onCreate?: (
-    error: ErrorInstance<ErrorNames>,
+    error: ErrorInstance<ErrorNames, ErrorParamsArg>,
     params: Parameters<
       NonNullable<
         CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']
@@ -84,7 +83,7 @@ export type Result<
    * }
    * ```
    */
-  errorHandler: ErrorHandler<ErrorNames>
+  errorHandler: ErrorHandler<ErrorNames, ErrorParamsArg>
 
   /**
    * Convert an error plain object into an Error instance.
@@ -124,53 +123,58 @@ export type ErrorConstructor<
   ErrorParamsArg extends ErrorParams = ErrorParams,
 > = new (
   ...args: ConstructorParameters<
-    RawErrorConstructor<ErrorNames, ErrorParamsArg>
+    typeof RawCustomError<ErrorNames, ErrorParamsArg>
   >
-) => ErrorInstance<ErrorNames>
+) => ErrorInstance<ErrorNames, ErrorParamsArg>
 
-export type ErrorInstance<ErrorNames extends ErrorName = ErrorName> =
-  RawErrorInstance<ErrorNames> & {
-    /**
-     * Convert errors to plain objects that are
-     * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
-     * serialize with JSON
-     * ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
-     * etc.). All error properties
-     * [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
-     * including
-     * [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
-     *
-     * @example
-     * ```js
-     * try {
-     *   await readFile(filePath)
-     * } catch (cause) {
-     *   const error = new InputError('Could not read the file.', {
-     *     cause,
-     *     filePath: '/path',
-     *   })
-     *   const errorObject = error.toJSON()
-     *   // {
-     *   //   name: 'InputError',
-     *   //   message: 'Could not read the file',
-     *   //   stack: '...',
-     *   //   cause: { name: 'Error', ... },
-     *   //   filePath: '/path'
-     *   // }
-     *   const errorString = JSON.stringify(error)
-     *   // '{"name":"InputError",...}'
-     * }
-     * ```
-     */
-    toJSON: () => ReturnType<typeof serialize<RawErrorInstance<ErrorNames>>>
-  }
+export type ErrorInstance<
+  ErrorNames extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = RawCustomError<ErrorNames, ErrorParamsArg> & {
+  /**
+   * Convert errors to plain objects that are
+   * [always safe](https://github.com/ehmicky/error-serializer#json-safety) to
+   * serialize with JSON
+   * ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
+   * etc.). All error properties
+   * [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
+   * including
+   * [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
+   *
+   * @example
+   * ```js
+   * try {
+   *   await readFile(filePath)
+   * } catch (cause) {
+   *   const error = new InputError('Could not read the file.', {
+   *     cause,
+   *     filePath: '/path',
+   *   })
+   *   const errorObject = error.toJSON()
+   *   // {
+   *   //   name: 'InputError',
+   *   //   message: 'Could not read the file',
+   *   //   stack: '...',
+   *   //   cause: { name: 'Error', ... },
+   *   //   filePath: '/path'
+   *   // }
+   *   const errorString = JSON.stringify(error)
+   *   // '{"name":"InputError",...}'
+   * }
+   * ```
+   */
+  toJSON: () => ReturnType<
+    typeof serialize<RawCustomError<ErrorNames, ErrorParamsArg>>
+  >
+}
 
 /**
  * Type of `errorHandler()`
  */
-export type ErrorHandler<ErrorNames extends ErrorName = ErrorName> = (
-  error: unknown,
-) => ErrorInstance<ErrorNames>
+export type ErrorHandler<
+  ErrorNames extends ErrorName = ErrorName,
+  ErrorParamsArg extends ErrorParams = ErrorParams,
+> = (error: unknown) => ErrorInstance<ErrorNames, ErrorParamsArg>
 
 /**
  * Type of `parse()`

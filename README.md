@@ -93,7 +93,7 @@ Creates custom [error types](#any-error-type).
 
 #### Any error type
 
-_Type_: `ErrorType`
+_Type_: `CustomErrorType`
 
 Any error name passed as argument is returned as an error type.
 
@@ -121,8 +121,9 @@ URL where users should [report internal errors/bugs](#bug-reports).
 
 _Type_: `(error, parameters) => void`
 
-Called on any [`new ErrorType('message', parameters)`](#set-error-properties).
-Can be used to [customize error parameters](#customize-error-parameters) or set
+Called on any
+[`new CustomErrorType('message', parameters)`](#set-error-properties). Can be
+used to [customize error parameters](#customize-error-parameters) or set
 [error type properties](#error-type-properties). By default, any `parameters`
 are [set as error properties](#set-error-properties).
 

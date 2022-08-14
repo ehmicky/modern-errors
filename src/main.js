@@ -12,14 +12,14 @@ import { setErrorTypesToJSON, parseValue } from './serialize.js'
 export default function modernErrors(errorNames, opts) {
   polyfill()
   const { onCreate, bugsUrl } = getOpts(opts)
-  const { errorHandler: innerHandler, ...ErrorTypes } = createErrorTypes(
+  const { errorHandler: innerHandler, ...CustomErrorTypes } = createErrorTypes(
     errorNames,
     { onCreate, bugsUrl },
   )
   const errorHandler = callErrorHandler.bind(undefined, innerHandler)
-  setErrorTypesToJSON(ErrorTypes)
-  const parse = parseValue.bind(undefined, ErrorTypes)
-  return { ...ErrorTypes, errorHandler, parse }
+  setErrorTypesToJSON(CustomErrorTypes)
+  const parse = parseValue.bind(undefined, CustomErrorTypes)
+  return { ...CustomErrorTypes, errorHandler, parse }
 }
 
 // Normalize and retrieve options
