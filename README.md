@@ -15,16 +15,16 @@ Error handling framework that is minimalist yet featureful.
 
 # Features
 
-- [Create custom error types](#create-error-types-and-handler)
+- Create [custom error types](#create-error-types-and-handler)
 - Handle errors from both [programmatic](#error-handler) and [CLI](#cli-errors)
   modules
 - Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
   [properties](#wrap-error-properties)
-- Set properties on [individual errors](#set-error-properties), or on
-  [all errors of the same type](#error-type-properties)
 - Automatically separate (unhandled) [internal errors](#internal-errors) from
   (handled) user errors
 - Internal errors indicate where to [report bugs](#bug-reports)
+- Set properties on [individual errors](#set-error-properties), or on
+  [all errors of the same type](#error-type-properties)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
 
