@@ -45,6 +45,7 @@ expectNotAssignable<Result>({ test: true })
 expectAssignable<Result['TestError']>(TestError)
 expectError(result.OtherError)
 
+expectAssignable<CustomError>(testError)
 expectType<CustomError<'TestError'>>(testError)
 expectType<InstanceType<typeof TestError>>(testError)
 expectType<typeof testError>(testError)
@@ -62,6 +63,7 @@ expectAssignable<ErrorName>('InputError')
 expectNotAssignable<ErrorName>('test')
 expectNotAssignable<ErrorName>(Symbol('InputError'))
 
+expectNotAssignable<typeof CustomError>(TestError)
 expectType<typeof CustomError<'TestError'>>(TestError)
 expectType<typeof TestError>(TestError)
 expectNotAssignable<typeof CustomError<'TestError'>>(Error)
@@ -79,6 +81,10 @@ expectNotAssignable<ErrorParams>(true)
 modernErrors(['TestError'], {
   onCreate: (_: CustomError<'TestError'>) => {},
 })
+
+const { TestTwoError } = modernErrors(['TestTwoError'])
+const testTwoError = new TestTwoError('message')
+expectNotAssignable<typeof testError>(testTwoError)
 
 expectType<Parse>(parse)
 expectType<true>(parse(true))
