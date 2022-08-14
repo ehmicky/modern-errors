@@ -1,6 +1,6 @@
 import {
   ErrorName,
-  OnCreate,
+  OnCreate as RawOnCreate,
   ErrorType as RawErrorType,
   ErrorParams,
 } from 'create-error-types'
@@ -37,6 +37,11 @@ export interface Options<T extends ErrorParams = ErrorParams> {
    */
   onCreate?: OnCreate<T>
 }
+
+export type OnCreate<T extends ErrorParams = ErrorParams> = (
+  error: ErrorType<T>,
+  params: Parameters<RawOnCreate<T>>[1],
+) => ReturnType<RawOnCreate<T>>
 
 /**
  * Any error type can be retrieved from the return value.
@@ -106,7 +111,7 @@ export type Parse = <T>(
   value: T,
 ) => ReturnType<typeof parse<T, { loose: true }>>
 
-export type { ErrorName, OnCreate, ErrorObject }
+export type { ErrorName, ErrorObject }
 
 /**
  * Creates the error types and handler.
