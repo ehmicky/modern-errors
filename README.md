@@ -98,7 +98,7 @@ Any error name passed as argument is returned as an error type.
 
 #### errorHandler
 
-_Type_: `(anyException) => Error`
+_Type_: `(anyException) => CustomError`
 
 Error handler that [should wrap each main function](#error-handler).
 
@@ -106,7 +106,8 @@ Error handler that [should wrap each main function](#error-handler).
 
 _Type_: `(errorObject) => Error`
 
-Convert an [error plain object](#serialize) into [an Error instance](#parse-1).
+Convert an [error plain object](#serialize) into
+[an `Error` instance](#parse-1).
 
 ### Options
 
