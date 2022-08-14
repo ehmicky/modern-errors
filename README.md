@@ -476,14 +476,20 @@ cliMain()
 
 ### Serialize
 
-`error.toJSON()` converts errors to plain objects that
-[can be serialized](https://github.com/ehmicky/error-serializer#json-safety) to
-JSON
+`error.toJSON()` converts errors to plain objects that are
+[serializable](https://github.com/ehmicky/error-serializer#json-safety) to JSON
 ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
 etc.). All error properties
 [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
 including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
+
+`error` must be a [custom error](#any-error-type) created by
+[`modernErrors()`](#modernerrorserrornames-options). However, any other error
+types (including `Error`, `TypeError`, etc.) is also serializable if either:
+
+- It has been converted to a custom error by [`errorHandler()`](#errorhandler)
+- It is [wrapped as an `error.cause`](#re-throw-errors)
 
 ```js
 try {
@@ -510,6 +516,12 @@ try {
 
 [`parse(errorObject)`](#parse) converts those error plain objects back to
 identical error instances.
+
+The original error type is preserved providing it is either:
+
+- A [custom error](#any-error-type) created by
+  [`modernErrors()`](#modernerrorserrornames-options)
+- A native error type (`Error`, `TypeError`, etc.)
 
 ```js
 const newErrorObject = JSON.parse(errorString)
