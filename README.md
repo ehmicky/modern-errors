@@ -487,9 +487,9 @@ including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
 
 The `error` must be from a [_known type_](#unknown-errors). However, any other
-error (including `Error`, `TypeError`, etc.) is also serializable providing it
-has been either passed to [`errorHandler()`](#errorhandler), or wrapped
-[as an `error.cause`](#re-throw-errors).
+error (including `Error`, `TypeError`, `RangeError`, etc.) is also serializable
+providing it has been either passed to [`errorHandler()`](#errorhandler), or
+wrapped [as an `error.cause`](#re-throw-errors).
 
 ```js
 try {
@@ -518,8 +518,8 @@ try {
 identical error instances.
 
 The original error type is generically preserved. However, it is converted to a
-generic `Error` if it is neither a native type (`Error`, `TypeError`, etc.) nor
-a [_known type_](#unknown-errors).
+generic `Error` if it is neither a native type (`TypeError`, `RangeError`, etc.)
+nor a [_known type_](#unknown-errors).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
