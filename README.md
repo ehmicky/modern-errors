@@ -505,6 +505,8 @@ source maps:
 
 - [`error-type`](https://github.com/ehmicky/error-type): Create custom error
   types
+- [`error-serializer`](https://github.com/ehmicky/error-serializer): Convert
+  errors to/from plain objects
 - [`normalize-exception`](https://github.com/ehmicky/normalize-exception):
   Normalize exceptions/errors
 - [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
