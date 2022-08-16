@@ -6,7 +6,7 @@
   "main": "./build/src/main.js",
   "types": "./build/src/main.d.ts",
   "files": [
-    "build/src/**/*.{js,d.ts,map,json,sh,md}"
+    "build/src/**/*.{js,d.ts,json}"
   ],
   "scripts": {
     "test": "gulp test"
