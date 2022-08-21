@@ -22,5 +22,5 @@ const toJSON = function () {
 
 // Parse serialized error deeply
 export const parseValue = function (CustomErrorClasses, value) {
-  return parseLib(value, { types: CustomErrorClasses, loose: true })
+  return parseLib(value, { classes: CustomErrorClasses, loose: true })
 }

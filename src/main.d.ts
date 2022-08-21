@@ -185,7 +185,7 @@ export type Parse<
 ) => ReturnType<
   typeof parse<
     ArgType,
-    { loose: true; types: CustomErrors<ErrorNames, ErrorParamsArg> }
+    { loose: true; classes: CustomErrors<ErrorNames, ErrorParamsArg> }
   >
 >
 
