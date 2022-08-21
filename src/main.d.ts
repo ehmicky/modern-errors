@@ -180,11 +180,11 @@ export type ErrorHandler<
 export type Parse<
   ErrorNames extends ErrorName = never,
   ErrorParamsArg extends ErrorParams = ErrorParams,
-> = <ArgType>(
-  value: ArgType,
+> = <Argument>(
+  value: Argument,
 ) => ReturnType<
   typeof parse<
-    ArgType,
+    Argument,
     { loose: true; classes: CustomErrors<ErrorNames, ErrorParamsArg> }
   >
 >
