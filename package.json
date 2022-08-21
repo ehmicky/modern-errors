@@ -48,7 +48,7 @@
   "dependencies": {
     "create-error-types": "^3.1.0",
     "error-cause-polyfill": "^1.1.0",
-    "error-serializer": "^1.4.0",
+    "error-serializer": "^2.0.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^2.0.0"
   },
