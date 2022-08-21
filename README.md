@@ -475,7 +475,7 @@ const cliMain = function () {
   } catch (error) {
     // Print `error` then exit the process
     handleCliError(error, {
-      types: {
+      classes: {
         InputError: { exitCode: 1, short: true },
         DatabaseError: { exitCode: 2, short: true },
         default: { exitCode: 3 },
