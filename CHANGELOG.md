@@ -1,3 +1,9 @@
+# 3.1.1
+
+## Bug fixes
+
+- Fix the [`bugsUrl` option](README.md#bugsurl) when the error has a known type
+
 # 3.1.0
 
 ## Features
