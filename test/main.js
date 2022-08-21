@@ -9,7 +9,7 @@ each([[], ['InputError'], [[], true], [[], null]], ({ title }, args) => {
   })
 })
 
-test('Creates error types', (t) => {
+test('Creates error classes', (t) => {
   const { InputError } = modernErrors(['InputError'])
   const error = new InputError('message')
   t.true(error instanceof Error)
@@ -35,7 +35,7 @@ test('errorHandler() merges error.cause', (t) => {
   t.is(modernErrors([]).errorHandler(error).message, 'cause\ntest')
 })
 
-test('errorHandler() keeps error type if listed', (t) => {
+test('errorHandler() keeps error class if listed', (t) => {
   const { InputError, errorHandler } = modernErrors(['InputError'])
   t.is(errorHandler(new InputError('test')).name, 'InputError')
 })

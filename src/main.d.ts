@@ -21,8 +21,8 @@ export interface Options<
   readonly bugsUrl?: CreateErrorTypesOptions['bugsUrl']
 
   /**
-   * Called on any `new CustomErrorType('message', parameters)`.
-   * Can be used to customize error parameters or to set error type properties.
+   * Called on any `new CustomError('message', parameters)`.
+   * Can be used to customize error parameters or to set error class properties.
    * By default, any `parameters` are set as error properties.
    *
    * @example
@@ -61,7 +61,7 @@ type CustomErrors<
 }
 
 /**
- * Any error name passed as argument is returned as an error type.
+ * Any error name passed as argument is returned as an error class.
  *
  * @example
  * ```js
@@ -192,7 +192,7 @@ export type Parse<
 export type { ErrorName, ErrorObject, ErrorParams }
 
 /**
- * Creates custom error types.
+ * Creates custom error classes.
  *
  * @example
  * ```js

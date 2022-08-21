@@ -15,22 +15,22 @@ Error handling framework that is minimalist yet featureful.
 
 # Features
 
-- Create [custom error types](#create-custom-error-types)
+- Create [custom error classes](#create-custom-error-classes)
 - Handle errors from both [programmatic](#error-handler) and [CLI](#cli-errors)
   modules
-- Wrap inner errors' [message](#wrap-error-message), [type](#set-error-type), or
-  [properties](#wrap-error-properties)
+- Wrap inner errors' [message](#wrap-error-message), [class](#set-error-class),
+  or [properties](#wrap-error-properties)
 - Automatically separate known and [unknown errors](#unknown-errors)
 - Unknown errors indicate where to [report bugs](#bug-reports)
 - [Serialize/parse](#serializationparsing) errors
 - Set properties on [individual errors](#set-error-properties), or on
-  [all errors of the same type](#error-type-properties)
+  [all errors of the same class](#error-class-properties)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
 
 # Example
 
-Create custom error types.
+Create custom error classes.
 
 ```js
 // `error.js`
@@ -86,15 +86,15 @@ not `require()`.
 [`options` `object`](#options)\
 [_Return value_: `object`](#return-value)
 
-Creates custom [error types](#any-error-type).
+Creates custom [error classes](#any-error-name).
 
 ### Return value
 
-#### Any error type
+#### Any error class
 
-_Type_: `CustomErrorType`
+_Type_: `typeof CustomError`
 
-Any error name passed as argument is returned as an error type.
+Any error name passed as argument is returned as an error class.
 
 #### errorHandler
 
@@ -115,23 +115,22 @@ Convert an [error plain object](#serialize) into
 
 _Type_: `string | URL | ((error: Error) => string | URL | void)`
 
-URL where users should [report unknown errors](#bug-reports).
+URL where users should [report _unknown_ errors](#bug-reports).
 
 #### onCreate
 
 _Type_: `(error, parameters) => void`
 
-Called on any
-[`new CustomErrorType('message', parameters)`](#set-error-properties). Can be
-used to [customize error parameters](#customize-error-parameters) or set
-[error type properties](#error-type-properties). By default, any `parameters`
+Called on any [`new CustomError('message', parameters)`](#set-error-properties).
+Can be used to [customize error parameters](#customize-error-parameters) or set
+[error class properties](#error-class-properties). By default, any `parameters`
 are [set as error properties](#set-error-properties).
 
 # Usage
 
 ## Setup
 
-### Create custom error types
+### Create custom error classes
 
 ```js
 // error.js
@@ -199,7 +198,7 @@ export const main = function (filePath) {
 Errors are re-thrown using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 This allows wrapping the error [message](#wrap-error-message),
-[properties](#wrap-error-properties), or [type](#set-error-type).
+[properties](#wrap-error-properties), or [class](#set-error-class).
 
 ```js
 import { InputError } from './error.js'
@@ -257,13 +256,13 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // File does not exist.
 ```
 
-## Error types
+## Error class
 
-### Test error type
+### Test error class
 
-Once [`errorHandler()`](#error-handler) has been applied, the error type can be
+Once [`errorHandler()`](#error-handler) has been applied, the error class can be
 checked by its `name`. Libraries should document their possible error names, but
-do not need to `export` their error types.
+do not need to `export` their error classes.
 
 ```js
 if (error.name === 'InputError') {
@@ -273,9 +272,9 @@ if (error.name === 'InputError') {
 }
 ```
 
-### Set error type
+### Set error class
 
-When [re-throwing errors](#re-throw-errors), the outer error type overrides the
+When [re-throwing errors](#re-throw-errors), the outer error class overrides the
 inner one.
 
 ```js
@@ -287,7 +286,7 @@ try {
 }
 ```
 
-However, the inner error type is kept if the outer one is `Error` or
+However, the inner error class is kept if the outer one is `Error` or
 [`AggregateError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError).
 
 ```js
@@ -301,13 +300,13 @@ try {
 
 ### Unknown errors
 
-All errors should use _known types_: the ones returned by
-[`modernErrors()`](#create-custom-error-types). Errors with an _unknown type_
-should be handled in `try {} catch {}` and [re-thrown](#set-error-type) with a
-_known type_ instead.
+All errors should use _known_ classes: the ones returned by
+[`modernErrors()`](#create-custom-error-classes). Errors with an _unknown_ class
+should be handled in `try {} catch {}` and [re-thrown](#set-error-class) with a
+_known_ class instead.
 
-The [`errorHandler()`](#error-handler) assigns the `UnknownError` type to any
-error with an _unknown type_.
+The [`errorHandler()`](#error-handler) assigns the `UnknownError` class to any
+error with an _unknown_ class.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -322,7 +321,7 @@ getUserId(null) // UnknownError: Cannot read properties of null (reading 'id')
 ### Bug reports
 
 If the [`bugsUrl` option](#bugsurl) is a string or URL, any
-[_unknown error_](#unknown-errors) will include the following message.
+[_unknown_ error](#unknown-errors) will include the following message.
 
 ```js
 modernErrors({ bugsUrl: 'https://github.com/my-name/my-project/issues' })
@@ -339,7 +338,7 @@ value is `undefined`.
 <!-- eslint-disable n/handle-callback-err -->
 
 ```js
-createErrorTypes({
+modernErrors({
   bugsUrl: (error) =>
     error.name === 'UnknownError' || error.name === 'PluginError'
       ? 'https://github.com/my-name/my-project/issues'
@@ -406,9 +405,9 @@ console.log(error.hasFilePath) // true
 console.log(error.unknownParam) // undefined
 ```
 
-### Type-specific logic
+### Class-specific logic
 
-The [`onCreate()` option](#oncreate) can trigger error type-specific logic.
+The [`onCreate()` option](#oncreate) can trigger error class-specific logic.
 
 <!-- eslint-disable n/handle-callback-err -->
 
@@ -430,10 +429,10 @@ const onCreateError = {
 }
 ```
 
-### Error type properties
+### Error class properties
 
 The [`onCreate()` option](#oncreate) can be used to set properties on all
-instances of a given error type.
+instances of a given error class.
 
 <!-- eslint-disable fp/no-mutating-assign -->
 
@@ -459,7 +458,8 @@ console.log(error.isUser) // true
 ## CLI errors
 
 CLI applications can assign a different exit code and log verbosity per error
-type by using [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
+class by using
+[`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
 
 ```js
 #!/usr/bin/env node
@@ -501,7 +501,7 @@ by `JSON.stringify()`. All error properties
 including
 [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
 
-The `error` must be from a [_known type_](#unknown-errors). However, any other
+The `error` must be from a [_known_ class](#unknown-errors). However, any other
 error (including `Error`, `TypeError`, `RangeError`, etc.) is also serializable
 providing it has been either passed to [`errorHandler()`](#errorhandler), or
 wrapped [as an `error.cause`](#re-throw-errors).
@@ -532,9 +532,9 @@ try {
 [`parse(errorObject)`](#parse) converts those error plain objects back to
 identical error instances.
 
-The original error type is generically preserved. However, it is converted to a
-generic `Error` if it is neither a native type (`TypeError`, `RangeError`, etc.)
-nor a [_known type_](#unknown-errors).
+The original error class is generically preserved. However, it is converted to a
+generic `Error` if it is neither a native class (`TypeError`, `RangeError`,
+etc.) nor a [_known_ class](#unknown-errors).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
@@ -564,8 +564,8 @@ This framework brings together a collection of modules which can also be used
 individually:
 
 - [`create-error-types`](https://github.com/ehmicky/create-error-types): Create
-  multiple error types
-- [`error-type`](https://github.com/ehmicky/error-type): Create one error type
+  multiple error classes
+- [`error-type`](https://github.com/ehmicky/error-type): Create one error class
 - [`error-serializer`](https://github.com/ehmicky/error-serializer): Convert
   errors to/from plain objects
 - [`normalize-exception`](https://github.com/ehmicky/normalize-exception):

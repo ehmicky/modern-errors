@@ -1,13 +1,13 @@
 import { serialize, parse as parseLib } from 'error-serializer'
 
 // Set `error.toJSON()` so errors are automatically, deeply serializable
-export const setErrorTypesToJSON = function (CustomErrorTypes) {
-  Object.values(CustomErrorTypes).forEach(setErrorTypeToJSON)
+export const setErrorClassesToJSON = function (CustomErrorClasses) {
+  Object.values(CustomErrorClasses).forEach(setErrorClassToJSON)
 }
 
-const setErrorTypeToJSON = function (CustomErrorType) {
+const setErrorClassToJSON = function (CustomErrorClass) {
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(CustomErrorType.prototype, 'toJSON', {
+  Object.defineProperty(CustomErrorClass.prototype, 'toJSON', {
     value: toJSON,
     enumerable: false,
     writable: true,
@@ -21,6 +21,6 @@ const toJSON = function () {
 }
 
 // Parse serialized error deeply
-export const parseValue = function (CustomErrorTypes, value) {
-  return parseLib(value, { types: CustomErrorTypes, loose: true })
+export const parseValue = function (CustomErrorClasses, value) {
+  return parseLib(value, { types: CustomErrorClasses, loose: true })
 }

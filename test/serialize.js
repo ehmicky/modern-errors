@@ -59,7 +59,7 @@ each(
     { error: unknownError, name: 'Error' },
   ],
   ({ title }, { error, name }) => {
-    test(`parse() handles native and unknown error types | ${title}`, (t) => {
+    test(`parse() handles native and unknown error classes | ${title}`, (t) => {
       const errorObject = serialize(error)
       const newError = modernErrors([]).parse(errorObject)
       t.true(newError instanceof Error)
@@ -70,7 +70,7 @@ each(
   },
 )
 
-test('parse() does not consider return properties to be error types', (t) => {
+test('parse() does not consider return properties to be error classes', (t) => {
   const errorObject = { name: 'errorHandler', message: 'test', stack: '' }
   t.is(modernErrors([]).parse(errorObject).name, 'Error')
 })
