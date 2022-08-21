@@ -2,7 +2,7 @@ import {
   ErrorName,
   CustomError as RawCustomError,
   ErrorParams,
-  Options as CreateErrorTypesOptions,
+  Options as ErrorCustomClassesOptions,
 } from 'create-error-types'
 import { serialize, parse, ErrorObject } from 'error-serializer'
 
@@ -18,7 +18,7 @@ export interface Options<
    *
    * @example 'https://github.com/my-name/my-project/issues'
    */
-  readonly bugsUrl?: CreateErrorTypesOptions['bugsUrl']
+  readonly bugsUrl?: ErrorCustomClassesOptions['bugsUrl']
 
   /**
    * Called on any `new CustomError('message', parameters)`.
@@ -45,11 +45,13 @@ export interface Options<
     error: CustomError<ErrorNames, ErrorParamsArg>,
     params: Parameters<
       NonNullable<
-        CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']
+        ErrorCustomClassesOptions<ErrorNames, ErrorParamsArg>['onCreate']
       >
     >[1],
   ) => ReturnType<
-    NonNullable<CreateErrorTypesOptions<ErrorNames, ErrorParamsArg>['onCreate']>
+    NonNullable<
+      ErrorCustomClassesOptions<ErrorNames, ErrorParamsArg>['onCreate']
+    >
   >
 }
 
