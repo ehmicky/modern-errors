@@ -47,10 +47,24 @@ test('errorHandler() uses UnknownError if not listed', (t) => {
   t.is(message, 'test')
 })
 
-test('UnknownError uses bugsUrl if defined', (t) => {
+test('UnknownError uses bugsUrl on unknown errors', (t) => {
   const bugsUrl = import.meta.url
   const { errorHandler } = modernErrors([], { bugsUrl })
-  const { message } = errorHandler(new Error('test'))
+  const { name, message, cause } = errorHandler(new Error('test'))
+  t.is(name, 'UnknownError')
   t.true(message.startsWith('test\n'))
   t.true(message.includes(bugsUrl))
+  t.is(cause, undefined)
+})
+
+test('UnknownError uses bugsUrl on known errors', (t) => {
+  const bugsUrl = import.meta.url
+  const { TestError, errorHandler } = modernErrors(['TestError'], {
+    bugsUrl: () => bugsUrl,
+  })
+  const { name, message, cause } = errorHandler(new TestError('test'))
+  t.is(name, 'TestError')
+  t.true(message.startsWith('test\n'))
+  t.true(message.includes(bugsUrl))
+  t.is(cause, undefined)
 })
