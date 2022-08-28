@@ -50,7 +50,7 @@
     "error-cause-polyfill": "^1.1.0",
     "error-serializer": "^2.0.0",
     "is-plain-obj": "^4.1.0",
-    "merge-error-cause": "^2.1.0"
+    "merge-error-cause": "^2.1.1"
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.86",
