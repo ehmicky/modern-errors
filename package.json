@@ -31,7 +31,7 @@
     "error-reporting",
     "error-classes",
     "exceptions",
-    "create",
+    "plugins",
     "framework"
   ],
   "license": "Apache-2.0",
