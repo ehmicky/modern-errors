@@ -563,8 +563,8 @@ console.log(newDeepObject[1].error) // InputError: Could not read the file.
 This framework brings together a collection of modules which can also be used
 individually:
 
-- [`error-custom-classes`](https://github.com/ehmicky/error-custom-classes):
-  Create multiple error classes
+- [`modern-errors-plugins`](https://github.com/ehmicky/modern-errors-plugins):
+  Plugins for `modern-errors`
 - [`error-custom-class`](https://github.com/ehmicky/error-custom-class): Create
   one error class
 - [`error-class-utils`](https://github.com/ehmicky/error-class-utils): Utilities
