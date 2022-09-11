@@ -1,7 +1,8 @@
 import { createAnyError } from './any/main.js'
 import { createBaseError } from './base/main.js'
 import { normalizeInput } from './input.js'
-import { createGlobalBaseError, initKnownClasses } from './known/main.js'
+import { createGlobalBaseError } from './known/custom.js'
+import { initKnownClasses } from './known/init.js'
 import { checkUnknownError } from './known/unknown.js'
 
 // Creates error classes.

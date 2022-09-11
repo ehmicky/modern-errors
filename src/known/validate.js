@@ -1,15 +1,15 @@
 import { CoreError } from '../base/main.js'
 
 // Validate a custom error class
-export const validateCustomClass = function (custom, className) {
+export const validateCustomClass = function (custom, propName) {
   if (typeof custom !== 'function') {
     throw new TypeError(
-      `The first argument's "${className}.custom" property must be a class: ${custom}`,
+      `The first argument's "${propName}.custom" property must be a class: ${custom}`,
     )
   }
 
-  validateParent(custom, className)
-  validatePrototype(custom, className)
+  validateParent(custom, propName)
+  validatePrototype(custom, propName)
 }
 
 // We do not allow the custom class to extend from `Error` indirectly since:
@@ -18,10 +18,10 @@ export const validateCustomClass = function (custom, className) {
 //  - This removes any complexity due to two custom classes sharing the same
 //    parent
 //  - User might not expect parent classes to be mutated
-const validateParent = function (custom, className) {
+const validateParent = function (custom, propName) {
   if (FORBIDDEN_ERROR_CLASSES.has(custom)) {
     throw new TypeError(
-      `The "${className}.custom" class must not be ${custom.name}.`,
+      `The "${propName}.custom" class must not be ${custom.name}.`,
     )
   }
 
@@ -29,13 +29,13 @@ const validateParent = function (custom, className) {
 
   if (isPassedTwice(ParentClass)) {
     throw new TypeError(
-      `The "${className}.custom" class must not be passed to modernErrors() twice.`,
+      `The "${propName}.custom" class must not be passed to modernErrors() twice.`,
     )
   }
 
   if (ParentClass !== Error) {
     throw new TypeError(
-      `The "${className}.custom" class must extend from Error.`,
+      `The "${propName}.custom" class must extend from Error.`,
     )
   }
 }
@@ -57,16 +57,16 @@ const isPassedTwice = function (ParentClass) {
   )
 }
 
-const validatePrototype = function (custom, className) {
+const validatePrototype = function (custom, propName) {
   if (typeof custom.prototype !== 'object' || custom.prototype === null) {
     throw new TypeError(
-      `The "${className}.custom" class's prototype is invalid: ${custom.prototype}`,
+      `The "${propName}.custom" class's prototype is invalid: ${custom.prototype}`,
     )
   }
 
   if (custom.prototype.constructor !== custom) {
     throw new TypeError(
-      `The "${className}.custom" class has an invalid "constructor" property.`,
+      `The "${propName}.custom" class has an invalid "constructor" property.`,
     )
   }
 }

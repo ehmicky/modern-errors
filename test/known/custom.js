@@ -65,12 +65,6 @@ each(
   },
 )
 
-test('Does not modify invalid classes', (t) => {
-  class custom extends Object {}
-  t.throws(defineCustomClass.bind(undefined, custom))
-  t.false('name' in custom.prototype)
-})
-
 each([undefined, class extends Error {}], ({ title }, custom) => {
   test(`Can define AnyError.custom | ${title}`, (t) => {
     const { InputError } = defineClassesOpts({
