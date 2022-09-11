@@ -1,6 +1,10 @@
-import { /* CustomError, */ ErrorName } from 'error-custom-class'
+import { ErrorName } from 'error-custom-class'
 
-// TODO: fix in `error-custom-class`
+type Class<Instance extends object = object, Args extends any[] = any[]> = {
+  new (...args: Args): Instance
+  prototype: Instance
+}
+
 type CustomError<
   ErrorNameArg extends ErrorName = ErrorName,
   Options extends object = object,
@@ -8,11 +12,6 @@ type CustomError<
   Error & { name: ErrorNameArg },
   [message: string, options?: Options & ErrorOptions]
 >
-
-type Class<Instance extends object = object, Args extends any[] = any[]> = {
-  new (...args: Args): Instance
-  prototype: Instance
-}
 
 type MergeObjects<
   Parent extends object,
