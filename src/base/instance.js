@@ -49,7 +49,10 @@ const addInstanceMethod = function ({
     const error = this
     const options = getErrorOpts(error, errorData, plugin)
     const { AnyError, KnownClasses } = state
-    return methodFunc({ error, options, AnyError, KnownClasses }, ...args)
+    return methodFunc(
+      { error, options, AnyError, KnownClasses: { ...KnownClasses } },
+      ...args,
+    )
   }
 
   // eslint-disable-next-line fp/no-mutating-methods

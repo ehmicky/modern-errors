@@ -61,3 +61,10 @@ test('plugin.unset() is passed KnownClasses', (t) => {
     UnknownError,
   })
 })
+
+test('plugin.unset() cannot modify KnownClasses', (t) => {
+  const cause = new TestError('causeMessage')
+  const error = new TestError('test', { cause })
+  error.unset.KnownClasses.prop = true
+  t.false('prop' in error.getInstance().KnownClasses)
+})

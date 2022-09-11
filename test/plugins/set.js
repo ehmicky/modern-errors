@@ -48,3 +48,9 @@ test('plugin.set() is passed KnownClasses', (t) => {
     UnknownError,
   })
 })
+
+test('plugin.set() cannot modify KnownClasses', (t) => {
+  const error = new TestError('test')
+  error.set.KnownClasses.prop = true
+  t.false('prop' in error.getInstance().KnownClasses)
+})

@@ -62,5 +62,8 @@ const callStaticMethods = function (
   ...args
 ) {
   const options = normalizePluginOpts(globalOpts, plugin)
-  return methodFunc({ options, AnyError, KnownClasses }, ...args)
+  return methodFunc(
+    { options, AnyError, KnownClasses: { ...KnownClasses } },
+    ...args,
+  )
 }

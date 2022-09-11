@@ -56,7 +56,7 @@ const applyPluginSet = function ({
       error,
       options: causeOpts,
       AnyError,
-      KnownClasses,
+      KnownClasses: { ...KnownClasses },
     })
   }
 
@@ -65,6 +65,6 @@ const applyPluginSet = function ({
     error,
     options: pluginOpts,
     AnyError,
-    KnownClasses,
+    KnownClasses: { ...KnownClasses },
   })
 }

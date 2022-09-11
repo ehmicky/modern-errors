@@ -65,3 +65,10 @@ test('plugin.instanceMethods are passed KnownClasses', (t) => {
     UnknownError,
   })
 })
+
+test('plugin.instanceMethods cannot modify KnownClasses', (t) => {
+  const error = new TestError('message')
+  // eslint-disable-next-line fp/no-mutation
+  error.getInstance().KnownClasses.prop = true
+  t.false('prop' in error.getInstance().KnownClasses)
+})
