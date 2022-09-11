@@ -22,11 +22,17 @@ export const createBaseError = function (state, errorData, plugins) {
       super(message, opts)
 
       const optsA = normalizeConstructorArgs(opts)
-      const { KnownClasses, AnyError } = state
+      const { KnownClasses, GlobalBaseError, AnyError } = state
       const isAnyError = new.target === AnyError
       const { error, cause } = mergeCause(this, isAnyError)
       const ChildError = error.constructor
-      validateClass({ ChildError, BaseError, KnownClasses, isAnyError })
+      validateClass({
+        ChildError,
+        BaseError,
+        GlobalBaseError,
+        KnownClasses,
+        isAnyError,
+      })
       computePluginsOpts({
         error,
         ChildError,
@@ -37,7 +43,6 @@ export const createBaseError = function (state, errorData, plugins) {
       })
       applyPluginsSet({
         error,
-        BaseError,
         AnyError,
         KnownClasses,
         errorData,

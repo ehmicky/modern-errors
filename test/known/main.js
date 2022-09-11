@@ -11,16 +11,29 @@ const { TestError } = defineSimpleClass()
 
 each(
   [
-    { ErrorClass: TestError, className: 'TestError' },
+    {
+      ErrorClass: TestError,
+      className: 'TestError',
+      parentClassName: 'BaseError',
+    },
     {
       ErrorClass: defineCustomClass(class extends Error {}).InputError,
       className: 'InputError',
+      parentClassName: 'BaseError',
+    },
+    {
+      ErrorClass: defineClassesOpts({
+        AnyError: { custom: class extends Error {} },
+        InputError: { custom: class extends Error {} },
+      }).InputError,
+      className: 'InputError',
+      parentClassName: 'GlobalBaseError',
     },
   ],
-  ({ title }, { ErrorClass, className }) => {
-    test(`Errors extend from BaseError | ${title}`, (t) => {
-      t.is(Object.getPrototypeOf(ErrorClass).name, 'BaseError')
-      t.is(Object.getPrototypeOf(ErrorClass.prototype).name, 'BaseError')
+  ({ title }, { ErrorClass, className, parentClassName }) => {
+    test(`Errors extend from BaseError or GlobalBaseError | ${title}`, (t) => {
+      t.is(Object.getPrototypeOf(ErrorClass).name, parentClassName)
+      t.is(Object.getPrototypeOf(ErrorClass.prototype).name, parentClassName)
     })
 
     test(`prototype.name is correct | ${title}`, (t) => {
@@ -36,7 +49,15 @@ each(
 )
 
 each(
-  ['BaseError', 'Error', 'TypeError', 'inputError', 'input_error', 'input'],
+  [
+    'BaseError',
+    'GlobalBaseError',
+    'Error',
+    'TypeError',
+    'inputError',
+    'input_error',
+    'input',
+  ],
   ({ title }, errorName) => {
     test(`Validate error names | ${title}`, (t) => {
       t.throws(defineClassesOpts.bind(undefined, { [errorName]: {} }))
@@ -48,4 +69,18 @@ test('Does not modify invalid classes', (t) => {
   class custom extends Object {}
   t.throws(defineCustomClass.bind(undefined, custom))
   t.false('name' in custom.prototype)
+})
+
+each([undefined, class extends Error {}], ({ title }, custom) => {
+  test(`Can define AnyError.custom | ${title}`, (t) => {
+    const { InputError } = defineClassesOpts({
+      AnyError: {
+        custom: class extends Error {
+          prop = true
+        },
+      },
+      InputError: { custom },
+    })
+    t.true(new InputError('message').prop)
+  })
 })

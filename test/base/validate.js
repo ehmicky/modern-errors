@@ -2,13 +2,22 @@ import test from 'ava'
 import { setErrorName } from 'error-class-utils'
 import { each } from 'test-each'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineSimpleClass, defineClassesOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError } = defineSimpleClass()
 
 test('Prevent instantiating BaseError', (t) => {
   const BaseError = Object.getPrototypeOf(TestError)
   t.throws(() => new BaseError('test'))
+})
+
+test('Prevent instantiating GlobalBaseError', (t) => {
+  const { InputError } = defineClassesOpts({
+    AnyError: { custom: class extends Error {} },
+    InputError: {},
+  })
+  const GlobalBaseError = Object.getPrototypeOf(InputError)
+  t.throws(() => new GlobalBaseError('test'))
 })
 
 each([TestError, UnknownError], ({ title }, ErrorClass) => {

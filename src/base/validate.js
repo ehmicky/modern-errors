@@ -2,17 +2,21 @@
 export const validateClass = function ({
   ChildError,
   BaseError,
+  GlobalBaseError,
   KnownClasses,
   isAnyError,
 }) {
-  validateExtended(ChildError, BaseError)
+  validateExtended(ChildError, BaseError, GlobalBaseError)
   validateRegistered(ChildError, KnownClasses, isAnyError)
 }
 
-// `BaseError` is internal and should not be used directly
-const validateExtended = function (ChildError, BaseError) {
-  if (ChildError === BaseError) {
-    throw new Error('BaseError cannot be instantiated, but its subclasses can.')
+// `BaseError` and `GlobalBaseError` are internal and should not be used
+// directly
+const validateExtended = function (ChildError, BaseError, GlobalBaseError) {
+  if (ChildError === BaseError || ChildError === GlobalBaseError) {
+    throw new Error(
+      `${ChildError.name} cannot be instantiated, but its subclasses can.`,
+    )
   }
 }
 

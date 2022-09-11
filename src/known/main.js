@@ -5,13 +5,24 @@ import { setClassOpts } from '../plugins/class_opts.js'
 
 import { validateCustomClass } from './validate.js'
 
+// `AnyError.custom` can be used to customize all error classes
+export const createGlobalBaseError = function ({ custom }, BaseError) {
+  if (custom === undefined) {
+    return BaseError
+  }
+
+  const GlobalBaseError = getCustomClass(custom, BaseError, 'AnyError')
+  setErrorName(GlobalBaseError, 'GlobalBaseError')
+  return GlobalBaseError
+}
+
 // Validate, normalize and create each error class.
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes
 export const initKnownClasses = function ({
   classesOpts,
   globalOpts,
-  BaseError,
+  GlobalBaseError,
   errorData,
   plugins,
 }) {
@@ -21,7 +32,7 @@ export const initKnownClasses = function ({
       initKnownClass({
         className,
         classOpts,
-        BaseError,
+        GlobalBaseError,
         errorData,
         plugins,
         globalOpts,
@@ -33,7 +44,7 @@ export const initKnownClasses = function ({
 const initKnownClass = function ({
   className,
   classOpts,
-  BaseError,
+  GlobalBaseError,
   errorData,
   plugins,
   globalOpts,
@@ -45,7 +56,7 @@ const initKnownClass = function ({
   }
 
   const { custom, ...classOptsA } = classOpts
-  const ErrorClass = getErrorClass(custom, BaseError, className)
+  const ErrorClass = getErrorClass(custom, GlobalBaseError, className)
   setErrorName(ErrorClass, className)
   setClassOpts({
     ErrorClass,
@@ -57,19 +68,19 @@ const initKnownClass = function ({
   return ErrorClass
 }
 
-const getErrorClass = function (custom, BaseError, className) {
+const getErrorClass = function (custom, GlobalBaseError, className) {
   return custom === undefined
-    ? newErrorClass(BaseError)
-    : getCustomClass(custom, BaseError, className)
+    ? newErrorClass(GlobalBaseError)
+    : getCustomClass(custom, GlobalBaseError, className)
 }
 
-const newErrorClass = function (BaseError) {
-  return class extends BaseError {}
+const newErrorClass = function (GlobalBaseError) {
+  return class extends GlobalBaseError {}
 }
 
-const getCustomClass = function (custom, BaseError, className) {
+const getCustomClass = function (custom, ParentBaseError, className) {
   validateCustomClass(custom, className)
-  setBaseError(custom, BaseError)
+  setBaseError(custom, ParentBaseError)
   return custom
 }
 
@@ -79,9 +90,9 @@ const getCustomClass = function (custom, BaseError, className) {
 //  - Avoids confusion between `BaseError` and `AnyError`
 //  - Removes some exports, simplifying the API
 //  - Enforces calling the main function
-const setBaseError = function (custom, BaseError) {
+const setBaseError = function (custom, ParentBaseError) {
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.setPrototypeOf(custom, BaseError)
+  Object.setPrototypeOf(custom, ParentBaseError)
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.setPrototypeOf(custom.prototype, BaseError.prototype)
+  Object.setPrototypeOf(custom.prototype, ParentBaseError.prototype)
 }

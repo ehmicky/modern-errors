@@ -3,7 +3,6 @@ import { getErrorOpts } from './normalize.js'
 // Apply each `plugin.normalize()` then `plugin.set()`
 export const applyPluginsSet = function ({
   error,
-  BaseError,
   AnyError,
   KnownClasses,
   errorData,
@@ -11,15 +10,7 @@ export const applyPluginsSet = function ({
   plugins,
 }) {
   plugins.forEach((plugin) => {
-    applyPluginSet({
-      error,
-      BaseError,
-      AnyError,
-      KnownClasses,
-      errorData,
-      cause,
-      plugin,
-    })
+    applyPluginSet({ error, AnyError, KnownClasses, errorData, cause, plugin })
   })
 }
 
@@ -49,7 +40,6 @@ export const applyPluginsSet = function ({
 // from merging its class, message and stack.
 const applyPluginSet = function ({
   error,
-  BaseError,
   AnyError,
   KnownClasses,
   errorData,
@@ -60,7 +50,7 @@ const applyPluginSet = function ({
     return
   }
 
-  if (cause instanceof BaseError) {
+  if (cause instanceof AnyError) {
     const causeOpts = getErrorOpts(cause, errorData, plugin)
     plugin.unset.call(undefined, {
       error,

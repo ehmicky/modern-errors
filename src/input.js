@@ -25,20 +25,23 @@ const validateClassesOpts = function (classesOpts) {
     )
   }
 
-  validateClassNames(classesOpts)
+  validateUnknown(classesOpts)
+  Object.keys(classesOpts).forEach(validateClassName)
 }
 
 // We enforce specifying `UnknownError` so that users:
 //  - Export it
 //  - Know they can configure it
-const validateClassNames = function ({ UnknownError, BaseError }) {
+const validateUnknown = function ({ UnknownError }) {
   if (UnknownError === undefined) {
     throw new TypeError(`One of the error classes must be named "UnknownError".
 "UnknownError" is assigned by "AnyError.normalize()" to exceptions with an unknown class.`)
   }
+}
 
-  if (BaseError !== undefined) {
-    throw new TypeError(`Error class name must not be "BaseError".
+const validateClassName = function (className) {
+  if (className === 'BaseError' || className === 'GlobalBaseError') {
+    throw new TypeError(`Error class name must not be "${className}".
 It is reserved for some internal error class.`)
   }
 }
