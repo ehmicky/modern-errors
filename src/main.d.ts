@@ -1,82 +1,73 @@
-import {
-  ErrorName,
-  CustomError as RawCustomError,
-  ErrorParams,
-  Options as ErrorCustomClassesOptions,
-} from 'create-error-types'
-import { serialize, parse, ErrorObject } from 'error-serializer'
+import { CustomError, ErrorName } from 'error-custom-class'
+
+type InvalidProps = 'name' | 'message' | 'stack' | 'errors' | 'cause'
 
 /**
- * `modern-errors` options
+ * Options passed to error constructors' second argument.
  */
-export interface Options<
-  ErrorNames extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> {
+export interface Options {
   /**
-   * URL where users should report unknown errors.
-   *
-   * @example 'https://github.com/my-name/my-project/issues'
-   */
-  readonly bugsUrl?: ErrorCustomClassesOptions['bugsUrl']
-
-  /**
-   * Called on any `new CustomError('message', parameters)`.
-   * Can be used to customize error parameters or to set error class properties.
-   * By default, any `parameters` are set as error properties.
+   * Set as error properties.
    *
    * @example
    * ```js
-   * modernErrors({
-   *   onCreate(error, parameters) {
-   *     const { filePath } = parameters
-   *
-   *     if (typeof filePath !== 'string') {
-   *       throw new Error('filePath must be a string.')
-   *     }
-   *
-   *     const hasFilePath = filePath !== undefined
-   *     Object.assign(error, { filePath, hasFilePath })
-   *   },
+   * const error = new InputError('Could not read the file.', {
+   *   props: { filePath: '/path' },
    * })
+   * console.log(error.filePath) // '/path'
    * ```
    */
-  readonly onCreate?: (
-    error: CustomError<ErrorNames, ErrorParamsArg>,
-    params: Parameters<
-      NonNullable<
-        ErrorCustomClassesOptions<ErrorNames, ErrorParamsArg>['onCreate']
-      >
-    >[1],
-  ) => ReturnType<
-    NonNullable<
-      ErrorCustomClassesOptions<ErrorNames, ErrorParamsArg>['onCreate']
-    >
-  >
-}
+  readonly props?: { [propName in InvalidProps]?: never } & {
+    [propName: string | symbol]: unknown
+  }
 
-type CustomErrors<
-  ErrorNames extends ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = {
-  [errorName in ErrorNames]: typeof CustomError<errorName, ErrorParamsArg>
+  /**
+   * URL where users should report errors.
+   *
+   * @example
+   * ```js
+   * throw new InputError('Could not read the file.', {
+   *   bugs: 'https://github.com/my-name/my-project/issues',
+   * })
+   * // InputError: Could not read the file.
+   * // Please report this bug at: https://github.com/my-name/my-project/issues
+   * ```
+   */
+  readonly bugs?: string | URL
 }
 
 /**
- * Any error name passed as argument is returned as an error class.
+ * Each known error class's `Error` ancestor class must be typed as `BaseError`.
+ * The type parameter must match the class's name.
  *
  * @example
  * ```js
- * export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
- *   modernErrors(['InputError', 'AuthError', 'DatabaseError'])
+ * export class InputError extends (Error as BaseError<"InputError">) {}
  * ```
  */
-export type Result<
-  ErrorNames extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = CustomErrors<ErrorNames, ErrorParamsArg> & {
+export type BaseError<BaseErrorName extends ErrorName> = typeof CustomError<
+  BaseErrorName,
+  Options
+>
+
+/**
+ * Base class of all `ErrorClasses` passed to `modernErrors()`.
+ * Contains all the features.
+ *
+ * @example
+ * ```js
+ * try {
+ *   throw new AuthError('Could not authenticate.')
+ * } catch (cause) {
+ *   throw new AnyError('Could not read the file.', { cause })
+ *   // Still an AuthError
+ * }
+ * ```
+ */
+type AnyError<ErrorClasses extends BaseError<ErrorName>> = ErrorClasses & {
   /**
-   * Error handler that should wrap each main function.
+   * Normalizes invalid errors and assigns the `UnknownError` class to
+   * _unknown_ errors. This should wrap each main function.
    *
    * @example
    * ```js
@@ -84,128 +75,39 @@ export type Result<
    *   try {
    *     return await readContents(filePath)
    *   } catch (error) {
-   *     // `errorHandler()` returns `error`, so `throw` must be used
-   *     throw errorHandler(error)
+   *     throw AnyError.normalize(error)
    *   }
    * }
    * ```
    */
-  errorHandler: ErrorHandler<ErrorNames, ErrorParamsArg>
-
-  /**
-   * Convert an error plain object into an `Error` instance.
-   *
-   * @example
-   * ```js
-   * try {
-   *   await readFile(filePath)
-   * } catch (cause) {
-   *   const error = new InputError('Could not read the file.', {
-   *     cause,
-   *     filePath: '/path',
-   *   })
-   *   const errorObject = error.toJSON()
-   *   // {
-   *   //   name: 'InputError',
-   *   //   message: 'Could not read the file',
-   *   //   stack: '...',
-   *   //   cause: { name: 'Error', ... },
-   *   //   filePath: '/path'
-   *   // }
-   *   const errorString = JSON.stringify(error)
-   *   // '{"name":"InputError",...}'
-   *   const newErrorObject = JSON.parse(errorString)
-   *   const newError = parse(newErrorObject)
-   *   // InputError: Could not read the file.
-   *   //   filePath: '/path'
-   *   //   [cause]: Error: ...
-   * }
-   * ```
-   */
-  parse: Parse<ErrorNames, ErrorParamsArg>
-}
-
-export declare class CustomError<
-  ErrorNames extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> extends RawCustomError<ErrorNames, ErrorParamsArg> {
-  /**
-   * Convert errors to plain objects that are
-   * [serializable](https://github.com/ehmicky/error-serializer#json-safety) to
-   * JSON
-   * ([or YAML](https://github.com/ehmicky/error-serializer#custom-serializationparsing),
-   * etc.). It is
-   * [automatically called](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior)
-   * by `JSON.stringify()`. All error properties
-   * [are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
-   * including
-   * [`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
-   *
-   * @example
-   * ```js
-   * try {
-   *   await readFile(filePath)
-   * } catch (cause) {
-   *   const error = new InputError('Could not read the file.', {
-   *     cause,
-   *     filePath: '/path',
-   *   })
-   *   const errorObject = error.toJSON()
-   *   // {
-   *   //   name: 'InputError',
-   *   //   message: 'Could not read the file',
-   *   //   stack: '...',
-   *   //   cause: { name: 'Error', ... },
-   *   //   filePath: '/path'
-   *   // }
-   *   const errorString = JSON.stringify(error)
-   *   // '{"name":"InputError",...}'
-   * }
-   * ```
-   */
-  toJSON: () => ReturnType<
-    typeof serialize<RawCustomError<ErrorNames, ErrorParamsArg>>
-  >
+  normalize(error: unknown): InstanceType<ErrorClasses>
 }
 
 /**
- * Type of `errorHandler()`
- */
-export type ErrorHandler<
-  ErrorNames extends ErrorName = ErrorName,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = (error: unknown) => CustomError<ErrorNames | 'UnknownError', ErrorParamsArg>
-
-/**
- * Type of `parse()`
- */
-export type Parse<
-  ErrorNames extends ErrorName = never,
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-> = <Argument>(
-  value: Argument,
-) => ReturnType<
-  typeof parse<
-    Argument,
-    { loose: true; classes: CustomErrors<ErrorNames, ErrorParamsArg> }
-  >
->
-
-export type { ErrorName, ErrorObject, ErrorParams }
-
-/**
- * Creates custom error classes.
+ * Changes the error classes' base class from `Error` to `AnyError`.
+ * One of the error classes must be named `UnknownError`.
  *
  * @example
  * ```js
- * export const { InputError, AuthError, DatabaseError, errorHandler, parse } =
- *   modernErrors(['InputError', 'AuthError', 'DatabaseError'])
+ * // Custom error classes
+ * export class InputError extends Error {}
+ * export class AuthError extends Error {}
+ * export class DatabaseError extends Error {}
+ * export class UnknownError extends Error {}
+ *
+ * // Base error class
+ * export const AnyError = modernErrors([
+ *   InputError,
+ *   AuthError,
+ *   DatabaseError,
+ *   UnknownError,
+ * ])
  * ```
  */
 export default function modernErrors<
-  ErrorParamsArg extends ErrorParams = ErrorParams,
-  ErrorNames extends ErrorName[] = [],
+  ErrorClasses extends BaseError<ErrorName>[],
 >(
-  errorNames: ErrorNames,
-  options?: Options<ErrorNames[number], ErrorParamsArg>,
-): Result<ErrorNames[number], ErrorParamsArg>
+  ErrorClasses: ErrorClasses,
+): BaseError<'UnknownError'> extends ErrorClasses[number]
+  ? AnyError<ErrorClasses[number]>
+  : never

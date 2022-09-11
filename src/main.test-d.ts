@@ -6,97 +6,117 @@ import {
   expectNotAssignable,
 } from 'tsd'
 
-import modernErrors, {
-  ErrorHandler,
-  Parse,
-  Options,
-  Result,
-  ErrorName,
-  ErrorObject,
-  CustomError,
-  ErrorParams,
-} from './main.js'
+import modernErrors, { AnyError, BaseError, Options } from './main.js'
 
-const result = modernErrors(['TestError'])
-const { TestError, errorHandler, parse } = result
-const testError = new TestError('test')
+class TestError extends (Error as BaseError<'TestError'>) {}
+class UnknownError extends (Error as BaseError<'UnknownError'>) {}
+const AnyError = modernErrors([TestError, UnknownError])
+
+expectError(class InvalidName extends (Error as BaseError<'InvalidName'>) {})
+expectError(class NoName extends (Error as BaseError) {})
 
 expectError(modernErrors())
-expectError(modernErrors('TestError'))
-expectError(modernErrors(['Test']))
+expectError(modernErrors(UnknownError))
+expectError(modernErrors([TestError, UnknownError, true]))
+expectError(modernErrors([TestError, UnknownError], {}))
 
-modernErrors([])
-modernErrors([], {})
-expectError(modernErrors([], true))
-expectAssignable<Options>({ bugsUrl: '' })
-expectNotAssignable<Options>({ test: true })
+expectType<never>(modernErrors([]))
+expectType<never>(modernErrors([TestError]))
+expectNotType<never>(modernErrors([UnknownError]))
 
-modernErrors([], { bugsUrl: '' })
-modernErrors([], { bugsUrl: new URL('') })
-expectError(modernErrors([], { bugsUrl: true }))
+expectAssignable<typeof TestError | typeof UnknownError>(AnyError)
+expectAssignable<BaseError<'TestError' | 'UnknownError'>>(AnyError)
 
-modernErrors([], { onCreate: (_: CustomError, __: { test?: boolean }) => {} })
-expectError(modernErrors([], { onCreate: true }))
-expectError(modernErrors([], { onCreate: (_: boolean) => {} }))
-
-expectAssignable<Result>(modernErrors([]))
-expectNotAssignable<Result>({})
-expectNotAssignable<Result>({ test: true })
-expectAssignable<Result['TestError']>(TestError)
-expectError(result.OtherError)
-
-expectAssignable<CustomError>(testError)
-expectType<CustomError<'TestError'>>(testError)
-expectType<InstanceType<typeof TestError>>(testError)
-expectType<typeof testError>(testError)
+const testError = new TestError('')
+expectType<TestError>(testError)
+expectAssignable<InstanceType<BaseError<'TestError' | 'UnknownError'>>>(
+  testError,
+)
+expectAssignable<InstanceType<typeof AnyError>>(testError)
+expectAssignable<typeof testError>(testError)
 expectAssignable<Error>(testError)
 expectType<'TestError'>(testError.name)
 
-expectAssignable<ErrorHandler>(errorHandler)
-expectType<CustomError<'TestError' | 'UnknownError'>>(errorHandler(undefined))
-expectType<CustomError<'TestError' | 'UnknownError'>>(
-  errorHandler(new Error('test')),
+const unknownError = new UnknownError('')
+expectType<UnknownError>(unknownError)
+expectAssignable<InstanceType<BaseError<'TestError' | 'UnknownError'>>>(
+  unknownError,
 )
-expectError(errorHandler(new Error('test'), true))
-expectAssignable<ErrorHandler>(() => new TestError('test'))
-expectNotAssignable<ErrorHandler>(() => {})
+expectAssignable<InstanceType<typeof AnyError>>(unknownError)
+expectAssignable<typeof unknownError>(unknownError)
+expectAssignable<Error>(unknownError)
+expectType<'UnknownError'>(unknownError.name)
 
-expectAssignable<ErrorName>('InputError')
-expectNotAssignable<ErrorName>('test')
-expectNotAssignable<ErrorName>(Symbol('InputError'))
+const anyError = new AnyError('')
+expectType<TestError | UnknownError>(anyError)
+expectAssignable<InstanceType<BaseError<'TestError' | 'UnknownError'>>>(
+  anyError,
+)
+expectAssignable<InstanceType<typeof AnyError>>(anyError)
+expectAssignable<typeof testError | typeof unknownError>(anyError)
+expectAssignable<Error>(anyError)
+expectType<'TestError' | 'UnknownError'>(anyError.name)
 
-expectNotAssignable<typeof CustomError>(TestError)
-expectType<typeof CustomError<'TestError'>>(TestError)
-expectType<typeof TestError>(TestError)
-expectNotAssignable<typeof CustomError<'TestError'>>(Error)
-expectNotAssignable<typeof CustomError>(() => {})
+const normalizedError = AnyError.normalize('')
+expectError(AnyError.normalize('', true))
+expectType<TestError | UnknownError>(normalizedError)
+expectAssignable<InstanceType<BaseError<'TestError' | 'UnknownError'>>>(
+  normalizedError,
+)
+expectAssignable<InstanceType<typeof AnyError>>(normalizedError)
+expectAssignable<typeof testError | typeof unknownError>(normalizedError)
+expectAssignable<Error>(normalizedError)
+expectType<'TestError' | 'UnknownError'>(normalizedError.name)
 
-const { InputError } = modernErrors(['InputError'], {
-  onCreate: (_: CustomError, __: { test?: boolean }) => {},
-})
-new InputError('message', { test: true })
-expectError(new InputError('message', { test: 'true' }))
-expectError(new InputError('message', { other: true }))
-expectAssignable<ErrorParams>({ anyProp: true })
-expectNotAssignable<ErrorParams>(true)
+if (anyError.name === 'TestError') {
+  expectType<TestError>(anyError)
+}
+if (testError.name === 'TestError') {
+  expectType<TestError>(testError)
+}
+if (anyError.name === 'UnknownError') {
+  expectType<UnknownError>(anyError)
+}
+if (anyError instanceof TestError) {
+  expectType<TestError>(anyError)
+}
+if (testError instanceof TestError) {
+  expectType<TestError>(testError)
+}
+if (anyError instanceof UnknownError) {
+  expectType<UnknownError>(anyError)
+}
+if (testError instanceof UnknownError) {
+  expectType<never>(testError)
+}
+if (anyError instanceof AnyError) {
+  expectType<TestError | UnknownError>(anyError)
+}
+if (testError instanceof AnyError) {
+  expectType<TestError>(testError)
+}
+if (anyError instanceof Error) {
+  expectType<TestError | UnknownError>(anyError)
+}
+if (testError instanceof Error) {
+  expectType<TestError>(testError)
+}
 
-modernErrors(['TestError', 'TestTwoError'], {
-  onCreate: (_: CustomError<'TestError' | 'TestTwoError'>) => {},
-})
+expectNotAssignable<Options>({ test: true })
 
-const { TestTwoError } = modernErrors(['TestTwoError'])
-const testTwoError = new TestTwoError('message')
-expectNotAssignable<typeof testError>(testTwoError)
+new TestError('', { bugs: 'test' })
+new UnknownError('', { bugs: 'test' })
+new AnyError('', { cause: testError, bugs: 'test' })
+expectAssignable<Options>({ bugs: 'test' })
+new TestError('', { bugs: new URL('https://example.com/test') })
+expectAssignable<Options>({ bugs: new URL('https://example.com/test') })
+expectError(new TestError('', { bugs: true }))
+expectNotAssignable<Options>({ bugs: true })
 
-expectType<Parse>(parse)
-expectType<true>(parse(true))
-expectType<Set<never>>(parse(new Set([])))
-expectType<Error>(parse(new Error('test')))
-expectNotType<Error>(parse({ name: 'TestError', message: '' }))
-expectType<Error>(parse({ name: 'TestError', message: '', stack: '' }))
-
-const errorObject = testError.toJSON()
-expectAssignable<ErrorObject>(errorObject)
-expectType<'TestError'>(errorObject.name)
-expectType<CustomError<'TestError'>>(parse(errorObject))
-expectType<InstanceType<typeof TestError>>(parse(errorObject))
+new TestError('', { props: { test: true } })
+new UnknownError('', { props: { test: true } })
+new AnyError('', { props: { test: true } })
+expectAssignable<Options>({ props: { test: true } })
+expectError(new TestError('', { props: true }))
+expectError(new TestError('', { props: { message: true } }))
+expectNotAssignable<Options>({ props: true })

@@ -1,37 +1,32 @@
-import createErrorTypes from 'create-error-types'
-import { polyfill } from 'error-cause-polyfill'
-import isPlainObj from 'is-plain-obj'
-import mergeErrorCause from 'merge-error-cause'
+import { createAnyError } from './any/main.js'
+import { createBaseError } from './base/main.js'
+import { normalizeInput } from './input.js'
+import { initKnownClasses } from './known/main.js'
+import { checkUnknownError } from './known/unknown.js'
 
-import { setErrorClassesToJSON, parseValue } from './serialize.js'
-
-// Create error classes and returns an `errorHandler(error) => error` function
-// to use as a top-level error handler.
-// Also:
-//  - merge `error.cause`, and polyfill it if unsupported
-export default function modernErrors(errorNames, opts) {
-  polyfill()
-  const { onCreate, bugsUrl } = getOpts(opts)
-  const { errorHandler: innerHandler, ...CustomErrorClasses } =
-    createErrorTypes(errorNames, { onCreate, bugsUrl })
-  const errorHandler = callErrorHandler.bind(undefined, innerHandler)
-  setErrorClassesToJSON(CustomErrorClasses)
-  const parse = parseValue.bind(undefined, CustomErrorClasses)
-  return { ...CustomErrorClasses, errorHandler, parse }
-}
-
-// Normalize and retrieve options
-const getOpts = function (opts = {}) {
-  if (!isPlainObj(opts)) {
-    throw new TypeError(`Options must be a plain object: ${opts}`)
-  }
-
-  return opts
-}
-
-// Apply `create-error-types` error handler and merge any `error.cause`.
-const callErrorHandler = function (innerHandler, error) {
-  const errorA = mergeErrorCause(error)
-  const errorB = innerHandler(errorA)
-  return mergeErrorCause(errorB)
+// Creates error classes.
+export default function modernErrors(classesOpts, plugins) {
+  const {
+    classesOpts: classesOptsA,
+    globalOpts,
+    plugins: pluginsA,
+  } = normalizeInput(classesOpts, plugins)
+  const state = {}
+  const errorData = new WeakMap()
+  const BaseError = createBaseError(state, errorData, pluginsA)
+  state.AnyError = createAnyError({
+    state,
+    globalOpts,
+    BaseError,
+    plugins: pluginsA,
+  })
+  state.KnownClasses = initKnownClasses({
+    classesOpts: classesOptsA,
+    globalOpts,
+    BaseError,
+    errorData,
+    plugins: pluginsA,
+  })
+  checkUnknownError(state.KnownClasses)
+  return { ...state.KnownClasses, AnyError: state.AnyError }
 }

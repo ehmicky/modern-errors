@@ -1,1 +1,3 @@
 extends: '@ehmicky/eslint-config/.eslintrc.yml'
+rules:
+  fp/no-class: 0
