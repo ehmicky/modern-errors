@@ -13,6 +13,20 @@ type CustomError<
   [message: string, options?: Options & ErrorOptions]
 >
 
+/**
+ * Each `custom` class's parent must be typed as `BaseError`.
+ *
+ * @example
+ * ```js
+ * modernErrors({
+ *   TestError: { custom: class extends (Error as BaseError) {} },
+ *   UnknownError: {},
+ * })
+ * ```
+ */
+export type BaseError<BaseErrorName extends ErrorName = ErrorName> =
+  CustomError<BaseErrorName>
+
 type MergeObjects<
   Parent extends object,
   Child extends object,
@@ -33,21 +47,6 @@ type MergeClasses<
 > &
   Omit<ParentClass, keyof ChildClass | keyof Class> &
   Omit<ChildClass, keyof Class>
-
-/**
- * Each `custom` class's parent must be typed as `BaseError`.
- * The type parameter must match the class's name.
- *
- * @example
- * ```js
- * modernErrors({
- *   TestError: { custom: class extends (Error as BaseError<'TestError'>) {} },
- *   UnknownError: {},
- * })
- * ```
- */
-export type BaseError<BaseErrorName extends ErrorName = ErrorName> =
-  CustomError<BaseErrorName>
 
 /**
  * Class-specific options
