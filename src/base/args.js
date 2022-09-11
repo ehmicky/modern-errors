@@ -19,5 +19,11 @@ export const normalizeConstructorArgs = function (opts = {}) {
     )
   }
 
+  if (opts.custom !== undefined) {
+    throw new TypeError(
+      `Error option "custom" must be passed to "modernErrors()", not to error constructors.`,
+    )
+  }
+
   return opts
 }
