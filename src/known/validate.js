@@ -52,7 +52,8 @@ const FORBIDDEN_ERROR_CLASSES = new Set([
 
 const isPassedTwice = function (ParentClass) {
   return (
-    ParentClass !== null && Object.getPrototypeOf(ParentClass) === CoreError
+    ParentClass === CoreError ||
+    (ParentClass !== null && isPassedTwice(Object.getPrototypeOf(ParentClass)))
   )
 }
 
