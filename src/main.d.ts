@@ -1,4 +1,13 @@
-import { CustomError, ErrorName } from 'error-custom-class'
+import { /* CustomError, */ ErrorName } from 'error-custom-class'
+
+// TODO: fix in `error-custom-class`
+type CustomError<
+  ErrorNameArg extends ErrorName = ErrorName,
+  Options extends object = object,
+> = Class<
+  Error & { name: ErrorNameArg },
+  [message: string, options?: Options & ErrorOptions]
+>
 
 type Class<Instance extends object = object, Args extends any[] = any[]> = {
   new (...args: Args): Instance
@@ -8,18 +17,18 @@ type Class<Instance extends object = object, Args extends any[] = any[]> = {
 type MergeObjects<
   Parent extends object,
   Child extends object,
-  KeptParentKeys,
-> = Child & Omit<Parent, Exclude<keyof Child, KeptParentKeys>>
+  KeptKeys extends PropertyKey = never,
+> = Child & Omit<Parent, Exclude<keyof Child, KeptKeys>>
 
 type MergeClasses<
   ParentClass extends Class,
   ChildClass extends Class,
-  KeptParentKeys extends string | symbol,
+  KeptParentInstanceProps extends string | symbol = never,
 > = Class<
   MergeObjects<
     InstanceType<ParentClass>,
     InstanceType<ChildClass>,
-    KeptParentKeys
+    KeptParentInstanceProps
   >,
   ConstructorParameters<ChildClass>
 > &
@@ -39,7 +48,7 @@ type MergeClasses<
  * ```
  */
 export type BaseError<BaseErrorName extends ErrorName = ErrorName> =
-  typeof CustomError<BaseErrorName>
+  CustomError<BaseErrorName>
 
 /**
  * Class-specific options
@@ -117,6 +126,18 @@ type ReturnErrorClass<
   ? MergeClasses<BaseError<ErrorNameArg>, CustomOption, 'name'>
   : BaseError<ErrorNameArg>
 
+type ReturnErrorInstance<
+  DefinitionsArg extends Definitions,
+  ErrorNameArg extends ErrorName,
+  CustomOption = DefinitionsArg[ErrorNameArg]['custom'],
+> = CustomOption extends Class<Error>
+  ? MergeObjects<
+      InstanceType<BaseError<ErrorNameArg>>,
+      InstanceType<CustomOption>,
+      'name'
+    >
+  : InstanceType<BaseError<ErrorNameArg>>
+
 /**
  * All error classes returned by `modernErrors()`
  */
@@ -127,12 +148,18 @@ type ReturnErrorClasses<DefinitionsArg extends Definitions> = {
   >
 }
 
-type AnyKnownClass<
+type AnyKnownInstance<
   DefinitionsArg extends Definitions,
   ErrorNameArg extends ErrorName = ClassNames<DefinitionsArg>,
 > = ErrorNameArg extends any
-  ? ReturnErrorClass<DefinitionsArg, ErrorNameArg>
+  ? ReturnErrorInstance<DefinitionsArg, ErrorNameArg>
   : never
+
+type AnyKnownClass<DefinitionsArg extends Definitions> = Class<
+  AnyKnownInstance<DefinitionsArg>,
+  ConstructorParameters<BaseError>
+> &
+  Omit<BaseError, keyof Class>
 
 /**
  * Base class of the `ErrorClasses` passed to `modernErrors()`.
@@ -164,7 +191,7 @@ type AnyError<DefinitionsArg extends Definitions> =
      * }
      * ```
      */
-    normalize(error: unknown): InstanceType<AnyKnownClass<DefinitionsArg>>
+    normalize(error: unknown): AnyKnownInstance<DefinitionsArg>
   }
 
 /**
