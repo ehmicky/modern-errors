@@ -38,7 +38,7 @@ type MergeClasses<
  * })
  * ```
  */
-export type BaseError<BaseErrorName extends ErrorName> =
+export type BaseError<BaseErrorName extends ErrorName = ErrorName> =
   typeof CustomError<BaseErrorName>
 
 /**
