@@ -71,9 +71,8 @@ type ClassOptions = {
  *   - Each value is an object with the class options.
  */
 type Definitions = {
-  readonly [ErrorNameArg in ErrorName]: ClassOptions
-} & {
   readonly UnknownError: ClassOptions
+  readonly [ErrorNameArg: ErrorName]: ClassOptions
 }
 
 type ClassNames<DefinitionsArg extends Definitions> = Exclude<
