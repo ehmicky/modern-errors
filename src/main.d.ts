@@ -5,11 +5,22 @@ type Class<Instance extends object = object, Args extends any[] = any[]> = {
   prototype: Instance
 }
 
-type MergeObjects<Parent extends object, Child extends object> = Child &
-  Omit<Parent, keyof Child>
+type MergeObjects<
+  Parent extends object,
+  Child extends object,
+  KeptParentKeys,
+> = Child & Omit<Parent, Exclude<keyof Child, KeptParentKeys>>
 
-type MergeClasses<ParentClass extends Class, ChildClass extends Class> = Class<
-  MergeObjects<InstanceType<ParentClass>, InstanceType<ChildClass>>,
+type MergeClasses<
+  ParentClass extends Class,
+  ChildClass extends Class,
+  KeptParentKeys extends string | symbol,
+> = Class<
+  MergeObjects<
+    InstanceType<ParentClass>,
+    InstanceType<ChildClass>,
+    KeptParentKeys
+  >,
   ConstructorParameters<ChildClass>
 > &
   Omit<ParentClass, keyof ChildClass | keyof Class> &
@@ -103,7 +114,7 @@ type ReturnErrorClass<
   ErrorNameArg extends ErrorName,
   CustomOption = DefinitionsArg[ErrorNameArg]['custom'],
 > = CustomOption extends Class<Error>
-  ? MergeClasses<BaseError<ErrorNameArg>, CustomOption>
+  ? MergeClasses<BaseError<ErrorNameArg>, CustomOption, 'name'>
   : BaseError<ErrorNameArg>
 
 /**

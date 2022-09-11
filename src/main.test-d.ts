@@ -8,7 +8,7 @@ type UnknownBaseErrorClass = BaseError<'UnknownError'>
 type UnknownBaseErrorInstance = InstanceType<UnknownBaseErrorClass>
 
 const { TestError, UnknownError, AnyError } = modernErrors({
-  TestError: { custom: class extends (Error as TestBaseErrorClass) {} },
+  TestError: { custom: class extends Error {} },
   UnknownError: {},
 })
 type TestErrorClass = typeof TestError
