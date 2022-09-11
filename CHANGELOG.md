@@ -263,7 +263,7 @@ Error classes should now be exported to be re-used across modules.
 ### TypeScript types
 
 - Removed TypeScript types `Result`, `ErrorHandler`, `Parse`, `ErrorName`,
-  `ErrorObject` and `ErrorParams`
+  `ErrorObject`, `ErrorParams` and `Options`
 - Renamed TypeScript types `CustomError` to `BaseError`
 
 ## Features
