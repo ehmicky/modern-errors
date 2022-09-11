@@ -103,14 +103,18 @@ if (testError instanceof Error) {
   expectType<TestErrorInstance>(testError)
 }
 
+expectError(Error as BaseError)
+expectError(Error as BaseError<'InvalidName'>)
 expectError(
   modernErrors({
     TestError: { custom: class extends Object {} },
     UnknownError: {},
   }).TestError,
 )
-expectError(Error as BaseError<'InvalidName'>)
-expectError(Error as BaseError)
+modernErrors({
+  TestError: { custom: class extends (Error as TestBaseErrorClass) {} },
+  UnknownError: {},
+})
 
 const { OneError } = modernErrors({
   OneError: {
