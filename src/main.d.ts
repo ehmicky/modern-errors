@@ -1,5 +1,20 @@
 import { CustomError, ErrorName } from 'error-custom-class'
 
+type Class<Instance extends object = object, Args extends any[] = any[]> = {
+  new (...args: Args): Instance
+  prototype: Instance
+}
+
+type MergeObjects<Parent extends object, Child extends object> = Child &
+  Omit<Parent, keyof Child>
+
+type MergeClasses<ParentClass extends Class, ChildClass extends Class> = Class<
+  MergeObjects<InstanceType<ParentClass>, InstanceType<ChildClass>>,
+  ConstructorParameters<ChildClass>
+> &
+  Omit<ParentClass, keyof ChildClass | keyof Class> &
+  Omit<ChildClass, keyof Class>
+
 /**
  * Each `custom` class's parent must be typed as `BaseError`.
  * The type parameter must match the class's name.
@@ -61,7 +76,7 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: BaseError<ErrorName>
+  readonly custom?: Class<Error>
 }
 
 /**
@@ -87,10 +102,8 @@ type ReturnErrorClass<
   DefinitionsArg extends Definitions,
   ErrorNameArg extends ErrorName,
   CustomOption = DefinitionsArg[ErrorNameArg]['custom'],
-> = CustomOption extends BaseError<ErrorName>
-  ? CustomOption extends BaseError<ErrorNameArg>
-    ? CustomOption
-    : never
+> = CustomOption extends Class<Error>
+  ? MergeClasses<BaseError<ErrorNameArg>, CustomOption>
   : BaseError<ErrorNameArg>
 
 /**
