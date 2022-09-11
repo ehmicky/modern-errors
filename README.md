@@ -454,6 +454,7 @@ additional methods, `constructor` or properties. It must extend from
 
 ```js
 const { InputError, UnknownError, AnyError } = modernErrors({
+  // `*.custom` applies to a single class
   InputError: {
     custom: class extends Error {
       constructor(message, options) {
@@ -466,12 +467,18 @@ const { InputError, UnknownError, AnyError } = modernErrors({
         // `name` is automatically added, so this is not necessary
         // this.name = 'InputError'
       }
+    },
+  },
 
+  // `AnyError.custom` applies to all classes
+  AnyError: {
+    custom: class extends Error {
       isUserInput() {
         return this.message.includes('user')
       }
     },
   },
+
   UnknownError: {},
 })
 
