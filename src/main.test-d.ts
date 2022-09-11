@@ -114,7 +114,7 @@ expectError(Error as BaseError)
 
 const { OneError } = modernErrors({
   OneError: {
-    custom: class extends (Error as BaseError<'OneError'>) {
+    custom: class extends Error {
       prop = true as const
     },
   },
