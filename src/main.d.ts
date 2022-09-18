@@ -43,6 +43,16 @@ type ClassOptions = {
   readonly custom?: AnyError
 }
 
+type CustomErrorClass<
+  ErrorNameArg extends ErrorName,
+  CustomOption extends NonNullable<ClassOptions['custom']>,
+> = {
+  new (
+    ...args: ConstructorParameters<CustomOption>
+  ): InstanceType<CustomOption> & { name: ErrorNameArg }
+  prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
+} & Omit<CustomOption, 'prototype'>
+
 /**
  * Error class returned by `AnyError.create()`
  */
@@ -50,12 +60,7 @@ type ErrorClass<
   ErrorNameArg extends ErrorName,
   OptionsArgs extends ClassOptions,
 > = OptionsArgs['custom'] extends NonNullable<ClassOptions['custom']>
-  ? {
-      new (...args: ConstructorParameters<OptionsArgs['custom']>): InstanceType<
-        OptionsArgs['custom']
-      > & { name: ErrorNameArg }
-      prototype: InstanceType<OptionsArgs['custom']> & { name: ErrorNameArg }
-    } & Omit<OptionsArgs['custom'], 'prototype'>
+  ? CustomErrorClass<ErrorNameArg, OptionsArgs['custom']>
   : {
       new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
       prototype: ErrorInstance<ErrorNameArg>
