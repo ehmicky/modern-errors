@@ -1,19 +1,11 @@
 import { setErrorName } from 'error-class-utils'
 
-import { addAllStaticMethods } from './static.js'
-
 // Create `AnyError` class, used to wrap errors without changing their class
-export const createAnyError = function ({
-  state,
-  globalOpts,
-  BaseError,
-  plugins,
-}) {
+export const createAnyError = function (BaseError) {
   class AnyError extends BaseError {
     static [Symbol.hasInstance] = hasKnownClass.bind(undefined, BaseError)
   }
   setErrorName(AnyError, 'AnyError')
-  addAllStaticMethods({ plugins, globalOpts, AnyError, state })
   return AnyError
 }
 

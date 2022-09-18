@@ -8,6 +8,7 @@ import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
 import { addAllInstanceMethods } from './instance.js'
 import { normalize } from './normalize.js'
+import { addAllStaticMethods } from './static.js'
 import { validateClass } from './validate.js'
 
 export const CoreError = errorCustomClass('CoreError')
@@ -16,7 +17,12 @@ export const CoreError = errorCustomClass('CoreError')
 // This is not a global class since it is bound to call-specific plugins.
 //  - This means the same class cannot be extended twice by `modernErrors()`
 //    since this would change its `BaseError`
-export const createBaseError = function (state, errorData, plugins) {
+export const createBaseError = function ({
+  state,
+  errorData,
+  globalOpts,
+  plugins,
+}) {
   /* eslint-disable fp/no-this */
   class BaseError extends CoreError {
     constructor(message, opts) {
@@ -66,5 +72,6 @@ export const createBaseError = function (state, errorData, plugins) {
   /* eslint-enable fp/no-this */
   setErrorName(BaseError, 'BaseError')
   addAllInstanceMethods({ plugins, errorData, BaseError, state })
+  addAllStaticMethods({ plugins, globalOpts, BaseError, state })
   return BaseError
 }

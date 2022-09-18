@@ -14,14 +14,14 @@ export default function modernErrors(classesOpts, plugins) {
   } = normalizeInput(classesOpts, plugins)
   const state = {}
   const errorData = new WeakMap()
-  const BaseError = createBaseError(state, errorData, pluginsA)
-  state.GlobalBaseError = createGlobalBaseError(globalOpts, BaseError)
-  state.AnyError = createAnyError({
+  const BaseError = createBaseError({
     state,
+    errorData,
     globalOpts,
-    BaseError,
     plugins: pluginsA,
   })
+  state.GlobalBaseError = createGlobalBaseError(globalOpts, BaseError)
+  state.AnyError = createAnyError(BaseError)
   state.KnownClasses = initKnownClasses({
     classesOpts: classesOptsA,
     globalOpts,
