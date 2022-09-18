@@ -1,4 +1,5 @@
 import { validateNonEmpty } from '../any/subclass.js'
+import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
 
 import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
@@ -74,7 +75,7 @@ const validateMethodName = function (methodName, plugin, plugins) {
 }
 
 const validateNativeName = function (methodName, plugin) {
-  if (methodName in Error) {
+  if (methodName in Error || ANY_ERROR_STATIC_METHODS.includes(methodName)) {
     throw new Error(
       `Plugin "${plugin.fullName}" must not redefine "Error.${methodName}()"`,
     )

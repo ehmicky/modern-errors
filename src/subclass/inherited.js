@@ -49,7 +49,7 @@ const getInheritedMethods = function (plugins) {
   ]
 }
 
-const ANY_ERROR_STATIC_METHODS = ['subclass', 'normalize']
+export const ANY_ERROR_STATIC_METHODS = ['subclass', 'normalize']
 
 const getPluginStaticMethods = function ({ staticMethods }) {
   return Object.keys(staticMethods)

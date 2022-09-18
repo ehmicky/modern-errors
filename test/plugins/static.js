@@ -45,7 +45,11 @@ test('plugin.staticMethods cannot be defined twice by different plugins', (t) =>
 })
 
 each(
-  [...new Set([...Reflect.ownKeys(Error), ...Reflect.ownKeys(Function)])],
+  [
+    'subclass',
+    'normalize',
+    ...new Set([...Reflect.ownKeys(Error), ...Reflect.ownKeys(Function)]),
+  ],
   ({ title }, propName) => {
     test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
       t.throws(
