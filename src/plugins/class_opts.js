@@ -7,6 +7,19 @@ import { normalizePluginOpts } from './normalize.js'
 // classes.
 // Those are validated right away, before merging to class options, since they
 // are used on their own by plugins static methods.
+// This is not redundant with sharing options with `ErrorClass.class()` because
+// this:
+//   - Is simpler and more convenient
+//   - Applies to `AnyError.*` static methods
+//      - It should conceptually (and for typing purpose) be declared before
+//        `AnyError` is created
+//   - Encourages plugins to use global options
+//      - As opposed to alternatives:
+//         - Using functions that take options as argument and return a plugin
+//         - Passing options as arguments to instance|static methods
+//      - To ensure:
+//         - A consistent, single way of configuring plugins
+//         - Options can be specified at different levels
 export const getGlobalOpts = function (plugins, globalOpts = {}) {
   if (!isPlainObj(globalOpts)) {
     throw new TypeError(
