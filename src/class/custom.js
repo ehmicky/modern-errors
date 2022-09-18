@@ -12,25 +12,18 @@ import { setInheritedMethods } from './inherited.js'
 // We allow `ErrorClass.class()` to create subclasses.
 export const getErrorClass = function ({
   ParentError,
-  AnyError,
   className,
   custom,
   plugins,
 }) {
-  const customA = validateCustomClass(custom, ParentError)
-  const ErrorClass = class extends customA {}
+  const ClassParent = getClassParent(custom, ParentError)
+  const ErrorClass = class extends ClassParent {}
   setErrorName(ErrorClass, className)
-  setInheritedMethods({
-    ErrorClass,
-    custom: customA,
-    plugins,
-    className,
-    AnyError,
-  })
+  setInheritedMethods({ ErrorClass, custom, plugins, className })
   return ErrorClass
 }
 
-const validateCustomClass = function (custom, ParentError) {
+const getClassParent = function (custom, ParentError) {
   if (custom === undefined) {
     return ParentError
   }

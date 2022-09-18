@@ -13,16 +13,19 @@ const { TestError, AnyError } = defineSimpleClass()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
-test('Parent class is AnyError by default', (t) => {
+test('Custom option defaults to parent class with AnyError', (t) => {
   t.is(Object.getPrototypeOf(TestError), AnyError)
 })
 
-test('AnyError cannot be passed as is', (t) => {
-  t.throws(
-    defineClassesOpts.bind(undefined, (TestAnyError) => ({
-      ShallowError: { custom: TestAnyError },
-    })),
-  )
+test('Custom option defaults to parent class with subclasses', (t) => {
+  t.is(Object.getPrototypeOf(TestError.class('DefaultTestError')), TestError)
+})
+
+each([AnyError, TestError], ({ title }, ParentError) => {
+  test(`Parent error cannot be passed as is | ${title}`, (t) => {
+    // eslint-disable-next-line max-nested-callbacks
+    t.throws(() => ParentError.class('SelfError', { custom: ParentError }))
+  })
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {

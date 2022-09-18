@@ -33,17 +33,10 @@ export const setInheritedMethods = function ({
   custom,
   plugins,
   className,
-  AnyError,
 }) {
   const inheritedMethods = getInheritedMethods(plugins)
   inheritedMethods.forEach((inheritedMethod) => {
-    setInheritedMethod({
-      ErrorClass,
-      custom,
-      inheritedMethod,
-      className,
-      AnyError,
-    })
+    setInheritedMethod({ ErrorClass, custom, inheritedMethod, className })
   })
 }
 
@@ -67,9 +60,8 @@ const setInheritedMethod = function ({
   custom,
   inheritedMethod,
   className,
-  AnyError,
 }) {
-  if (custom !== AnyError && hasOwn.call(custom, inheritedMethod)) {
+  if (custom !== undefined && hasOwn.call(custom, inheritedMethod)) {
     throw new TypeError(
       `Invalid "custom" option for "${className}": "${inheritedMethod}()" must not be defined because "AnyError.${inheritedMethod}()" already exists.`,
     )

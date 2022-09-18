@@ -11,7 +11,7 @@ import { checkUnknownError } from './unknown.js'
 //  - This also makes it clearer to types, simplifying them
 //  - This removes any need to mutate any `custom` class
 export const createClass = function (
-  { globalOpts, ParentError, AnyError, ErrorClasses, plugins },
+  { globalOpts, ParentError, ErrorClasses, plugins },
   className,
   classOpts,
 ) {
@@ -21,19 +21,12 @@ export const createClass = function (
     globalOpts,
     classOpts,
   )
-  const ErrorClass = getErrorClass({
-    ParentError,
-    AnyError,
-    className,
-    custom,
-    plugins,
-  })
+  const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(ErrorClass, 'class', {
     value: createClass.bind(undefined, {
       globalOpts,
       ParentError: ErrorClass,
-      AnyError,
       ErrorClasses,
       plugins,
     }),
