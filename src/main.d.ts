@@ -57,11 +57,12 @@ type CustomErrorClass<
   ErrorNameArg extends ErrorName,
   ParentErrorInstance extends ErrorInstance,
   CustomOption extends ErrorConstructor<ParentErrorInstance>,
+  ChildErrorInstance extends ErrorInstance = InstanceType<CustomOption> & {
+    name: ErrorNameArg
+  },
 > = {
-  new (
-    ...args: ConstructorParameters<CustomOption>
-  ): InstanceType<CustomOption> & { name: ErrorNameArg }
-  prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
+  new (...args: ConstructorParameters<CustomOption>): ChildErrorInstance
+  prototype: ChildErrorInstance
 } & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
 type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
