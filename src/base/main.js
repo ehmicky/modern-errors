@@ -38,7 +38,7 @@ export const CoreError = errorCustomClass('CoreError')
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
 export const createAnyError = function ({
-  state,
+  KnownClasses,
   errorData,
   globalOpts,
   plugins,
@@ -46,14 +46,10 @@ export const createAnyError = function ({
   /* eslint-disable fp/no-this */
   class AnyError extends CoreError {
     constructor(message, opts) {
-      const {
-        KnownClasses,
-        KnownClasses: { UnknownError },
-      } = state
       const isAnyError = new.target === AnyError
       const optsA = normalizeConstructorArgs({
         opts,
-        UnknownError,
+        UnknownError: KnownClasses.UnknownError,
         AnyError,
         isAnyError,
       })
@@ -89,7 +85,7 @@ export const createAnyError = function ({
   }
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
-  addAllInstanceMethods({ plugins, errorData, AnyError, state })
-  addAllStaticMethods({ plugins, globalOpts, AnyError, state })
+  addAllInstanceMethods({ plugins, KnownClasses, errorData, AnyError })
+  addAllStaticMethods({ plugins, globalOpts, KnownClasses, AnyError })
   return AnyError
 }

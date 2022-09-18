@@ -4,21 +4,21 @@ import { getErrorOpts } from '../plugins/normalize.js'
 // `AnyError.prototype.*`.
 export const addAllInstanceMethods = function ({
   plugins,
+  KnownClasses,
   errorData,
   AnyError,
-  state,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, errorData, AnyError, state })
+    addInstanceMethods({ plugin, KnownClasses, errorData, AnyError })
   })
 }
 
 const addInstanceMethods = function ({
   plugin,
   plugin: { instanceMethods },
+  KnownClasses,
   errorData,
   AnyError,
-  state,
 }) {
   if (instanceMethods === undefined) {
     return
@@ -29,9 +29,9 @@ const addInstanceMethods = function ({
       methodName,
       methodFunc,
       plugin,
+      KnownClasses,
       errorData,
       AnyError,
-      state,
     })
   })
 }
@@ -40,16 +40,16 @@ const addInstanceMethod = function ({
   methodName,
   methodFunc,
   plugin,
+  KnownClasses,
   errorData,
   AnyError,
-  state,
 }) {
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
     const error = this
     const options = getErrorOpts(error, errorData, plugin)
     return methodFunc(
-      { error, options, AnyError, KnownClasses: { ...state.KnownClasses } },
+      { error, options, AnyError, KnownClasses: { ...KnownClasses } },
       ...args,
     )
   }

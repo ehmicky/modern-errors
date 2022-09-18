@@ -11,29 +11,29 @@ export const initKnownClasses = function ({
   classesOpts,
   globalOpts,
   AnyError,
+  KnownClasses,
   errorData,
   plugins,
 }) {
   const GlobalAnyError = createGlobalAnyError(globalOpts, AnyError)
-  return Object.fromEntries(
-    Object.entries(classesOpts).map(([className, classOpts]) => [
+  Object.entries(classesOpts).forEach(([className, classOpts]) => {
+    initKnownClass({
       className,
-      initKnownClass({
-        className,
-        classOpts,
-        GlobalAnyError,
-        errorData,
-        plugins,
-        globalOpts,
-      }),
-    ]),
-  )
+      classOpts,
+      GlobalAnyError,
+      KnownClasses,
+      errorData,
+      plugins,
+      globalOpts,
+    })
+  })
 }
 
 const initKnownClass = function ({
   className,
   classOpts,
   GlobalAnyError,
+  KnownClasses,
   errorData,
   plugins,
   globalOpts,
@@ -53,5 +53,6 @@ const initKnownClass = function ({
     errorData,
     plugins,
   })
-  return ErrorClass
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
+  KnownClasses[className] = ErrorClass
 }

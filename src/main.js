@@ -10,22 +10,22 @@ export default function modernErrors(classesOpts, plugins) {
     globalOpts,
     plugins: pluginsA,
   } = normalizeInput(classesOpts, plugins)
-  const state = {}
+  const KnownClasses = {}
   const errorData = new WeakMap()
   const AnyError = createAnyError({
-    state,
+    KnownClasses,
     errorData,
     globalOpts,
     plugins: pluginsA,
   })
-  const KnownClasses = initKnownClasses({
+  initKnownClasses({
     classesOpts: classesOptsA,
     globalOpts,
     AnyError,
+    KnownClasses,
     errorData,
     plugins: pluginsA,
   })
-  state.KnownClasses = KnownClasses
   checkUnknownError(KnownClasses)
   return { ...KnownClasses, AnyError }
 }
