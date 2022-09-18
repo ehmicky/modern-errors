@@ -5,13 +5,13 @@ type Class<Instance extends object = object, Args extends any[] = any[]> = {
   prototype: Instance
 }
 
-declare class CustomError<
+type CustomError<
   ErrorNameArg extends ErrorName = ErrorName,
   Options extends object = object,
-> extends Error {
-  constructor(message: string, options?: Options & ErrorOptions)
-  name: ErrorNameArg
-}
+> = Class<
+  Error & { name: ErrorNameArg },
+  [message: string, options?: Options & ErrorOptions]
+>
 
 /**
  * Class-specific options
@@ -47,7 +47,7 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: typeof AnyError<ErrorName>
+  readonly custom?: AnyError<ErrorName>
 }
 
 /**
@@ -58,7 +58,7 @@ type ErrorClass<
   OptionsArgs extends ClassOptions,
 > = OptionsArgs['custom'] extends NonNullable<ClassOptions['custom']>
   ? OptionsArgs['custom']
-  : typeof AnyError<ErrorNameArg>
+  : AnyError<ErrorNameArg>
 
 /**
  * Base error class.
@@ -73,9 +73,7 @@ type ErrorClass<
  * }
  * ```
  */
-declare class AnyError<
-  ErrorNameArg extends ErrorName,
-> extends CustomError<ErrorNameArg> {
+type AnyError<ErrorNameArg extends ErrorName> = CustomError<ErrorNameArg> & {
   /**
    * Creates and returns an error class.
    * The first error class must be named `UnknownError`.
@@ -85,10 +83,7 @@ declare class AnyError<
    * export const InputError = AnyError.create('InputError', options)
    * ```
    */
-  static create<
-    ErrorNameArg extends ErrorName,
-    OptionsArg extends ClassOptions = {},
-  >(
+  create<ErrorNameArg extends ErrorName, OptionsArg extends ClassOptions = {}>(
     errorName: ErrorNameArg,
     options?: OptionsArg,
   ): ErrorClass<ErrorNameArg, OptionsArg>
@@ -108,7 +103,7 @@ declare class AnyError<
    * }
    * ```
    */
-  static normalize(error: unknown): CustomError<ErrorName>
+  normalize(error: unknown): InstanceType<CustomError<ErrorName>>
 }
 
 /**
@@ -126,4 +121,4 @@ declare class AnyError<
  *  export const DatabaseError = AnyError.create('DatabaseError')
  * ```
  */
-export default function modernErrors(): typeof AnyError<ErrorName>
+export default function modernErrors(): AnyError<ErrorName>
