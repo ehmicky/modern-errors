@@ -4,7 +4,7 @@ import { getErrorClass } from './custom.js'
 import { validateClassName } from './name.js'
 import { checkUnknownError } from './unknown.js'
 
-// Validate, normalize and create each error class.
+// Validate, normalize and create an error class.
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes
 export const create = function (
