@@ -98,3 +98,14 @@ test('"custom" option is not modified', (t) => {
   }))
   t.is(Object.getPrototypeOf(InputError).name, 'ReadonlyClass')
 })
+
+test('"custom" option can be shared', (t) => {
+  const { TwoError } = defineClassesOpts((TestAnyError) => {
+    class ParentClass extends TestAnyError {}
+    return {
+      OneError: { custom: ParentClass },
+      TwoError: { custom: ParentClass },
+    }
+  })
+  t.is(Object.getPrototypeOf(TwoError).name, 'ParentClass')
+})
