@@ -7,7 +7,6 @@ export const validateCustomClass = function (custom, AnyError, propName) {
   }
 
   validateClass(custom, AnyError, propName)
-  validateParent(custom, AnyError, propName)
   validatePrototype(custom, propName)
 }
 
@@ -31,36 +30,6 @@ const FORBIDDEN_ERROR_CLASSES = new Set([
   URIError,
   EvalError,
 ])
-
-// We do not allow the custom class to extend from `Error` indirectly since:
-//  - Composition can usually be used instead of inheritance
-//  - Whether the indirect parent is a known class or not would be ambiguous
-//  - This removes any complexity due to two custom classes sharing the same
-//    parent
-//  - User might not expect parent classes to be mutated
-const validateParent = function (custom, AnyError, propName) {
-  const ParentClass = Object.getPrototypeOf(custom)
-
-  if (isPassedTwice(ParentClass, AnyError)) {
-    throw new TypeError(
-      `The "${propName}.custom" class must not be passed to modernErrors() twice.`,
-    )
-  }
-
-  if (ParentClass !== Error) {
-    throw new TypeError(
-      `The "${propName}.custom" class must extend from Error.`,
-    )
-  }
-}
-
-const isPassedTwice = function (ParentClass, AnyError) {
-  return (
-    ParentClass === AnyError ||
-    (ParentClass !== null &&
-      isPassedTwice(Object.getPrototypeOf(ParentClass), AnyError))
-  )
-}
 
 const validatePrototype = function (custom, propName) {
   if (typeof custom.prototype !== 'object' || custom.prototype === null) {

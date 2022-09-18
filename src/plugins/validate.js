@@ -1,12 +1,13 @@
 import isPlainObj from 'is-plain-obj'
 
-// Validate plugins
-export const validatePlugins = function (plugins) {
+// Validate and normalize plugins
+export const normalizePlugins = function (plugins = []) {
   if (!Array.isArray(plugins)) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
   plugins.forEach(validatePlugin)
+  return plugins
 }
 
 const validatePlugin = function (plugin) {

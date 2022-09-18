@@ -21,13 +21,19 @@ export const definePlugins = function (plugins) {
 }
 
 export const defineClassesOpts = function (
-  ErrorClasses,
+  { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
   globalOpts = {},
   plugins = [TEST_PLUGIN],
 ) {
   const AnyError = modernErrors(plugins, globalOpts)
-  const KnownClasses = AnyError.create({ UnknownError: {}, ...ErrorClasses })
-  return { AnyError, ...KnownClasses }
+  const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
+  const KnownClasses = Object.fromEntries(
+    Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
+      errorName,
+      AnyError.create(errorName, classOpts),
+    ]),
+  )
+  return { AnyError, UnknownError, ...KnownClasses }
 }
 
 export const TEST_PLUGIN = {

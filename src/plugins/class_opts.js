@@ -6,7 +6,7 @@ import { normalizePluginOpts } from './normalize.js'
 // `AnyError.*` can be defined to apply global options, i.e. to all classes.
 // Those are validated right away, before merging to class options, since they
 // are used on their own by static methods.
-export const getGlobalOpts = function (globalOpts, plugins) {
+export const getGlobalOpts = function (plugins, globalOpts = {}) {
   if (!isPlainObj(globalOpts)) {
     throw new TypeError(
       `The second argument must be a plain object: ${globalOpts}`,
@@ -22,16 +22,17 @@ export const getGlobalOpts = function (globalOpts, plugins) {
 // Validate and compute class options when `modernErrors()` is called so this
 // throws at load time instead of at runtime.
 // Merging priority is: global < class < instance options.
-export const setClassOpts = function ({
-  ErrorClass,
-  globalOpts,
-  classOpts,
-  errorData,
-  plugins,
-}) {
-  const classOptsA = mergePluginsOpts(globalOpts, classOpts, plugins)
-  errorData.set(ErrorClass, { classOpts: classOptsA })
+export const getClassOpts = function (plugins, globalOpts, classOpts = {}) {
+  if (!isPlainObj(classOpts)) {
+    throw new TypeError(
+      `The second argument must be a plain object: ${globalOpts}`,
+    )
+  }
+
+  const { custom, ...classOptsA } = classOpts
+  const classOptsB = mergePluginsOpts(globalOpts, classOptsA, plugins)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(classOptsA, plugin)
+    normalizePluginOpts(classOptsB, plugin)
   })
+  return { custom, classOpts: classOptsB }
 }

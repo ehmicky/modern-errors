@@ -3,7 +3,7 @@ import { each } from 'test-each'
 
 import { defineSimpleClass, defineCustomClass } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { AnyError } = defineSimpleClass()
 
 each(
   [
@@ -23,10 +23,6 @@ each(
     })
   },
 )
-
-test('Cannot pass twice the same classes', (t) => {
-  t.throws(() => defineCustomClass(TestError))
-})
 
 test('Cannot pass AnyError', (t) => {
   t.throws(() => defineCustomClass(AnyError))
