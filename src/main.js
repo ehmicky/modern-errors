@@ -1,7 +1,6 @@
 import { createAnyError } from './base/main.js'
 import { normalizeInput } from './input.js'
 import { initKnownClasses } from './known/init.js'
-import { checkUnknownError } from './known/unknown.js'
 
 // Creates error classes.
 export default function modernErrors(classesOpts, plugins) {
@@ -26,6 +25,5 @@ export default function modernErrors(classesOpts, plugins) {
     errorData,
     plugins: pluginsA,
   })
-  checkUnknownError(KnownClasses)
   return { ...KnownClasses, AnyError }
 }

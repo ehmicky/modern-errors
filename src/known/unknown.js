@@ -9,9 +9,13 @@ import normalizeException from 'normalize-exception'
 //    problematic in error handling logic
 //  - There could be some potential use cases, e.g. if a branch is never meant
 //    to happen unless some unknown bug happened
-export const checkUnknownError = function ({ UnknownError }) {
+export const checkUnknownError = function (ErrorClass, className) {
+  if (className !== 'UnknownError') {
+    return
+  }
+
   POSSIBLE_CAUSES.forEach((cause) => {
-    checkUnknownErrorCause(UnknownError, cause)
+    checkUnknownErrorCause(ErrorClass, cause)
   })
 }
 

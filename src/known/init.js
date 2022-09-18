@@ -3,6 +3,7 @@ import isPlainObj from 'is-plain-obj'
 import { setClassOpts } from '../plugins/class_opts.js'
 
 import { getErrorClass, createGlobalAnyError } from './custom.js'
+import { checkUnknownError } from './unknown.js'
 
 // Validate, normalize and create each error class.
 // `setErrorName()` also checks that `name` is a string and is not one of the
@@ -55,4 +56,5 @@ const initKnownClass = function ({
   })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   KnownClasses[className] = ErrorClass
+  checkUnknownError(ErrorClass, className)
 }
