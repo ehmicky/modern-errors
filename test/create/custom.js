@@ -22,16 +22,15 @@ each(
       parentClassName: 'AnyError',
     },
     {
-      ErrorClass: defineClassesOpts(
-        { InputError: { custom: class extends Error {} } },
-        { custom: class extends Error {} },
-      ).InputError,
+      ErrorClass: defineClassesOpts((AnyError) => ({
+        InputError: { custom: class SharedError extends AnyError {} },
+      })).InputError,
       className: 'InputError',
-      parentClassName: 'GlobalAnyError',
+      parentClassName: 'SharedError',
     },
   ],
   ({ title }, { ErrorClass, className, parentClassName }) => {
-    test(`Errors extend from AnyError or GlobalAnyError | ${title}`, (t) => {
+    test(`Errors extend from AnyError | ${title}`, (t) => {
       t.is(Object.getPrototypeOf(ErrorClass).name, parentClassName)
       t.is(Object.getPrototypeOf(ErrorClass.prototype).name, parentClassName)
     })
@@ -49,14 +48,7 @@ each(
 )
 
 each(
-  [
-    'GlobalAnyError',
-    'Error',
-    'TypeError',
-    'inputError',
-    'input_error',
-    'input',
-  ],
+  ['Error', 'TypeError', 'inputError', 'input_error', 'input'],
   ({ title }, errorName) => {
     test(`Validate error names | ${title}`, (t) => {
       t.throws(defineClassesOpts.bind(undefined, { [errorName]: {} }))

@@ -21,14 +21,16 @@ export const definePlugins = function (plugins) {
 }
 
 export const defineClassesOpts = function (
-  { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
+  ErrorClasses,
   globalOpts = {},
   plugins = [TEST_PLUGIN],
 ) {
   const AnyError = modernErrors(plugins, globalOpts)
+  const { UnknownError: unknownErrorOpts = {}, ...ErrorClassesA } =
+    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
   const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
   const KnownClasses = Object.fromEntries(
-    Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
+    Object.entries(ErrorClassesA).map(([errorName, classOpts]) => [
       errorName,
       AnyError.create(errorName, classOpts),
     ]),

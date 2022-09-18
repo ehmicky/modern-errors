@@ -2,18 +2,9 @@ import test from 'ava'
 import { setErrorName } from 'error-class-utils'
 import { each } from 'test-each'
 
-import { defineSimpleClass, defineClassesOpts } from '../helpers/main.js'
+import { defineSimpleClass } from '../helpers/main.js'
 
 const { TestError, UnknownError } = defineSimpleClass()
-
-test('Prevent instantiating GlobalAnyError', (t) => {
-  const { InputError } = defineClassesOpts(
-    { InputError: {} },
-    { custom: class extends Error {} },
-  )
-  const GlobalAnyError = Object.getPrototypeOf(InputError)
-  t.throws(() => new GlobalAnyError('test'))
-})
 
 each([TestError, UnknownError], ({ title }, ErrorClass) => {
   test(`Subclasses must be known | ${title}`, (t) => {

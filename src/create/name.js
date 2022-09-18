@@ -9,7 +9,10 @@ export const validateClassName = function (className, KnownClasses) {
     throw new TypeError(`Error class "${className}" has already been defined.`)
   }
 
-  validateReservedNames(className)
+  if (className === 'AnyError') {
+    throw new TypeError(`Error class name must not be "AnyError".
+It is reserved for the base error class.`)
+  }
 }
 
 // We enforce specifying `UnknownError` so that users:
@@ -17,16 +20,4 @@ export const validateClassName = function (className, KnownClasses) {
 //  - Know they can configure it
 const hasUnknownError = function (className, KnownClasses) {
   return KnownClasses.UnknownError !== undefined || className === 'UnknownError'
-}
-
-const validateReservedNames = function (className) {
-  if (className === 'GlobalAnyError') {
-    throw new TypeError(`Error class name must not be "GlobalAnyError".
-It is reserved for some internal error class.`)
-  }
-
-  if (className === 'AnyError') {
-    throw new TypeError(`Error class name must not be "AnyError".
-It is reserved for the base error class.`)
-  }
 }

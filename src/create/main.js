@@ -18,7 +18,7 @@ export const create = function (
     globalOpts,
     classOpts,
   )
-  const ErrorClass = getErrorClass({ custom, AnyError, globalOpts, className })
+  const ErrorClass = getErrorClass(custom, AnyError, className)
   errorData.set(ErrorClass, { classOpts: classOptsA })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   KnownClasses[className] = ErrorClass
