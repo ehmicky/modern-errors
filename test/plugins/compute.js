@@ -30,8 +30,10 @@ test('AnyError options do not unset child instance options', (t) => {
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   test(`AnyError options do not unset child global or class options | ${title}`, (t) => {
-    const { InputError, AnyError: TestAnyError } = defineOpts({ prop: false })
-    const cause = new InputError('causeMessage')
+    const { TestError: OtherTestError, AnyError: TestAnyError } = defineOpts({
+      prop: false,
+    })
+    const cause = new OtherTestError('causeMessage')
     t.false(new TestAnyError('test', { cause }).set.options.prop)
   })
 })

@@ -46,13 +46,13 @@ test('plugin.instanceMethods are passed the normalized instance options', (t) =>
 })
 
 test('plugin.instanceMethods are passed the normalized class options', (t) => {
-  const { InputError } = defineClassOpts({ prop: true })
-  t.true(new InputError('message').getInstance().options.prop)
+  const { TestError: OtherTestError } = defineClassOpts({ prop: true })
+  t.true(new OtherTestError('message').getInstance().options.prop)
 })
 
 test('plugin.instanceMethods are passed the normalized global options', (t) => {
-  const { InputError } = defineGlobalOpts({ prop: true })
-  t.true(new InputError('message').getInstance().options.prop)
+  const { TestError: OtherTestError } = defineGlobalOpts({ prop: true })
+  t.true(new OtherTestError('message').getInstance().options.prop)
 })
 
 test('plugin.instanceMethods are passed AnyError', (t) => {

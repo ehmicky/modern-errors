@@ -46,12 +46,12 @@ class NullClass {}
 Object.setPrototypeOf(NullClass, null)
 
 test('"custom" option is not modified', (t) => {
-  const { InputError } = defineClassesOpts((TestAnyError) => ({
-    InputError: {
+  const { OtherTestError } = defineClassesOpts((TestAnyError) => ({
+    OtherTestError: {
       custom: class ReadonlyClass extends TestAnyError {},
     },
   }))
-  t.is(Object.getPrototypeOf(InputError).name, 'ReadonlyClass')
+  t.is(Object.getPrototypeOf(OtherTestError).name, 'ReadonlyClass')
 })
 
 test('"custom" option can be shared', (t) => {

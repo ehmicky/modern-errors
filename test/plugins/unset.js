@@ -21,10 +21,10 @@ test('Passes previous instance options to plugin.unset()', (t) => {
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   test(`Passes previous class or global options to plugin.unset() | ${title}`, (t) => {
-    const { InputError } = defineOpts({ prop: false })
+    const { TestError: OtherTestError } = defineOpts({ prop: false })
     t.false(
-      new InputError('test', {
-        cause: new InputError('causeMessage'),
+      new OtherTestError('test', {
+        cause: new OtherTestError('causeMessage'),
         prop: true,
       }).unset.options.prop,
     )

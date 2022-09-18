@@ -73,7 +73,7 @@ each(['', null], ({ title }, invalidPrototype) => {
         custom.prototype = invalidPrototype
         // eslint-disable-next-line fp/no-mutating-methods
         Object.setPrototypeOf(custom, TestAnyError)
-        return { InputError: { custom } }
+        return { TestError: { custom } }
       }),
     )
   })
@@ -85,7 +85,7 @@ test('Validate against invalid constructor', (t) => {
       class custom extends TestAnyError {}
       // eslint-disable-next-line fp/no-mutation
       custom.prototype.constructor = Error
-      return { InputError: { custom } }
+      return { TestError: { custom } }
     }),
   )
 })

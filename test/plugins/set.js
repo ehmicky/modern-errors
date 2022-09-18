@@ -21,17 +21,17 @@ test('Passes new instance options to plugin.set()', (t) => {
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   test(`Passes new class options to plugin.set() | ${title}`, (t) => {
-    const { InputError } = defineOpts({ prop: false })
-    const cause = new InputError('causeMessage')
-    t.true(new InputError('test', { cause, prop: true }).set.options.prop)
+    const { TestError: OtherTestError } = defineOpts({ prop: false })
+    const cause = new OtherTestError('causeMessage')
+    t.true(new OtherTestError('test', { cause, prop: true }).set.options.prop)
   })
 })
 
 test('plugin.set() is optional', (t) => {
-  const { InputError } = defineClassOpts({}, {}, [
+  const { TestError: OtherTestError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, set: undefined, unset: undefined },
   ])
-  t.false('set' in new InputError('test'))
+  t.false('set' in new OtherTestError('test'))
 })
 
 test('plugin.set() is called with no context', (t) => {
