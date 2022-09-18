@@ -1,9 +1,18 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { createAnyError, defineSimpleClass } from '../helpers/main.js'
+import {
+  createAnyError,
+  defineSimpleClass,
+  defineShallowCustom,
+  defineSimpleCustom,
+  defineDeepCustom,
+} from '../helpers/main.js'
 
-const { AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineSimpleClass()
+const { ShallowError } = defineShallowCustom()
+const { SimpleCustomError } = defineSimpleCustom()
+const { DeepCustomError } = defineDeepCustom()
 
 test('Require defining UnknownError', (t) => {
   const { create } = createAnyError()
@@ -29,6 +38,20 @@ each(
   ({ title }, errorName) => {
     test(`Validate invalid error name | ${title}`, (t) => {
       t.throws(AnyError.create.bind(undefined, errorName))
+    })
+  },
+)
+
+each(
+  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
+  ({ title }, ErrorClass) => {
+    test(`prototype.name is correct | ${title}`, (t) => {
+      t.is(ErrorClass.prototype.name, ErrorClass.name)
+      t.false(
+        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
+          .enumerable,
+      )
+      t.is(new ErrorClass('test').name, ErrorClass.name)
     })
   },
 )

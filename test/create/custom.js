@@ -88,20 +88,6 @@ test('Validate against invalid constructor', (t) => {
   )
 })
 
-each(
-  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
-  ({ title }, ErrorClass) => {
-    test(`prototype.name is correct | ${title}`, (t) => {
-      t.is(ErrorClass.prototype.name, ErrorClass.name)
-      t.false(
-        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
-          .enumerable,
-      )
-      t.is(new ErrorClass('test').name, ErrorClass.name)
-    })
-  },
-)
-
 test('"custom" option is not modified', (t) => {
   const { InputError } = defineClassesOpts((TestAnyError) => ({
     InputError: {
