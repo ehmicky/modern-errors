@@ -28,6 +28,14 @@ if (unknownError instanceof AnyError) {
 const SError = AnyError.subclass('SError')
 type SInstance = typeof SError['prototype']
 const sError = new SError('')
+expectType<SInstance>(sError)
+expectAssignable<AnyInstance>(sError)
+expectAssignable<Error>(sError)
+expectType<'SError'>(sError.name)
+expectError(SError.normalize(''))
+if (wideError instanceof SError) {
+  expectType<SInstance>(wideError)
+}
 
 const anyError = new AnyError('', { cause: sError })
 expectError(new AnyError())
@@ -39,15 +47,6 @@ expectAssignable<Error>(anyError)
 expectType<'SError'>(anyError.name)
 expectType<SInstance>(AnyError.normalize(sError))
 expectError(AnyError.normalize('', true))
-
-expectType<SInstance>(sError)
-expectAssignable<AnyInstance>(sError)
-expectAssignable<Error>(sError)
-expectType<'SError'>(sError.name)
-expectError(SError.normalize(''))
-if (wideError instanceof SError) {
-  expectType<SInstance>(wideError)
-}
 
 const SSError = SError.subclass('SSError')
 type SSInstance = typeof SSError['prototype']
