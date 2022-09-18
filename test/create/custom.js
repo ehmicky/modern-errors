@@ -23,7 +23,9 @@ each(
     },
     {
       ErrorClass: defineClassesOpts((AnyError) => ({
-        InputError: { custom: class SharedError extends AnyError {} },
+        InputError: {
+          custom: class extends class SharedError extends AnyError {} {},
+        },
       })).InputError,
       className: 'InputError',
       parentClassName: 'SharedError',
@@ -32,7 +34,6 @@ each(
   ({ title }, { ErrorClass, className, parentClassName }) => {
     test(`Errors extend from AnyError | ${title}`, (t) => {
       t.is(Object.getPrototypeOf(ErrorClass).name, parentClassName)
-      t.is(Object.getPrototypeOf(ErrorClass.prototype).name, parentClassName)
     })
 
     test(`prototype.name is correct | ${title}`, (t) => {
@@ -56,16 +57,21 @@ each(
   },
 )
 
-each([undefined, class extends Error {}], ({ title }, custom) => {
-  test(`Can define AnyError.custom | ${title}`, (t) => {
-    const { InputError } = defineClassesOpts(
-      { InputError: { custom } },
-      {
-        custom: class extends Error {
-          prop = true
+each(
+  [(ErrorClass) => ErrorClass, (ErrorClass) => class extends ErrorClass {}],
+  ({ title }, wrapClass) => {
+    test(`Can define custom classes| ${title}`, (t) => {
+      // eslint-disable-next-line max-nested-callbacks
+      const { InputError } = defineClassesOpts((AnyError) => ({
+        InputError: {
+          custom: wrapClass(
+            class extends AnyError {
+              prop = true
+            },
+          ),
         },
-      },
-    )
-    t.true(new InputError('message').prop)
-  })
-})
+      }))
+      t.true(new InputError('message').prop)
+    })
+  },
+)
