@@ -11,8 +11,8 @@ import {
 
 const { TestError, AnyError } = defineSimpleClass()
 const { ShallowError } = defineShallowCustom()
-const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
+const { SimpleCustomError } = defineSimpleCustom()
 
 test('Require defining UnknownError', (t) => {
   const { create } = createAnyError()
