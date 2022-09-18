@@ -38,6 +38,13 @@ test('Parent class is custom class when passed', (t) => {
   t.is(Object.getPrototypeOf(SimpleCustomError).name, SimpleCustomError.name)
 })
 
+test('Subclasses must extend from their parent', (t) => {
+  const OtherError = AnyError.class('OtherError')
+  t.throws(() =>
+    OtherError.class('SubError', { custom: class extends TestError {} }),
+  )
+})
+
 class NullClass {}
 // eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
 Object.setPrototypeOf(NullClass, null)
