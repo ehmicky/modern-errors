@@ -8,27 +8,27 @@ import isPlainObj from 'is-plain-obj'
 //  - This might be due to conditional logic
 //  - Differentiating between `undefined` and "not defined" values is confusing
 // Object options are shallowly merged.
-export const mergePluginsOpts = function (childOpts, parentOpts, plugins) {
+export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
   return Object.fromEntries(
     plugins
-      .map(({ name }) => getPluginOpts(childOpts, parentOpts, name))
+      .map(({ name }) => getPluginOpts(oldOpts, newOpts, name))
       .filter(Boolean),
   )
 }
 
-const getPluginOpts = function (childOpts, parentOpts, name) {
-  const pluginOpt = mergeOpt(childOpts[name], parentOpts[name])
+const getPluginOpts = function (oldOpts, newOpts, name) {
+  const pluginOpt = mergeOpt(oldOpts[name], newOpts[name])
   return pluginOpt === undefined ? undefined : [name, pluginOpt]
 }
 
-const mergeOpt = function (childOpt, parentOpt) {
-  if (parentOpt === undefined) {
-    return childOpt
+const mergeOpt = function (oldOpt, newOpt) {
+  if (newOpt === undefined) {
+    return oldOpt
   }
 
-  if (isPlainObj(childOpt) && isPlainObj(parentOpt)) {
-    return { ...childOpt, ...parentOpt }
+  if (isPlainObj(oldOpt) && isPlainObj(newOpt)) {
+    return { ...oldOpt, ...newOpt }
   }
 
-  return parentOpt
+  return newOpt
 }

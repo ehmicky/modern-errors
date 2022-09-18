@@ -84,7 +84,7 @@ export const createAnyError = function ({
     /* c8 ignore stop */
 
     static subclass = createSubclass.bind(undefined, {
-      globalOpts,
+      parentOpts: globalOpts,
       ParentError: AnyError,
       ErrorClasses,
       plugins,

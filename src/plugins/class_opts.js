@@ -44,7 +44,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 // Merging priority is: global < class < instance options.
 export const getClassOpts = function ({
   plugins,
-  globalOpts,
+  parentOpts,
   className,
   classOpts = {},
 }) {
@@ -56,7 +56,7 @@ export const getClassOpts = function ({
 
   const { custom, ...classOptsA } = classOpts
   validateCustomUnknown(custom, className)
-  const classOptsB = mergePluginsOpts(globalOpts, classOptsA, plugins)
+  const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
   plugins.forEach((plugin) => {
     normalizePluginOpts(classOptsB, plugin)
   })
