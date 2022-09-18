@@ -2,7 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  defineCustomClass,
+  defineClassOpts,
   defineSimpleClass,
   defineShallowCustom,
   defineSimpleCustom,
@@ -27,9 +27,14 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
   })
 })
 
+class NullClass {}
+// eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
+Object.setPrototypeOf(NullClass, null)
+
 each(
   [
     'TestError',
+    NullClass,
     Object,
     Function,
     () => {},
@@ -44,7 +49,7 @@ each(
   ],
   ({ title }, custom) => {
     test(`Validate against invalid "custom" option | ${title}`, (t) => {
-      t.throws(defineCustomClass.bind(undefined, custom))
+      t.throws(defineClassOpts.bind(undefined, { custom }))
     })
   },
 )
@@ -76,13 +81,6 @@ test('Validate against invalid constructor', (t) => {
       return { InputError: { custom } }
     }),
   )
-})
-
-test('Validate against parent being null', (t) => {
-  class custom {}
-  // eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
-  Object.setPrototypeOf(custom, null)
-  t.throws(defineCustomClass.bind(undefined, custom))
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
