@@ -2,22 +2,43 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 
 import modernErrors from './main.js'
 
-const AnyError = modernErrors()
-type AnyInstance = typeof AnyError['prototype']
+const genericError = new Error('')
 
-const anyError = new AnyError('', { cause: '' })
+const AnyError = modernErrors()
+type AnyInstance = InstanceType<typeof AnyError>
+const wideError = {} as any as AnyInstance
+expectAssignable<Error>(wideError)
+expectType<`${string}Error`>(wideError.name)
+
+const unknownError = new AnyError('', { cause: '' })
+type UnknownInstance = typeof unknownError
+
+expectAssignable<AnyInstance>(unknownError)
+expectAssignable<Error>(unknownError)
+expectType<'UnknownError'>(unknownError.name)
+expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
+expectType<UnknownInstance>(new AnyError('', { cause: genericError }))
+expectType<UnknownInstance>(AnyError.normalize(''))
+expectType<UnknownInstance>(AnyError.normalize(undefined))
+expectType<UnknownInstance>(AnyError.normalize(genericError))
+if (unknownError instanceof AnyError) {
+  expectType<UnknownInstance>(unknownError)
+}
+
+const SError = AnyError.subclass('SError')
+type SInstance = typeof SError['prototype']
+
+const cause = new SError('')
+const anyError = new AnyError('', { cause })
 expectError(new AnyError())
 expectError(new AnyError(true))
 expectError(new AnyError('', true))
 expectError(new AnyError('', { unknown: true }))
-expectType<AnyInstance>(anyError)
+expectType<SInstance>(anyError)
 expectAssignable<Error>(anyError)
-expectAssignable<string>(anyError.name)
-expectType<AnyInstance>(AnyError.normalize(''))
+expectType<'SError'>(anyError.name)
+expectType<SInstance>(AnyError.normalize(cause))
 expectError(AnyError.normalize('', true))
-
-const SError = AnyError.subclass('SError')
-type SInstance = typeof SError['prototype']
 
 const sError = new SError('')
 expectType<SInstance>(sError)
@@ -25,8 +46,8 @@ expectAssignable<AnyInstance>(sError)
 expectAssignable<Error>(sError)
 expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
-if (anyError instanceof SError) {
-  expectType<SInstance>(anyError)
+if (wideError instanceof SError) {
+  expectType<SInstance>(wideError)
 }
 
 const SSError = SError.subclass('SSError')
@@ -38,8 +59,8 @@ expectAssignable<AnyInstance>(ssError)
 expectAssignable<Error>(ssError)
 expectType<'SSError'>(ssError.name)
 expectError(SSError.normalize(''))
-if (anyError instanceof SSError) {
-  expectType<SSInstance>(anyError)
+if (wideError instanceof SSError) {
+  expectType<SSInstance>(wideError)
 }
 
 class BCError extends AnyError {
@@ -63,8 +84,8 @@ expectError(CError.normalize(''))
 // Type narrowing with `instanceof` of error classes with a `custom` option
 // does not work due to:
 // https://github.com/microsoft/TypeScript/issues/50844
-// if (anyError instanceof CError) {
-//   expectType<CInstance>(anyError)
+// if (wideError instanceof CError) {
+//   expectType<CInstance>(wideError)
 // }
 
 const SCError = CError.subclass('SCError')
@@ -79,8 +100,8 @@ expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 expectError(SCError.normalize(''))
 // See above
-// if (anyError instanceof SCError) {
-//   expectType<SCInstance>(anyError)
+// if (wideError instanceof SCError) {
+//   expectType<SCInstance>(wideError)
 // }
 
 class BCSError extends SError {
@@ -102,8 +123,8 @@ expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
 expectError(CSError.normalize(''))
 // See above
-// if (anyError instanceof CSError) {
-//   expectType<CSInstance>(anyError)
+// if (wideError instanceof CSError) {
+//   expectType<CSInstance>(wideError)
 // }
 
 class BCCError extends CError {
@@ -127,8 +148,8 @@ expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 // See above
-// if (anyError instanceof CCError) {
-//   expectType<CCInstance>(anyError)
+// if (wideError instanceof CCError) {
+//   expectType<CCInstance>(wideError)
 // }
 
 expectError(modernErrors(true))
@@ -164,10 +185,8 @@ expectError(
   }),
 )
 
-const error = new Error('')
-
-if (error instanceof AnyError) {
-  expectType<AnyInstance>(error)
+if (genericError instanceof AnyError) {
+  expectType<AnyInstance>(genericError)
 }
 if (cError instanceof SError) {
   expectType<never>(cError)

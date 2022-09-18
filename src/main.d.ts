@@ -90,6 +90,13 @@ type CreateSubclass<
   ErrorNameArg
 >
 
+type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
+  Error,
+  ErrorName
+>
+  ? Cause
+  : NamedError<Cause extends Error ? Cause : Error, 'UnknownError'>
+
 /**
  * Base error class.
  *
@@ -104,7 +111,14 @@ type CreateSubclass<
  * ```
  */
 type AnyErrorClass = {
-  new (message: string, options?: AnyErrorOptions): NamedError<Error, ErrorName>
+  new <InitOptions extends AnyErrorOptions = {}>(
+    message: string,
+    options?: InitOptions,
+  ): AnyErrorReturn<
+    unknown extends InitOptions['cause']
+      ? NamedError<Error, ErrorName>
+      : InitOptions['cause']
+  >
   prototype: NamedError<Error, ErrorName>
 
   /**
@@ -134,7 +148,7 @@ type AnyErrorClass = {
    * }
    * ```
    */
-  normalize(error: unknown): NamedError<Error, ErrorName>
+  normalize<T extends unknown>(error: T): AnyErrorReturn<T>
 }
 
 /**
