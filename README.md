@@ -44,21 +44,14 @@ Create custom error classes.
 // `error.js`
 import modernErrors from 'modern-errors'
 
-export const {
-  // Custom error classes
-  InputError,
-  AuthError,
-  DatabaseError,
-  UnknownError,
-  // Base error class
-  AnyError,
-} = modernErrors({
-  // Custom error classes definitions
-  InputError: {},
-  AuthError: {},
-  DatabaseError: {},
-  UnknownError: {},
-})
+// Base error class
+export const AnyError = modernErrors()
+
+// Custom error classes
+export const UnknownError = AnyError.create('UnknownError')
+export const InputError = AnyError.create('InputError')
+export const AuthError = AnyError.create('AuthError')
+export const DatabaseError = AnyError.create('DatabaseError')
 ```
 
 Throw/re-throw errors.
@@ -107,53 +100,52 @@ not `require()`.
 
 # API
 
-## modernErrors(definitions, plugins?)
+## modernErrors(plugins?, options?)
 
-`definitions`: `Record<ErrorName, Options>`\
-`plugins`: `Plugin[]?`\
-_Return value_: `ErrorClasses`
+`plugins`: [`Plugin[]?`](#plugins)\
+`options`: [`Options?`](#options)\
+_Return value_: [`AnyError`](#anyerror)
 
-Creates and returns error classes. Also returns their base class
-[`AnyError`](#anyerror).
-
-### definitions
-
-Object where:
-
-- Each key is the class name, e.g. `InputError`. One of the classes must be
-  named [`UnknownError`](#unknown-errors).
-- Each value is an object with the class [options](#options).
+Creates and returns [`AnyError`](#anyerror).
 
 ### plugins
 
 List of [plugins](#plugins-1) to use.
 
-### Options
+## AnyError
 
-#### custom
+Base error class.
 
-_Type_: `class extends Error {}`
+### AnyError.create(name, options?)
 
-[Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extend` from
-[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error).
+`options`: [`Options?`](#options)\
+_Return value_: `typeof AnyError`
 
-#### Plugin options
+Creates and returns an error class.
 
-Any [plugin options](#plugin-options-1) can also be specified.
+The first error class must be named [`UnknownError`](#unknown-errors).
 
-### AnyError
-
-Base class of the `ErrorClasses` passed to
-[`modernErrors()`](#modernerrorsdefinitions-plugins).
-
-#### AnyError.normalize(anyException)
+### AnyError.normalize(anyException)
 
 _Type_: `(anyException) => AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors). This should
 [wrap each main function](#top-level-error-handler).
+
+### Options
+
+#### custom
+
+_Type_: `class extends AnyError {}`\
+_Default_: `AnyError`
+
+[Custom class](#custom-logic) to add any methods, `constructor` or properties.
+It must `extend` from [`AnyError`](#anyerror).
+
+#### Plugin options
+
+Any [plugin options](#plugin-options-1) can also be specified.
 
 # Usage
 
@@ -165,22 +157,15 @@ class to [_unknown_ errors](#unknown-errors). This should
 // `error.js`
 import modernErrors from 'modern-errors'
 
-export const {
-  // Custom error classes
-  InputError,
-  AuthError,
-  DatabaseError,
-  UnknownError,
-  // Base error class
-  AnyError,
-} = modernErrors({
-  // Custom error classes definitions.
-  // One of them must be named `UnknownError`.
-  InputError: {},
-  AuthError: {},
-  DatabaseError: {},
-  UnknownError: {},
-})
+// Base error class
+export const AnyError = modernErrors()
+
+// Custom error classes
+// The first class must be named "UnknownError"
+export const UnknownError = AnyError.create('UnknownError')
+export const InputError = AnyError.create('InputError')
+export const AuthError = AnyError.create('AuthError')
+export const DatabaseError = AnyError.create('DatabaseError')
 ```
 
 ### Top-level error handler
@@ -416,7 +401,7 @@ export const main = async function (filePath) {
 ```
 
 This assigns the `UnknownError` class to any error without a _known_ class: the
-ones passed to [`modernErrors()`](#modernerrorsdefinitions-plugins). Those
+ones created by [`AnyError.create()`](#anyerrorcreatename-options). Those
 indicate unexpected exceptions and bugs.
 
 <!-- eslint-disable unicorn/no-null -->
@@ -448,43 +433,55 @@ main(null) // InputError: Invalid file path: Cannot read properties of null (rea
 
 The [`custom`](#custom) option can be used to provide an error `class` with
 additional methods, `constructor` or properties. It must extend from
-[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error).
+[`AnyError`](#anyerror).
 
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this -->
 
 ```js
-const { InputError, UnknownError, AnyError } = modernErrors({
-  // `*.custom` applies to a single class
-  InputError: {
-    custom: class extends Error {
-      constructor(message, options) {
-        // Modifying `message` or `options` should be done before `super()`
-        message += message.endsWith('.') ? '' : '.'
+export const InputError = AnyError.create('InputError', {
+  custom: class extends AnyError {
+    constructor(message, options) {
+      // Modifying `message` or `options` should be done before `super()`
+      message += message.endsWith('.') ? '' : '.'
 
-        // `super()` should be called with both arguments
-        super(message, options)
+      // `super()` should be called with both arguments
+      super(message, options)
 
-        // `name` is automatically added, so this is not necessary
-        // this.name = 'InputError'
-      }
-    },
+      // `name` is automatically added, so this is not necessary
+      // this.name = 'InputError'
+    }
+
+    isUserInput() {
+      return this.message.includes('user')
+    }
   },
-
-  // `AnyError.custom` applies to all classes
-  AnyError: {
-    custom: class extends Error {
-      isUserInput() {
-        return this.message.includes('user')
-      }
-    },
-  },
-
-  UnknownError: {},
 })
 
 const error = new InputError('Wrong user name')
 console.log(error.message) // 'Wrong user name.'
 console.log(error.isUserInput()) // true
+```
+
+Inheritance can be used to share some logic between error classes.
+
+<!-- eslint-disable fp/no-this -->
+
+```js
+class SharedError extends AnyError {
+  isUserInput() {
+    return this.message.includes('user')
+  }
+}
+
+export const InputError = AnyError.create('InputError', { custom: SharedError })
+
+export const AuthError = AnyError.create('AuthError', {
+  custom: class extends SharedError {
+    isAuth() {
+      return this.message.includes('auth')
+    }
+  },
+})
 ```
 
 # Plugins
@@ -497,8 +494,8 @@ Plugins extend `modern-errors` features. They must first be installed.
 npm install modern-errors-{pluginName}
 ```
 
-They are then passed as a second argument to
-[`modernErrors()`](#modernerrorsdefinitions-plugins).
+They are then passed as a first argument to
+[`modernErrors()`](#modernerrorsplugins-options).
 
 <!-- eslint-disable import/order -->
 
@@ -508,7 +505,7 @@ import modernErrors from 'modern-errors'
 import modernErrorsBugs from 'modern-errors-bugs'
 import modernErrorsProps from 'modern-errors-props'
 
-modernErrors(definitions, [modernErrorsProps, modernErrorsBugs])
+export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
 ```
 
 ## Plugin options
@@ -527,7 +524,7 @@ const options = {
 
 ### Error instance options
 
-Options can be passed as arguments to any error instance.
+Options can be passed a a second argument to any error instance.
 
 ```js
 throw new InputError('Could not read the file.', options)
@@ -535,21 +532,22 @@ throw new InputError('Could not read the file.', options)
 
 ### Error class options
 
-Options passed to [`modernErrors()`](#modernerrorsdefinitions-plugins) apply to
-any error of a specific class.
+Options passed as a second argument to
+[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of any
+class.
 
 ```js
-modernErrors({ InputError: options })
+export const InputError = AnyError.create('InputError', options)
 ```
 
 ### General options
 
-`AnyError` options passed to
-[`modernErrors()`](#modernerrorsdefinitions-plugins) apply to any error of any
-class.
+Options passed as a second argument to
+[`modernErrors()`](#modernerrorsplugins-options) apply to any error of a
+specific class.
 
 ```js
-modernErrors({ AnyError: options })
+export const AnyError = modernErrors(plugins, options)
 ```
 
 ### Modify options

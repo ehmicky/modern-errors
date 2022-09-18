@@ -133,21 +133,14 @@ type ReturnErrorClasses<DefinitionsArg extends Definitions> = {
  *
  * @example
  * ```js
- * export const {
- *   // Custom error classes
- *   InputError,
- *   AuthError,
- *   DatabaseError,
- *   UnknownError,
- *   // Base error class
- *   AnyError,
- * } = modernErrors({
- *   // Custom error classes definitions
- *   InputError: {},
- *   AuthError: {},
- *   DatabaseError: {},
- *   UnknownError: {},
- * })
+ *  // Base error class
+ *  export const AnyError = modernErrors()
+ *
+ *  // Custom error classes
+ *  export const UnknownError = AnyError.create('UnknownError')
+ *  export const InputError = AnyError.create('InputError')
+ *  export const AuthError = AnyError.create('AuthError')
+ *  export const DatabaseError = AnyError.create('DatabaseError')
  * ```
  */
 export default function modernErrors<DefinitionsArg extends Definitions>(
