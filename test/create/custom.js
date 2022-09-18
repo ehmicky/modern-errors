@@ -15,44 +15,10 @@ const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
 each(
-  [
-    {
-      ErrorClass: TestError,
-      className: 'TestError',
-      parentClassName: 'CoreError',
-    },
-    {
-      ErrorClass: ShallowError,
-      className: 'ShallowError',
-      parentClassName: 'CoreError',
-    },
-    {
-      ErrorClass: SimpleCustomError,
-      className: 'SimpleCustomError',
-      parentClassName: 'AnyError',
-    },
-    {
-      ErrorClass: DeepCustomError,
-      className: 'DeepCustomError',
-      parentClassName: 'ParentError',
-    },
-  ],
-  ({ title }, { ErrorClass, className, parentClassName }) => {
-    test(`Errors extend from AnyError | ${title}`, (t) => {
-      t.is(
-        Object.getPrototypeOf(Object.getPrototypeOf(ErrorClass)).name,
-        parentClassName,
-      )
-    })
-
-    test(`prototype.name is correct | ${title}`, (t) => {
-      t.is(ErrorClass.name, className)
-      t.is(ErrorClass.prototype.name, className)
-      t.false(
-        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
-          .enumerable,
-      )
-      t.is(new ErrorClass('test').name, className)
+  ['Error', 'TypeError', 'inputError', 'input_error', 'input'],
+  ({ title }, errorName) => {
+    test(`Validate error names | ${title}`, (t) => {
+      t.throws(defineClassesOpts.bind(undefined, { [errorName]: {} }))
     })
   },
 )
@@ -63,11 +29,28 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
   })
 })
 
+each([TestError, ShallowError], ({ title }, ErrorClass) => {
+  test(`Parent class is AnyError by default | ${title}`, (t) => {
+    t.is(Object.getPrototypeOf(ErrorClass).name, 'AnyError')
+  })
+})
+
+each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
+  test(`Parent class is custom class when passed | ${title}`, (t) => {
+    t.is(Object.getPrototypeOf(ErrorClass).name, ErrorClass.name)
+  })
+})
+
 each(
-  ['Error', 'TypeError', 'inputError', 'input_error', 'input'],
-  ({ title }, errorName) => {
-    test(`Validate error names | ${title}`, (t) => {
-      t.throws(defineClassesOpts.bind(undefined, { [errorName]: {} }))
+  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
+  ({ title }, ErrorClass) => {
+    test(`prototype.name is correct | ${title}`, (t) => {
+      t.is(ErrorClass.prototype.name, ErrorClass.name)
+      t.false(
+        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
+          .enumerable,
+      )
+      t.is(new ErrorClass('test').name, ErrorClass.name)
     })
   },
 )

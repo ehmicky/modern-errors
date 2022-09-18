@@ -34,7 +34,7 @@ export const defineSimpleCustom = function (globalOpts, plugins) {
   return defineClassesOpts(
     (AnyError) => ({
       SimpleCustomError: {
-        custom: class extends AnyError {
+        custom: class SimpleCustomError extends AnyError {
           prop = true
         },
       },
@@ -50,7 +50,11 @@ export const defineDeepCustom = function (globalOpts, plugins) {
       class ParentError extends AnyError {
         prop = true
       }
-      return { DeepCustomError: { custom: class extends ParentError {} } }
+      return {
+        DeepCustomError: {
+          custom: class DeepCustomError extends ParentError {},
+        },
+      }
     },
     globalOpts,
     plugins,
