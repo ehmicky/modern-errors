@@ -9,8 +9,9 @@ import {
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineSimpleClass()
-const { SimpleCustomError } = defineSimpleCustom()
-const { DeepCustomError } = defineDeepCustom()
+const { SimpleCustomError, AnyError: CustomAnyError } = defineSimpleCustom()
+const { DeepCustomError, SimpleCustomError: DeepCustomParentError } =
+  defineDeepCustom()
 
 each([AnyError, TestError], ({ title }, ParentError) => {
   test(`Custom option defaults to parent class | ${title}`, (t) => {
@@ -26,6 +27,14 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
     t.true(ErrorClass.staticProp)
     t.true(new ErrorClass('test').prop)
   })
+})
+
+test('instanceof AnyError works with custom classes', (t) => {
+  t.true(new SimpleCustomError('test') instanceof CustomAnyError)
+})
+
+test('instanceof ParentError works with deep custom classes', (t) => {
+  t.true(new DeepCustomError('test') instanceof DeepCustomParentError)
 })
 
 test('Parent class is custom class when passed', (t) => {
