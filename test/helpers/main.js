@@ -24,10 +24,8 @@ export const definePlugins = function (plugins) {
 
 export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   const AnyError = createAnyError(globalOpts, plugins)
-  const ErrorClassesA =
-    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
-  const ErrorClassesB = createErrorClasses(AnyError, ErrorClassesA)
-  return { AnyError, ...ErrorClassesB }
+  const ErrorClassesA = createErrorClasses(AnyError, ErrorClasses)
+  return { AnyError, ...ErrorClassesA }
 }
 
 export const createAnyError = function (
