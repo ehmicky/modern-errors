@@ -27,6 +27,18 @@ const DeepSimpleCustomError = ShallowCustomError.subclass(
 )
 type DeepSimpleCustomErrorInstance = InstanceType<typeof DeepSimpleCustomError>
 
+class BaseDeepCustomError extends ShallowCustomError {
+  constructor(message: string | boolean | number, options?: object) {
+    super(String(message), options)
+  }
+  deepProp = true as const
+  static deepStaticProp = true as const
+}
+const DeepCustomError = ShallowCustomError.subclass('DeepCustomError', {
+  custom: BaseDeepCustomError,
+})
+type DeepCustomErrorInstance = InstanceType<typeof DeepCustomError>
+
 expectError(AnyError.subclass())
 expectError(AnyError.subclass({}))
 expectError(AnyError.subclass('Test'))
@@ -66,6 +78,17 @@ expectType<true>(DeepSimpleCustomError.staticProp)
 expectType<'DeepSimpleCustomError'>(deepSimpleCustomError.name)
 expectType<true>(deepSimpleCustomError.prop)
 
+const deepCustomError = new DeepCustomError(0)
+expectType<DeepCustomErrorInstance>(deepCustomError)
+expectAssignable<BaseShallowCustomError>(deepCustomError)
+expectAssignable<AnyErrorInstance>(deepCustomError)
+expectAssignable<Error>(deepCustomError)
+expectType<true>(DeepCustomError.staticProp)
+expectType<true>(DeepCustomError.deepStaticProp)
+expectType<'DeepCustomError'>(deepCustomError.name)
+expectType<true>(deepCustomError.prop)
+expectType<true>(deepCustomError.deepProp)
+
 const anyError = new AnyError('')
 expectType<AnyErrorInstance>(anyError)
 expectAssignable<Error>(anyError)
@@ -76,6 +99,7 @@ expectType<AnyErrorInstance>(AnyError.normalize(''))
 expectError(SimpleError.normalize(''))
 expectError(ShallowCustomError.normalize(''))
 expectError(DeepSimpleCustomError.normalize(''))
+expectError(DeepCustomError.normalize(''))
 expectError(AnyError.normalize('', true))
 
 const error = new Error('')
@@ -92,6 +116,9 @@ if (error instanceof AnyError) {
 // }
 // if (anyError instanceof DeepSimpleCustomError) {
 //   expectType<DeepSimpleCustomErrorInstance>(anyError)
+// }
+// if (anyError instanceof DeepCustomError) {
+//   expectType<DeepCustomErrorInstance>(anyError)
 // }
 
 if (anyError instanceof SimpleError) {
