@@ -5,45 +5,6 @@ import modernErrors from './main.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
-const SError = AnyError.subclass('SError')
-type SInstance = InstanceType<typeof SError>
-
-class BCError extends AnyError {
-  constructor(message: string | boolean, options?: object) {
-    super(String(message), options)
-  }
-  prop = true as const
-  static staticProp = true as const
-}
-const CError = AnyError.subclass('CError', { custom: BCError })
-type CInstance = InstanceType<typeof CError>
-
-const SSError = SError.subclass('SSError')
-type SSInstance = InstanceType<typeof SSError>
-
-const SCError = CError.subclass('SCError')
-type SCInstance = InstanceType<typeof SCError>
-
-class BCSError extends SError {
-  constructor(message: string | boolean, options?: object) {
-    super(String(message), options)
-  }
-  prop = true as const
-  static staticProp = true as const
-}
-const CSError = CError.subclass('CSError', { custom: BCSError })
-type CSInstance = InstanceType<typeof CSError>
-
-class BCCError extends CError {
-  constructor(message: string | boolean | number, options?: object) {
-    super(String(message), options)
-  }
-  deepProp = true as const
-  static deepStaticProp = true as const
-}
-const CCError = CError.subclass('CCError', { custom: BCCError })
-type CCInstance = InstanceType<typeof CCError>
-
 const anyError = new AnyError('')
 expectType<AnyInstance>(anyError)
 expectAssignable<Error>(anyError)
@@ -51,6 +12,9 @@ expectError(AnyError.staticProp)
 expectError(anyError.prop)
 expectType<AnyInstance>(AnyError.normalize(''))
 expectError(AnyError.normalize('', true))
+
+const SError = AnyError.subclass('SError')
+type SInstance = InstanceType<typeof SError>
 
 const sError = new SError('')
 expectType<SInstance>(sError)
@@ -63,6 +27,16 @@ expectError(SError.normalize(''))
 if (anyError instanceof SError) {
   expectType<SInstance>(anyError)
 }
+
+class BCError extends AnyError {
+  constructor(message: string | boolean, options?: object) {
+    super(String(message), options)
+  }
+  prop = true as const
+  static staticProp = true as const
+}
+const CError = AnyError.subclass('CError', { custom: BCError })
+type CInstance = InstanceType<typeof CError>
 
 const cError = new CError(true)
 expectType<CInstance>(cError)
@@ -79,6 +53,9 @@ expectError(CError.normalize(''))
 //   expectType<CInstance>(anyError)
 // }
 
+const SSError = SError.subclass('SSError')
+type SSInstance = InstanceType<typeof SSError>
+
 const ssError = new SSError('')
 expectType<SSInstance>(ssError)
 expectAssignable<AnyInstance>(ssError)
@@ -90,6 +67,9 @@ expectError(SSError.normalize(''))
 if (anyError instanceof SSError) {
   expectType<SSInstance>(anyError)
 }
+
+const SCError = CError.subclass('SCError')
+type SCInstance = InstanceType<typeof SCError>
 
 const scError = new SCError(true)
 expectType<SCInstance>(scError)
@@ -104,6 +84,16 @@ expectError(SCError.normalize(''))
 //   expectType<SCInstance>(anyError)
 // }
 
+class BCSError extends SError {
+  constructor(message: string | boolean, options?: object) {
+    super(String(message), options)
+  }
+  prop = true as const
+  static staticProp = true as const
+}
+const CSError = CError.subclass('CSError', { custom: BCSError })
+type CSInstance = InstanceType<typeof CSError>
+
 const csError = new CSError(true)
 expectType<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
@@ -116,6 +106,16 @@ expectError(CSError.normalize(''))
 // if (anyError instanceof CSError) {
 //   expectType<CSInstance>(anyError)
 // }
+
+class BCCError extends CError {
+  constructor(message: string | boolean | number, options?: object) {
+    super(String(message), options)
+  }
+  deepProp = true as const
+  static deepStaticProp = true as const
+}
+const CCError = CError.subclass('CCError', { custom: BCCError })
+type CCInstance = InstanceType<typeof CCError>
 
 const ccError = new CCError(0)
 expectType<CCInstance>(ccError)
