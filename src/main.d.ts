@@ -6,14 +6,14 @@ type ErrorInstance<ErrorNameArg extends ErrorName = ErrorName> = Error & {
 
 type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
 
-type ErrorConstructor = new (
+type ErrorConstructor<ErrorInstanceArg extends ErrorInstance> = new (
   ...args: ErrorConstructorArgs
-) => ErrorInstance<ErrorName>
+) => ErrorInstanceArg
 
 /**
  * Class-specific options
  */
-type ClassOptions<ParentErrorClass extends ErrorConstructor> = {
+type ClassOptions<ParentErrorInstance extends ErrorInstance> = {
   /**
    * Custom class to add any methods, `constructor` or properties.
    * It must `extend` from `AnyError`.
@@ -44,19 +44,19 @@ type ClassOptions<ParentErrorClass extends ErrorConstructor> = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: ParentErrorClass
+  readonly custom?: ErrorConstructor<ParentErrorInstance>
 }
 
 type DefaultErrorClass<ErrorInstanceArg extends ErrorInstance<ErrorName>> = {
   new (...args: ErrorConstructorArgs): ErrorInstanceArg
   prototype: ErrorInstanceArg
-  subclass: CreateSubclass<DefaultErrorClass<ErrorInstanceArg>>
+  subclass: CreateSubclass<ErrorInstanceArg>
 }
 
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
-  ParentErrorClass extends ErrorConstructor,
-  CustomOption extends ParentErrorClass,
+  ParentErrorInstance extends ErrorInstance,
+  CustomOption extends ErrorConstructor<ParentErrorInstance>,
 > = {
   new (
     ...args: ConstructorParameters<CustomOption>
@@ -64,14 +64,14 @@ type CustomErrorClass<
   prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
 } & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
-type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
+type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
   ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions<ParentErrorClass>,
+  OptionsArg extends ClassOptions<ParentErrorInstance>,
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
-) => OptionsArg['custom'] extends ParentErrorClass
-  ? CustomErrorClass<ErrorNameArg, ParentErrorClass, OptionsArg['custom']>
+) => OptionsArg['custom'] extends ErrorConstructor<ParentErrorInstance>
+  ? CustomErrorClass<ErrorNameArg, ParentErrorInstance, OptionsArg['custom']>
   : DefaultErrorClass<ErrorInstance<ErrorNameArg>>
 
 /**
@@ -88,8 +88,8 @@ type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
  * ```
  */
 type AnyErrorClass = {
-  new (...args: ErrorConstructorArgs): ErrorInstance<ErrorName>
-  prototype: ErrorInstance<ErrorName>
+  new (...args: ErrorConstructorArgs): ErrorInstance
+  prototype: ErrorInstance
 
   /**
    * Creates and returns an error subclass.
@@ -101,7 +101,7 @@ type AnyErrorClass = {
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<AnyErrorClass>
+  subclass: CreateSubclass<ErrorInstance>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
@@ -118,7 +118,7 @@ type AnyErrorClass = {
    * }
    * ```
    */
-  normalize(error: unknown): ErrorInstance<ErrorName>
+  normalize(error: unknown): ErrorInstance
 }
 
 /**
