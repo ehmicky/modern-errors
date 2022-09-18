@@ -15,7 +15,6 @@ export const createAnyError = function ({
 
   class AnyError extends BaseError {
     constructor(message, opts) {
-      validateSubClass(new.target, AnyError)
       const optsA = normalizeCause(
         opts,
         state.KnownClasses.UnknownError,
@@ -31,17 +30,6 @@ export const createAnyError = function ({
   setErrorName(AnyError, 'AnyError')
   addAllStaticMethods({ plugins, globalOpts, AnyError, state })
   return AnyError
-}
-
-// `AnyError` cannot be subclassed because:
-//  - It would not be possible to register it as a known error
-//  - `AnyError` static methods would be inherited too which might be confusing
-//  - `AnyError` class changes, which makes inheritance less useful
-//     - e.g. Methods would be absent, which might be unexpected
-const validateSubClass = function (ChildError, AnyError) {
-  if (ChildError !== AnyError) {
-    throw new Error(`AnyError must not be extended as "${ChildError.name}".`)
-  }
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it
