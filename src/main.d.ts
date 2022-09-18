@@ -5,13 +5,15 @@ type NamedError<
   ErrorNameArg extends ErrorName,
 > = ErrorInstance & { name: ErrorNameArg }
 
+type ErrorConstructor = new (...args: any[]) => Error
+
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
 
 type ErrorClass<
   ErrorInstance extends Error,
-  ParentErrorClass extends object,
+  ParentErrorClass extends ErrorConstructor,
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
@@ -27,7 +29,7 @@ type ErrorClass<
  */
 type ClassOptions<
   ErrorInstance extends Error,
-  ParentErrorClass extends object,
+  ParentErrorClass extends ErrorConstructor,
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -64,7 +66,7 @@ type ClassOptions<
 
 type CreateSubclass<
   ErrorInstance extends Error,
-  ParentErrorClass extends object,
+  ParentErrorClass extends ErrorConstructor,
 > = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ErrorInstance, ParentErrorClass>,
