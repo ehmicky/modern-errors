@@ -53,7 +53,7 @@ type ErrorClass<
 > = {
   new (...args: ConstructorArgs): ErrorInstanceArg
   prototype: ErrorInstanceArg
-  subclass: CreateSubclass<ErrorInstanceArg>
+  subclass: CreateSubclass<ErrorInstanceArg, ConstructorArgs>
 }
 
 type CustomErrorClass<
@@ -66,7 +66,10 @@ type CustomErrorClass<
 > &
   Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
-type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
+type CreateSubclass<
+  ParentErrorInstance extends ErrorInstance,
+  ConstructorArgs extends ErrorConstructorArgs,
+> = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ParentErrorInstance>,
 >(
@@ -74,7 +77,7 @@ type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
   options?: OptionsArg,
 ) => OptionsArg['custom'] extends ErrorConstructor<ParentErrorInstance>
   ? CustomErrorClass<ErrorNameArg, ParentErrorInstance, OptionsArg['custom']>
-  : ErrorClass<ErrorInstance<ErrorNameArg>, ErrorConstructorArgs>
+  : ErrorClass<ErrorInstance<ErrorNameArg>, ConstructorArgs>
 
 /**
  * Base error class.
@@ -103,7 +106,7 @@ type AnyErrorClass = {
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<ErrorInstance>
+  subclass: CreateSubclass<ErrorInstance, ErrorConstructorArgs>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
