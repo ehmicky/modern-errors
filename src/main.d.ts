@@ -62,7 +62,7 @@ type CustomErrorClass<
     InstanceType<CustomOption> & { name: ErrorNameArg },
     ConstructorParameters<CustomOption>
   >,
-  Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
+  Omit<CustomOption, keyof AnyErrorClass>
 >
 
 type CreateSubclass<ParentErrorClass extends ErrorClass> = <
@@ -73,10 +73,7 @@ type CreateSubclass<ParentErrorClass extends ErrorClass> = <
   options?: OptionsArg,
 ) => OptionsArg['custom'] extends ParentErrorClass
   ? CustomErrorClass<ErrorNameArg, OptionsArg['custom']>
-  : ErrorClass<
-      InstanceType<ParentErrorClass> & { name: ErrorNameArg },
-      ConstructorParameters<ParentErrorClass>
-    >
+  : CustomErrorClass<ErrorNameArg, ParentErrorClass>
 
 /**
  * Base error class.
