@@ -7,6 +7,7 @@ import { applyPluginsSet } from '../plugins/set.js'
 import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
 import { addAllInstanceMethods } from './instance.js'
+import { normalize } from './normalize.js'
 import { validateClass } from './validate.js'
 
 export const CoreError = errorCustomClass('CoreError')
@@ -37,13 +38,7 @@ export const createBaseError = function (state, errorData, plugins) {
 
       const { error, cause } = mergeCause(this, isAnyError)
       const ChildError = error.constructor
-      validateClass({
-        ChildError,
-        BaseError,
-        GlobalBaseError,
-        KnownClasses,
-        isAnyError,
-      })
+      validateClass({ ChildError, GlobalBaseError, KnownClasses, isAnyError })
       computePluginsOpts({
         error,
         ChildError,
@@ -65,6 +60,8 @@ export const createBaseError = function (state, errorData, plugins) {
       return error
     }
     /* c8 ignore stop */
+
+    static normalize = normalize.bind(undefined, state, BaseError)
   }
   /* eslint-enable fp/no-this */
   setErrorName(BaseError, 'BaseError')

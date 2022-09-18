@@ -1,6 +1,5 @@
 import { setErrorName } from 'error-class-utils'
 
-import { normalize } from './normalize.js'
 import { addAllStaticMethods } from './static.js'
 
 // Create `AnyError` class, used to wrap errors without changing their class
@@ -10,11 +9,8 @@ export const createAnyError = function ({
   BaseError,
   plugins,
 }) {
-  const isKnownError = hasKnownClass.bind(undefined, BaseError)
-
   class AnyError extends BaseError {
-    static [Symbol.hasInstance] = isKnownError
-    static normalize = normalize.bind(undefined, AnyError)
+    static [Symbol.hasInstance] = hasKnownClass.bind(undefined, BaseError)
   }
   setErrorName(AnyError, 'AnyError')
   addAllStaticMethods({ plugins, globalOpts, AnyError, state })

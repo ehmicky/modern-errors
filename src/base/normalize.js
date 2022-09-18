@@ -9,8 +9,8 @@ import normalizeException from 'normalize-exception'
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
 // We let any exceptions from custom constructors propagate.
-export const normalize = function (AnyError, error) {
+export const normalize = function ({ AnyError }, BaseError, error) {
   const errorA =
-    error instanceof AnyError ? error : new AnyError('', { cause: error })
+    error instanceof BaseError ? error : new AnyError('', { cause: error })
   return normalizeException(errorA)
 }
