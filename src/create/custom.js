@@ -1,6 +1,9 @@
 import { setErrorName } from 'error-class-utils'
 
-// `*Error.custom` can be used to customize a specific error class
+// The `custom` option can be used to customize a specific error class.
+// It must extend from `AnyError`.
+// `setErrorName()` also checks that `name` is a string and is not one of the
+// native error classes.
 export const getErrorClass = function (AnyError, className, custom = AnyError) {
   validateCustomClass(custom, AnyError)
   const ErrorClass = class extends custom {}
