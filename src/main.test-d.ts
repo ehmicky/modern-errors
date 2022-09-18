@@ -139,6 +139,8 @@ expectError(AnyError.subclass('TestError', { custom: true }))
 expectError(AnyError.subclass('TestError', { custom: class {} }))
 expectError(AnyError.subclass('TestError', { custom: class extends Object {} }))
 expectError(AnyError.subclass('TestError', { custom: class extends Error {} }))
+expectError(CError.subclass('TestError', { custom: class extends AnyError {} }))
+expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
 expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
