@@ -15,10 +15,12 @@ const { ShallowError } = defineShallowCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
-each([TestError, ShallowError], ({ title }, ErrorClass) => {
-  test(`Parent class is AnyError by default | ${title}`, (t) => {
-    t.is(Object.getPrototypeOf(ErrorClass).name, 'AnyError')
-  })
+test('Parent class is AnyError by default', (t) => {
+  t.is(Object.getPrototypeOf(TestError), AnyError)
+})
+
+test('AnyError can be passed as is', (t) => {
+  t.is(Object.getPrototypeOf(ShallowError).name, 'AnyError')
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
@@ -26,7 +28,7 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
     t.is(Object.getPrototypeOf(ErrorClass).name, ErrorClass.name)
   })
 
-  test(`Can define custom classes| ${title}`, (t) => {
+  test(`Custom classes are inherited | ${title}`, (t) => {
     t.true(ErrorClass.staticProp)
     t.true(new ErrorClass('test').prop)
   })
