@@ -4,10 +4,8 @@ type ErrorInstance<ErrorNameArg extends ErrorName = ErrorName> = Error & {
   name: ErrorNameArg
 }
 
-type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
-
 type ErrorConstructor<ErrorInstanceArg extends ErrorInstance> = new (
-  ...args: ErrorConstructorArgs
+  ...args: any[]
 ) => ErrorInstanceArg
 
 /**
@@ -49,11 +47,11 @@ type ClassOptions<ParentErrorInstance extends ErrorInstance> = {
 
 type ErrorClass<
   ErrorInstanceArg extends ErrorInstance<ErrorName>,
-  ConstructorArgs extends ErrorConstructorArgs,
+  ErrorConstructorArgs extends any[],
 > = {
-  new (...args: ConstructorArgs): ErrorInstanceArg
+  new (...args: ErrorConstructorArgs): ErrorInstanceArg
   prototype: ErrorInstanceArg
-  subclass: CreateSubclass<ErrorInstanceArg, ConstructorArgs>
+  subclass: CreateSubclass<ErrorInstanceArg, ErrorConstructorArgs>
 }
 
 type CustomErrorClass<
@@ -68,7 +66,7 @@ type CustomErrorClass<
 
 type CreateSubclass<
   ParentErrorInstance extends ErrorInstance,
-  ConstructorArgs extends ErrorConstructorArgs,
+  ErrorConstructorArgs extends any[],
 > = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ParentErrorInstance>,
@@ -77,7 +75,9 @@ type CreateSubclass<
   options?: OptionsArg,
 ) => OptionsArg['custom'] extends ErrorConstructor<ParentErrorInstance>
   ? CustomErrorClass<ErrorNameArg, ParentErrorInstance, OptionsArg['custom']>
-  : ErrorClass<ErrorInstance<ErrorNameArg>, ConstructorArgs>
+  : ErrorClass<ErrorInstance<ErrorNameArg>, ErrorConstructorArgs>
+
+type AnyErrorConstructorArgs = [message: string, options?: ErrorOptions]
 
 /**
  * Base error class.
@@ -93,7 +93,7 @@ type CreateSubclass<
  * ```
  */
 type AnyErrorClass = {
-  new (...args: ErrorConstructorArgs): ErrorInstance
+  new (...args: AnyErrorConstructorArgs): ErrorInstance
   prototype: ErrorInstance
 
   /**
@@ -106,7 +106,7 @@ type AnyErrorClass = {
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<ErrorInstance, ErrorConstructorArgs>
+  subclass: CreateSubclass<ErrorInstance, AnyErrorConstructorArgs>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
