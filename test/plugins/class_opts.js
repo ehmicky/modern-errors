@@ -32,32 +32,32 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
 })
 
 each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {
-  test(`Class options have priority over global options | ${title}`, (t) => {
+  test(`Child options have priority over parent ones | ${title}`, (t) => {
     const { TestError } = defineOpts({ prop: true }, { prop: false })
     t.true(new TestError('test').set.options.prop)
   })
-})
 
-test('undefined class options are ignored over global ones', (t) => {
-  const { TestError } = defineClassOpts({ prop: undefined }, { prop: true })
-  t.true(new TestError('test').set.options.prop)
-})
+  test(`undefined child options are ignored over parent ones | ${title}`, (t) => {
+    const { TestError } = defineOpts({ prop: undefined }, { prop: true })
+    t.true(new TestError('test').set.options.prop)
+  })
 
-test('undefined global options are ignored over class ones', (t) => {
-  const { TestError } = defineClassOpts({ prop: true }, { prop: undefined })
-  t.true(new TestError('test').set.options.prop)
-})
+  test(`undefined parent options are ignored over child ones | ${title}`, (t) => {
+    const { TestError } = defineOpts({ prop: true }, { prop: undefined })
+    t.true(new TestError('test').set.options.prop)
+  })
 
-test('Object class options are shallowly merged to global options', (t) => {
-  const { TestError } = defineClassOpts(
-    { prop: { one: true, two: { three: true }, four: true } },
-    { prop: { one: false, two: { three: false }, five: false } },
-  )
-  t.deepEqual(new TestError('test').set.options.prop, {
-    one: true,
-    two: { three: true },
-    four: true,
-    five: false,
+  test(`Object child options are shallowly merged to parent options | ${title}`, (t) => {
+    const { TestError } = defineOpts(
+      { prop: { one: true, two: { three: true }, four: true } },
+      { prop: { one: false, two: { three: false }, five: false } },
+    )
+    t.deepEqual(new TestError('test').set.options.prop, {
+      one: true,
+      two: { three: true },
+      four: true,
+      five: false,
+    })
   })
 })
 
