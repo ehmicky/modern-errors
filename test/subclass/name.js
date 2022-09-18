@@ -3,12 +3,12 @@ import { each } from 'test-each'
 
 import {
   createAnyError,
-  defineSimpleClass,
+  defineClassOpts,
   defineSimpleCustom,
   defineDeepCustom,
 } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 const { DeepCustomError } = defineDeepCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 

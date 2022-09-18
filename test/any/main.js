@@ -1,8 +1,8 @@
 import test from 'ava'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 test('instanceof AnyError can be used with known errors', (t) => {
   t.true(new TestError('test') instanceof AnyError)
@@ -17,7 +17,7 @@ test('instanceof AnyError can be used with other errors', (t) => {
 })
 
 test('instanceof AnyError prevents naming collisions', (t) => {
-  const { TestError: OtherTestError } = defineSimpleClass()
+  const { TestError: OtherTestError } = defineClassOpts()
   t.false(new OtherTestError('test') instanceof AnyError)
 })
 

@@ -1,9 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineSimpleClass } from './helpers/main.js'
+import { defineClassOpts } from './helpers/main.js'
 
-const { TestError, UnknownError } = defineSimpleClass()
+const { TestError, UnknownError } = defineClassOpts()
 
 each([TestError, UnknownError], ({ title }, ErrorClass) => {
   test(`Can use known error classes | ${title}`, (t) => {
@@ -14,7 +14,7 @@ each([TestError, UnknownError], ({ title }, ErrorClass) => {
 })
 
 test('Can be called several times', (t) => {
-  const { TestError: OtherTestError } = defineSimpleClass()
+  const { TestError: OtherTestError } = defineClassOpts()
   const error = new OtherTestError('test')
   t.true(error instanceof OtherTestError)
 })

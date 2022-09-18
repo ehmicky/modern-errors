@@ -1,8 +1,8 @@
 import test from 'ava'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, UnknownError, AnyError } = defineSimpleClass()
+const { TestError, UnknownError, AnyError } = defineClassOpts()
 
 test('plugin.set() is passed ErrorClasses', (t) => {
   t.deepEqual(new TestError('test').set.ErrorClasses, {

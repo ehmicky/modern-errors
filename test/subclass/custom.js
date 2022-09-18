@@ -2,13 +2,13 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  defineSimpleClass,
+  defineClassOpts,
   defineSimpleCustom,
   defineDeepCustom,
   defineClassesOpts,
 } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 const { SimpleCustomError, AnyError: CustomAnyError } = defineSimpleCustom()
 const { DeepCustomError, SimpleCustomError: DeepCustomParentError } =
   defineDeepCustom()

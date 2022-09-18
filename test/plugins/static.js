@@ -1,12 +1,12 @@
 import test from 'ava'
 
 import {
-  defineSimpleClass,
+  defineClassOpts,
   defineGlobalOpts,
   createAnyError,
 } from '../helpers/main.js'
 
-const { AnyError } = defineSimpleClass()
+const { AnyError } = defineClassOpts()
 
 test('plugin.staticMethods are set on AnyError', (t) => {
   t.is(typeof AnyError.getProp, 'function')

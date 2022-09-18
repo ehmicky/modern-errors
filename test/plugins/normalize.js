@@ -1,14 +1,10 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineSimpleClass,
-  defineGlobalOpts,
-  defineClassOpts,
-} from '../helpers/main.js'
+import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { TestError } = defineSimpleClass()
+const { TestError } = defineClassOpts()
 
 test('plugin.normalize() is optional', (t) => {
   const { TestError: OtherTestError } = defineClassOpts({}, {}, [

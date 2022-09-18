@@ -1,14 +1,10 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineSimpleClass,
-  defineClassOpts,
-  defineGlobalOpts,
-} from '../helpers/main.js'
+import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 test('Passes error to plugin.set()', (t) => {
   t.true(new TestError('test').set.error instanceof Error)

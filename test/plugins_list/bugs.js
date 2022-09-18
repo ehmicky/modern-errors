@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 // eslint-disable-next-line no-restricted-imports
 import BUGS_PLUGIN from '../../src/plugins_list/bugs.js'
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass({}, [BUGS_PLUGIN])
+const { TestError, AnyError } = defineClassOpts({}, {}, [BUGS_PLUGIN])
 
 const TEST_BUGS = import.meta.url
 const TEST_BUGS_TWO = 'https://example.com/'

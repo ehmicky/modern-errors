@@ -1,14 +1,10 @@
 import test from 'ava'
 
-import {
-  defineSimpleClass,
-  defineClassOpts,
-  defineGlobalOpts,
-} from '../helpers/main.js'
+import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 test('plugin.instanceMethods are set on known errors', (t) => {
   t.is(typeof new TestError('message').getInstance, 'function')

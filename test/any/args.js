@@ -1,9 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineSimpleClass, createAnyError } from '../helpers/main.js'
+import { defineClassOpts, createAnyError } from '../helpers/main.js'
 
-const { TestError, UnknownError, AnyError } = defineSimpleClass()
+const { TestError, UnknownError, AnyError } = defineClassOpts()
 
 test('Allows empty options', (t) => {
   t.notThrows(() => new TestError('test'))

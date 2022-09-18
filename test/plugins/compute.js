@@ -2,13 +2,12 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  defineSimpleClass,
   defineClassOpts,
   defineGlobalOpts,
   defineClassesOpts,
 } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 test('Does not set options if not defined', (t) => {
   t.is(new TestError('test').set.options.prop, undefined)

@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassesOpts, defineSimpleClass } from '../helpers/main.js'
-
-const { TestError } = defineSimpleClass()
+import { defineClassesOpts, defineClassOpts } from '../helpers/main.js'
 
 each(['subclass', 'normalize', 'getProp'], ({ title }, methodName) => {
   test(`Does not allow overriding AnyError.* | ${title}`, (t) => {
@@ -21,6 +19,7 @@ each(['subclass', 'normalize', 'getProp'], ({ title }, methodName) => {
   })
 
   test(`Does not allow calling ErrorClass.* | ${title}`, (t) => {
+    const { TestError } = defineClassOpts()
     t.throws(() => TestError[methodName]())
   })
 })

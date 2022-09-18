@@ -1,13 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineClassOpts,
-  defineSimpleClass,
-  defineClassesOpts,
-} from '../helpers/main.js'
+import { defineClassOpts, defineClassesOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 each([AnyError, TestError], ({ title }, ParentError) => {
   test(`Parent error cannot be passed as is | ${title}`, (t) => {

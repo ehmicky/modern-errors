@@ -1,13 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineSimpleClass,
-  defineClassOpts,
-  defineGlobalOpts,
-} from '../helpers/main.js'
+import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 test('Passes error to plugin.unset()', (t) => {
   const cause = new TestError('causeMessage')

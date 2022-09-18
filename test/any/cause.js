@@ -1,9 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineClassOpts()
 
 each([TestError, AnyError], ({ title }, ErrorClass) => {
   test(`"cause" is merged | ${title}`, (t) => {
