@@ -7,6 +7,7 @@ import {
   defineShallowCustom,
   defineSimpleCustom,
   defineDeepCustom,
+  defineClassesOpts,
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineSimpleClass()
@@ -51,25 +52,34 @@ each(
 // eslint-disable-next-line unicorn/no-null
 each(['', null], ({ title }, invalidPrototype) => {
   test(`Validate against invalid prototypes | ${title}`, (t) => {
-    // eslint-disable-next-line unicorn/consistent-function-scoping
-    const custom = function () {}
-    // eslint-disable-next-line fp/no-mutation
-    custom.prototype = invalidPrototype
-    // eslint-disable-next-line fp/no-mutating-methods
-    Object.setPrototypeOf(custom, Error)
-    t.throws(defineCustomClass.bind(undefined, custom))
+    t.throws(
+      // eslint-disable-next-line max-nested-callbacks
+      defineClassesOpts.bind(undefined, (TestAnyError) => {
+        // eslint-disable-next-line unicorn/consistent-function-scoping, max-nested-callbacks
+        const custom = function () {}
+        // eslint-disable-next-line fp/no-mutation
+        custom.prototype = invalidPrototype
+        // eslint-disable-next-line fp/no-mutating-methods
+        Object.setPrototypeOf(custom, TestAnyError)
+        return { InputError: { custom } }
+      }),
+    )
   })
 })
 
 test('Validate against invalid constructor', (t) => {
-  class custom extends Error {}
-  // eslint-disable-next-line fp/no-mutation
-  custom.prototype.constructor = Error
-  t.throws(defineCustomClass.bind(undefined, custom))
+  t.throws(
+    defineClassesOpts.bind(undefined, (TestAnyError) => {
+      class custom extends TestAnyError {}
+      // eslint-disable-next-line fp/no-mutation
+      custom.prototype.constructor = Error
+      return { InputError: { custom } }
+    }),
+  )
 })
 
 test('Validate against parent being null', (t) => {
-  class custom extends Error {}
+  class custom {}
   // eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
   Object.setPrototypeOf(custom, null)
   t.throws(defineCustomClass.bind(undefined, custom))
