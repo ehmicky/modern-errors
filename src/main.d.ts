@@ -70,7 +70,7 @@ type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
   errorName: ErrorNameArg,
   options?: OptionsArg,
 ) => ErrorClass<
-  OptionsArg['custom'] extends ErrorConstructor
+  OptionsArg['custom'] extends ErrorClass<ParentErrorClass, ErrorName>
     ? OptionsArg['custom']
     : ParentErrorClass,
   ErrorNameArg
