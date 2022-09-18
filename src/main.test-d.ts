@@ -59,6 +59,14 @@ expectError(
   }),
 )
 
+const anyError = new AnyError('')
+expectType<AnyInstance>(anyError)
+expectAssignable<Error>(anyError)
+expectError(AnyError.staticProp)
+expectError(anyError.prop)
+expectType<AnyInstance>(AnyError.normalize(''))
+expectError(AnyError.normalize('', true))
+
 const sError = new SError('')
 expectType<SInstance>(sError)
 expectAssignable<AnyInstance>(sError)
@@ -67,6 +75,9 @@ expectError(SError.staticProp)
 expectError(sError.prop)
 expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
+if (anyError instanceof SError) {
+  expectType<SInstance>(anyError)
+}
 
 const cError = new CError(true)
 expectType<CInstance>(cError)
@@ -76,6 +87,12 @@ expectType<true>(CError.staticProp)
 expectType<true>(cError.prop)
 expectType<'CError'>(cError.name)
 expectError(CError.normalize(''))
+// Type narrowing with `instanceof` of error classes with a `custom` option
+// does not work due to:
+// https://github.com/microsoft/TypeScript/issues/50844
+// if (anyError instanceof CError) {
+//   expectType<CInstance>(anyError)
+// }
 
 const ssError = new SSError('')
 expectType<SSInstance>(ssError)
@@ -85,6 +102,9 @@ expectError(SSError.staticProp)
 expectError(ssError.prop)
 expectType<'SSError'>(ssError.name)
 expectError(SSError.normalize(''))
+if (anyError instanceof SSError) {
+  expectType<SSInstance>(anyError)
+}
 
 const scError = new SCError(true)
 expectType<SCInstance>(scError)
@@ -94,6 +114,10 @@ expectType<true>(SCError.staticProp)
 expectType<true>(scError.prop)
 expectType<'SCError'>(scError.name)
 expectError(SCError.normalize(''))
+// See above
+// if (anyError instanceof SCError) {
+//   expectType<SCInstance>(anyError)
+// }
 
 const csError = new CSError(true)
 expectType<CSInstance>(csError)
@@ -103,6 +127,10 @@ expectType<true>(CSError.staticProp)
 expectType<true>(csError.prop)
 expectType<'CSError'>(csError.name)
 expectError(CSError.normalize(''))
+// See above
+// if (anyError instanceof CSError) {
+//   expectType<CSInstance>(anyError)
+// }
 
 const ccError = new CCError(0)
 expectType<CCInstance>(ccError)
@@ -114,44 +142,16 @@ expectType<true>(ccError.prop)
 expectType<true>(ccError.deepProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
-
-const anyError = new AnyError('')
-expectType<AnyInstance>(anyError)
-expectAssignable<Error>(anyError)
-expectError(AnyError.staticProp)
-expectError(anyError.prop)
-expectType<AnyInstance>(AnyError.normalize(''))
-expectError(AnyError.normalize('', true))
+// See above
+// if (anyError instanceof CCError) {
+//   expectType<CCInstance>(anyError)
+// }
 
 const error = new Error('')
 
 if (error instanceof AnyError) {
   expectType<AnyInstance>(error)
 }
-
-// Type narrowing with `instanceof` of error classes with a `custom` option
-// does not work due to:
-// https://github.com/microsoft/TypeScript/issues/50844
-// if (anyError instanceof CError) {
-//   expectType<CInstance>(anyError)
-// }
-// if (anyError instanceof SCError) {
-//   expectType<SCInstance>(anyError)
-// }
-// if (anyError instanceof CSError) {
-//   expectType<CSInstance>(anyError)
-// }
-// if (anyError instanceof CCError) {
-//   expectType<CCInstance>(anyError)
-// }
-
-if (anyError instanceof SError) {
-  expectType<SInstance>(anyError)
-}
-if (anyError instanceof SSError) {
-  expectType<SSInstance>(anyError)
-}
-
 if (cError instanceof SError) {
   expectType<never>(cError)
 }
