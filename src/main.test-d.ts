@@ -20,6 +20,16 @@ class BaseTestError extends AnyError {
 const TestError = AnyError.subclass('TestError', { custom: BaseTestError })
 type TestErrorInstance = InstanceType<typeof TestError>
 
+expectError(
+  AnyError.subclass('TestError', {
+    custom: class extends AnyError {
+      constructor(message: boolean, options?: object) {
+        super(String(message), options)
+      }
+    },
+  }),
+)
+
 AnyError.subclass('TestError', { custom: AnyError })
 // TODO: fix
 // AnyError.subclass('TestError', { custom: TestError })
