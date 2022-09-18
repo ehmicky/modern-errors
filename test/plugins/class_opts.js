@@ -30,29 +30,25 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   })
 })
 
-const defineGlobalClassesOpts = function (globalOpts, classOpts) {
-  return defineClassOpts(classOpts, globalOpts).TestError
-}
-
 test('Class options have priority over global options', (t) => {
-  const TestError = defineGlobalClassesOpts({ prop: false }, { prop: true })
+  const { TestError } = defineClassOpts({ prop: true }, { prop: false })
   t.true(new TestError('test').set.options.prop)
 })
 
 test('undefined class options are ignored over global ones', (t) => {
-  const TestError = defineGlobalClassesOpts({ prop: true }, { prop: undefined })
+  const { TestError } = defineClassOpts({ prop: undefined }, { prop: true })
   t.true(new TestError('test').set.options.prop)
 })
 
 test('undefined global options are ignored over class ones', (t) => {
-  const TestError = defineGlobalClassesOpts({ prop: undefined }, { prop: true })
+  const { TestError } = defineClassOpts({ prop: true }, { prop: undefined })
   t.true(new TestError('test').set.options.prop)
 })
 
 test('Object class options are shallowly merged to global options', (t) => {
-  const TestError = defineGlobalClassesOpts(
-    { prop: { one: false, two: { three: false }, five: false } },
+  const { TestError } = defineClassOpts(
     { prop: { one: true, two: { three: true }, four: true } },
+    { prop: { one: false, two: { three: false }, five: false } },
   )
   t.deepEqual(new TestError('test').set.options.prop, {
     one: true,
