@@ -1,6 +1,7 @@
 import { validateNonEmpty } from '../any/subclass.js'
 import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
 
+import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -51,7 +52,6 @@ const addStaticMethod = function ({
   AnyError,
 }) {
   validateMethodName(methodName, plugin, plugins)
-  validateNativeName(methodName, plugin)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   AnyError[methodName] = callStaticMethods.bind(undefined, {
     methodFunc,
@@ -63,23 +63,19 @@ const addStaticMethod = function ({
 }
 
 const validateMethodName = function (methodName, plugin, plugins) {
-  const duplicatePlugin = plugins.find(
-    (pluginA) => plugin !== pluginA && methodName in plugin.staticMethods,
-  )
-
-  if (duplicatePlugin !== undefined) {
-    throw new Error(
-      `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "AnyError.${methodName}()"`,
-    )
-  }
-}
-
-const validateNativeName = function (methodName, plugin) {
   if (methodName in Error || ANY_ERROR_STATIC_METHODS.includes(methodName)) {
     throw new Error(
-      `Plugin "${plugin.fullName}" must not redefine "Error.${methodName}()"`,
+      `Plugin "${plugin.fullName}" must not redefine "AnyError.${methodName}()"`,
     )
   }
+
+  validateDuplicatePlugin({
+    methodName,
+    plugin,
+    plugins,
+    propName: 'staticMethods',
+    prefix: 'AnyError',
+  })
 }
 
 const callStaticMethods = function (

@@ -56,15 +56,6 @@ test('plugin.instanceMethods are passed AnyError', (t) => {
   t.is(new TestError('message').getInstance().AnyError, AnyError)
 })
 
-test('plugin.instanceMethods cannot be defined twice by different plugins', (t) => {
-  t.throws(
-    defineGlobalOpts.bind(undefined, {}, [
-      { name: 'one', instanceMethods: { one() {} } },
-      { name: 'two', instanceMethods: { one() {} } },
-    ]),
-  )
-})
-
 each(
   [
     ...new Set([

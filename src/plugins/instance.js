@@ -1,3 +1,4 @@
+import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { getErrorOpts } from './normalize.js'
 
@@ -45,7 +46,6 @@ const addInstanceMethod = function ({
   AnyError,
 }) {
   validateMethodName(methodName, plugin, plugins)
-  validateNativeName(methodName, plugin)
 
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
@@ -67,21 +67,17 @@ const addInstanceMethod = function ({
 }
 
 const validateMethodName = function (methodName, plugin, plugins) {
-  const duplicatePlugin = plugins.find(
-    (pluginA) => plugin !== pluginA && methodName in plugin.instanceMethods,
-  )
-
-  if (duplicatePlugin !== undefined) {
-    throw new Error(
-      `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "error.${methodName}()"`,
-    )
-  }
-}
-
-const validateNativeName = function (methodName, plugin) {
   if (methodName in Error.prototype) {
     throw new Error(
       `Plugin "${plugin.fullName}" must not redefine "error.${methodName}()"`,
     )
   }
+
+  validateDuplicatePlugin({
+    methodName,
+    plugin,
+    plugins,
+    propName: 'instanceMethods',
+    prefix: 'error',
+  })
 }
