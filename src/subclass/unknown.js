@@ -1,5 +1,17 @@
 import normalizeException from 'normalize-exception'
 
+// UnknownError cannot have a `custom` class:
+//  - This ensures its constructor does not throw
+//  - This discourages instantiating UnknownError directly, encouraging creating
+//    a separate error class for known system errors instead
+export const validateCustomUnknown = function (custom, className) {
+  if (custom !== undefined && className === 'UnknownError') {
+    throw new TypeError(
+      'Error option "custom" is not available with "UnknownError".',
+    )
+  }
+}
+
 // `UnknownError` is used by `new AnyError()` and `AnyError.normalize()`.
 // Therefore, it is required.
 // We do not automatically create `UnknownError` to encourage exporting it and

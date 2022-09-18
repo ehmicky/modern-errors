@@ -25,14 +25,13 @@ test('Allow defining UnknownError at the end', (t) => {
   t.notThrows(() => new OtherInputError('test'))
 })
 
-test('Can use "custom" with UnknownError', (t) => {
+test('Cannot use "custom" with UnknownError', (t) => {
   const TestAnyError = createAnyError()
-  const UnknownError = TestAnyError.subclass('UnknownError', {
-    custom: class extends TestAnyError {
-      static prop = true
-    },
-  })
-  t.true(UnknownError.prop)
+  t.throws(() =>
+    TestAnyError.subclass('UnknownError', {
+      custom: class extends TestAnyError {},
+    }),
+  )
 })
 
 test('Require defining at least one error', (t) => {

@@ -1,5 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
+import { validateCustomUnknown } from '../subclass/unknown.js'
+
 import { mergePluginsOpts } from './merge.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -42,7 +44,12 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 // Validate and compute class options when `modernErrors()` is called so this
 // throws at load time instead of at runtime.
 // Merging priority is: global < class < instance options.
-export const getClassOpts = function (plugins, globalOpts, classOpts = {}) {
+export const getClassOpts = function ({
+  plugins,
+  globalOpts,
+  className,
+  classOpts = {},
+}) {
   if (!isPlainObj(classOpts)) {
     throw new TypeError(
       `The second argument must be a plain object: ${globalOpts}`,
@@ -50,6 +57,7 @@ export const getClassOpts = function (plugins, globalOpts, classOpts = {}) {
   }
 
   const { custom, ...classOptsA } = classOpts
+  validateCustomUnknown(custom, className)
   const classOptsB = mergePluginsOpts(globalOpts, classOptsA, plugins)
   plugins.forEach((plugin) => {
     normalizePluginOpts(classOptsB, plugin)

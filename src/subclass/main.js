@@ -20,11 +20,12 @@ export const createSubclass = function (
   classOpts,
 ) {
   validateClassName(className, ErrorClasses)
-  const { custom, classOpts: classOptsA } = getClassOpts(
+  const { custom, classOpts: classOptsA } = getClassOpts({
     plugins,
     globalOpts,
+    className,
     classOpts,
-  )
+  })
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(ErrorClass, 'subclass', {
