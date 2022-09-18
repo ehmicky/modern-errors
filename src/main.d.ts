@@ -1,17 +1,10 @@
 import { ErrorName } from 'error-custom-class'
 
-type Class<Instance extends object = object, Args extends any[] = any[]> = {
-  new (...args: Args): Instance
-  prototype: Instance
+type ErrorInstance<ErrorNameArg extends ErrorName = ErrorName> = Error & {
+  name: ErrorNameArg
 }
 
-type CustomError<
-  ErrorNameArg extends ErrorName = ErrorName,
-  Options extends object = object,
-> = Class<
-  Error & { name: ErrorNameArg },
-  [message: string, options?: Options & ErrorOptions]
->
+type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
 
 /**
  * Class-specific options
@@ -47,7 +40,7 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: AnyError<ErrorName>
+  readonly custom?: AnyError
 }
 
 /**
@@ -58,7 +51,10 @@ type ErrorClass<
   OptionsArgs extends ClassOptions,
 > = OptionsArgs['custom'] extends NonNullable<ClassOptions['custom']>
   ? OptionsArgs['custom']
-  : AnyError<ErrorNameArg>
+  : {
+      new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
+      prototype: ErrorInstance<ErrorNameArg>
+    }
 
 /**
  * Base error class.
@@ -73,7 +69,10 @@ type ErrorClass<
  * }
  * ```
  */
-type AnyError<ErrorNameArg extends ErrorName> = CustomError<ErrorNameArg> & {
+type AnyError = {
+  new (...args: ErrorConstructorArgs): ErrorInstance<ErrorName>
+  prototype: ErrorInstance<ErrorName>
+
   /**
    * Creates and returns an error class.
    * The first error class must be named `UnknownError`.
@@ -103,7 +102,7 @@ type AnyError<ErrorNameArg extends ErrorName> = CustomError<ErrorNameArg> & {
    * }
    * ```
    */
-  normalize(error: unknown): InstanceType<CustomError<ErrorName>>
+  normalize(error: unknown): ErrorInstance<ErrorName>
 }
 
 /**
@@ -121,4 +120,4 @@ type AnyError<ErrorNameArg extends ErrorName> = CustomError<ErrorNameArg> & {
  *  export const DatabaseError = AnyError.create('DatabaseError')
  * ```
  */
-export default function modernErrors(): AnyError<ErrorName>
+export default function modernErrors(): AnyError
