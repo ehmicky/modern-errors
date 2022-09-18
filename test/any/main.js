@@ -1,5 +1,4 @@
 import test from 'ava'
-import { setErrorName } from 'error-class-utils'
 
 import { defineSimpleClass } from '../helpers/main.js'
 
@@ -18,10 +17,8 @@ test('instanceof AnyError can be used with other errors', (t) => {
 })
 
 test('instanceof AnyError prevents naming collisions', (t) => {
-  // eslint-disable-next-line no-shadow
-  class TestError extends Error {}
-  setErrorName(TestError, 'TestError')
-  t.false(new TestError('test') instanceof AnyError)
+  const { TestError: OtherTestError } = defineSimpleClass()
+  t.false(new OtherTestError('test') instanceof AnyError)
 })
 
 test('AnyError.prototype.name is correct', (t) => {
@@ -29,10 +26,4 @@ test('AnyError.prototype.name is correct', (t) => {
   t.false(
     Object.getOwnPropertyDescriptor(AnyError.prototype, 'name').enumerable,
   )
-})
-
-test('AnyError cannot be subclassed', (t) => {
-  class ChildAnyError extends AnyError {}
-  setErrorName(ChildAnyError, 'ChildAnyError')
-  t.throws(() => new ChildAnyError('test', { cause: '' }))
 })

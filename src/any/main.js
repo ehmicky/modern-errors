@@ -10,7 +10,7 @@ import { mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
 import { validateSubClass } from './subclass.js'
 
-export const CoreError = errorCustomClass('CoreError')
+const CoreError = errorCustomClass('CoreError')
 
 // Base class for all error classes.
 // This is not a global class since it is bound to specific plugins, global
