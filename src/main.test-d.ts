@@ -28,13 +28,11 @@ expectError(AnyError.create())
 
 const testError = new TestError(true)
 expectType<TestErrorInstance>(testError)
-expectType<BaseTestError>(testError)
+expectAssignable<BaseTestError>(testError)
 expectAssignable<AnyErrorInstance>(testError)
 expectAssignable<Error>(testError)
 expectType<true>(TestError.staticProp)
-// TODO: The following is not working because `custom` inherits from `AnyError`
-// which does not have any `name`.
-// expectType<'TestError'>(testError.name)
+expectType<'TestError'>(testError.name)
 expectType<true>(testError.prop)
 
 const unknownError = new UnknownError('')

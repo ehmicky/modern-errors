@@ -53,8 +53,8 @@ type ErrorClass<
   ? {
       new (...args: ConstructorParameters<OptionsArgs['custom']>): InstanceType<
         OptionsArgs['custom']
-      >
-      prototype: InstanceType<OptionsArgs['custom']>
+      > & { name: ErrorNameArg }
+      prototype: InstanceType<OptionsArgs['custom']> & { name: ErrorNameArg }
     } & Omit<OptionsArgs['custom'], 'prototype'>
   : {
       new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
