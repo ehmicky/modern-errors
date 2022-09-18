@@ -1,5 +1,7 @@
 import { setErrorName } from 'error-class-utils'
 
+import { setInheritedMethods } from './inherited.js'
+
 // The `custom` option can be used to customize a specific error class.
 // It must extend from `AnyError`.
 // It can be `AnyError` itself (which is the default value).
@@ -8,10 +10,16 @@ import { setErrorName } from 'error-class-utils'
 //  - Creating several classes with the same `custom` option
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes.
-export const getErrorClass = function (AnyError, className, custom = AnyError) {
+export const getErrorClass = function ({
+  AnyError,
+  className,
+  custom = AnyError,
+  plugins,
+}) {
   validateCustomClass(custom, AnyError)
   const ErrorClass = class extends custom {}
   setErrorName(ErrorClass, className)
+  setInheritedMethods({ ErrorClass, custom, plugins, className, AnyError })
   return ErrorClass
 }
 

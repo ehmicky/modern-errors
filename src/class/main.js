@@ -21,7 +21,7 @@ export const createClass = function (
     globalOpts,
     classOpts,
   )
-  const ErrorClass = getErrorClass(AnyError, className, custom)
+  const ErrorClass = getErrorClass({ AnyError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
   checkUnknownError(ErrorClass, className)

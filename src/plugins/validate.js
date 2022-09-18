@@ -6,11 +6,10 @@ export const normalizePlugins = function (plugins = []) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
-  plugins.forEach(validatePlugin)
-  return plugins
+  return plugins.map(normalizePlugin)
 }
 
-const validatePlugin = function (plugin) {
+const normalizePlugin = function (plugin) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
       `The first argument must be an array of plugin objects: ${plugin}`,
@@ -19,8 +18,9 @@ const validatePlugin = function (plugin) {
 
   validatePluginName(plugin)
   validateOptionalFuncs(plugin)
-  validateMethods(plugin, 'instanceMethods')
-  validateMethods(plugin, 'staticMethods')
+  const pluginA = normalizeMethods(plugin, 'instanceMethods')
+  const pluginB = normalizeMethods(pluginA, 'staticMethods')
+  return pluginB
 }
 
 const validatePluginName = function (plugin) {
@@ -79,20 +79,19 @@ const validateSetWithoutUnset = function (plugin) {
   }
 }
 
-const validateMethods = function (plugin, propName) {
-  if (plugin[propName] === undefined) {
-    return
-  }
+const normalizeMethods = function (plugin, propName) {
+  const methods = plugin[propName] ?? {}
 
-  if (!isPlainObj(plugin[propName])) {
+  if (!isPlainObj(methods)) {
     throw new TypeError(
-      `The plugin "${plugin.name}"'s "${propName}" property must be either undefined or a plain object, not: ${plugin[propName]}`,
+      `The plugin "${plugin.name}"'s "${propName}" property must be either undefined or a plain object, not: ${methods}`,
     )
   }
 
-  Object.entries(plugin[propName]).forEach(
+  Object.entries(methods).forEach(
     validateMethod.bind(undefined, plugin, propName),
   )
+  return { ...plugin, [propName]: methods }
 }
 
 const validateMethod = function (plugin, propName, [methodName, methodValue]) {

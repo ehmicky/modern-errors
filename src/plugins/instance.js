@@ -21,10 +21,6 @@ const addInstanceMethods = function ({
   errorData,
   AnyError,
 }) {
-  if (instanceMethods === undefined) {
-    return
-  }
-
   Object.entries(instanceMethods).forEach(([methodName, methodFunc]) => {
     addInstanceMethod({
       methodName,

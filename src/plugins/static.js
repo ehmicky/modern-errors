@@ -24,10 +24,6 @@ const addStaticMethods = function ({
   ErrorClasses,
   AnyError,
 }) {
-  if (staticMethods === undefined) {
-    return
-  }
-
   Object.entries(staticMethods).forEach(([methodName, methodFunc]) => {
     addStaticMethod({
       methodName,
