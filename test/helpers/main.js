@@ -5,22 +5,29 @@ export const defineCustomClass = function (custom, plugins) {
 }
 
 export const defineGlobalOpts = function (globalOpts, plugins) {
-  return defineClassesOpts({ AnyError: globalOpts, InputError: {} }, plugins)
+  return defineClassesOpts({ InputError: {} }, globalOpts, plugins)
 }
 
 export const defineClassOpts = function (classOpts, plugins) {
-  return defineClassesOpts({ InputError: classOpts }, plugins)
+  return defineClassesOpts({ InputError: classOpts }, {}, plugins)
 }
 
 export const defineSimpleClass = function (plugins) {
-  return defineClassesOpts({ TestError: {} }, plugins)
+  return defineClassesOpts({ TestError: {} }, {}, plugins)
+}
+
+export const definePlugins = function (plugins) {
+  return defineClassesOpts({}, {}, plugins)
 }
 
 export const defineClassesOpts = function (
   ErrorClasses,
+  globalOpts = {},
   plugins = [TEST_PLUGIN],
 ) {
-  return modernErrors({ UnknownError: {}, ...ErrorClasses }, plugins)
+  const AnyError = modernErrors(plugins, globalOpts)
+  const KnownClasses = AnyError.create({ UnknownError: {}, ...ErrorClasses })
+  return { AnyError, ...KnownClasses }
 }
 
 export const TEST_PLUGIN = {

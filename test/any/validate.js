@@ -7,10 +7,10 @@ import { defineSimpleClass, defineClassesOpts } from '../helpers/main.js'
 const { TestError, UnknownError } = defineSimpleClass()
 
 test('Prevent instantiating GlobalAnyError', (t) => {
-  const { InputError } = defineClassesOpts({
-    AnyError: { custom: class extends Error {} },
-    InputError: {},
-  })
+  const { InputError } = defineClassesOpts(
+    { InputError: {} },
+    { custom: class extends Error {} },
+  )
   const GlobalAnyError = Object.getPrototypeOf(InputError)
   t.throws(() => new GlobalAnyError('test'))
 })

@@ -1,8 +1,9 @@
 import test from 'ava'
-import modernErrors from 'modern-errors'
+import { each } from 'test-each'
 
 import {
   defineSimpleClass,
+  defineGlobalOpts,
   defineClassOpts,
   TEST_PLUGIN,
 } from '../helpers/main.js'
@@ -20,18 +21,10 @@ test('plugin.normalize() is called with no context', (t) => {
   t.is(new TestError('test', { prop: true }).set.options.context, undefined)
 })
 
-test('plugin.normalize() exceptions are thrown right away for global options', (t) => {
-  t.throws(
-    modernErrors.bind(
-      undefined,
-      { AnyError: { prop: 'invalid' }, UnknownError: { prop: '' } },
-      [TEST_PLUGIN],
-    ),
-  )
-})
-
-test('plugin.normalize() exceptions are thrown right away for class options', (t) => {
-  t.throws(defineClassOpts.bind(undefined, { prop: 'invalid' }))
+each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
+  test(`plugin.normalize() exceptions are thrown right away for global and class options | ${title}`, (t) => {
+    t.throws(defineOpts.bind(undefined, { prop: 'invalid' }))
+  })
 })
 
 test('plugin.normalize() exceptions are not thrown right away for instance options', (t) => {

@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassesOpts, TEST_PLUGIN } from '../helpers/main.js'
+import { definePlugins, TEST_PLUGIN } from '../helpers/main.js'
 
 each(
   [
@@ -18,17 +18,17 @@ each(
   ],
   ({ title }, plugins) => {
     test(`Should validate plugins | ${title}`, (t) => {
-      t.throws(defineClassesOpts.bind(undefined, {}, plugins))
+      t.throws(definePlugins.bind(undefined, plugins))
     })
   },
 )
 
 test('Should allow passing no plugins', (t) => {
-  t.notThrows(defineClassesOpts.bind(undefined, {}, []))
+  t.notThrows(definePlugins.bind(undefined, []))
 })
 
 test('Should allow valid plugins', (t) => {
-  t.notThrows(defineClassesOpts.bind(undefined, {}, [TEST_PLUGIN]))
+  t.notThrows(definePlugins.bind(undefined, [TEST_PLUGIN]))
 })
 
 each(
@@ -42,9 +42,7 @@ each(
   ],
   ({ title }, opts) => {
     test(`Should allow optional properties | ${title}`, (t) => {
-      t.notThrows(
-        defineClassesOpts.bind(undefined, {}, [{ ...TEST_PLUGIN, ...opts }]),
-      )
+      t.notThrows(definePlugins.bind(undefined, [{ ...TEST_PLUGIN, ...opts }]))
     })
   },
 )
@@ -52,9 +50,7 @@ each(
 each(['normalize', 'set', 'unset'], ({ title }, propName) => {
   test(`Should validate functions | ${title}`, (t) => {
     t.throws(
-      defineClassesOpts.bind(undefined, {}, [
-        { ...TEST_PLUGIN, [propName]: true },
-      ]),
+      definePlugins.bind(undefined, [{ ...TEST_PLUGIN, [propName]: true }]),
     )
   })
 })
@@ -62,9 +58,7 @@ each(['normalize', 'set', 'unset'], ({ title }, propName) => {
 each(['set', 'unset'], ({ title }, optName) => {
   test(`Should validate unset() without set() | ${title}`, (t) => {
     t.throws(
-      defineClassesOpts.bind(undefined, {}, [
-        { ...TEST_PLUGIN, [optName]: undefined },
-      ]),
+      definePlugins.bind(undefined, [{ ...TEST_PLUGIN, [optName]: undefined }]),
     )
   })
 })

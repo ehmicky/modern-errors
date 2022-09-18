@@ -1,12 +1,11 @@
 import test from 'ava'
-import modernErrors from 'modern-errors'
 import { each } from 'test-each'
 
 import {
   defineSimpleClass,
   defineClassOpts,
   defineGlobalOpts,
-  TEST_PLUGIN,
+  defineClassesOpts,
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineSimpleClass()
@@ -69,9 +68,8 @@ test('AnyError merges options shallowly', (t) => {
 })
 
 test('AnyError merges options on an implicit UnknownError', (t) => {
-  const { AnyError: TestAnyError } = modernErrors(
-    { UnknownError: { prop: true } },
-    [TEST_PLUGIN],
-  )
+  const { AnyError: TestAnyError } = defineClassesOpts({
+    UnknownError: { prop: true },
+  })
   t.true(new TestAnyError('test', { cause: 0 }).set.options.prop)
 })

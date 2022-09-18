@@ -3,7 +3,7 @@ import isPlainObj from 'is-plain-obj'
 // Validate plugins
 export const validatePlugins = function (plugins) {
   if (!Array.isArray(plugins)) {
-    throw new TypeError(`The second argument must be an array: ${plugins}`)
+    throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
   plugins.forEach(validatePlugin)
@@ -12,7 +12,7 @@ export const validatePlugins = function (plugins) {
 const validatePlugin = function (plugin) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
-      `The second argument must be an array of plugin objects: ${plugin}`,
+      `The first argument must be an array of plugin objects: ${plugin}`,
     )
   }
 

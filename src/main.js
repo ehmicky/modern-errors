@@ -1,16 +1,16 @@
 import { createAnyError } from './any/main.js'
-import { normalizeInput } from './input.js'
 import { initKnownClasses } from './known/init.js'
+import { getGlobalOpts } from './plugins/class_opts.js'
 import { addAllInstanceMethods } from './plugins/instance.js'
 import { addAllStaticMethods } from './plugins/static.js'
+import { validatePlugins } from './plugins/validate.js'
 
 // Creates error classes.
-export default function modernErrors(classesOpts, plugins) {
-  const {
-    classesOpts: classesOptsA,
+export default function modernErrors(plugins, globalOpts) {
+  const { plugins: pluginsA, globalOpts: globalOptsA } = normalizeInput(
+    plugins,
     globalOpts,
-    plugins: pluginsA,
-  } = normalizeInput(classesOpts, plugins)
+  )
   const KnownClasses = {}
   const errorData = new WeakMap()
   const AnyError = createAnyError(KnownClasses, errorData, pluginsA)
@@ -20,14 +20,28 @@ export default function modernErrors(classesOpts, plugins) {
     errorData,
     AnyError,
   })
-  addAllStaticMethods({ plugins: pluginsA, globalOpts, KnownClasses, AnyError })
-  initKnownClasses({
-    classesOpts: classesOptsA,
-    globalOpts,
-    AnyError,
-    KnownClasses,
-    errorData,
+  addAllStaticMethods({
     plugins: pluginsA,
+    globalOpts: globalOptsA,
+    KnownClasses,
+    AnyError,
   })
-  return { ...KnownClasses, AnyError }
+  // eslint-disable-next-line fp/no-mutation
+  AnyError.create = (classesOpts) =>
+    initKnownClasses({
+      classesOpts,
+      globalOpts: globalOptsA,
+      AnyError,
+      KnownClasses,
+      errorData,
+      plugins: pluginsA,
+    })
+  return AnyError
+}
+
+// Validate and normalize arguments
+const normalizeInput = function (plugins = [], globalOpts = {}) {
+  validatePlugins(plugins)
+  const globalOptsA = getGlobalOpts(globalOpts, plugins)
+  return { plugins, globalOpts: globalOptsA }
 }

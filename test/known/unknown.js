@@ -1,6 +1,7 @@
 import test from 'ava'
-import modernErrors from 'modern-errors'
 import { each } from 'test-each'
+
+import { defineClassesOpts } from '../helpers/main.js'
 
 each(
   [
@@ -28,7 +29,7 @@ each(
   ],
   ({ title }, custom) => {
     test(`Validate UnknownError constructor | ${title}`, (t) => {
-      t.throws(modernErrors.bind(undefined, { UnknownError: { custom } }))
+      t.throws(defineClassesOpts.bind(undefined, { UnknownError: { custom } }))
     })
   },
 )

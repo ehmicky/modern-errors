@@ -22,10 +22,10 @@ each(
       parentClassName: 'AnyError',
     },
     {
-      ErrorClass: defineClassesOpts({
-        AnyError: { custom: class extends Error {} },
-        InputError: { custom: class extends Error {} },
-      }).InputError,
+      ErrorClass: defineClassesOpts(
+        { InputError: { custom: class extends Error {} } },
+        { custom: class extends Error {} },
+      ).InputError,
       className: 'InputError',
       parentClassName: 'GlobalAnyError',
     },
@@ -66,14 +66,14 @@ each(
 
 each([undefined, class extends Error {}], ({ title }, custom) => {
   test(`Can define AnyError.custom | ${title}`, (t) => {
-    const { InputError } = defineClassesOpts({
-      AnyError: {
+    const { InputError } = defineClassesOpts(
+      { InputError: { custom } },
+      {
         custom: class extends Error {
           prop = true
         },
       },
-      InputError: { custom },
-    })
+    )
     t.true(new InputError('message').prop)
   })
 })

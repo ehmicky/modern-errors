@@ -3,6 +3,7 @@ import isPlainObj from 'is-plain-obj'
 import { setClassOpts } from '../plugins/class_opts.js'
 
 import { getErrorClass, createGlobalAnyError } from './custom.js'
+import { validateClassesOpts } from './input.js'
 import { checkUnknownError } from './unknown.js'
 
 // Validate, normalize and create each error class.
@@ -16,6 +17,7 @@ export const initKnownClasses = function ({
   errorData,
   plugins,
 }) {
+  validateClassesOpts(classesOpts)
   const GlobalAnyError = createGlobalAnyError(globalOpts, AnyError)
   Object.entries(classesOpts).forEach(([className, classOpts]) => {
     initKnownClass({
@@ -28,6 +30,7 @@ export const initKnownClasses = function ({
       globalOpts,
     })
   })
+  return KnownClasses
 }
 
 const initKnownClass = function ({

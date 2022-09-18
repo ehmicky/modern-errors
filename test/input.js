@@ -6,7 +6,7 @@ each(
   [undefined, [], {}, { TestError: {} }, { UnknownError: true }],
   ({ title }, ErrorClasses) => {
     test(`Validate invalid ErrorClasses | ${title}`, (t) => {
-      t.throws(modernErrors.bind(undefined, ErrorClasses))
+      t.throws(modernErrors().create.bind(undefined, ErrorClasses))
     })
   },
 )
