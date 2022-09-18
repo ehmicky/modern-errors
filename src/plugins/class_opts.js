@@ -50,7 +50,7 @@ export const getClassOpts = function ({
 }) {
   if (!isPlainObj(classOpts)) {
     throw new TypeError(
-      `The second argument must be a plain object: ${globalOpts}`,
+      `The second argument must be a plain object: ${classOpts}`,
     )
   }
 
