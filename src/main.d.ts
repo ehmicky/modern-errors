@@ -45,7 +45,8 @@ type ClassOptions = {
 
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
-  CustomOption extends AnyErrorClass,
+  ParentErrorClass extends ErrorClass<ErrorInstance<ErrorName>>,
+  CustomOption extends ParentErrorClass,
 > = {
   new (
     ...args: ConstructorParameters<CustomOption>
@@ -53,20 +54,21 @@ type CustomErrorClass<
   prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
 } & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
-type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
-  new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
-  prototype: ErrorInstance<ErrorNameArg>
+type ErrorClass<ErrorInstanceArg extends ErrorInstance<ErrorName>> = {
+  new (...args: ErrorConstructorArgs): ErrorInstanceArg
+  prototype: ErrorInstanceArg
 }
 
 /**
  * Error class returned by `AnyError.subclass()`
  */
-type ErrorClass<
+type ErrorSubclass<
   ErrorNameArg extends ErrorName,
+  ParentErrorClass extends ErrorClass<ErrorInstance<ErrorName>>,
   OptionsArgs extends ClassOptions,
-> = OptionsArgs['custom'] extends AnyErrorClass
-  ? CustomErrorClass<ErrorNameArg, OptionsArgs['custom']>
-  : DefaultErrorClass<ErrorNameArg>
+> = OptionsArgs['custom'] extends ParentErrorClass
+  ? CustomErrorClass<ErrorNameArg, ParentErrorClass, OptionsArgs['custom']>
+  : ErrorClass<ErrorInstance<ErrorNameArg>>
 
 /**
  * Base error class.
@@ -101,7 +103,7 @@ type AnyErrorClass = {
   >(
     errorName: ErrorNameArg,
     options?: OptionsArg,
-  ): ErrorClass<ErrorNameArg, OptionsArg>
+  ): ErrorSubclass<ErrorNameArg, AnyErrorClass, OptionsArg>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
