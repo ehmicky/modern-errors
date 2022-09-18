@@ -31,8 +31,6 @@ expectError(
 )
 
 AnyError.subclass('TestError', { custom: AnyError })
-// TODO: fix
-// AnyError.subclass('TestError', { custom: TestError })
 expectError(AnyError.subclass('Test'))
 expectError(AnyError.subclass({}))
 expectError(AnyError.subclass())
