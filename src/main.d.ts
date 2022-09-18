@@ -50,14 +50,20 @@ type ClassOptions<ParentError extends ErrorClass> = {
   readonly custom?: ParentError
 }
 
+type MaybeIntersect<T extends object, U extends object> = keyof U extends never
+  ? T
+  : T & U
+
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
   CustomOption extends ErrorClass,
-> = ErrorClass<
-  InstanceType<CustomOption> & { name: ErrorNameArg },
-  ConstructorParameters<CustomOption>
-> &
+> = MaybeIntersect<
+  ErrorClass<
+    InstanceType<CustomOption> & { name: ErrorNameArg },
+    ConstructorParameters<CustomOption>
+  >,
   Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
+>
 
 type CreateSubclass<ParentErrorClass extends ErrorClass> = <
   ErrorNameArg extends ErrorName,
