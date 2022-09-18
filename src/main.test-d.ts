@@ -3,7 +3,7 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 import modernErrors from './main.js'
 
 const AnyError = modernErrors()
-type AnyInstance = InstanceType<typeof AnyError>
+type AnyInstance = typeof AnyError['prototype']
 
 const anyError = new AnyError('')
 expectError(new AnyError())
@@ -17,7 +17,7 @@ expectType<AnyInstance>(AnyError.normalize(''))
 expectError(AnyError.normalize('', true))
 
 const SError = AnyError.subclass('SError')
-type SInstance = InstanceType<typeof SError>
+type SInstance = typeof SError['prototype']
 
 const sError = new SError('')
 expectType<SInstance>(sError)
@@ -30,7 +30,7 @@ if (anyError instanceof SError) {
 }
 
 const SSError = SError.subclass('SSError')
-type SSInstance = InstanceType<typeof SSError>
+type SSInstance = typeof SSError['prototype']
 
 const ssError = new SSError('')
 expectType<SSInstance>(ssError)
@@ -50,7 +50,7 @@ class BCError extends AnyError {
   static staticProp = true as const
 }
 const CError = AnyError.subclass('CError', { custom: BCError })
-type CInstance = InstanceType<typeof CError>
+type CInstance = typeof CError['prototype']
 
 const cError = new CError(true)
 expectType<CInstance>(cError)
@@ -68,7 +68,7 @@ expectError(CError.normalize(''))
 // }
 
 const SCError = CError.subclass('SCError')
-type SCInstance = InstanceType<typeof SCError>
+type SCInstance = typeof SCError['prototype']
 
 const scError = new SCError(true)
 expectType<SCInstance>(scError)
@@ -91,7 +91,7 @@ class BCSError extends SError {
   static staticProp = true as const
 }
 const CSError = CError.subclass('CSError', { custom: BCSError })
-type CSInstance = InstanceType<typeof CSError>
+type CSInstance = typeof CSError['prototype']
 
 const csError = new CSError(true)
 expectType<CSInstance>(csError)
@@ -114,7 +114,7 @@ class BCCError extends CError {
   static deepStaticProp = true as const
 }
 const CCError = CError.subclass('CCError', { custom: BCCError })
-type CCInstance = InstanceType<typeof CCError>
+type CCInstance = typeof CCError['prototype']
 
 const ccError = new CCError(0)
 expectType<CCInstance>(ccError)
