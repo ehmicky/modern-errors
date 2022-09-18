@@ -26,6 +26,16 @@ type SSInstance = InstanceType<typeof SSError>
 const SCError = CError.subclass('SCError')
 type SCInstance = InstanceType<typeof SCError>
 
+class BCSError extends SError {
+  constructor(message: string | boolean, options?: object) {
+    super(String(message), options)
+  }
+  prop = true as const
+  static staticProp = true as const
+}
+const CSError = CError.subclass('CSError', { custom: BCSError })
+type CSInstance = InstanceType<typeof CSError>
+
 class BCCError extends CError {
   constructor(message: string | boolean | number, options?: object) {
     super(String(message), options)
@@ -59,7 +69,6 @@ expectError(sError.prop)
 
 const cError = new CError(true)
 expectType<CInstance>(cError)
-expectAssignable<BCError>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<Error>(cError)
 expectType<true>(CError.staticProp)
@@ -76,16 +85,22 @@ expectError(dsError.prop)
 
 const scError = new SCError(true)
 expectType<SCInstance>(scError)
-expectAssignable<BCError>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<Error>(scError)
 expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 expectType<true>(scError.prop)
 
+const csError = new CSError(true)
+expectType<CSInstance>(csError)
+expectAssignable<AnyInstance>(csError)
+expectAssignable<Error>(csError)
+expectType<true>(CSError.staticProp)
+expectType<'CSError'>(csError.name)
+expectType<true>(csError.prop)
+
 const ccError = new CCError(0)
 expectType<CCInstance>(ccError)
-expectAssignable<BCError>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<Error>(ccError)
 expectType<true>(CCError.staticProp)
@@ -102,9 +117,10 @@ expectError(anyError.prop)
 
 expectType<AnyInstance>(AnyError.normalize(''))
 expectError(SError.normalize(''))
-expectError(SSError.normalize(''))
 expectError(CError.normalize(''))
+expectError(SSError.normalize(''))
 expectError(SCError.normalize(''))
+expectError(CSError.normalize(''))
 expectError(CCError.normalize(''))
 expectError(AnyError.normalize('', true))
 
@@ -122,6 +138,9 @@ if (error instanceof AnyError) {
 // }
 // if (anyError instanceof SCError) {
 //   expectType<SCInstance>(anyError)
+// }
+// if (anyError instanceof CSError) {
+//   expectType<CSInstance>(anyError)
 // }
 // if (anyError instanceof CCError) {
 //   expectType<CCInstance>(anyError)
