@@ -5,48 +5,47 @@ type Class<Instance extends object = object, Args extends any[] = any[]> = {
   prototype: Instance
 }
 
-type CustomError<
+declare class CustomError<
   ErrorNameArg extends ErrorName = ErrorName,
   Options extends object = object,
-> = Class<
-  Error & { name: ErrorNameArg },
-  [message: string, options?: Options & ErrorOptions]
->
+> extends Error {
+  constructor(message: string, options?: Options & ErrorOptions)
+  name: ErrorNameArg
+}
 
 /**
- * Each `custom` class's parent must be typed as `BaseError`.
+ * Base class of the `ErrorClasses` passed to `modernErrors()`.
  *
  * @example
  * ```js
- * modernErrors({
- *   TestError: { custom: class extends (Error as BaseError) {} },
- *   UnknownError: {},
- * })
+ * try {
+ *   throw new AuthError('Could not authenticate.')
+ * } catch (cause) {
+ *   throw new AnyError('Could not read the file.', { cause })
+ *   // Still an AuthError
+ * }
  * ```
  */
-export type BaseError<BaseErrorName extends ErrorName = ErrorName> =
-  CustomError<BaseErrorName>
-
-type MergeObjects<
-  Parent extends object,
-  Child extends object,
-  KeptKeys extends PropertyKey = never,
-> = Child & Omit<Parent, Exclude<keyof Child, KeptKeys>>
-
-type MergeClasses<
-  ParentClass extends Class,
-  ChildClass extends Class,
-  KeptParentInstanceProps extends string | symbol = never,
-> = Class<
-  MergeObjects<
-    InstanceType<ParentClass>,
-    InstanceType<ChildClass>,
-    KeptParentInstanceProps
-  >,
-  ConstructorParameters<ChildClass>
-> &
-  Omit<ParentClass, keyof ChildClass | keyof Class> &
-  Omit<ChildClass, keyof Class>
+export declare class AnyError<
+  ErrorNameArg extends ErrorName,
+> extends CustomError<ErrorNameArg> {
+  /**
+   * Normalizes invalid errors and assigns the `UnknownError` class to
+   * _unknown_ errors. This should wrap each main function.
+   *
+   * @example
+   * ```js
+   * export const main = async function (filePath) {
+   *   try {
+   *     return await readContents(filePath)
+   *   } catch (error) {
+   *     throw AnyError.normalize(error)
+   *   }
+   * }
+   * ```
+   */
+  static normalize(error: unknown): CustomError<ErrorName>
+}
 
 /**
  * Class-specific options
@@ -94,7 +93,7 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: Class<Error>
+  readonly custom?: typeof AnyError<ErrorName>
 }
 
 /**
@@ -108,89 +107,25 @@ type Definitions = {
   readonly [ErrorNameArg: ErrorName]: ClassOptions
 }
 
-type ClassNames<DefinitionsArg extends Definitions> = Exclude<
-  keyof DefinitionsArg & ErrorName,
-  'AnyError'
->
-
 /**
  * Error class returned by `modernErrors()`
  */
 type ReturnErrorClass<
   DefinitionsArg extends Definitions,
   ErrorNameArg extends ErrorName,
-  CustomOption = DefinitionsArg[ErrorNameArg]['custom'],
-> = CustomOption extends Class<Error>
-  ? MergeClasses<BaseError<ErrorNameArg>, CustomOption, 'name'>
-  : BaseError<ErrorNameArg>
-
-type ReturnErrorInstance<
-  DefinitionsArg extends Definitions,
-  ErrorNameArg extends ErrorName,
-  CustomOption = DefinitionsArg[ErrorNameArg]['custom'],
-> = CustomOption extends Class<Error>
-  ? MergeObjects<
-      InstanceType<BaseError<ErrorNameArg>>,
-      InstanceType<CustomOption>,
-      'name'
-    >
-  : InstanceType<BaseError<ErrorNameArg>>
+> = DefinitionsArg[ErrorNameArg]['custom'] extends typeof AnyError<ErrorName>
+  ? DefinitionsArg[ErrorNameArg]['custom']
+  : typeof AnyError<ErrorNameArg>
 
 /**
  * All error classes returned by `modernErrors()`
  */
 type ReturnErrorClasses<DefinitionsArg extends Definitions> = {
-  [ErrorNameArg in ClassNames<DefinitionsArg>]: ReturnErrorClass<
-    DefinitionsArg,
-    ErrorNameArg
-  >
+  [ErrorNameArg in Exclude<
+    keyof DefinitionsArg & ErrorName,
+    'AnyError'
+  >]: ReturnErrorClass<DefinitionsArg, ErrorNameArg>
 }
-
-type AnyKnownInstance<
-  DefinitionsArg extends Definitions,
-  ErrorNameArg extends ErrorName = ClassNames<DefinitionsArg>,
-> = ErrorNameArg extends any
-  ? ReturnErrorInstance<DefinitionsArg, ErrorNameArg>
-  : never
-
-type AnyKnownClass<DefinitionsArg extends Definitions> = Class<
-  AnyKnownInstance<DefinitionsArg>,
-  ConstructorParameters<BaseError>
-> &
-  Omit<BaseError, keyof Class>
-
-/**
- * Base class of the `ErrorClasses` passed to `modernErrors()`.
- *
- * @example
- * ```js
- * try {
- *   throw new AuthError('Could not authenticate.')
- * } catch (cause) {
- *   throw new AnyError('Could not read the file.', { cause })
- *   // Still an AuthError
- * }
- * ```
- */
-type AnyError<DefinitionsArg extends Definitions> =
-  AnyKnownClass<DefinitionsArg> & {
-    /**
-     * Normalizes invalid errors and assigns the `UnknownError` class to
-     * _unknown_ errors. This should wrap each main function.
-     *
-     * @example
-     * ```js
-     * export const main = async function (filePath) {
-     *   try {
-     *     return await readContents(filePath)
-     *   } catch (error) {
-     *     throw AnyError.normalize(error)
-     *   }
-     * }
-     * ```
-     */
-    normalize(error: unknown): AnyKnownInstance<DefinitionsArg>
-  }
 
 /**
  * Creates and returns error classes.
@@ -217,4 +152,4 @@ type AnyError<DefinitionsArg extends Definitions> =
  */
 export default function modernErrors<DefinitionsArg extends Definitions>(
   definitions: DefinitionsArg,
-): ReturnErrorClasses<DefinitionsArg> & { AnyError: AnyError<DefinitionsArg> }
+): ReturnErrorClasses<DefinitionsArg> & { AnyError: typeof AnyError<ErrorName> }

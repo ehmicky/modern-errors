@@ -1,17 +1,20 @@
 import { expectType, expectAssignable, expectError } from 'tsd'
+import { ErrorName } from 'error-custom-class'
 
-import modernErrors, { BaseError } from './main.js'
+import modernErrors from './main.js'
+import type { AnyError as AnyErrorType } from './main.js'
 
-type TestBaseErrorClass = BaseError<'TestError'>
-type TestBaseErrorInstance = InstanceType<TestBaseErrorClass>
-type UnknownBaseErrorClass = BaseError<'UnknownError'>
-type UnknownBaseErrorInstance = InstanceType<UnknownBaseErrorClass>
+type AnyErrorInstance = AnyErrorType<ErrorName>
+type AnyErrorClass = typeof AnyErrorType<ErrorName>
+type TestBaseErrorInstance = AnyErrorType<'TestError'>
+type TestBaseErrorClass = typeof AnyErrorType<'TestError'>
+type UnknownBaseErrorInstance = AnyErrorType<'UnknownError'>
 
 const { TestError, UnknownError, AnyError } = modernErrors({
   TestError: {
-    custom: class extends Error {
-      constructor({ message, options }: { message: string; options?: object }) {
-        super(message, options)
+    custom: class extends (Error as any as TestBaseErrorClass) {
+      constructor(message: string | boolean, options?: object) {
+        super(String(message), options)
       }
       prop = true as const
       static staticProp = true as const
@@ -19,12 +22,12 @@ const { TestError, UnknownError, AnyError } = modernErrors({
   },
   UnknownError: {},
 })
+expectError(Error as any as AnyErrorType<'InvalidName'>)
+
 type TestErrorClass = typeof TestError
 type TestErrorInstance = InstanceType<TestErrorClass>
 type UnknownErrorClass = typeof UnknownError
 type UnknownErrorInstance = InstanceType<UnknownErrorClass>
-type AnyErrorClass = typeof AnyError
-type AnyErrorInstance = InstanceType<AnyErrorClass>
 
 expectError(modernErrors(true))
 expectError(modernErrors())
@@ -33,7 +36,7 @@ expectError(modernErrors({ TestError: {} }))
 expectError(modernErrors({ TestError: undefined, UnknownError: {} }))
 expectError(modernErrors({ AnyError: undefined, UnknownError: {} }))
 
-const testError = new TestError({ message: '' })
+const testError = new TestError(true)
 expectType<TestErrorInstance>(testError)
 expectAssignable<TestBaseErrorInstance>(testError)
 expectAssignable<AnyErrorInstance>(testError)
@@ -53,82 +56,32 @@ expectError(unknownError.prop)
 
 const anyError = new AnyError('')
 expectType<AnyErrorInstance>(anyError)
-expectType<TestErrorInstance | UnknownErrorInstance>(anyError)
-expectType<typeof testError | typeof unknownError>(anyError)
-expectAssignable<TestBaseErrorInstance | UnknownBaseErrorInstance>(anyError)
 expectAssignable<Error>(anyError)
-expectType<'TestError' | 'UnknownError'>(anyError.name)
 expectError(AnyError.staticProp)
-if ('prop' in anyError) {
-  expectType<true>(anyError.prop)
-}
+expectError(anyError.prop)
 
-const normalizedError = AnyError.normalize('')
-expectType<AnyErrorInstance>(normalizedError)
+expectType<AnyErrorInstance>(AnyError.normalize(''))
+expectType<AnyErrorInstance>(TestError.normalize(''))
+expectType<AnyErrorInstance>(UnknownError.normalize(''))
 expectError(AnyError.normalize('', true))
-expectType<TestErrorInstance | UnknownErrorInstance>(normalizedError)
-expectType<typeof testError | typeof unknownError>(normalizedError)
-expectAssignable<TestBaseErrorInstance | UnknownBaseErrorInstance>(
-  normalizedError,
-)
-expectAssignable<Error>(normalizedError)
-expectType<'TestError' | 'UnknownError'>(normalizedError.name)
-if ('prop' in normalizedError) {
-  expectType<true>(normalizedError.prop)
-}
 
-if (anyError.name === 'TestError') {
-  expectType<TestErrorInstance>(anyError)
-}
-if (testError.name === 'TestError') {
-  expectType<TestErrorInstance>(testError)
-}
-if (anyError.name === 'UnknownError') {
-  expectType<UnknownErrorInstance>(anyError)
-}
-// TODO: fix
-/*
 if (anyError instanceof TestError) {
   expectType<TestErrorInstance>(anyError)
 }
-*/
 if (testError instanceof TestError) {
   expectType<TestErrorInstance>(testError)
 }
-
+/* TODO: fix
 if (anyError instanceof UnknownError) {
   expectType<UnknownErrorInstance>(anyError)
 }
-
 if (testError instanceof UnknownError) {
   expectType<never>(testError)
 }
-
-if (anyError instanceof AnyError) {
-  expectType<TestErrorInstance | UnknownErrorInstance>(anyError)
-}
+*/
 if (testError instanceof AnyError) {
   expectType<TestErrorInstance>(testError)
-}
-if (anyError instanceof Error) {
-  expectType<TestErrorInstance | UnknownErrorInstance>(anyError)
 }
 if (testError instanceof Error) {
   expectType<TestErrorInstance>(testError)
 }
-
-expectError(Error as BaseError<'InvalidName'>)
-expectError(
-  modernErrors({
-    TestError: { custom: class extends Object {} },
-    UnknownError: {},
-  }).TestError,
-)
-modernErrors({
-  TestError: { custom: class extends (Error as BaseError) {} },
-  UnknownError: {},
-})
-modernErrors({
-  TestError: { custom: class extends (Error as TestBaseErrorClass) {} },
-  UnknownError: {},
-})
