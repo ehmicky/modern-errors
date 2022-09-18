@@ -62,19 +62,20 @@ if (error instanceof AnyError) {
   expectType<AnyErrorInstance>(error)
 }
 
-if (anyError instanceof TestError) {
-  expectType<TestErrorInstance>(anyError)
-}
 if (anyError instanceof UnknownError) {
   expectType<UnknownErrorInstance>(anyError)
 }
 
-// TODO: The following is not working because static methods inherited from
-// `AnyError` were added to `UnknownError` using `&`.
-// See https://github.com/microsoft/TypeScript/issues/50844
+// The following is not working due to:
+// https://github.com/microsoft/TypeScript/issues/50844
+
+// if (anyError instanceof TestError) {
+//   expectType<TestErrorInstance>(anyError)
+// }
 // if (testError instanceof UnknownError) {
 //   expectType<never>(testError)
 // }
+
 if (testError instanceof TestError) {
   expectType<TestErrorInstance>(testError)
 }

@@ -50,7 +50,12 @@ type ErrorClass<
   ErrorNameArg extends ErrorName,
   OptionsArgs extends ClassOptions,
 > = OptionsArgs['custom'] extends NonNullable<ClassOptions['custom']>
-  ? OptionsArgs['custom']
+  ? {
+      new (...args: ConstructorParameters<OptionsArgs['custom']>): InstanceType<
+        OptionsArgs['custom']
+      >
+      prototype: InstanceType<OptionsArgs['custom']>
+    } & Omit<OptionsArgs['custom'], 'prototype'>
   : {
       new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
       prototype: ErrorInstance<ErrorNameArg>
