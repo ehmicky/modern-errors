@@ -52,6 +52,11 @@ test('plugin.instanceMethods are passed the normalized global options', (t) => {
   t.true(new OtherTestError('message').getInstance().options.prop)
 })
 
+test('plugin.instanceMethods are passed the raw instance options of all plugins', (t) => {
+  const error = new TestError('message', { prop: true })
+  t.deepEqual(error.getInstance().allOptions, { prop: true })
+})
+
 test('plugin.instanceMethods are passed AnyError', (t) => {
   t.is(new TestError('message').getInstance().AnyError, AnyError)
 })

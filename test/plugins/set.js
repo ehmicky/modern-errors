@@ -23,6 +23,12 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
+test('Passes all plugins options to plugin.set()', (t) => {
+  t.deepEqual(new TestError('test', { prop: true }).set.allOptions, {
+    prop: true,
+  })
+})
+
 test('plugin.set() is optional', (t) => {
   const { TestError: OtherTestError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, set: undefined, unset: undefined },

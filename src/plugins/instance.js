@@ -50,9 +50,13 @@ const addInstanceMethod = function ({
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
     const error = this
-    const options = getErrorOpts(error, errorData, plugin)
     return methodFunc(
-      { error, options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },
+      {
+        ...getErrorOpts(error, errorData, plugin),
+        error,
+        AnyError,
+        ErrorClasses: getErrorClasses(ErrorClasses),
+      },
       ...args,
     )
   }

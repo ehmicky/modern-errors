@@ -1,5 +1,9 @@
 // Retrieve, validate and normalize all options for a given plugin.
 // Those are passed to `plugin.set|unset|instanceMethods.*`.
+// We also pass all plugins options, before normalization, to
+// `plugin.set|unset|instanceMethods.*`
+//  - This is mostly meant for plugins like serialization which need to
+//    re-instantiate or clone errors
 // Plugins should avoid:
 //  - Letting options be optionally a function: class constructors can be used
 //    for this, by manipulating `options` and passing it to `super()`
@@ -13,7 +17,8 @@
 //    each other, keeping them decoupled from each other
 export const getErrorOpts = function (error, errorData, plugin) {
   const { pluginsOpts } = errorData.get(error)
-  return normalizePluginOpts(pluginsOpts, plugin)
+  const options = normalizePluginOpts(pluginsOpts, plugin)
+  return { options, allOptions: pluginsOpts }
 }
 
 export const normalizePluginOpts = function (pluginsOpts, { name, normalize }) {

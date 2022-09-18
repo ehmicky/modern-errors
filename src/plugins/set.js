@@ -52,19 +52,17 @@ const applyPluginSet = function ({
   }
 
   if (cause instanceof AnyError) {
-    const causeOpts = getErrorOpts(cause, errorData, plugin)
     plugin.unset.call(undefined, {
+      ...getErrorOpts(cause, errorData, plugin),
       error,
-      options: causeOpts,
       AnyError,
       ErrorClasses: getErrorClasses(ErrorClasses),
     })
   }
 
-  const pluginOpts = getErrorOpts(error, errorData, plugin)
   plugin.set.call(undefined, {
+    ...getErrorOpts(error, errorData, plugin),
     error,
-    options: pluginOpts,
     AnyError,
     ErrorClasses: getErrorClasses(ErrorClasses),
   })

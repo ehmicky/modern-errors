@@ -27,6 +27,15 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
+test('Passes all plugins options to plugin.unset()', (t) => {
+  t.deepEqual(
+    new TestError('test', {
+      cause: new TestError('causeMessage', { prop: true }),
+    }).unset.allOptions,
+    { prop: true },
+  )
+})
+
 test('plugin.unset() is called with no context', (t) => {
   const cause = new TestError('causeMessage')
   t.is(new TestError('test', { cause }).unset.context, undefined)
