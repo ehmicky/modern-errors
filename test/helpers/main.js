@@ -28,14 +28,40 @@ export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   return { AnyError, ...ErrorClassesA }
 }
 
-export const createAnyError = function (
-  globalOpts = {},
-  plugins = [TEST_PLUGIN],
-) {
+export const defineShallowCustom = function () {
+  const AnyError = createAnyError()
+  return createErrorClasses(AnyError, { ShallowError: { custom: AnyError } })
+    .ShallowError
+}
+
+export const defineSimpleCustom = function () {
+  const AnyError = createAnyError()
+  return createErrorClasses(AnyError, {
+    SimpleCustomError: {
+      custom: class extends AnyError {
+        prop = true
+      },
+    },
+  }).SimpleCustomError
+}
+
+export const defineDeepCustom = function () {
+  const AnyError = createAnyError()
+  class ParentError extends AnyError {
+    prop = true
+  }
+  return createErrorClasses(AnyError, {
+    DeepCustomError: {
+      custom: class extends ParentError {},
+    },
+  }).DeepCustomError
+}
+
+const createAnyError = function (globalOpts = {}, plugins = [TEST_PLUGIN]) {
   return modernErrors(plugins, globalOpts)
 }
 
-export const createErrorClasses = function (
+const createErrorClasses = function (
   AnyError,
   { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
 ) {

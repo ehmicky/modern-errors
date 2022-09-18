@@ -4,38 +4,10 @@ import { each } from 'test-each'
 import {
   defineClassesOpts,
   defineSimpleClass,
-  createAnyError,
-  createErrorClasses,
+  defineShallowCustom,
+  defineSimpleCustom,
+  defineDeepCustom,
 } from '../helpers/main.js'
-
-const defineShallowCustom = function () {
-  const AnyError = createAnyError()
-  return createErrorClasses(AnyError, { ShallowError: { custom: AnyError } })
-    .ShallowError
-}
-
-const defineSimpleCustom = function () {
-  const AnyError = createAnyError()
-  return createErrorClasses(AnyError, {
-    SimpleCustomError: {
-      custom: class extends AnyError {
-        prop = true
-      },
-    },
-  }).SimpleCustomError
-}
-
-const defineDeepCustom = function () {
-  const AnyError = createAnyError()
-  class ParentError extends AnyError {
-    prop = true
-  }
-  return createErrorClasses(AnyError, {
-    DeepCustomError: {
-      custom: class extends ParentError {},
-    },
-  }).DeepCustomError
-}
 
 const { TestError } = defineSimpleClass()
 const ShallowError = defineShallowCustom()
