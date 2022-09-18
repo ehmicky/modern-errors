@@ -7,8 +7,8 @@ type AnyErrorInstance = InstanceType<typeof AnyError>
 
 expectError(modernErrors(true))
 
-const UnknownError = AnyError.subclass('UnknownError')
-type UnknownErrorInstance = InstanceType<typeof UnknownError>
+const SimpleError = AnyError.subclass('SimpleError')
+type SimpleErrorInstance = InstanceType<typeof SimpleError>
 
 class BaseTestError extends AnyError {
   constructor(message: string | boolean, options?: object) {
@@ -44,13 +44,13 @@ expectType<true>(TestError.staticProp)
 expectType<'TestError'>(testError.name)
 expectType<true>(testError.prop)
 
-const unknownError = new UnknownError('')
-expectType<UnknownErrorInstance>(unknownError)
-expectAssignable<AnyErrorInstance>(unknownError)
-expectAssignable<Error>(unknownError)
-expectError(UnknownError.staticProp)
-expectType<'UnknownError'>(unknownError.name)
-expectError(unknownError.prop)
+const simpleError = new SimpleError('')
+expectType<SimpleErrorInstance>(simpleError)
+expectAssignable<AnyErrorInstance>(simpleError)
+expectAssignable<Error>(simpleError)
+expectError(SimpleError.staticProp)
+expectType<'SimpleError'>(simpleError.name)
+expectError(simpleError.prop)
 
 const anyError = new AnyError('')
 expectType<AnyErrorInstance>(anyError)
@@ -60,7 +60,7 @@ expectError(anyError.prop)
 
 expectType<AnyErrorInstance>(AnyError.normalize(''))
 expectError(TestError.normalize(''))
-expectError(UnknownError.normalize(''))
+expectError(SimpleError.normalize(''))
 expectError(AnyError.normalize('', true))
 
 const error = new Error('')
@@ -76,11 +76,11 @@ if (error instanceof AnyError) {
 //   expectType<TestErrorInstance>(anyError)
 // }
 
-if (anyError instanceof UnknownError) {
-  expectType<UnknownErrorInstance>(anyError)
+if (anyError instanceof SimpleError) {
+  expectType<SimpleErrorInstance>(anyError)
 }
 
-if (testError instanceof UnknownError) {
+if (testError instanceof SimpleError) {
   expectType<never>(testError)
 }
 if (testError instanceof TestError) {
