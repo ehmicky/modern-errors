@@ -1,4 +1,4 @@
-import { ErrorName } from 'error-custom-class'
+import type { ErrorName } from 'error-custom-class'
 
 type NamedError<
   ErrorInstance extends Error,
