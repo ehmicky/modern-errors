@@ -40,12 +40,12 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: AnyError
+  readonly custom?: AnyErrorClass
 }
 
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
-  CustomOption extends AnyError,
+  CustomOption extends AnyErrorClass,
 > = {
   new (
     ...args: ConstructorParameters<CustomOption>
@@ -64,7 +64,7 @@ type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
 type ErrorClass<
   ErrorNameArg extends ErrorName,
   OptionsArgs extends ClassOptions,
-> = OptionsArgs['custom'] extends AnyError
+> = OptionsArgs['custom'] extends AnyErrorClass
   ? CustomErrorClass<ErrorNameArg, OptionsArgs['custom']>
   : DefaultErrorClass<ErrorNameArg>
 
@@ -81,7 +81,7 @@ type ErrorClass<
  * }
  * ```
  */
-type AnyError = {
+type AnyErrorClass = {
   new (...args: ErrorConstructorArgs): ErrorInstance<ErrorName>
   prototype: ErrorInstance<ErrorName>
 
@@ -132,4 +132,4 @@ type AnyError = {
  *  export const DatabaseError = AnyError.create('DatabaseError')
  * ```
  */
-export default function modernErrors(): AnyError
+export default function modernErrors(): AnyErrorClass
