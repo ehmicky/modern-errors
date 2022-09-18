@@ -14,8 +14,21 @@ test('Validate against duplicate names', (t) => {
   t.throws(AnyError.create.bind(undefined, 'TestError'))
 })
 
-each([undefined, '', {}, 'AnyError'], ({ title }, errorName) => {
-  test(`Validate invalid error name | ${title}`, (t) => {
-    t.throws(AnyError.create.bind(undefined, errorName))
-  })
-})
+each(
+  [
+    undefined,
+    '',
+    {},
+    'AnyError',
+    'Error',
+    'TypeError',
+    'inputError',
+    'input_error',
+    'input',
+  ],
+  ({ title }, errorName) => {
+    test(`Validate invalid error name | ${title}`, (t) => {
+      t.throws(AnyError.create.bind(undefined, errorName))
+    })
+  },
+)

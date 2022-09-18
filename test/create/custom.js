@@ -3,7 +3,6 @@ import { each } from 'test-each'
 
 import {
   defineCustomClass,
-  defineClassesOpts,
   defineSimpleClass,
   defineShallowCustom,
   defineSimpleCustom,
@@ -14,15 +13,6 @@ const { TestError, AnyError } = defineSimpleClass()
 const { ShallowError } = defineShallowCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
-
-each(
-  ['Error', 'TypeError', 'inputError', 'input_error', 'input'],
-  ({ title }, errorName) => {
-    test(`Validate error names | ${title}`, (t) => {
-      t.throws(defineClassesOpts.bind(undefined, { [errorName]: {} }))
-    })
-  },
-)
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
   test(`Can define custom classes| ${title}`, (t) => {
