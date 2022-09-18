@@ -7,8 +7,8 @@ import { normalizePluginOpts } from './normalize.js'
 // classes.
 // Those are validated right away, before merging to class options, since they
 // are used on their own by plugins static methods.
-// This is not redundant with sharing options with `ErrorClass.class()` because
-// this:
+// This is not redundant with sharing options with `ErrorClass.subclass()`
+// because this:
 //   - Is simpler and more convenient
 //   - Applies to `AnyError.*` static methods
 //      - It should conceptually (and for typing purpose) be declared before
@@ -29,7 +29,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 
   if (globalOpts.custom !== undefined) {
     throw new TypeError(
-      'Error option "custom" must be passed to "AnyError.class()", not to "modernErrors()".',
+      'Error option "custom" must be passed to "AnyError.subclass()", not to "modernErrors()".',
     )
   }
 

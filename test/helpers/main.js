@@ -23,7 +23,7 @@ export const defineDeepCustom = function (globalOpts, plugins) {
     globalOpts,
     plugins,
   )
-  const DeepCustomError = SimpleCustomError.class('DeepCustomError')
+  const DeepCustomError = SimpleCustomError.subclass('DeepCustomError')
   return { AnyError, UnknownError, SimpleCustomError, DeepCustomError }
 }
 
@@ -61,11 +61,11 @@ const createErrorClasses = function (
   AnyError,
   { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
 ) {
-  const UnknownError = AnyError.class('UnknownError', unknownErrorOpts)
+  const UnknownError = AnyError.subclass('UnknownError', unknownErrorOpts)
   const ErrorClassesA = Object.fromEntries(
     Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
       errorName,
-      AnyError.class(errorName, classOpts),
+      AnyError.subclass(errorName, classOpts),
     ]),
   )
   return { UnknownError, ...ErrorClassesA }

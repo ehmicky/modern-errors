@@ -26,7 +26,7 @@
 // For the reasons above, we throw when calling `ErrorClass.*` instead of
 // `AnyError.*`
 // We also do not allow `custom` classes to override `AnyError.*` since:
-//  - Those have core meaning (`*Error.class()`)
+//  - Those have core meaning (`*Error.subclass()`)
 //  - Or might have in the future
 export const setInheritedMethods = function ({
   ErrorClass,
@@ -49,7 +49,7 @@ const getInheritedMethods = function (plugins) {
   ]
 }
 
-const ANY_ERROR_STATIC_METHODS = ['class', 'normalize']
+const ANY_ERROR_STATIC_METHODS = ['subclass', 'normalize']
 
 const getPluginStaticMethods = function ({ staticMethods }) {
   return Object.keys(staticMethods)

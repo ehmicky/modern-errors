@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { defineClassesOpts, createAnyError } from '../helpers/main.js'
 
 const AnyError = createAnyError()
-const InputError = AnyError.class('InputError')
+const InputError = AnyError.subclass('InputError')
 
 test('Require defining UnknownError before creating errors', (t) => {
   t.throws(() => new InputError('test'))
@@ -20,14 +20,14 @@ test('Require defining UnknownError before plugin static methods', (t) => {
 
 test('Allow defining UnknownError at the end', (t) => {
   const TestAnyError = createAnyError()
-  const OtherInputError = TestAnyError.class('OtherInputError')
-  TestAnyError.class('UnknownError')
+  const OtherInputError = TestAnyError.subclass('OtherInputError')
+  TestAnyError.subclass('UnknownError')
   t.notThrows(() => new OtherInputError('test'))
 })
 
 test('Can use "custom" with UnknownError', (t) => {
   const TestAnyError = createAnyError()
-  const UnknownError = TestAnyError.class('UnknownError', {
+  const UnknownError = TestAnyError.subclass('UnknownError', {
     custom: class extends TestAnyError {
       static prop = true
     },

@@ -12,22 +12,24 @@ const { TestError, AnyError } = defineSimpleClass()
 each([AnyError, TestError], ({ title }, ParentError) => {
   test(`Parent error cannot be passed as is | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => ParentError.class('SelfError', { custom: ParentError }))
+    t.throws(() => ParentError.subclass('SelfError', { custom: ParentError }))
   })
 
   test(`Subclasses must not extend from their parent indirectly | ${title}`, (t) => {
-    const IndirectError = ParentError.class(`Sub${ParentError.name}`)
+    const IndirectError = ParentError.subclass(`Sub${ParentError.name}`)
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() =>
-      ParentError.class('SubError', { custom: class extends IndirectError {} }),
+      ParentError.subclass('SubError', {
+        custom: class extends IndirectError {},
+      }),
     )
   })
 
   test(`Subclasses must not extend from siblings | ${title}`, (t) => {
-    const SiblingError = ParentError.class(`Sibling${ParentError.name}`)
+    const SiblingError = ParentError.subclass(`Sibling${ParentError.name}`)
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() =>
-      SiblingError.class('SubError', { custom: class extends TestError {} }),
+      SiblingError.subclass('SubError', { custom: class extends TestError {} }),
     )
   })
 })

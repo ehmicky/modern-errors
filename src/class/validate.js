@@ -11,9 +11,9 @@ export const validateCustom = function (custom, ParentError) {
 // We do not allow passing `ParentError` without extending from it, since
 // `undefined` can be used for it instead.
 // We do not allow extending from `ParentError` indirectly:
-//  - This promotes using subclassing through `ErrorClass.class()`, since it
+//  - This promotes using subclassing through `ErrorClass.subclass()`, since it
 //    reduces the risk of user instantiating unregistered class
-//  - This promotes `ErrorClass.class()` as a pattern for subclassing, to
+//  - This promotes `ErrorClass.subclass()` as a pattern for subclassing, to
 //    reduce the risk of directly extending a registered class without
 //    registering the subclass
 const validateParent = function (custom, ParentError) {

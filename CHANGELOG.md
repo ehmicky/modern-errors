@@ -45,7 +45,7 @@ After:
 <!-- eslint-disable fp/no-this, fp/no-mutation -->
 
 ```js
-export const InputError = AnyError.class('InputError', {
+export const InputError = AnyError.subclass('InputError', {
   custom: class extends AnyError {
     constructor(message, options = {}) {
       super(message, options)
@@ -65,13 +65,13 @@ export const InputError = AnyError.class('InputError', {
 ### Subclasses
 
 Error subclasses can now be created using
-[`ErrorClass.class()`](README.md#shared-custom-logic) to share custom logic
-between classes.
+[`ErrorClass.subclass()`](README.md#shared-custom-logic) to share custom logic
+and options between classes.
 
 <!-- eslint-disable fp/no-this -->
 
 ```js
-const SharedError = AnyError.class('SharedError', {
+const SharedError = AnyError.subclass('SharedError', {
   custom: class extends AnyError {
     isUserInput() {
       return this.message.includes('user')
@@ -79,8 +79,8 @@ const SharedError = AnyError.class('SharedError', {
   },
 })
 
-export const InputError = SharedError.class('InputError')
-export const AuthError = SharedError.class('AuthError', {
+export const InputError = SharedError.subclass('InputError')
+export const AuthError = SharedError.subclass('AuthError', {
   custom: class extends SharedError {
     isAuth() {
       return this.message.includes('auth')
@@ -95,16 +95,16 @@ Options can now be applied to
 [all errors of a given class](README.md#error-class-options).
 
 ```js
-export const InputError = AnyError.class('InputError', options)
+export const InputError = AnyError.subclass('InputError', options)
 ```
 
 Or to [multiple classes](README.md#error-class-options).
 
 ```js
-export const SharedError = AnyError.class('SharedError', options)
+export const SharedError = AnyError.subclass('SharedError', options)
 
-export const InputError = SharedError.class('InputError')
-export const AuthError = SharedError.class('AuthError')
+export const InputError = SharedError.subclass('InputError')
+export const AuthError = SharedError.subclass('AuthError')
 ```
 
 Or to [individual errors](README.md#error-instance-options).
@@ -120,8 +120,8 @@ throw new InputError('Could not read the file.', options)
 The [main function](README.md#modernerrorsplugins-options) now returns the base
 error class [`AnyError`](README.md#anyerror).
 
-[`AnyError.class(name)`](README.md#anyerrorclassname-options) must be used to
-create each error class. One of them must now be named
+[`AnyError.subclass(name)`](README.md#anyerrorsubclassname-options) must be used
+to create each error class. One of them must now be named
 [`UnknownError`](README.md#unknown-errors).
 
 Before:
@@ -143,10 +143,10 @@ After:
 // Base error class
 export const AnyError = modernErrors()
 
-export const UnknownError = AnyError.class('UnknownError')
-export const InputError = AnyError.class('InputError')
-export const AuthError = AnyError.class('AuthError')
-export const DatabaseError = AnyError.class('DatabaseError')
+export const UnknownError = AnyError.subclass('UnknownError')
+export const InputError = AnyError.subclass('InputError')
+export const AuthError = AnyError.subclass('AuthError')
+export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
 ### Error handler

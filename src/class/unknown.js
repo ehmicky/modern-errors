@@ -7,12 +7,12 @@ import normalizeException from 'normalize-exception'
 export const requireUnknownError = function (ErrorClasses) {
   if (Object.keys(ErrorClasses).length === 0) {
     throw new Error(`At least one error class must be created.
-This is done by calling "AnyError.class()".`)
+This is done by calling "AnyError.subclass()".`)
   }
 
   if (ErrorClasses.UnknownError === undefined) {
     throw new Error(`One of the error classes must be named "UnknownError".
-This is done by calling "AnyError.class('UnknownError')".
+This is done by calling "AnyError.subclass('UnknownError')".
 "UnknownError" is assigned by "AnyError.normalize()" to exceptions with an unknown class.`)
   }
 }

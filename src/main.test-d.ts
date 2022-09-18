@@ -7,7 +7,7 @@ type AnyErrorInstance = InstanceType<typeof AnyError>
 
 expectError(modernErrors(true))
 
-const UnknownError = AnyError.class('UnknownError')
+const UnknownError = AnyError.subclass('UnknownError')
 type UnknownErrorInstance = InstanceType<typeof UnknownError>
 
 class BaseTestError extends AnyError {
@@ -17,15 +17,15 @@ class BaseTestError extends AnyError {
   prop = true as const
   static staticProp = true as const
 }
-const TestError = AnyError.class('TestError', { custom: BaseTestError })
+const TestError = AnyError.subclass('TestError', { custom: BaseTestError })
 type TestErrorInstance = InstanceType<typeof TestError>
 
-AnyError.class('TestError', { custom: AnyError })
+AnyError.subclass('TestError', { custom: AnyError })
 // TODO: fix
-// AnyError.class('TestError', { custom: TestError })
-expectError(AnyError.class('Test'))
-expectError(AnyError.class({}))
-expectError(AnyError.class())
+// AnyError.subclass('TestError', { custom: TestError })
+expectError(AnyError.subclass('Test'))
+expectError(AnyError.subclass({}))
+expectError(AnyError.subclass())
 
 const testError = new TestError(true)
 expectType<TestErrorInstance>(testError)

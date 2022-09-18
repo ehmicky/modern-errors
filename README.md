@@ -47,10 +47,10 @@ import modernErrors from 'modern-errors'
 // Base error class
 export const AnyError = modernErrors()
 
-export const UnknownError = AnyError.class('UnknownError')
-export const InputError = AnyError.class('InputError')
-export const AuthError = AnyError.class('AuthError')
-export const DatabaseError = AnyError.class('DatabaseError')
+export const UnknownError = AnyError.subclass('UnknownError')
+export const InputError = AnyError.subclass('InputError')
+export const AuthError = AnyError.subclass('AuthError')
+export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
 Throw/re-throw errors.
@@ -110,7 +110,7 @@ Creates and returns [`AnyError`](#anyerror).
 
 Base error class.
 
-### AnyError.class(name, options?)
+### AnyError.subclass(name, options?)
 
 `name`: `string`\
 `options`: [`Options?`](#options)\
@@ -119,7 +119,7 @@ _Return value_: `class extends AnyError {}`
 Creates and returns an error subclass. One of them must be named
 [`UnknownError`](#unknown-errors).
 
-Subclasses can [also call](#shared-custom-logic) `ErrorClass.class()`
+Subclasses can [also call](#shared-custom-logic) `ErrorClass.subclass()`
 themselves.
 
 ### AnyError.normalize(anyException)
@@ -154,10 +154,10 @@ Any [plugin options](#plugin-options-1) can also be specified.
 export const AnyError = modernErrors()
 
 // One of the error classes must be named "UnknownError"
-export const UnknownError = AnyError.class('UnknownError')
-export const InputError = AnyError.class('InputError')
-export const AuthError = AnyError.class('AuthError')
-export const DatabaseError = AnyError.class('DatabaseError')
+export const UnknownError = AnyError.subclass('UnknownError')
+export const InputError = AnyError.subclass('InputError')
+export const AuthError = AnyError.subclass('AuthError')
+export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
 ### Top-level error handler
@@ -393,8 +393,8 @@ export const main = async function (filePath) {
 ```
 
 This assigns the `UnknownError` class to any error without a _known_ class: the
-ones created by [`AnyError.class()`](#anyerrorclassname-options). Those indicate
-unexpected exceptions and bugs.
+ones created by [`AnyError.subclass()`](#anyerrorsubclassname-options). Those
+indicate unexpected exceptions and bugs.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -432,7 +432,7 @@ additional methods, `constructor` or properties. It must extend from
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this -->
 
 ```js
-export const InputError = AnyError.class('InputError', {
+export const InputError = AnyError.subclass('InputError', {
   custom: class extends AnyError {
     constructor(message, options) {
       // Modifying `message` or `options` should be done before `super()`
@@ -458,13 +458,13 @@ console.log(error.isUserInput()) // true
 
 ### Shared custom logic
 
-[`ErrorClass.class()`](#anyerrorclassname-options) can be used to share logic
-between error classes.
+[`ErrorClass.subclass()`](#anyerrorsubclassname-options) can be used to share
+logic between error classes.
 
 <!-- eslint-disable fp/no-this -->
 
 ```js
-const SharedError = AnyError.class('SharedError', {
+const SharedError = AnyError.subclass('SharedError', {
   custom: class extends AnyError {
     isUserInput() {
       return this.message.includes('user')
@@ -472,8 +472,8 @@ const SharedError = AnyError.class('SharedError', {
   },
 })
 
-export const InputError = SharedError.class('InputError')
-export const AuthError = SharedError.class('AuthError', {
+export const InputError = SharedError.subclass('InputError')
+export const AuthError = SharedError.subclass('AuthError', {
   custom: class extends SharedError {
     isAuth() {
       return this.message.includes('auth')
@@ -533,21 +533,21 @@ export const AnyError = modernErrors(plugins, options)
 ### Error class options
 
 Options passed as a second argument to
-[`AnyError.class()`](#anyerrorclassname-options) apply to any error of that
-specific class.
+[`AnyError.subclass()`](#anyerrorsubclassname-options) apply to any error of
+that specific class.
 
 ```js
-export const InputError = AnyError.class('InputError', options)
+export const InputError = AnyError.subclass('InputError', options)
 ```
 
-`ErrorClass.class()` can be used to share options between multiple error
+`ErrorClass.subclass()` can be used to share options between multiple error
 classes.
 
 ```js
-export const SharedError = AnyError.class('SharedError', options)
+export const SharedError = AnyError.subclass('SharedError', options)
 
-export const InputError = SharedError.class('InputError')
-export const AuthError = SharedError.class('AuthError')
+export const InputError = SharedError.subclass('InputError')
+export const AuthError = SharedError.subclass('AuthError')
 ```
 
 ### Error instance options
@@ -609,7 +609,7 @@ console.log(error.isUserError) // true
 Or on [all errors of the same class](#error-class-options).
 
 ```js
-export const InputError = AnyError.class('InputError', {
+export const InputError = AnyError.subclass('InputError', {
   props: { isUserError: true },
 })
 ```
@@ -657,7 +657,7 @@ error class can use it, it is especially useful with
 [`UnknownError`](#unknown-errors).
 
 ```js
-export const UnknownError = AnyError.class('UnknownError', {
+export const UnknownError = AnyError.subclass('UnknownError', {
   bugs: 'https://github.com/my-name/my-project/issues',
 })
 

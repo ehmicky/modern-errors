@@ -10,7 +10,7 @@ import { checkUnknownError } from './unknown.js'
 //  - This makes it clear to users that they can reuse plugin methods
 //  - This also makes it clearer to types, simplifying them
 //  - This removes any need to mutate any `custom` class
-// We allow `ErrorClass.class()` to create subclasses. This can be used to:
+// We allow `ErrorClass.subclass()` to create subclasses. This can be used to:
 //  - Share options and custom logic between error classes
 //  - Bind and override options and custom logic between modules
 //  - Only export parent classes to consumers
@@ -27,7 +27,7 @@ export const createClass = function (
   )
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(ErrorClass, 'class', {
+  Object.defineProperty(ErrorClass, 'subclass', {
     value: createClass.bind(undefined, {
       globalOpts,
       ParentError: ErrorClass,

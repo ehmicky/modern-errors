@@ -15,7 +15,7 @@ const { DeepCustomError } = defineDeepCustom()
 each([AnyError, TestError], ({ title }, ParentError) => {
   test(`Custom option defaults to parent class | ${title}`, (t) => {
     t.is(
-      Object.getPrototypeOf(ParentError.class(`Default${ParentError.name}`)),
+      Object.getPrototypeOf(ParentError.subclass(`Default${ParentError.name}`)),
       ParentError,
     )
   })

@@ -16,7 +16,7 @@ type ClassOptions = {
    *
    * @example
    * ```js
-   * export const InputError = AnyError.class('InputError', {
+   * export const InputError = AnyError.subclass('InputError', {
    *   custom: class extends AnyError {
    *     constructor(message, options) {
    *       // Modifying `message` or `options` should be done before `super()`
@@ -51,7 +51,7 @@ type CustomErrorClass<
     ...args: ConstructorParameters<CustomOption>
   ): InstanceType<CustomOption> & { name: ErrorNameArg }
   prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
-} & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'class'>>
+} & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
 type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
   new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>
@@ -59,7 +59,7 @@ type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
 }
 
 /**
- * Error class returned by `AnyError.class()`
+ * Error class returned by `AnyError.subclass()`
  */
 type ErrorClass<
   ErrorNameArg extends ErrorName,
@@ -88,14 +88,17 @@ type AnyErrorClass = {
   /**
    * Creates and returns an error subclass.
    * One of them must be named `UnknownError`.
-   * Subclasses can also call `ErrorClass.class()` themselves.
+   * Subclasses can also call `ErrorClass.subclass()` themselves.
    *
    * @example
    * ```js
-   * export const InputError = AnyError.class('InputError', options)
+   * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  class<ErrorNameArg extends ErrorName, OptionsArg extends ClassOptions = {}>(
+  subclass<
+    ErrorNameArg extends ErrorName,
+    OptionsArg extends ClassOptions = {},
+  >(
     errorName: ErrorNameArg,
     options?: OptionsArg,
   ): ErrorClass<ErrorNameArg, OptionsArg>
@@ -126,10 +129,10 @@ type AnyErrorClass = {
  *  // Base error class
  *  export const AnyError = modernErrors()
  *
- *  export const UnknownError = AnyError.class('UnknownError')
- *  export const InputError = AnyError.class('InputError')
- *  export const AuthError = AnyError.class('AuthError')
- *  export const DatabaseError = AnyError.class('DatabaseError')
+ *  export const UnknownError = AnyError.subclass('UnknownError')
+ *  export const InputError = AnyError.subclass('InputError')
+ *  export const AuthError = AnyError.subclass('AuthError')
+ *  export const DatabaseError = AnyError.subclass('DatabaseError')
  * ```
  */
 export default function modernErrors(): AnyErrorClass
