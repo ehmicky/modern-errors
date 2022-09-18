@@ -51,7 +51,7 @@ type CustomErrorClass<
     ...args: ConstructorParameters<CustomOption>
   ): InstanceType<CustomOption> & { name: ErrorNameArg }
   prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
-} & Omit<CustomOption, 'prototype'>
+} & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'class'>>
 
 type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
   new (...args: ErrorConstructorArgs): ErrorInstance<ErrorNameArg>

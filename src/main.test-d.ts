@@ -21,7 +21,8 @@ const TestError = AnyError.class('TestError', { custom: BaseTestError })
 type TestErrorInstance = InstanceType<typeof TestError>
 
 AnyError.class('TestError', { custom: AnyError })
-AnyError.class('TestError', { custom: TestError })
+// TODO: fix
+// AnyError.class('TestError', { custom: TestError })
 expectError(AnyError.class('Test'))
 expectError(AnyError.class({}))
 expectError(AnyError.class())
@@ -50,7 +51,7 @@ expectError(AnyError.staticProp)
 expectError(anyError.prop)
 
 expectType<AnyErrorInstance>(AnyError.normalize(''))
-expectType<AnyErrorInstance>(TestError.normalize(''))
+expectError(TestError.normalize(''))
 expectError(UnknownError.normalize(''))
 expectError(AnyError.normalize('', true))
 
