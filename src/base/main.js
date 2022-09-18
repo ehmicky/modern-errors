@@ -19,11 +19,22 @@ export const createBaseError = function (state, errorData, plugins) {
   /* eslint-disable fp/no-this */
   class BaseError extends CoreError {
     constructor(message, opts) {
-      super(message, opts)
-
-      const optsA = normalizeConstructorArgs(opts)
-      const { KnownClasses, GlobalBaseError, AnyError } = state
+      const {
+        KnownClasses,
+        KnownClasses: { UnknownError },
+        GlobalBaseError,
+        AnyError,
+      } = state
       const isAnyError = new.target === AnyError
+      const optsA = normalizeConstructorArgs({
+        opts,
+        UnknownError,
+        BaseError,
+        isAnyError,
+      })
+
+      super(message, optsA)
+
       const { error, cause } = mergeCause(this, isAnyError)
       const ChildError = error.constructor
       validateClass({

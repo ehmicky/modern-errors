@@ -1,5 +1,4 @@
 import { setErrorName } from 'error-class-utils'
-import isPlainObj from 'is-plain-obj'
 
 import { normalize } from './normalize.js'
 import { addAllStaticMethods } from './static.js'
@@ -14,45 +13,12 @@ export const createAnyError = function ({
   const isKnownError = hasKnownClass.bind(undefined, BaseError)
 
   class AnyError extends BaseError {
-    constructor(message, opts) {
-      const optsA = normalizeCause(
-        opts,
-        state.KnownClasses.UnknownError,
-        isKnownError,
-      )
-      super(message, optsA)
-    }
-
     static [Symbol.hasInstance] = isKnownError
-
     static normalize = normalize.bind(undefined, AnyError)
   }
   setErrorName(AnyError, 'AnyError')
   addAllStaticMethods({ plugins, globalOpts, AnyError, state })
   return AnyError
-}
-
-// `new AnyError()` does not make sense without a `cause`, so we validate it
-//  - We allow `cause: undefined` since `undefined` exceptions can be thrown
-//  - However, we set to it an empty `UnknownError` then as this ensures:
-//     - `AnyError` class is not kept
-//     - A similar behavior as other error classes with undefined causes,
-//       i.e. the message and stack are not changed
-// If the error is not from a known class or `UnknownError`, we wrap it in
-// `UnknownError` to ensure `AnyError` instance type is a child of `AnyError`.
-const normalizeCause = function (opts, UnknownError, isKnownError) {
-  if (!isPlainObj(opts) || !('cause' in opts)) {
-    throw new Error(
-      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
-    )
-  }
-
-  const cause = getCause(opts.cause, UnknownError, isKnownError)
-  return { ...opts, cause }
-}
-
-const getCause = function (cause, UnknownError, isKnownError) {
-  return isKnownError(cause) ? cause : new UnknownError('', { cause })
 }
 
 // We proxy `instanceof AnyError` to `instanceof BaseError` since `BaseError`

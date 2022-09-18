@@ -12,7 +12,12 @@ import isPlainObj from 'is-plain-obj'
 //     - More standard
 //     - More monomorphic
 //     - Safer against injections
-export const normalizeConstructorArgs = function (opts = {}) {
+export const normalizeConstructorArgs = function ({
+  opts = {},
+  UnknownError,
+  BaseError,
+  isAnyError,
+}) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
       `Error options must be a plain object or undefined: ${opts}`,
@@ -25,5 +30,37 @@ export const normalizeConstructorArgs = function (opts = {}) {
     )
   }
 
-  return opts
+  return normalizeCause({ opts, UnknownError, BaseError, isAnyError })
+}
+
+// `new AnyError()` does not make sense without a `cause`, so we validate it
+//  - We allow `cause: undefined` since `undefined` exceptions can be thrown
+//  - However, we set to it an empty `UnknownError` then as this ensures:
+//     - `AnyError` class is not kept
+//     - A similar behavior as other error classes with undefined causes,
+//       i.e. the message and stack are not changed
+// If the error is not from a known class or `UnknownError`, we wrap it in
+// `UnknownError` to ensure `AnyError` instance type is a child of `AnyError`.
+const normalizeCause = function ({
+  opts,
+  UnknownError,
+  BaseError,
+  isAnyError,
+}) {
+  if (!isAnyError) {
+    return opts
+  }
+
+  if (!('cause' in opts)) {
+    throw new Error(
+      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
+    )
+  }
+
+  const cause = getCause(opts.cause, UnknownError, BaseError)
+  return { ...opts, cause }
+}
+
+const getCause = function (cause, UnknownError, BaseError) {
+  return cause instanceof BaseError ? cause : new UnknownError('', { cause })
 }
