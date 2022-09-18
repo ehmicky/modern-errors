@@ -22,16 +22,10 @@ export const definePlugins = function (plugins) {
 
 export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   const AnyError = createAnyError(globalOpts, plugins)
-  const { UnknownError: unknownErrorOpts = {}, ...ErrorClassesA } =
+  const ErrorClassesA =
     typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
-  const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
-  const ErrorClassesB = Object.fromEntries(
-    Object.entries(ErrorClassesA).map(([errorName, classOpts]) => [
-      errorName,
-      AnyError.create(errorName, classOpts),
-    ]),
-  )
-  return { AnyError, UnknownError, ...ErrorClassesB }
+  const ErrorClassesB = createErrorClasses(AnyError, ErrorClassesA)
+  return { AnyError, ...ErrorClassesB }
 }
 
 export const createAnyError = function (
@@ -39,6 +33,20 @@ export const createAnyError = function (
   plugins = [TEST_PLUGIN],
 ) {
   return modernErrors(plugins, globalOpts)
+}
+
+export const createErrorClasses = function (
+  AnyError,
+  { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
+) {
+  const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
+  const ErrorClassesA = Object.fromEntries(
+    Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
+      errorName,
+      AnyError.create(errorName, classOpts),
+    ]),
+  )
+  return { UnknownError, ...ErrorClassesA }
 }
 
 export const TEST_PLUGIN = {
