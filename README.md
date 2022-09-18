@@ -315,9 +315,9 @@ throw new InputError('', { cause })
 
 ### Check error class
 
-All error classes should be exported (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)). This allows checking them. It also enables
-re-using error classes across multiple modules.
+Error classes (including [`AnyError`](#anyerror) and
+[`UnknownError`](#unknown-errors)) should be exported so they can be checked. It
+also enables re-using them across multiple modules.
 
 <!-- eslint-disable max-depth -->
 
