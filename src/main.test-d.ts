@@ -129,12 +129,8 @@ expectError(CSError.normalize(''))
 // }
 
 class BCCError extends CError {
-  constructor(
-    message: string | boolean | number,
-    options?: object,
-    other?: string,
-  ) {
-    super(`${message}${other}`, options)
+  constructor(message: string | boolean | number, options?: object) {
+    super(String(message), options)
   }
   deepProp = true as const
   static deepStaticProp = true as const

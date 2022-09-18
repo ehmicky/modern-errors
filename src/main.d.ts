@@ -26,10 +26,10 @@ type ErrorClass<
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
-    new (...args: ConstructorParameters<ParentErrorClass>): NamedError<
-      ErrorInstance,
-      ErrorNameArg
-    >
+    new <InitOptions extends ConstructorParameters<ParentErrorClass>[1] = {}>(
+      message: ConstructorParameters<ParentErrorClass>[0],
+      options?: InitOptions,
+    ): NamedError<ErrorInstance, ErrorNameArg>
     prototype: NamedError<ErrorInstance, ErrorNameArg>
     subclass: CreateSubclass<ParentErrorClass, ErrorInstance>
   },
