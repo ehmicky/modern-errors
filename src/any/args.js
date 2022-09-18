@@ -30,6 +30,12 @@ export const normalizeConstructorArgs = function ({
     )
   }
 
+  if (UnknownError === undefined) {
+    throw new Error(
+      '"AnyError.create()" must be called before new "AnyError()".',
+    )
+  }
+
   return normalizeCause({ opts, UnknownError, AnyError, isAnyError })
 }
 
