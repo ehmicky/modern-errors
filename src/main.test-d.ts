@@ -8,6 +8,7 @@ type AnyInstance = InstanceType<typeof AnyError>
 const anyError = new AnyError('')
 expectType<AnyInstance>(anyError)
 expectAssignable<Error>(anyError)
+expectAssignable<string>(anyError.name)
 expectType<AnyInstance>(AnyError.normalize(''))
 expectError(AnyError.normalize('', true))
 
@@ -24,6 +25,19 @@ if (anyError instanceof SError) {
   expectType<SInstance>(anyError)
 }
 
+const SSError = SError.subclass('SSError')
+type SSInstance = InstanceType<typeof SSError>
+
+const ssError = new SSError('')
+expectType<SSInstance>(ssError)
+expectAssignable<AnyInstance>(ssError)
+expectAssignable<Error>(ssError)
+expectType<'SSError'>(ssError.name)
+expectError(SSError.normalize(''))
+if (anyError instanceof SSError) {
+  expectType<SSInstance>(anyError)
+}
+
 class BCError extends AnyError {
   constructor(message: string | boolean, options?: object) {
     super(String(message), options)
@@ -38,8 +52,8 @@ const cError = new CError(true)
 expectType<CInstance>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<Error>(cError)
-expectType<true>(CError.staticProp)
 expectType<true>(cError.prop)
+expectType<true>(CError.staticProp)
 expectType<'CError'>(cError.name)
 expectError(CError.normalize(''))
 // Type narrowing with `instanceof` of error classes with a `custom` option
@@ -49,19 +63,6 @@ expectError(CError.normalize(''))
 //   expectType<CInstance>(anyError)
 // }
 
-const SSError = SError.subclass('SSError')
-type SSInstance = InstanceType<typeof SSError>
-
-const ssError = new SSError('')
-expectType<SSInstance>(ssError)
-expectAssignable<AnyInstance>(ssError)
-expectAssignable<Error>(ssError)
-expectType<'SSError'>(ssError.name)
-expectError(SSError.normalize(''))
-if (anyError instanceof SSError) {
-  expectType<SSInstance>(anyError)
-}
-
 const SCError = CError.subclass('SCError')
 type SCInstance = InstanceType<typeof SCError>
 
@@ -69,8 +70,8 @@ const scError = new SCError(true)
 expectType<SCInstance>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<Error>(scError)
-expectType<true>(SCError.staticProp)
 expectType<true>(scError.prop)
+expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 expectError(SCError.normalize(''))
 // See above
@@ -92,8 +93,8 @@ const csError = new CSError(true)
 expectType<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
 expectAssignable<Error>(csError)
-expectType<true>(CSError.staticProp)
 expectType<true>(csError.prop)
+expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
 expectError(CSError.normalize(''))
 // See above
@@ -115,10 +116,10 @@ const ccError = new CCError(0)
 expectType<CCInstance>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<Error>(ccError)
-expectType<true>(CCError.staticProp)
-expectType<true>(CCError.deepStaticProp)
 expectType<true>(ccError.prop)
 expectType<true>(ccError.deepProp)
+expectType<true>(CCError.staticProp)
+expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 // See above
