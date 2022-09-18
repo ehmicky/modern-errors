@@ -47,8 +47,11 @@ type ClassOptions<ParentErrorInstance extends ErrorInstance> = {
   readonly custom?: ErrorConstructor<ParentErrorInstance>
 }
 
-type DefaultErrorClass<ErrorInstanceArg extends ErrorInstance<ErrorName>> = {
-  new (...args: ErrorConstructorArgs): ErrorInstanceArg
+type ErrorClass<
+  ErrorInstanceArg extends ErrorInstance<ErrorName>,
+  ConstructorArgs extends ErrorConstructorArgs,
+> = {
+  new (...args: ConstructorArgs): ErrorInstanceArg
   prototype: ErrorInstanceArg
   subclass: CreateSubclass<ErrorInstanceArg>
 }
@@ -57,13 +60,11 @@ type CustomErrorClass<
   ErrorNameArg extends ErrorName,
   ParentErrorInstance extends ErrorInstance,
   CustomOption extends ErrorConstructor<ParentErrorInstance>,
-  ChildErrorInstance extends ErrorInstance = InstanceType<CustomOption> & {
-    name: ErrorNameArg
-  },
-> = {
-  new (...args: ConstructorParameters<CustomOption>): ChildErrorInstance
-  prototype: ChildErrorInstance
-} & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
+> = ErrorClass<
+  InstanceType<CustomOption> & { name: ErrorNameArg },
+  ConstructorParameters<CustomOption>
+> &
+  Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
 type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
   ErrorNameArg extends ErrorName,
@@ -73,7 +74,7 @@ type CreateSubclass<ParentErrorInstance extends ErrorInstance> = <
   options?: OptionsArg,
 ) => OptionsArg['custom'] extends ErrorConstructor<ParentErrorInstance>
   ? CustomErrorClass<ErrorNameArg, ParentErrorInstance, OptionsArg['custom']>
-  : DefaultErrorClass<ErrorInstance<ErrorNameArg>>
+  : ErrorClass<ErrorInstance<ErrorNameArg>, ErrorConstructorArgs>
 
 /**
  * Base error class.
