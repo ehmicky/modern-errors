@@ -22,43 +22,47 @@ export const definePlugins = function (plugins) {
   return defineClassesOpts({}, {}, plugins)
 }
 
-export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
-  const ErrorClassesA = createErrorClasses(AnyError, ErrorClasses)
-  return { AnyError, ...ErrorClassesA }
-}
-
 export const defineShallowCustom = function (globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
-  const ErrorClasses = createErrorClasses(AnyError, {
-    ShallowError: { custom: AnyError },
-  })
-  return { AnyError, ...ErrorClasses }
+  return defineClassesOpts(
+    (AnyError) => ({ ShallowError: { custom: AnyError } }),
+    globalOpts,
+    plugins,
+  )
 }
 
 export const defineSimpleCustom = function (globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
-  const ErrorClasses = createErrorClasses(AnyError, {
-    SimpleCustomError: {
-      custom: class extends AnyError {
-        prop = true
+  return defineClassesOpts(
+    (AnyError) => ({
+      SimpleCustomError: {
+        custom: class extends AnyError {
+          prop = true
+        },
       },
-    },
-  })
-  return { AnyError, ...ErrorClasses }
+    }),
+    globalOpts,
+    plugins,
+  )
 }
 
 export const defineDeepCustom = function (globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
-  class ParentError extends AnyError {
-    prop = true
-  }
-  const ErrorClasses = createErrorClasses(AnyError, {
-    DeepCustomError: {
-      custom: class extends ParentError {},
+  return defineClassesOpts(
+    (AnyError) => {
+      class ParentError extends AnyError {
+        prop = true
+      }
+      return { DeepCustomError: { custom: class extends ParentError {} } }
     },
-  })
-  return { AnyError, ...ErrorClasses }
+    globalOpts,
+    plugins,
+  )
+}
+
+export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
+  const AnyError = createAnyError(globalOpts, plugins)
+  const ErrorClassesA =
+    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
+  const ErrorClassesB = createErrorClasses(AnyError, ErrorClassesA)
+  return { AnyError, ...ErrorClassesB }
 }
 
 const createAnyError = function (globalOpts = {}, plugins = [TEST_PLUGIN]) {
