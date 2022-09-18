@@ -45,7 +45,7 @@ type ClassOptions = {
 
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
-  CustomOption extends NonNullable<ClassOptions['custom']>,
+  CustomOption extends AnyError,
 > = {
   new (
     ...args: ConstructorParameters<CustomOption>
@@ -64,7 +64,7 @@ type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
 type ErrorClass<
   ErrorNameArg extends ErrorName,
   OptionsArgs extends ClassOptions,
-> = OptionsArgs['custom'] extends NonNullable<ClassOptions['custom']>
+> = OptionsArgs['custom'] extends AnyError
   ? CustomErrorClass<ErrorNameArg, OptionsArgs['custom']>
   : DefaultErrorClass<ErrorNameArg>
 
