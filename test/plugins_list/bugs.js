@@ -5,7 +5,7 @@ import { each } from 'test-each'
 import BUGS_PLUGIN from '../../src/plugins_list/bugs.js'
 import { defineSimpleClass } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineSimpleClass([BUGS_PLUGIN])
+const { TestError, AnyError } = defineSimpleClass({}, [BUGS_PLUGIN])
 
 const TEST_BUGS = import.meta.url
 const TEST_BUGS_TWO = 'https://example.com/'

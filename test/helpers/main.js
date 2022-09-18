@@ -10,8 +10,8 @@ export const defineClassOpts = function (classOpts, globalOpts, plugins) {
   return defineClassesOpts({ InputError: classOpts }, globalOpts, plugins)
 }
 
-export const defineSimpleClass = function (plugins) {
-  return defineClassesOpts({ TestError: {} }, {}, plugins)
+export const defineSimpleClass = function (globalOpts, plugins) {
+  return defineClassesOpts({ TestError: {} }, globalOpts, plugins)
 }
 
 export const definePlugins = function (plugins) {
