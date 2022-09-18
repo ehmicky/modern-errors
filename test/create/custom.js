@@ -10,9 +10,9 @@ import {
 } from '../helpers/main.js'
 
 const { TestError } = defineSimpleClass()
-const ShallowError = defineShallowCustom()
-const SimpleCustomError = defineSimpleCustom()
-const DeepCustomError = defineDeepCustom()
+const { ShallowError } = defineShallowCustom()
+const { SimpleCustomError } = defineSimpleCustom()
+const { DeepCustomError } = defineDeepCustom()
 
 each(
   [

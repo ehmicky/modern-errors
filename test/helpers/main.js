@@ -28,33 +28,37 @@ export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   return { AnyError, ...ErrorClassesA }
 }
 
-export const defineShallowCustom = function () {
-  const AnyError = createAnyError()
-  return createErrorClasses(AnyError, { ShallowError: { custom: AnyError } })
-    .ShallowError
+export const defineShallowCustom = function (globalOpts, plugins) {
+  const AnyError = createAnyError(globalOpts, plugins)
+  const ErrorClasses = createErrorClasses(AnyError, {
+    ShallowError: { custom: AnyError },
+  })
+  return { AnyError, ...ErrorClasses }
 }
 
-export const defineSimpleCustom = function () {
-  const AnyError = createAnyError()
-  return createErrorClasses(AnyError, {
+export const defineSimpleCustom = function (globalOpts, plugins) {
+  const AnyError = createAnyError(globalOpts, plugins)
+  const ErrorClasses = createErrorClasses(AnyError, {
     SimpleCustomError: {
       custom: class extends AnyError {
         prop = true
       },
     },
-  }).SimpleCustomError
+  })
+  return { AnyError, ...ErrorClasses }
 }
 
-export const defineDeepCustom = function () {
-  const AnyError = createAnyError()
+export const defineDeepCustom = function (globalOpts, plugins) {
+  const AnyError = createAnyError(globalOpts, plugins)
   class ParentError extends AnyError {
     prop = true
   }
-  return createErrorClasses(AnyError, {
+  const ErrorClasses = createErrorClasses(AnyError, {
     DeepCustomError: {
       custom: class extends ParentError {},
     },
-  }).DeepCustomError
+  })
+  return { AnyError, ...ErrorClasses }
 }
 
 const createAnyError = function (globalOpts = {}, plugins = [TEST_PLUGIN]) {
