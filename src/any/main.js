@@ -1,7 +1,7 @@
 import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
-import { create } from '../known/create.js'
+import { create } from '../create/main.js'
 import { computePluginsOpts } from '../plugins/compute.js'
 import { applyPluginsSet } from '../plugins/set.js'
 
