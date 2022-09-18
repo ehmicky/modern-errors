@@ -4,9 +4,9 @@ import { getErrorClass } from './custom.js'
 import { validateClassName } from './name.js'
 import { checkUnknownError } from './unknown.js'
 
-// Validate, normalize and create an error class.
+// Create a new error class.
 // The API is divided into two calls: creating `AnyError`, then creating each
-// error class, possibly extending from `AnyError`:
+// error class extending from `AnyError`:
 //  - This makes it clear to users that they can reuse plugin methods
 //  - This also makes it clearer to types, simplifying them
 //  - This removes any need to mutate any `custom` class

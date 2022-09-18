@@ -6,7 +6,7 @@ import { normalizePluginOpts } from './normalize.js'
 // The second argument to `modernErrors()` are global options applied to all
 // classes.
 // Those are validated right away, before merging to class options, since they
-// are used on their own by static methods.
+// are used on their own by plugins static methods.
 export const getGlobalOpts = function (plugins, globalOpts = {}) {
   if (!isPlainObj(globalOpts)) {
     throw new TypeError(

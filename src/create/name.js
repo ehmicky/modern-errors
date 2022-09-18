@@ -1,7 +1,7 @@
 // Validate error class name
 export const validateClassName = function (className, ErrorClasses) {
   if (!hasUnknownError(className, ErrorClasses)) {
-    throw new TypeError(`The first call to AnyError.create() must use "UnknownError" as first argument.
+    throw new TypeError(`The first call to "AnyError.create()" must use "UnknownError" as first argument, not "${className}".
 "UnknownError" is assigned by "AnyError.normalize()" to exceptions with an unknown class.`)
   }
 
@@ -15,9 +15,7 @@ It is reserved for the base error class.`)
   }
 }
 
-// We enforce specifying `UnknownError` so that users:
-//  - Export it
-//  - Know they can configure it
-const hasUnknownError = function (className, ErrorClasses) {
-  return ErrorClasses.UnknownError !== undefined || className === 'UnknownError'
+// We do not automatically create `UnknownError` to allow configuring it.
+const hasUnknownError = function (className, { UnknownError }) {
+  return className === 'UnknownError' || UnknownError !== undefined
 }
