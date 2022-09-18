@@ -1,6 +1,8 @@
 import { createAnyError } from './base/main.js'
 import { normalizeInput } from './input.js'
 import { initKnownClasses } from './known/init.js'
+import { addAllInstanceMethods } from './plugins/instance.js'
+import { addAllStaticMethods } from './plugins/static.js'
 
 // Creates error classes.
 export default function modernErrors(classesOpts, plugins) {
@@ -11,12 +13,14 @@ export default function modernErrors(classesOpts, plugins) {
   } = normalizeInput(classesOpts, plugins)
   const KnownClasses = {}
   const errorData = new WeakMap()
-  const AnyError = createAnyError({
+  const AnyError = createAnyError(KnownClasses, errorData, pluginsA)
+  addAllInstanceMethods({
+    plugins: pluginsA,
     KnownClasses,
     errorData,
-    globalOpts,
-    plugins: pluginsA,
+    AnyError,
   })
+  addAllStaticMethods({ plugins: pluginsA, globalOpts, KnownClasses, AnyError })
   initKnownClasses({
     classesOpts: classesOptsA,
     globalOpts,

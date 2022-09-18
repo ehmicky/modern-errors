@@ -1,4 +1,4 @@
-import { getErrorOpts } from '../plugins/normalize.js'
+import { getErrorOpts } from './normalize.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `AnyError.prototype.*`.

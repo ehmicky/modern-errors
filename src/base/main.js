@@ -6,9 +6,7 @@ import { applyPluginsSet } from '../plugins/set.js'
 
 import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
-import { addAllInstanceMethods } from './instance.js'
 import { normalize } from './normalize.js'
-import { addAllStaticMethods } from './static.js'
 import { validateClass } from './validate.js'
 
 export const CoreError = errorCustomClass('CoreError')
@@ -37,12 +35,7 @@ export const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createAnyError = function ({
-  KnownClasses,
-  errorData,
-  globalOpts,
-  plugins,
-}) {
+export const createAnyError = function (KnownClasses, errorData, plugins) {
   /* eslint-disable fp/no-this */
   class AnyError extends CoreError {
     constructor(message, opts) {
@@ -85,7 +78,5 @@ export const createAnyError = function ({
   }
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
-  addAllInstanceMethods({ plugins, KnownClasses, errorData, AnyError })
-  addAllStaticMethods({ plugins, globalOpts, KnownClasses, AnyError })
   return AnyError
 }

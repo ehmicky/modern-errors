@@ -1,4 +1,4 @@
-import { normalizePluginOpts } from '../plugins/normalize.js'
+import { normalizePluginOpts } from './normalize.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
 // We privilege `instanceMethods` when one of the arguments is `error`
