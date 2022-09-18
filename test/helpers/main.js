@@ -2,10 +2,6 @@ import modernErrors from 'modern-errors'
 
 import { TEST_PLUGIN } from './plugin.js'
 
-export const definePlugins = function (plugins) {
-  return defineGlobalOpts({}, plugins)
-}
-
 export const defineGlobalOpts = function (globalOpts, plugins) {
   return defineClassOpts({}, globalOpts, plugins)
 }
