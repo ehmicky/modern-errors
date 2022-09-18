@@ -1,4 +1,5 @@
 import test from 'ava'
+import { each } from 'test-each'
 
 import {
   defineClassOpts,
@@ -41,4 +42,14 @@ test('plugin.staticMethods cannot be defined twice by different plugins', (t) =>
       { name: 'two', staticMethods: { one() {} } },
     ]),
   )
+})
+
+each(Reflect.ownKeys(Error), ({ title }, propName) => {
+  test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
+    t.throws(
+      defineGlobalOpts.bind(undefined, {}, [
+        { name: 'one', staticMethods: { [propName]() {} } },
+      ]),
+    )
+  })
 })

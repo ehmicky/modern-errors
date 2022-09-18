@@ -50,6 +50,7 @@ const addStaticMethod = function ({
   AnyError,
 }) {
   validateMethodName(methodName, plugin, plugins)
+  validateNativeName(methodName, plugin)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   AnyError[methodName] = callStaticMethods.bind(undefined, {
     methodFunc,
@@ -68,6 +69,14 @@ const validateMethodName = function (methodName, plugin, plugins) {
   if (duplicatePlugin !== undefined) {
     throw new Error(
       `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "AnyError.${methodName}()"`,
+    )
+  }
+}
+
+const validateNativeName = function (methodName, plugin) {
+  if (methodName in Error) {
+    throw new Error(
+      `Plugin "${plugin.fullName}" must not redefine "Error.${methodName}()"`,
     )
   }
 }
