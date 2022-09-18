@@ -12,3 +12,9 @@ each([TestError, UnknownError], ({ title }, ErrorClass) => {
     t.true(error instanceof Error)
   })
 })
+
+test('Can be called several times', (t) => {
+  const { TestError: OtherTestError } = defineSimpleClass()
+  const error = new OtherTestError('test')
+  t.true(error instanceof OtherTestError)
+})
