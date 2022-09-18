@@ -6,6 +6,10 @@ const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
 const anyError = new AnyError('')
+expectError(new AnyError())
+expectError(new AnyError(true))
+expectError(new AnyError('', true))
+expectError(new AnyError('', { unknown: true }))
 expectType<AnyInstance>(anyError)
 expectAssignable<Error>(anyError)
 expectAssignable<string>(anyError.name)
