@@ -14,7 +14,7 @@ import { checkUnknownError } from './unknown.js'
 //  - Share options and custom logic between error classes
 //  - Bind and override options and custom logic between modules
 //  - Only export parent classes to consumers
-export const createClass = function (
+export const createSubclass = function (
   { globalOpts, ParentError, ErrorClasses, plugins },
   className,
   classOpts,
@@ -28,7 +28,7 @@ export const createClass = function (
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(ErrorClass, 'subclass', {
-    value: createClass.bind(undefined, {
+    value: createSubclass.bind(undefined, {
       globalOpts,
       ParentError: ErrorClass,
       ErrorClasses,

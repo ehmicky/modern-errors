@@ -1,4 +1,4 @@
-import { requireUnknownError } from '../class/unknown.js'
+import { requireUnknownError } from '../subclass/unknown.js'
 
 // We forbid subclasses that are not known, i.e. not passed to
 // `*Error.subclass()`

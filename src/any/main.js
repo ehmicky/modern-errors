@@ -1,7 +1,7 @@
 import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
-import { createClass } from '../class/main.js'
+import { createSubclass } from '../subclass/main.js'
 import { computePluginsOpts } from '../plugins/compute.js'
 import { applyPluginsSet } from '../plugins/set.js'
 
@@ -82,7 +82,7 @@ export const createAnyError = function ({
     }
     /* c8 ignore stop */
 
-    static subclass = createClass.bind(undefined, {
+    static subclass = createSubclass.bind(undefined, {
       globalOpts,
       ParentError: AnyError,
       ErrorClasses,

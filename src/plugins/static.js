@@ -1,4 +1,4 @@
-import { requireUnknownError } from '../class/unknown.js'
+import { requireUnknownError } from '../subclass/unknown.js'
 
 import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
