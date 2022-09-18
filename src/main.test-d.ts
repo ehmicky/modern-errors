@@ -5,8 +5,6 @@ import modernErrors from './main.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
-expectError(modernErrors(true))
-
 const SError = AnyError.subclass('SError')
 type SInstance = InstanceType<typeof SError>
 
@@ -45,19 +43,6 @@ class BCCError extends CError {
 }
 const CCError = CError.subclass('CCError', { custom: BCCError })
 type CCInstance = InstanceType<typeof CCError>
-
-expectError(AnyError.subclass())
-expectError(AnyError.subclass({}))
-expectError(AnyError.subclass('Test'))
-expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
-      constructor(message: boolean, options?: object) {
-        super(String(message), options)
-      }
-    },
-  }),
-)
 
 const anyError = new AnyError('')
 expectType<AnyInstance>(anyError)
@@ -146,6 +131,21 @@ expectError(CCError.normalize(''))
 // if (anyError instanceof CCError) {
 //   expectType<CCInstance>(anyError)
 // }
+
+expectError(modernErrors(true))
+
+expectError(AnyError.subclass())
+expectError(AnyError.subclass({}))
+expectError(AnyError.subclass('Test'))
+expectError(
+  AnyError.subclass('TestError', {
+    custom: class extends AnyError {
+      constructor(message: boolean, options?: object) {
+        super(String(message), options)
+      }
+    },
+  }),
+)
 
 const error = new Error('')
 
