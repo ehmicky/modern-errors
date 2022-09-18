@@ -5,7 +5,7 @@ import modernErrors from './main.js'
 const AnyError = modernErrors()
 type AnyInstance = typeof AnyError['prototype']
 
-const anyError = new AnyError('')
+const anyError = new AnyError('', { cause: '' })
 expectError(new AnyError())
 expectError(new AnyError(true))
 expectError(new AnyError('', true))

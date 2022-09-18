@@ -7,6 +7,10 @@ type NamedError<
 
 type ErrorConstructor = new (...args: any[]) => Error
 
+interface AnyErrorOptions {
+  cause?: unknown
+}
+
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
@@ -100,7 +104,7 @@ type CreateSubclass<
  * ```
  */
 type AnyErrorClass = {
-  new (message: string, options?: ErrorOptions): NamedError<Error, ErrorName>
+  new (message: string, options?: AnyErrorOptions): NamedError<Error, ErrorName>
   prototype: NamedError<Error, ErrorName>
 
   /**
