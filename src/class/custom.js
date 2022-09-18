@@ -10,7 +10,6 @@ import { validateCustom } from './validate.js'
 //  - Creating several classes with the same `custom` option
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes.
-// We allow `ErrorClass.class()` to create subclasses.
 export const getErrorClass = function ({
   ParentError,
   className,
