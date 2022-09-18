@@ -3,10 +3,12 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 import modernErrors from './main.js'
 
 const AnyError = modernErrors()
-
 type AnyErrorInstance = InstanceType<typeof AnyError>
 
 expectError(modernErrors(true))
+
+const UnknownError = AnyError.create('UnknownError')
+type UnknownErrorInstance = InstanceType<typeof UnknownError>
 
 class BaseTestError extends AnyError {
   constructor(message: string | boolean, options?: object) {
@@ -15,15 +17,8 @@ class BaseTestError extends AnyError {
   prop = true as const
   static staticProp = true as const
 }
-
-const UnknownError = AnyError.create('UnknownError')
 const TestError = AnyError.create('TestError', { custom: BaseTestError })
-
-type BaseTestErrorInstance = BaseTestError
-type TestErrorClass = typeof TestError
-type TestErrorInstance = InstanceType<TestErrorClass>
-type UnknownErrorClass = typeof UnknownError
-type UnknownErrorInstance = InstanceType<UnknownErrorClass>
+type TestErrorInstance = InstanceType<typeof TestError>
 
 AnyError.create('TestError', { custom: AnyError })
 AnyError.create('TestError', { custom: TestError })
@@ -33,7 +28,7 @@ expectError(AnyError.create())
 
 const testError = new TestError(true)
 expectType<TestErrorInstance>(testError)
-expectType<BaseTestErrorInstance>(testError)
+expectType<BaseTestError>(testError)
 expectAssignable<AnyErrorInstance>(testError)
 expectAssignable<Error>(testError)
 expectType<true>(TestError.staticProp)
