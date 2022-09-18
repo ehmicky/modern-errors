@@ -1,4 +1,9 @@
 import type { ErrorName } from 'error-custom-class'
+import type MergeErrorCause from 'merge-error-cause'
+
+type MergeCause<ErrorArg extends unknown> = ReturnType<
+  typeof MergeErrorCause<ErrorArg>
+>
 
 type NamedError<
   ErrorInstance extends Error,
@@ -94,8 +99,8 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
   Error,
   ErrorName
 >
-  ? Cause
-  : NamedError<Cause extends Error ? Cause : Error, 'UnknownError'>
+  ? MergeCause<Cause>
+  : NamedError<Cause extends Error ? MergeCause<Cause> : Error, 'UnknownError'>
 
 /**
  * Base error class.

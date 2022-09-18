@@ -2,7 +2,7 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 
 import modernErrors from './main.js'
 
-const genericError = new Error('')
+const genericError = {} as Error & { genericProp: true }
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
@@ -10,19 +10,22 @@ const wideError = {} as any as AnyInstance
 expectAssignable<Error>(wideError)
 expectType<`${string}Error`>(wideError.name)
 
-const unknownError = new AnyError('', { cause: '' })
-type UnknownInstance = typeof unknownError
+const unknownError = new AnyError('', { cause: genericError })
+const bareUnknownError = new AnyError('', { cause: '' })
+type UnknownInstance = typeof bareUnknownError
 
 expectAssignable<AnyInstance>(unknownError)
 expectAssignable<Error>(unknownError)
 expectType<'UnknownError'>(unknownError.name)
+expectType<true>(unknownError.genericProp)
+expectAssignable<UnknownInstance>(unknownError)
+expectType<UnknownInstance>(bareUnknownError)
 expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
-expectType<UnknownInstance>(new AnyError('', { cause: genericError }))
+expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
 expectType<UnknownInstance>(AnyError.normalize(''))
 expectType<UnknownInstance>(AnyError.normalize(undefined))
-expectType<UnknownInstance>(AnyError.normalize(genericError))
 if (unknownError instanceof AnyError) {
-  expectType<UnknownInstance>(unknownError)
+  expectAssignable<UnknownInstance>(unknownError)
 }
 
 const SError = AnyError.subclass('SError')
@@ -184,7 +187,7 @@ expectError(
 )
 
 if (genericError instanceof AnyError) {
-  expectType<AnyInstance>(genericError)
+  expectAssignable<AnyInstance>(genericError)
 }
 if (cError instanceof SError) {
   expectType<never>(cError)
