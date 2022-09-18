@@ -1,29 +1,21 @@
 import test from 'ava'
+import { each } from 'test-each'
 
 import { defineSimpleClass } from '../helpers/main.js'
 
-const { TestError, UnknownError, AnyError } = defineSimpleClass()
-
-test('Cannot extend from AnyError without AnyError.class()', (t) => {
-  class ChildError extends AnyError {}
-  t.throws(() => new ChildError('test'))
-})
-
-test('Cannot extend from known classes without AnyError.class()', (t) => {
-  class ChildError extends TestError {}
-  t.throws(() => new ChildError('test'))
-})
-
-test('Can extend from known classes with AnyError.class()', (t) => {
-  class ChildError extends TestError {}
-  const KnownError = ChildError.class('KnownError', { custom: ChildError })
-  t.is(new KnownError('test').name, 'KnownError')
-})
-
-test('Can extend from UnknownError', (t) => {
-  class ChildUnknownError extends UnknownError {}
-  const ChildKnownError = ChildUnknownError.class('ChildUnknownError', {
-    custom: ChildUnknownError,
+each(['AnyError', 'TestError', 'UnknownError'], ({ title }, errorName) => {
+  test(`Cannot extend without class() | ${title}`, (t) => {
+    const ParentError = defineSimpleClass()[errorName]
+    class ChildError extends ParentError {}
+    // eslint-disable-next-line max-nested-callbacks
+    t.throws(() => new ChildError('test'))
   })
-  t.is(new ChildKnownError('test').name, 'ChildUnknownError')
+
+  test(`Can extend with class() | ${title}`, (t) => {
+    const ParentError = defineSimpleClass()[errorName]
+    const ChildError = ParentError.class('ChildError', {
+      custom: class extends ParentError {},
+    })
+    t.is(new ChildError('test').name, 'ChildError')
+  })
 })
