@@ -5,11 +5,8 @@ type ErrorInstance<
   ErrorNameArg extends ErrorName = ErrorName,
 > = ErrorArg & { name: ErrorNameArg }
 
-type ErrorClass<
-  ErrorInstanceArg extends ErrorInstance = ErrorInstance,
-  ErrorConstructorArgs extends any[] = any[],
-> = {
-  new (...args: ErrorConstructorArgs): ErrorInstanceArg
+type ErrorClass<ErrorInstanceArg extends ErrorInstance = ErrorInstance> = {
+  new (...args: any[]): ErrorInstanceArg
   prototype: ErrorInstanceArg
   subclass: CreateSubclass<ErrorClass<ErrorInstanceArg>>
 }
@@ -59,10 +56,7 @@ type ErrorSubclass<
   ErrorNameArg extends ErrorName,
   ParentErrorClass extends ErrorClass,
 > = MaybeIntersect<
-  ErrorClass<
-    ErrorInstance<InstanceType<ParentErrorClass>, ErrorNameArg>,
-    ConstructorParameters<ParentErrorClass>
-  >,
+  ErrorClass<ErrorInstance<InstanceType<ParentErrorClass>, ErrorNameArg>>,
   Omit<ParentErrorClass, keyof AnyErrorClass>
 >
 
