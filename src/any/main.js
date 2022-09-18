@@ -13,11 +13,12 @@ import { validateClass } from './validate.js'
 export const CoreError = errorCustomClass('CoreError')
 
 // Base class for all error classes.
-// This is not a global class since it is bound to call-specific plugins.
-// Also used to wrap errors without changing their class.
-//  - As opposed to exporting a separate class for it since it:
-//     - Avoids confusion between both classes
-//     - Removes some exports, simplifying the API
+// This is not a global class since it is bound to specific plugins, global
+// options and `ErrorClasses`.
+// This can be also instantiated on its own to wrap errors without changing
+// their class, as opposed to exporting a separate class for it since it:
+//  - Avoids confusion between both classes
+//  - Removes some exports, simplifying the API
 // We encourage `instanceof` over `error.name` for checking since this:
 //  - Prevents name collisions with other libraries
 //  - Allows checking if any error came from a given library
@@ -27,7 +28,10 @@ export const CoreError = errorCustomClass('CoreError')
 //  - Encourages documenting error types
 // Checking class with `error.name` is still supported, but not documented
 //  - Since it is widely used and can be better in specific cases
-// We do not solve name collisions with the following alternatives:
+//  - It also does not have narrowing with TypeScript
+// This also provides with namespacing, i.e. prevents classes of the same name
+// but in different libraries to be considered equal. As opposed to the
+// following alternatives:
 //  - Namespacing all error names with a common prefix since this:
 //     - Leads to verbose error names
 //     - Requires either an additional option, or guessing ambiguously whether

@@ -3,7 +3,8 @@ import isPlainObj from 'is-plain-obj'
 import { mergePluginsOpts } from './merge.js'
 import { normalizePluginOpts } from './normalize.js'
 
-// `AnyError.*` can be defined to apply global options, i.e. to all classes.
+// The second argument to `modernErrors()` are global options applied to all
+// classes.
 // Those are validated right away, before merging to class options, since they
 // are used on their own by static methods.
 export const getGlobalOpts = function (plugins, globalOpts = {}) {
@@ -15,7 +16,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 
   if (globalOpts.custom !== undefined) {
     throw new TypeError(
-      `Error option "custom" must be passed to "AnyError.create()", not to "modernErrors()".`,
+      'Error option "custom" must be passed to "AnyError.create()", not to "modernErrors()".',
     )
   }
 

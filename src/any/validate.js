@@ -3,18 +3,16 @@
 //  - They would not be validated at load time
 //  - The class would not be normalized until its first instantiation
 //     - E.g. its `prototype.name` might be missing
-//  - The list of known classes would be potentially incomplete
+//  - The list of `ErrorClasses` would be potentially incomplete
 //     - E.g. `AnyError.parse()` would not be able to parse an error class until
 //       its first instantiation
-// This usually happens if either:
-//  - A class extending from `AnyError` was not passed as `custom` option to
-//    `AnyError.create()`
-//  - A class was extended from a known class, without being passed itself to
-//    `AnyError.create()`
+// This usually happens if a class was:
+//  - Not passed to the `custom` option of `AnyError.create()`
+//  - But was extended from either `AnyError` or a known class
 export const validateClass = function (ChildError, ErrorClasses, isAnyError) {
   if (!Object.values(ErrorClasses).includes(ChildError) && !isAnyError) {
     throw new Error(
-      `"${ChildError.name}" must be passed as a "custom" option with "AnyError.create()" before being instantiated.`,
+      `"${ChildError.name}" must be passed to the "custom" option of "AnyError.create()" before being instantiated.`,
     )
   }
 }
