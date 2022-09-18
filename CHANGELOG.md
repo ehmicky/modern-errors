@@ -121,7 +121,7 @@ The [main function](README.md#modernerrorsplugins-options) now returns the base
 error class [`AnyError`](README.md#anyerror).
 
 [`AnyError.subclass(name)`](README.md#anyerrorsubclassname-options) must be used
-to create each error class. One of them must now be named
+to create each error class. The first one must now be named
 [`UnknownError`](README.md#unknown-errors).
 
 Before:

@@ -49,7 +49,8 @@ export const createAnyError = function ({
   /* eslint-disable fp/no-this */
   class AnyError extends CoreError {
     constructor(message, opts) {
-      const isAnyError = validateSubClass(new.target, AnyError, ErrorClasses)
+      const isAnyError = new.target === AnyError
+      validateSubClass(new.target, isAnyError, ErrorClasses)
       const optsA = normalizeConstructorArgs({
         opts,
         ErrorClasses,

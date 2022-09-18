@@ -1,5 +1,3 @@
-import { requireUnknownError } from '../subclass/unknown.js'
-
 // We forbid subclasses that are not known, i.e. not passed to
 // `*Error.subclass()`
 //  - They would not be validated at load time
@@ -11,11 +9,20 @@ import { requireUnknownError } from '../subclass/unknown.js'
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `*Error.subclass()`
 //  - But was extended from either `AnyError` or a known class
-export const validateSubClass = function (ChildError, AnyError, ErrorClasses) {
-  requireUnknownError(ErrorClasses)
-  const isAnyError = ChildError === AnyError
+export const validateSubClass = function (
+  ChildError,
+  isAnyError,
+  ErrorClasses,
+) {
+  validateNonEmpty(ErrorClasses)
   validateRegisteredClass(ChildError, isAnyError, ErrorClasses)
-  return isAnyError
+}
+
+export const validateNonEmpty = function (ErrorClasses) {
+  if (Object.keys(ErrorClasses).length === 0) {
+    throw new Error(`At least one error class must be created.
+This is done by calling "AnyError.subclass()".`)
+  }
 }
 
 const validateRegisteredClass = function (
