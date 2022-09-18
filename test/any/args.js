@@ -3,7 +3,7 @@ import { each } from 'test-each'
 
 import { defineSimpleClass, createAnyError } from '../helpers/main.js'
 
-const { TestError } = defineSimpleClass()
+const { TestError, UnknownError, AnyError } = defineSimpleClass()
 
 test('Allows empty options', (t) => {
   t.notThrows(() => new TestError('test'))
@@ -18,6 +18,37 @@ each([null, '', { custom: true }], ({ title }, opts) => {
 })
 
 test('Requires Any.create()', (t) => {
-  const AnyError = createAnyError()
-  t.throws(() => new AnyError('test', { cause: '' }))
+  const TestAnyError = createAnyError()
+  t.throws(() => new TestAnyError('test', { cause: '' }))
+})
+
+test('Validate that AnyError has a cause', (t) => {
+  t.throws(() => new AnyError('message'))
+})
+
+test('AnyError with known cause uses its class', (t) => {
+  const cause = new TestError('causeMessage')
+  const error = new AnyError('message', { cause })
+  t.true(error instanceof Error)
+  t.true(error instanceof TestError)
+  t.is(Object.getPrototypeOf(error), TestError.prototype)
+  t.is(error.name, 'TestError')
+})
+
+test('AnyError with unknown cause uses UnknownError', (t) => {
+  const cause = new Error('causeMessage')
+  const error = new AnyError('message', { cause })
+  t.true(error instanceof Error)
+  t.true(error instanceof UnknownError)
+  t.is(Object.getPrototypeOf(error), UnknownError.prototype)
+  t.is(error.name, 'UnknownError')
+})
+
+test('AnyError with known cause uses its instance', (t) => {
+  const cause = new TestError('causeMessage')
+  t.is(new AnyError('message', { cause }), cause)
+})
+
+test('AnyError with undefined cause uses UnknownError', (t) => {
+  t.is(new AnyError('message', { cause: undefined }).name, 'UnknownError')
 })
