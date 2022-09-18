@@ -15,8 +15,25 @@ export const CoreError = errorCustomClass('CoreError')
 
 // Base class for all error classes.
 // This is not a global class since it is bound to call-specific plugins.
-//  - This means the same class cannot be extended twice by `modernErrors()`
-//    since this would change its `BaseError`
+// Also used to wrap errors without changing their class.
+// We encourage `instanceof` over `error.name` for checking since this:
+//  - Prevents name collisions with other libraries
+//  - Allows checking if any error came from a given library
+//  - Includes error classes in the exported interface explicitly instead of
+//    implicitly, so that users are mindful about breaking changes
+//  - Bundles classes with TypeScript documentation, types and autocompletion
+//  - Encourages documenting error types
+// Checking class with `error.name` is still supported, but not documented
+//  - Since it is widely used and can be better in specific cases
+// We do not solve name collisions with the following alternatives:
+//  - Namespacing all error names with a common prefix since this:
+//     - Leads to verbose error names
+//     - Requires either an additional option, or guessing ambiguously whether
+//       error names are meant to include a namespace prefix
+//     - Means special error classes (like `AnyError` or `UnknownError`) might
+//       or not be namespaced which might be confusing
+//  - Using a separate `namespace` property: this adds too much complexity and
+//    is less standard than `instanceof`
 export const createBaseError = function ({
   state,
   errorData,
