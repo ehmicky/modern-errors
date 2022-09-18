@@ -11,7 +11,7 @@ import { TEST_PLUGIN } from '../helpers/plugin.js'
 const { TestError } = defineSimpleClass()
 
 test('plugin.normalize() is optional', (t) => {
-  const { InputError } = defineClassOpts({}, [
+  const { InputError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, normalize: undefined },
   ])
   t.true(new InputError('test', { prop: true }).set.options)

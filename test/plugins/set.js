@@ -28,7 +28,7 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
 })
 
 test('plugin.set() is optional', (t) => {
-  const { InputError } = defineClassOpts({}, [
+  const { InputError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, set: undefined, unset: undefined },
   ])
   t.false('set' in new InputError('test'))

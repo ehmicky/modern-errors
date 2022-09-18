@@ -6,8 +6,8 @@ export const defineGlobalOpts = function (globalOpts, plugins) {
   return defineClassesOpts({ InputError: {} }, globalOpts, plugins)
 }
 
-export const defineClassOpts = function (classOpts, plugins) {
-  return defineClassesOpts({ InputError: classOpts }, {}, plugins)
+export const defineClassOpts = function (classOpts, globalOpts, plugins) {
+  return defineClassesOpts({ InputError: classOpts }, globalOpts, plugins)
 }
 
 export const defineSimpleClass = function (plugins) {
