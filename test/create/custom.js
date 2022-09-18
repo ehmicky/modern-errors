@@ -14,12 +14,6 @@ const { ShallowError } = defineShallowCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
-each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
-  test(`Can define custom classes| ${title}`, (t) => {
-    t.true(new ErrorClass('test').prop)
-  })
-})
-
 each([TestError, ShallowError], ({ title }, ErrorClass) => {
   test(`Parent class is AnyError by default | ${title}`, (t) => {
     t.is(Object.getPrototypeOf(ErrorClass).name, 'AnyError')
@@ -33,22 +27,8 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
 })
 
 each(
-  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
-  ({ title }, ErrorClass) => {
-    test(`prototype.name is correct | ${title}`, (t) => {
-      t.is(ErrorClass.prototype.name, ErrorClass.name)
-      t.false(
-        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
-          .enumerable,
-      )
-      t.is(new ErrorClass('test').name, ErrorClass.name)
-    })
-  },
-)
-
-each(
   [
-    'UnknownError',
+    'TestError',
     Object,
     Function,
     () => {},
@@ -57,22 +37,16 @@ each(
     class ChildTypeError extends TypeError {},
     class NoParentError {},
     class InvalidError extends Object {},
+    Object.getPrototypeOf(AnyError),
+    AnyError,
+    TestError,
   ],
   ({ title }, custom) => {
-    test(`Validate against invalid parents | ${title}`, (t) => {
+    test(`Validate against invalid "custom" option | ${title}`, (t) => {
       t.throws(defineCustomClass.bind(undefined, custom))
     })
   },
 )
-
-test('Cannot pass AnyError', (t) => {
-  t.throws(() => defineCustomClass(AnyError))
-})
-
-test('Cannot pass CoreError', (t) => {
-  const CoreError = Object.getPrototypeOf(AnyError)
-  t.throws(() => defineCustomClass(CoreError))
-})
 
 // eslint-disable-next-line unicorn/no-null
 each(['', null], ({ title }, invalidPrototype) => {
@@ -100,3 +74,24 @@ test('Validate against parent being null', (t) => {
   Object.setPrototypeOf(custom, null)
   t.throws(defineCustomClass.bind(undefined, custom))
 })
+
+each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
+  test(`Can define custom classes| ${title}`, (t) => {
+    t.true(ErrorClass.staticProp)
+    t.true(new ErrorClass('test').prop)
+  })
+})
+
+each(
+  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
+  ({ title }, ErrorClass) => {
+    test(`prototype.name is correct | ${title}`, (t) => {
+      t.is(ErrorClass.prototype.name, ErrorClass.name)
+      t.false(
+        Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name')
+          .enumerable,
+      )
+      t.is(new ErrorClass('test').name, ErrorClass.name)
+    })
+  },
+)
