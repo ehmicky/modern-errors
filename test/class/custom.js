@@ -38,10 +38,17 @@ test('Parent class is custom class when passed', (t) => {
   t.is(Object.getPrototypeOf(SimpleCustomError).name, SimpleCustomError.name)
 })
 
-test('Subclasses must extend from their parent', (t) => {
-  const OtherError = AnyError.class('OtherError')
+test('Subclasses must not extend from siblings', (t) => {
+  const SiblingError = AnyError.class('SiblingError')
   t.throws(() =>
-    OtherError.class('SubError', { custom: class extends TestError {} }),
+    SiblingError.class('SubError', { custom: class extends TestError {} }),
+  )
+})
+
+test('Subclasses must not extend from their parent indirectly', (t) => {
+  const SubTestError = TestError.class('SubTestError')
+  t.throws(() =>
+    TestError.class('SubError', { custom: class extends SubTestError {} }),
   )
 })
 
