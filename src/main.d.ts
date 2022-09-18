@@ -16,7 +16,7 @@ type ErrorClass<
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
-    new (...args: any[]): NamedError<
+    new (...args: ConstructorParameters<ParentErrorClass>): NamedError<
       InstanceType<ParentErrorClass>,
       ErrorNameArg
     >
@@ -70,7 +70,7 @@ type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
   errorName: ErrorNameArg,
   options?: OptionsArg,
 ) => ErrorClass<
-  OptionsArg['custom'] extends ErrorClass<ParentErrorClass, ErrorName>
+  OptionsArg['custom'] extends ErrorConstructor
     ? OptionsArg['custom']
     : ParentErrorClass,
   ErrorNameArg
