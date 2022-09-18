@@ -1,3 +1,4 @@
+import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
@@ -63,7 +64,7 @@ const callStaticMethods = function (
 ) {
   const options = normalizePluginOpts(globalOpts, plugin)
   return methodFunc(
-    { options, AnyError, ErrorClasses: { ...ErrorClasses } },
+    { options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },
     ...args,
   )
 }

@@ -11,7 +11,7 @@ import { checkUnknownError } from './unknown.js'
 //  - This also makes it clearer to types, simplifying them
 //  - This removes any need to mutate any `custom` class
 export const create = function (
-  { globalOpts, AnyError, ErrorClasses, errorData, plugins },
+  { globalOpts, AnyError, ErrorClasses, plugins },
   className,
   classOpts,
 ) {
@@ -22,9 +22,8 @@ export const create = function (
     classOpts,
   )
   const ErrorClass = getErrorClass(AnyError, className, custom)
-  errorData.set(ErrorClass, { classOpts: classOptsA })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  ErrorClasses[className] = ErrorClass
+  ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
   checkUnknownError(ErrorClass, className)
   return ErrorClass
 }

@@ -1,3 +1,4 @@
+import { getErrorClasses } from './error_classes.js'
 import { getErrorOpts } from './normalize.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
@@ -49,7 +50,7 @@ const addInstanceMethod = function ({
     const error = this
     const options = getErrorOpts(error, errorData, plugin)
     return methodFunc(
-      { error, options, AnyError, ErrorClasses: { ...ErrorClasses } },
+      { error, options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },
       ...args,
     )
   }

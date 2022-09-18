@@ -8,14 +8,14 @@ import { mergePluginsOpts } from './merge.js'
 //  - This also ensures this does not change how the error is printed
 export const computePluginsOpts = function ({
   error,
-  ChildError,
   opts,
   opts: { cause },
   isAnyError,
+  ErrorClasses,
   errorData,
   plugins,
 }) {
-  const { classOpts } = errorData.get(ChildError)
+  const { classOpts } = ErrorClasses[error.name]
   const parentOpts = mergePluginsOpts(classOpts, opts, plugins)
   const pluginsOpts = wrapPluginsOpts({
     parentOpts,

@@ -1,3 +1,4 @@
+import { getErrorClasses } from './error_classes.js'
 import { getErrorOpts } from './normalize.js'
 
 // Apply each `plugin.normalize()` then `plugin.set()`
@@ -56,7 +57,7 @@ const applyPluginSet = function ({
       error,
       options: causeOpts,
       AnyError,
-      ErrorClasses: { ...ErrorClasses },
+      ErrorClasses: getErrorClasses(ErrorClasses),
     })
   }
 
@@ -65,6 +66,6 @@ const applyPluginSet = function ({
     error,
     options: pluginOpts,
     AnyError,
-    ErrorClasses: { ...ErrorClasses },
+    ErrorClasses: getErrorClasses(ErrorClasses),
   })
 }

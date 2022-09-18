@@ -52,7 +52,7 @@ export const createAnyError = function ({
       const isAnyError = new.target === AnyError
       const optsA = normalizeConstructorArgs({
         opts,
-        UnknownError: ErrorClasses.UnknownError,
+        UnknownError: ErrorClasses.UnknownError.ErrorClass,
         AnyError,
         isAnyError,
       })
@@ -60,13 +60,12 @@ export const createAnyError = function ({
       super(message, optsA)
 
       const { error, cause } = mergeCause(this, isAnyError)
-      const ChildError = error.constructor
-      validateClass(ChildError, ErrorClasses, isAnyError)
+      validateClass(error, ErrorClasses, isAnyError)
       computePluginsOpts({
         error,
-        ChildError,
         opts: optsA,
         isAnyError,
+        ErrorClasses,
         errorData,
         plugins,
       })
@@ -88,7 +87,6 @@ export const createAnyError = function ({
       globalOpts,
       AnyError,
       ErrorClasses,
-      errorData,
       plugins,
     })
 
