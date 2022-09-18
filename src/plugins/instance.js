@@ -45,6 +45,7 @@ const addInstanceMethod = function ({
   AnyError,
 }) {
   validateMethodName(methodName, plugin, plugins)
+  validateNativeName(methodName, plugin)
 
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
@@ -73,6 +74,14 @@ const validateMethodName = function (methodName, plugin, plugins) {
   if (duplicatePlugin !== undefined) {
     throw new Error(
       `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "error.${methodName}()"`,
+    )
+  }
+}
+
+const validateNativeName = function (methodName, plugin) {
+  if (methodName in Error.prototype) {
+    throw new Error(
+      `Plugin "${plugin.fullName}" must not redefine "error.${methodName}()"`,
     )
   }
 }

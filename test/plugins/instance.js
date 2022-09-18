@@ -1,4 +1,5 @@
 import test from 'ava'
+import { each } from 'test-each'
 
 import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
@@ -63,3 +64,21 @@ test('plugin.instanceMethods cannot be defined twice by different plugins', (t) 
     ]),
   )
 })
+
+each(
+  [
+    ...new Set([
+      ...Reflect.ownKeys(Error.prototype),
+      ...Reflect.ownKeys(Object.prototype),
+    ]),
+  ],
+  ({ title }, propName) => {
+    test(`plugin.instanceMethods cannot redefine native Error.prototype.* | ${title}`, (t) => {
+      t.throws(
+        defineGlobalOpts.bind(undefined, {}, [
+          { name: 'one', instanceMethods: { [propName]() {} } },
+        ]),
+      )
+    })
+  },
+)

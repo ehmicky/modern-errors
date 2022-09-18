@@ -44,12 +44,15 @@ test('plugin.staticMethods cannot be defined twice by different plugins', (t) =>
   )
 })
 
-each(Reflect.ownKeys(Error), ({ title }, propName) => {
-  test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
-    t.throws(
-      defineGlobalOpts.bind(undefined, {}, [
-        { name: 'one', staticMethods: { [propName]() {} } },
-      ]),
-    )
-  })
-})
+each(
+  [...new Set([...Reflect.ownKeys(Error), ...Reflect.ownKeys(Function)])],
+  ({ title }, propName) => {
+    test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
+      t.throws(
+        defineGlobalOpts.bind(undefined, {}, [
+          { name: 'one', staticMethods: { [propName]() {} } },
+        ]),
+      )
+    })
+  },
+)
