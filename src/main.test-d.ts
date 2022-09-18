@@ -60,20 +60,20 @@ if (error instanceof AnyError) {
   expectType<AnyErrorInstance>(error)
 }
 
+// Type narrowing with `instanceof` of error classes with a `custom` option
+// does not work due to:
+// https://github.com/microsoft/TypeScript/issues/50844
+// if (anyError instanceof TestError) {
+//   expectType<TestErrorInstance>(anyError)
+// }
+
 if (anyError instanceof UnknownError) {
   expectType<UnknownErrorInstance>(anyError)
 }
 
-// The following is not working due to:
-// https://github.com/microsoft/TypeScript/issues/50844
-
-// if (anyError instanceof TestError) {
-//   expectType<TestErrorInstance>(anyError)
-// }
-// if (testError instanceof UnknownError) {
-//   expectType<never>(testError)
-// }
-
+if (testError instanceof UnknownError) {
+  expectType<never>(testError)
+}
 if (testError instanceof TestError) {
   expectType<TestErrorInstance>(testError)
 }
