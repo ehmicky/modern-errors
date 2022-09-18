@@ -1,11 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineClassesOpts,
-  defineSimpleClass,
-  defineCustomClass,
-} from '../helpers/main.js'
+import { defineClassesOpts, defineSimpleClass } from '../helpers/main.js'
 
 const { TestError } = defineSimpleClass()
 
@@ -14,10 +10,19 @@ each(
     {
       ErrorClass: TestError,
       className: 'TestError',
-      parentClassName: 'AnyError',
+      parentClassName: 'CoreError',
     },
     {
-      ErrorClass: defineCustomClass(class extends Error {}).InputError,
+      ErrorClass: defineClassesOpts((AnyError) => ({
+        InputError: { custom: AnyError },
+      })).InputError,
+      className: 'InputError',
+      parentClassName: 'CoreError',
+    },
+    {
+      ErrorClass: defineClassesOpts((AnyError) => ({
+        InputError: { custom: class extends AnyError {} },
+      })).InputError,
       className: 'InputError',
       parentClassName: 'AnyError',
     },
@@ -33,7 +38,10 @@ each(
   ],
   ({ title }, { ErrorClass, className, parentClassName }) => {
     test(`Errors extend from AnyError | ${title}`, (t) => {
-      t.is(Object.getPrototypeOf(ErrorClass).name, parentClassName)
+      t.is(
+        Object.getPrototypeOf(Object.getPrototypeOf(ErrorClass)).name,
+        parentClassName,
+      )
     })
 
     test(`prototype.name is correct | ${title}`, (t) => {
