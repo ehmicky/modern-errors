@@ -2,7 +2,6 @@ import { getClassOpts } from '../plugins/class_opts.js'
 
 import { getErrorClass } from './custom.js'
 import { validateClassName } from './name.js'
-import { checkUnknownError } from './unknown.js'
 
 // Create a new error class.
 // The API is divided into two calls: creating `AnyError`, then creating each
@@ -41,6 +40,5 @@ export const createSubclass = function (
   })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
-  checkUnknownError(ErrorClass, className)
   return ErrorClass
 }
