@@ -57,11 +57,11 @@ expectError(AnyError.normalize('', true))
 if (anyError instanceof TestError) {
   expectType<TestErrorInstance>(anyError)
 }
-if (testError instanceof TestError) {
-  expectType<TestErrorInstance>(testError)
-}
 if (anyError instanceof UnknownError) {
   expectType<UnknownErrorInstance>(anyError)
+}
+if (testError instanceof TestError) {
+  expectType<TestErrorInstance>(testError)
 }
 if (testError instanceof UnknownError) {
   expectType<never>(testError)
