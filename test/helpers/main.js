@@ -6,12 +6,12 @@ export const defineGlobalOpts = function (globalOpts, plugins) {
   return defineClassOpts({}, globalOpts, plugins)
 }
 
-export const defineClassOpts = function (classOpts, globalOpts, plugins) {
-  return defineClassesOpts({ TestError: classOpts }, globalOpts, plugins)
+export const defineSimpleClass = function (globalOpts, plugins) {
+  return defineClassOpts({}, globalOpts, plugins)
 }
 
-export const defineSimpleClass = function (globalOpts, plugins) {
-  return defineClassesOpts({ TestError: {} }, globalOpts, plugins)
+export const defineClassOpts = function (classOpts, globalOpts, plugins) {
+  return defineClassesOpts({ TestError: classOpts }, globalOpts, plugins)
 }
 
 export const defineDeepCustom = function (globalOpts, plugins) {
