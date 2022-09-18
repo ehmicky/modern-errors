@@ -2,6 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
+  createAnyError,
   defineClassesOpts,
   defineGlobalOpts,
   defineClassOpts,
@@ -65,4 +66,13 @@ test('Object class options are shallowly merged to global options', (t) => {
     four: true,
     five: false,
   })
+})
+
+test('Cannot use "custom" with UnknownError', (t) => {
+  const TestAnyError = createAnyError()
+  t.throws(() =>
+    TestAnyError.subclass('UnknownError', {
+      custom: class extends TestAnyError {},
+    }),
+  )
 })

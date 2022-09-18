@@ -2,6 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
+  createAnyError,
   defineSimpleClass,
   defineSimpleCustom,
   defineDeepCustom,
@@ -47,3 +48,8 @@ each(
     })
   },
 )
+
+test('Require defining UnknownError before creating errors', (t) => {
+  const TestAnyError = createAnyError()
+  t.throws(TestAnyError.subclass.bind(undefined, 'InputError'))
+})

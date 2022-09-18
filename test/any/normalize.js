@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { defineSimpleClass, createAnyError } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineSimpleClass()
 
@@ -39,4 +39,9 @@ test('AnyError.normalize() uses UnknownError if unknown', (t) => {
 test('AnyError.normalize() prevents naming collisions', (t) => {
   const { TestError: OtherTestError } = defineSimpleClass()
   t.true(AnyError.normalize(new OtherTestError('test')) instanceof UnknownError)
+})
+
+test('AnyError.normalize() cannot be called before AnyError.subclass()', (t) => {
+  const TestAnyError = createAnyError()
+  t.throws(TestAnyError.normalize)
 })

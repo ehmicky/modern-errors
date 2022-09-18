@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineSimpleClass } from '../helpers/main.js'
+import { createAnyError, defineSimpleClass } from '../helpers/main.js'
 
 each(['AnyError', 'TestError', 'UnknownError'], ({ title }, errorName) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
@@ -18,4 +18,9 @@ each(['AnyError', 'TestError', 'UnknownError'], ({ title }, errorName) => {
     })
     t.is(new ChildError('test').name, 'ChildError')
   })
+})
+
+test('Cannot instantiate AnyError before AnyError.subclass()', (t) => {
+  const TestAnyError = createAnyError()
+  t.throws(() => new TestAnyError('', { cause: '' }))
 })
