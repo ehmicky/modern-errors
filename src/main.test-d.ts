@@ -65,8 +65,8 @@ if (wideError instanceof SSError) {
 }
 
 class BCError extends AnyError {
-  constructor(message: string | boolean, options?: object) {
-    super(String(message), options)
+  constructor(message: string | boolean, options?: object, other?: string) {
+    super(`${message}${other}`, options)
   }
   prop = true as const
   static staticProp = true as const
@@ -129,8 +129,12 @@ expectError(CSError.normalize(''))
 // }
 
 class BCCError extends CError {
-  constructor(message: string | boolean | number, options?: object) {
-    super(String(message), options)
+  constructor(
+    message: string | boolean | number,
+    options?: object,
+    other?: string,
+  ) {
+    super(`${message}${other}`, options)
   }
   deepProp = true as const
   static deepStaticProp = true as const
