@@ -132,6 +132,13 @@ expectError(modernErrors(true))
 expectError(AnyError.subclass())
 expectError(AnyError.subclass({}))
 expectError(AnyError.subclass('Test'))
+expectError(AnyError.subclass('TestError', true))
+expectError(AnyError.subclass('TestError', { unknown: true }))
+expectError(AnyError.subclass('TestError', { custom: true }))
+
+expectError(AnyError.subclass('TestError', { custom: class {} }))
+expectError(AnyError.subclass('TestError', { custom: class extends Object {} }))
+expectError(AnyError.subclass('TestError', { custom: class extends Error {} }))
 expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
