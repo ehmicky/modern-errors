@@ -1,9 +1,9 @@
 import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
-import { createSubclass } from '../subclass/main.js'
 import { computePluginsOpts } from '../plugins/compute.js'
 import { applyPluginsSet } from '../plugins/set.js'
+import { createSubclass } from '../subclass/main.js'
 
 import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
