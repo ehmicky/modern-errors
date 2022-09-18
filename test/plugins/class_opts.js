@@ -3,7 +3,6 @@ import { each } from 'test-each'
 
 import {
   createAnyError,
-  defineClassesOpts,
   defineGlobalOpts,
   defineClassOpts,
 } from '../helpers/main.js'
@@ -32,7 +31,7 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
 })
 
 const defineGlobalClassesOpts = function (globalOpts, classOpts) {
-  return defineClassesOpts({ TestError: classOpts }, globalOpts).TestError
+  return defineClassOpts(classOpts, globalOpts).TestError
 }
 
 test('Class options have priority over global options', (t) => {
