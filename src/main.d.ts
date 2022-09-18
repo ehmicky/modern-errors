@@ -6,17 +6,14 @@ type ErrorInstance<ErrorNameArg extends ErrorName = ErrorName> = Error & {
 
 type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
 
-type ErrorClass<ErrorInstanceArg extends ErrorInstance<ErrorName>> = {
-  new (...args: ErrorConstructorArgs): ErrorInstanceArg
-  prototype: ErrorInstanceArg
-}
-
-type GenericErrorClass = ErrorClass<ErrorInstance<ErrorName>>
+type ErrorConstructor = new (
+  ...args: ErrorConstructorArgs
+) => ErrorInstance<ErrorName>
 
 /**
  * Class-specific options
  */
-type ClassOptions<ParentErrorClass extends GenericErrorClass> = {
+type ClassOptions<ParentErrorClass extends ErrorConstructor> = {
   /**
    * Custom class to add any methods, `constructor` or properties.
    * It must `extend` from `AnyError`.
@@ -50,9 +47,15 @@ type ClassOptions<ParentErrorClass extends GenericErrorClass> = {
   readonly custom?: ParentErrorClass
 }
 
+type DefaultErrorClass<ErrorInstanceArg extends ErrorInstance<ErrorName>> = {
+  new (...args: ErrorConstructorArgs): ErrorInstanceArg
+  prototype: ErrorInstanceArg
+  subclass: CreateSubclass<DefaultErrorClass<ErrorInstanceArg>>
+}
+
 type CustomErrorClass<
   ErrorNameArg extends ErrorName,
-  ParentErrorClass extends GenericErrorClass,
+  ParentErrorClass extends ErrorConstructor,
   CustomOption extends ParentErrorClass,
 > = {
   new (
@@ -61,7 +64,7 @@ type CustomErrorClass<
   prototype: InstanceType<CustomOption> & { name: ErrorNameArg }
 } & Omit<CustomOption, Exclude<keyof AnyErrorClass, 'subclass'>>
 
-type CreateSubclass<ParentErrorClass extends GenericErrorClass> = <
+type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ParentErrorClass>,
 >(
@@ -69,7 +72,7 @@ type CreateSubclass<ParentErrorClass extends GenericErrorClass> = <
   options?: OptionsArg,
 ) => OptionsArg['custom'] extends ParentErrorClass
   ? CustomErrorClass<ErrorNameArg, ParentErrorClass, OptionsArg['custom']>
-  : ErrorClass<ErrorInstance<ErrorNameArg>>
+  : DefaultErrorClass<ErrorInstance<ErrorNameArg>>
 
 /**
  * Base error class.
