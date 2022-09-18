@@ -68,8 +68,8 @@ type CreateSubclass<ParentErrorClass extends ErrorClass> = <
   options?: OptionsArg,
 ) => ErrorSubclass<
   ErrorNameArg,
-  keyof OptionsArg extends 'custom'
-    ? NonNullable<OptionsArg['custom']>
+  OptionsArg['custom'] extends ErrorClass
+    ? OptionsArg['custom']
     : ParentErrorClass
 >
 
