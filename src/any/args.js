@@ -26,7 +26,7 @@ export const normalizeConstructorArgs = function ({
 
   if (opts.custom !== undefined) {
     throw new TypeError(
-      `Error option "custom" must be passed to "modernErrors()", not to error constructors.`,
+      `Error option "custom" must be passed to "AnyError.create()", not to error constructors.`,
     )
   }
 

@@ -13,6 +13,12 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
     )
   }
 
+  if (globalOpts.custom !== undefined) {
+    throw new TypeError(
+      `Error option "custom" must be passed to "AnyError.create()", not to "modernErrors()".`,
+    )
+  }
+
   plugins.forEach((plugin) => {
     normalizePluginOpts(globalOpts, plugin)
   })
