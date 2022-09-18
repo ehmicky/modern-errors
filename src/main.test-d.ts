@@ -56,12 +56,19 @@ expectType<AnyErrorInstance>(TestError.normalize(''))
 expectError(UnknownError.normalize(''))
 expectError(AnyError.normalize('', true))
 
+const error = new Error('')
+
+if (error instanceof AnyError) {
+  expectType<AnyErrorInstance>(error)
+}
+
 if (anyError instanceof TestError) {
   expectType<TestErrorInstance>(anyError)
 }
 if (anyError instanceof UnknownError) {
   expectType<UnknownErrorInstance>(anyError)
 }
+
 // TODO: The following is not working because static methods inherited from
 // `AnyError` were added to `UnknownError` using `&`.
 // See https://github.com/microsoft/TypeScript/issues/50844
