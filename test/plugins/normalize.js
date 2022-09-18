@@ -5,8 +5,8 @@ import {
   defineSimpleClass,
   defineGlobalOpts,
   defineClassOpts,
-  TEST_PLUGIN,
 } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 const { TestError } = defineSimpleClass()
 
