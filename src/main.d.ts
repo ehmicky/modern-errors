@@ -3,7 +3,7 @@ import { ErrorName } from 'error-custom-class'
 type NamedError<
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
-> = ErrorInstance & { name: ErrorNameArg }
+> = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg }
 
 type ErrorConstructor = new (...args: any[]) => Error
 
