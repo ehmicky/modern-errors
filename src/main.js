@@ -1,5 +1,5 @@
 import { createAnyError } from './any/main.js'
-import { initKnownClasses } from './known/init.js'
+import { create } from './known/create.js'
 import { getGlobalOpts } from './plugins/class_opts.js'
 import { addAllInstanceMethods } from './plugins/instance.js'
 import { addAllStaticMethods } from './plugins/static.js'
@@ -27,15 +27,13 @@ export default function modernErrors(plugins, globalOpts) {
     AnyError,
   })
   // eslint-disable-next-line fp/no-mutation
-  AnyError.create = (classesOpts) =>
-    initKnownClasses({
-      classesOpts,
-      globalOpts: globalOptsA,
-      AnyError,
-      KnownClasses,
-      errorData,
-      plugins: pluginsA,
-    })
+  AnyError.create = create.bind(undefined, {
+    globalOpts: globalOptsA,
+    AnyError,
+    KnownClasses,
+    errorData,
+    plugins: pluginsA,
+  })
   return AnyError
 }
 

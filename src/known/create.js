@@ -9,14 +9,10 @@ import { checkUnknownError } from './unknown.js'
 // Validate, normalize and create each error class.
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes
-export const initKnownClasses = function ({
+export const create = function (
+  { globalOpts, AnyError, KnownClasses, errorData, plugins },
   classesOpts,
-  globalOpts,
-  AnyError,
-  KnownClasses,
-  errorData,
-  plugins,
-}) {
+) {
   validateClassesOpts(classesOpts)
   const GlobalAnyError = createGlobalAnyError(globalOpts, AnyError)
   Object.entries(classesOpts).forEach(([className, classOpts]) => {
