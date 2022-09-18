@@ -60,7 +60,7 @@ type ClassOptions<ParentErrorClass extends ErrorConstructor> = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: ErrorClass<ParentErrorClass, ErrorName>
+  readonly custom?: ParentErrorClass
 }
 
 type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
@@ -70,7 +70,7 @@ type CreateSubclass<ParentErrorClass extends ErrorConstructor> = <
   errorName: ErrorNameArg,
   options?: OptionsArg,
 ) => ErrorClass<
-  OptionsArg['custom'] extends ErrorConstructor
+  OptionsArg['custom'] extends ParentErrorClass
     ? OptionsArg['custom']
     : ParentErrorClass,
   ErrorNameArg
