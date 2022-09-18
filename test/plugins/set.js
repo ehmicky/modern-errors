@@ -8,7 +8,7 @@ import {
 } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { TestError, UnknownError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineSimpleClass()
 
 test('Passes error to plugin.set()', (t) => {
   t.true(new TestError('test').set.error instanceof Error)
@@ -40,17 +40,4 @@ test('plugin.set() is called with no context', (t) => {
 
 test('plugin.set() is passed AnyError', (t) => {
   t.is(new TestError('test').set.AnyError, AnyError)
-})
-
-test('plugin.set() is passed ErrorClasses', (t) => {
-  t.deepEqual(new TestError('test').set.ErrorClasses, {
-    TestError,
-    UnknownError,
-  })
-})
-
-test('plugin.set() cannot modify ErrorClasses', (t) => {
-  const error = new TestError('test')
-  error.set.ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
 })

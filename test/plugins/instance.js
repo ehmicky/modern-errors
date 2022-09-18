@@ -8,7 +8,7 @@ import {
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
-const { TestError, UnknownError, AnyError } = defineSimpleClass()
+const { TestError, AnyError } = defineSimpleClass()
 
 test('plugin.instanceMethods are set on known errors', (t) => {
   t.is(typeof new TestError('message').getInstance, 'function')
@@ -57,18 +57,4 @@ test('plugin.instanceMethods are passed the normalized global options', (t) => {
 
 test('plugin.instanceMethods are passed AnyError', (t) => {
   t.is(new TestError('message').getInstance().AnyError, AnyError)
-})
-
-test('plugin.instanceMethods are passed ErrorClasses', (t) => {
-  t.deepEqual(new TestError('message').getInstance().ErrorClasses, {
-    TestError,
-    UnknownError,
-  })
-})
-
-test('plugin.instanceMethods cannot modify ErrorClasses', (t) => {
-  const error = new TestError('message')
-  // eslint-disable-next-line fp/no-mutation
-  error.getInstance().ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
 })

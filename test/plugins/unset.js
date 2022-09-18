@@ -7,7 +7,7 @@ import {
   defineGlobalOpts,
 } from '../helpers/main.js'
 
-const { TestError, AnyError, UnknownError } = defineSimpleClass()
+const { TestError, AnyError } = defineSimpleClass()
 
 test('Passes error to plugin.unset()', (t) => {
   const cause = new TestError('causeMessage')
@@ -52,19 +52,4 @@ test('plugin.unset() is called with a cause with a known type', (t) => {
 test('plugin.unset() is passed AnyError', (t) => {
   const cause = new TestError('causeMessage')
   t.is(new TestError('test', { cause }).unset.AnyError, AnyError)
-})
-
-test('plugin.unset() is passed ErrorClasses', (t) => {
-  const cause = new TestError('causeMessage')
-  t.deepEqual(new TestError('test', { cause }).unset.ErrorClasses, {
-    TestError,
-    UnknownError,
-  })
-})
-
-test('plugin.unset() cannot modify ErrorClasses', (t) => {
-  const cause = new TestError('causeMessage')
-  const error = new TestError('test', { cause })
-  error.unset.ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
 })
