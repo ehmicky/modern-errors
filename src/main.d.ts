@@ -54,15 +54,15 @@ type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
 
-type CustomErrorClass<
+type ErrorSubclass<
   ErrorNameArg extends ErrorName,
-  CustomOption extends ErrorClass,
+  ParentErrorClass extends ErrorClass,
 > = MaybeIntersect<
   ErrorClass<
-    InstanceType<CustomOption> & { name: ErrorNameArg },
-    ConstructorParameters<CustomOption>
+    InstanceType<ParentErrorClass> & { name: ErrorNameArg },
+    ConstructorParameters<ParentErrorClass>
   >,
-  Omit<CustomOption, keyof AnyErrorClass>
+  Omit<ParentErrorClass, keyof AnyErrorClass>
 >
 
 type CreateSubclass<ParentErrorClass extends ErrorClass> = <
@@ -71,7 +71,7 @@ type CreateSubclass<ParentErrorClass extends ErrorClass> = <
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
-) => CustomErrorClass<
+) => ErrorSubclass<
   ErrorNameArg,
   OptionsArg['custom'] extends ParentErrorClass
     ? OptionsArg['custom']
