@@ -16,7 +16,7 @@ type ClassOptions = {
    *
    * @example
    * ```js
-   * export const InputError = AnyError.create('InputError', {
+   * export const InputError = AnyError.class('InputError', {
    *   custom: class extends AnyError {
    *     constructor(message, options) {
    *       // Modifying `message` or `options` should be done before `super()`
@@ -59,7 +59,7 @@ type DefaultErrorClass<ErrorNameArg extends ErrorName> = {
 }
 
 /**
- * Error class returned by `AnyError.create()`
+ * Error class returned by `AnyError.class()`
  */
 type ErrorClass<
   ErrorNameArg extends ErrorName,
@@ -91,10 +91,10 @@ type AnyErrorClass = {
    *
    * @example
    * ```js
-   * export const InputError = AnyError.create('InputError', options)
+   * export const InputError = AnyError.class('InputError', options)
    * ```
    */
-  create<ErrorNameArg extends ErrorName, OptionsArg extends ClassOptions = {}>(
+  class<ErrorNameArg extends ErrorName, OptionsArg extends ClassOptions = {}>(
     errorName: ErrorNameArg,
     options?: OptionsArg,
   ): ErrorClass<ErrorNameArg, OptionsArg>
@@ -126,10 +126,10 @@ type AnyErrorClass = {
  *  export const AnyError = modernErrors()
  *
  *  // Custom error classes
- *  export const UnknownError = AnyError.create('UnknownError')
- *  export const InputError = AnyError.create('InputError')
- *  export const AuthError = AnyError.create('AuthError')
- *  export const DatabaseError = AnyError.create('DatabaseError')
+ *  export const UnknownError = AnyError.class('UnknownError')
+ *  export const InputError = AnyError.class('InputError')
+ *  export const AuthError = AnyError.class('AuthError')
+ *  export const DatabaseError = AnyError.class('DatabaseError')
  * ```
  */
 export default function modernErrors(): AnyErrorClass

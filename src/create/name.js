@@ -1,7 +1,7 @@
 // Validate error class name
 export const validateClassName = function (className, ErrorClasses) {
   if (!hasUnknownError(className, ErrorClasses)) {
-    throw new TypeError(`The first call to "AnyError.create()" must use "UnknownError" as first argument, not "${className}".
+    throw new TypeError(`The first call to "AnyError.class()" must use "UnknownError" as first argument, not "${className}".
 "UnknownError" is assigned by "AnyError.normalize()" to exceptions with an unknown class.`)
   }
 

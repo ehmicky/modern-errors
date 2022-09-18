@@ -78,11 +78,11 @@ const createErrorClasses = function (
   AnyError,
   { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
 ) {
-  const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
+  const UnknownError = AnyError.class('UnknownError', unknownErrorOpts)
   const ErrorClassesA = Object.fromEntries(
     Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
       errorName,
-      AnyError.create(errorName, classOpts),
+      AnyError.class(errorName, classOpts),
     ]),
   )
   return { UnknownError, ...ErrorClassesA }

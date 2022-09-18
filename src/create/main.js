@@ -10,7 +10,7 @@ import { checkUnknownError } from './unknown.js'
 //  - This makes it clear to users that they can reuse plugin methods
 //  - This also makes it clearer to types, simplifying them
 //  - This removes any need to mutate any `custom` class
-export const create = function (
+export const createClass = function (
   { globalOpts, AnyError, ErrorClasses, plugins },
   className,
   classOpts,

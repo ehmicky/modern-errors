@@ -45,7 +45,7 @@ After:
 <!-- eslint-disable fp/no-this, fp/no-mutation -->
 
 ```js
-export const InputError = AnyError.create('InputError', {
+export const InputError = AnyError.class('InputError', {
   custom: class extends AnyError {
     constructor(message, options = {}) {
       super(message, options)
@@ -68,7 +68,7 @@ Options can now be applied to
 [all errors of a given class](README.md#error-class-options).
 
 ```js
-export const InputError = AnyError.create('InputError', options)
+export const InputError = AnyError.class('InputError', options)
 ```
 
 Or to [individual errors](README.md#error-instance-options).
@@ -84,7 +84,7 @@ throw new InputError('Could not read the file.', options)
 The [main function](README.md#modernerrorsplugins-options) now returns the base
 error class [`AnyError`](README.md#anyerror).
 
-[`AnyError.create(name)`](README.md#anyerrorcreatename-options) must be used to
+[`AnyError.class(name)`](README.md#anyerrorclassname-options) must be used to
 create each error class. The first error class must now be named
 [`UnknownError`](README.md#unknown-errors).
 
@@ -108,10 +108,10 @@ After:
 export const AnyError = modernErrors()
 
 // Custom error classes
-export const UnknownError = AnyError.create('UnknownError')
-export const InputError = AnyError.create('InputError')
-export const AuthError = AnyError.create('AuthError')
-export const DatabaseError = AnyError.create('DatabaseError')
+export const UnknownError = AnyError.class('UnknownError')
+export const InputError = AnyError.class('InputError')
+export const AuthError = AnyError.class('AuthError')
+export const DatabaseError = AnyError.class('DatabaseError')
 ```
 
 ### Error handler

@@ -26,7 +26,7 @@ export const normalizeConstructorArgs = function ({
 
   if (opts.custom !== undefined) {
     throw new TypeError(
-      'Error option "custom" must be passed to "AnyError.create()", not to error constructors.',
+      'Error option "custom" must be passed to "AnyError.class()", not to error constructors.',
     )
   }
 
@@ -37,7 +37,7 @@ export const normalizeConstructorArgs = function ({
 const getUnknownError = function ({ UnknownError }) {
   if (UnknownError === undefined) {
     throw new Error(
-      '"AnyError.create()" must be called before "new AnyError()".',
+      '"AnyError.class()" must be called before "new AnyError()".',
     )
   }
 

@@ -17,7 +17,7 @@ each([null, '', { custom: true }], ({ title }, opts) => {
   })
 })
 
-test('Requires Any.create()', (t) => {
+test('Requires Any.class()', (t) => {
   const TestAnyError = createAnyError()
   t.throws(() => new TestAnyError('test', { cause: '' }))
 })

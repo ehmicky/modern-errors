@@ -48,10 +48,10 @@ import modernErrors from 'modern-errors'
 export const AnyError = modernErrors()
 
 // Custom error classes
-export const UnknownError = AnyError.create('UnknownError')
-export const InputError = AnyError.create('InputError')
-export const AuthError = AnyError.create('AuthError')
-export const DatabaseError = AnyError.create('DatabaseError')
+export const UnknownError = AnyError.class('UnknownError')
+export const InputError = AnyError.class('InputError')
+export const AuthError = AnyError.class('AuthError')
+export const DatabaseError = AnyError.class('DatabaseError')
 ```
 
 Throw/re-throw errors.
@@ -111,7 +111,7 @@ Creates and returns [`AnyError`](#anyerror).
 
 Base error class.
 
-### AnyError.create(name, options?)
+### AnyError.class(name, options?)
 
 `name`: `string`\
 `options`: [`Options?`](#options)\
@@ -154,10 +154,10 @@ export const AnyError = modernErrors()
 
 // Custom error classes
 // The first class must be named "UnknownError"
-export const UnknownError = AnyError.create('UnknownError')
-export const InputError = AnyError.create('InputError')
-export const AuthError = AnyError.create('AuthError')
-export const DatabaseError = AnyError.create('DatabaseError')
+export const UnknownError = AnyError.class('UnknownError')
+export const InputError = AnyError.class('InputError')
+export const AuthError = AnyError.class('AuthError')
+export const DatabaseError = AnyError.class('DatabaseError')
 ```
 
 ### Top-level error handler
@@ -393,8 +393,8 @@ export const main = async function (filePath) {
 ```
 
 This assigns the `UnknownError` class to any error without a _known_ class: the
-ones created by [`AnyError.create()`](#anyerrorcreatename-options). Those
-indicate unexpected exceptions and bugs.
+ones created by [`AnyError.class()`](#anyerrorclassname-options). Those indicate
+unexpected exceptions and bugs.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -432,7 +432,7 @@ additional methods, `constructor` or properties. It must extend from
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this -->
 
 ```js
-export const InputError = AnyError.create('InputError', {
+export const InputError = AnyError.class('InputError', {
   custom: class extends AnyError {
     constructor(message, options) {
       // Modifying `message` or `options` should be done before `super()`
@@ -469,9 +469,9 @@ class SharedError extends AnyError {
   }
 }
 
-export const InputError = AnyError.create('InputError', { custom: SharedError })
+export const InputError = AnyError.class('InputError', { custom: SharedError })
 
-export const AuthError = AnyError.create('AuthError', {
+export const AuthError = AnyError.class('AuthError', {
   custom: class extends SharedError {
     isAuth() {
       return this.message.includes('auth')
@@ -530,11 +530,11 @@ throw new InputError('Could not read the file.', options)
 ### Error class options
 
 Options passed as a second argument to
-[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of that
+[`AnyError.class()`](#anyerrorclassname-options) apply to any error of that
 specific class.
 
 ```js
-export const InputError = AnyError.create('InputError', options)
+export const InputError = AnyError.class('InputError', options)
 ```
 
 ### General options
@@ -597,7 +597,7 @@ console.log(error.isUserError) // true
 Or on [all errors of the same class](#error-class-options).
 
 ```js
-export const InputError = AnyError.create('InputError', {
+export const InputError = AnyError.class('InputError', {
   props: { isUserError: true },
 })
 ```
@@ -645,7 +645,7 @@ error class can use it, it is especially useful with
 [`UnknownError`](#unknown-errors).
 
 ```js
-export const UnknownError = AnyError.create('UnknownError', {
+export const UnknownError = AnyError.class('UnknownError', {
   bugs: 'https://github.com/my-name/my-project/issues',
 })
 

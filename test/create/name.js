@@ -15,12 +15,12 @@ const { DeepCustomError } = defineDeepCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 
 test('Require defining UnknownError', (t) => {
-  const { create } = createAnyError()
-  t.throws(create.bind(undefined, 'InputError'))
+  const TestAnyError = createAnyError()
+  t.throws(TestAnyError.class.bind(undefined, 'InputError'))
 })
 
 test('Validate against duplicate names', (t) => {
-  t.throws(AnyError.create.bind(undefined, 'TestError'))
+  t.throws(AnyError.class.bind(undefined, 'TestError'))
 })
 
 each(
@@ -37,7 +37,7 @@ each(
   ],
   ({ title }, errorName) => {
     test(`Validate invalid error name | ${title}`, (t) => {
-      t.throws(AnyError.create.bind(undefined, errorName))
+      t.throws(AnyError.class.bind(undefined, errorName))
     })
   },
 )

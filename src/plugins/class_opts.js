@@ -16,7 +16,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 
   if (globalOpts.custom !== undefined) {
     throw new TypeError(
-      'Error option "custom" must be passed to "AnyError.create()", not to "modernErrors()".',
+      'Error option "custom" must be passed to "AnyError.class()", not to "modernErrors()".',
     )
   }
 
