@@ -5,31 +5,36 @@ import { defineClassesOpts } from '../helpers/main.js'
 
 each(
   [
-    class extends Error {
-      constructor() {
-        throw new Error('unsafe')
-      }
+    () => new Error('test'),
+    () => {
+      throw new Error('unsafe')
     },
-    class extends Error {
-      constructor(message, { cause = new Error('') } = {}) {
-        super(message, { cause, stack: cause.stack.trim() })
-      }
+    (message, { cause = new Error('') } = {}) => {
+      cause.stack.trim()
     },
-    class extends Error {
-      constructor(message, { cause = {} } = {}) {
-        super(message, { cause, stack: cause.stack })
-      }
-    },
-    class extends Error {
-      constructor() {
-        // eslint-disable-next-line no-constructor-return
-        return new Error('test')
-      }
+    (message, { cause = {} } = {}) => {
+      // eslint-disable-next-line no-unused-expressions
+      cause.stack
     },
   ],
   ({ title }, custom) => {
     test(`Validate UnknownError constructor | ${title}`, (t) => {
-      t.throws(defineClassesOpts.bind(undefined, { UnknownError: { custom } }))
+      t.throws(
+        // eslint-disable-next-line max-nested-callbacks
+        defineClassesOpts.bind(undefined, (AnyError) => ({
+          UnknownError: {
+            custom: class extends AnyError {
+              // eslint-disable-next-line max-nested-callbacks
+              constructor(...args) {
+                const error = custom(...args)
+                super(...args)
+                // eslint-disable-next-line no-constructor-return
+                return error
+              }
+            },
+          },
+        })),
+      )
     })
   },
 )
