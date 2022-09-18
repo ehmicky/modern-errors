@@ -10,13 +10,14 @@ export const addAllInstanceMethods = function ({
   AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, ErrorClasses, errorData, AnyError })
+    addInstanceMethods({ plugin, plugins, ErrorClasses, errorData, AnyError })
   })
 }
 
 const addInstanceMethods = function ({
   plugin,
   plugin: { instanceMethods },
+  plugins,
   ErrorClasses,
   errorData,
   AnyError,
@@ -26,6 +27,7 @@ const addInstanceMethods = function ({
       methodName,
       methodFunc,
       plugin,
+      plugins,
       ErrorClasses,
       errorData,
       AnyError,
@@ -37,10 +39,13 @@ const addInstanceMethod = function ({
   methodName,
   methodFunc,
   plugin,
+  plugins,
   ErrorClasses,
   errorData,
   AnyError,
 }) {
+  validateMethodName(methodName, plugin, plugins)
+
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
     const error = this
@@ -58,4 +63,16 @@ const addInstanceMethod = function ({
     writable: true,
     configurable: true,
   })
+}
+
+const validateMethodName = function (methodName, plugin, plugins) {
+  const duplicatePlugin = plugins.find(
+    (pluginA) => plugin !== pluginA && methodName in plugin.instanceMethods,
+  )
+
+  if (duplicatePlugin !== undefined) {
+    throw new Error(
+      `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "error.${methodName}()"`,
+    )
+  }
 }
