@@ -16,7 +16,7 @@ type GenericErrorClass = ErrorClass<ErrorInstance<ErrorName>>
 /**
  * Class-specific options
  */
-type ClassOptions = {
+type ClassOptions<ParentErrorClass extends GenericErrorClass> = {
   /**
    * Custom class to add any methods, `constructor` or properties.
    * It must `extend` from `AnyError`.
@@ -47,7 +47,7 @@ type ClassOptions = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: AnyErrorClass
+  readonly custom?: ParentErrorClass
 }
 
 type CustomErrorClass<
@@ -63,7 +63,7 @@ type CustomErrorClass<
 
 type CreateSubclass<ParentErrorClass extends GenericErrorClass> = <
   ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions,
+  OptionsArg extends ClassOptions<ParentErrorClass>,
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
