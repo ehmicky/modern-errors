@@ -69,7 +69,10 @@ export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   return { AnyError, ...ErrorClassesB }
 }
 
-const createAnyError = function (globalOpts = {}, plugins = [TEST_PLUGIN]) {
+export const createAnyError = function (
+  globalOpts = {},
+  plugins = [TEST_PLUGIN],
+) {
   return modernErrors(plugins, globalOpts)
 }
 

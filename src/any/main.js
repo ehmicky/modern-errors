@@ -52,7 +52,7 @@ export const createAnyError = function ({
       const isAnyError = new.target === AnyError
       const optsA = normalizeConstructorArgs({
         opts,
-        UnknownError: ErrorClasses.UnknownError.ErrorClass,
+        ErrorClasses,
         AnyError,
         isAnyError,
       })

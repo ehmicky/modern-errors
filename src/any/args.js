@@ -14,7 +14,7 @@ import isPlainObj from 'is-plain-obj'
 //     - Safer against injections
 export const normalizeConstructorArgs = function ({
   opts = {},
-  UnknownError,
+  ErrorClasses,
   AnyError,
   isAnyError,
 }) {
@@ -30,13 +30,18 @@ export const normalizeConstructorArgs = function ({
     )
   }
 
+  const UnknownError = getUnknownError(ErrorClasses)
+  return normalizeCause({ opts, UnknownError, AnyError, isAnyError })
+}
+
+const getUnknownError = function ({ UnknownError }) {
   if (UnknownError === undefined) {
     throw new Error(
-      '"AnyError.create()" must be called before new "AnyError()".',
+      '"AnyError.create()" must be called before "new AnyError()".',
     )
   }
 
-  return normalizeCause({ opts, UnknownError, AnyError, isAnyError })
+  return UnknownError.ErrorClass
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it
