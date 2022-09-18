@@ -33,3 +33,12 @@ test('plugin.staticMethods cannot be called before AnyError.subclass()', (t) => 
   const TestAnyError = createAnyError()
   t.throws(TestAnyError.getProp)
 })
+
+test('plugin.staticMethods cannot be defined twice by different plugins', (t) => {
+  t.throws(
+    defineGlobalOpts.bind(undefined, {}, [
+      { name: 'one', staticMethods: { one() {} } },
+      { name: 'two', staticMethods: { one() {} } },
+    ]),
+  )
+})

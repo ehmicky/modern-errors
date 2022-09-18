@@ -15,13 +15,14 @@ export const addAllStaticMethods = function ({
   AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addStaticMethods({ plugin, globalOpts, ErrorClasses, AnyError })
+    addStaticMethods({ plugin, plugins, globalOpts, ErrorClasses, AnyError })
   })
 }
 
 const addStaticMethods = function ({
   plugin,
   plugin: { staticMethods },
+  plugins,
   globalOpts,
   ErrorClasses,
   AnyError,
@@ -31,6 +32,7 @@ const addStaticMethods = function ({
       methodName,
       methodFunc,
       plugin,
+      plugins,
       globalOpts,
       ErrorClasses,
       AnyError,
@@ -42,10 +44,12 @@ const addStaticMethod = function ({
   methodName,
   methodFunc,
   plugin,
+  plugins,
   globalOpts,
   ErrorClasses,
   AnyError,
 }) {
+  validateMethodName(methodName, plugin, plugins)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   AnyError[methodName] = callStaticMethods.bind(undefined, {
     methodFunc,
@@ -54,6 +58,18 @@ const addStaticMethod = function ({
     ErrorClasses,
     AnyError,
   })
+}
+
+const validateMethodName = function (methodName, plugin, plugins) {
+  const duplicatePlugin = plugins.find(
+    (pluginA) => plugin !== pluginA && methodName in plugin.staticMethods,
+  )
+
+  if (duplicatePlugin !== undefined) {
+    throw new Error(
+      `Plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" are incompatible: they both define "AnyError.${methodName}()"`,
+    )
+  }
 }
 
 const callStaticMethods = function (

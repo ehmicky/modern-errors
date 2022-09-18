@@ -4,33 +4,40 @@ import { each } from 'test-each'
 import { defineGlobalOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-each(
-  [
-    TEST_PLUGIN,
-    [true],
-    ...[undefined, true, '', 'testProp', 'test-prop', 'test_prop', '0test'].map(
-      (name) => [{ ...TEST_PLUGIN, name }],
-    ),
-    ...['instanceMethods', 'staticMethods'].flatMap((propName) =>
-      [true, { getProp: true }, { getProp: undefined }].map((methods) => [
-        { ...TEST_PLUGIN, [propName]: methods },
-      ]),
-    ),
-  ],
-  ({ title }, plugins) => {
-    test(`Should validate plugins | ${title}`, (t) => {
-      t.throws(defineGlobalOpts.bind(undefined, {}, plugins))
-    })
-  },
-)
+test('Should allow valid plugins', (t) => {
+  t.notThrows(defineGlobalOpts.bind(undefined, {}, [TEST_PLUGIN]))
+})
 
 test('Should allow passing no plugins', (t) => {
   t.notThrows(defineGlobalOpts.bind(undefined, {}, []))
 })
 
-test('Should allow valid plugins', (t) => {
-  t.notThrows(defineGlobalOpts.bind(undefined, {}, [TEST_PLUGIN]))
+each([TEST_PLUGIN, [true]], ({ title }, plugins) => {
+  test(`Should validate plugins | ${title}`, (t) => {
+    t.throws(defineGlobalOpts.bind(undefined, {}, plugins))
+  })
 })
+
+each(
+  [true, { getProp: true }, { getProp: undefined }],
+  ({ title }, methods) => {
+    test(`Should validate plugin.instanceMethods | ${title}`, (t) => {
+      t.throws(
+        defineGlobalOpts.bind(undefined, {}, [
+          { ...TEST_PLUGIN, instanceMethods: methods },
+        ]),
+      )
+    })
+
+    test(`Should validate plugin.staticMethods | ${title}`, (t) => {
+      t.throws(
+        defineGlobalOpts.bind(undefined, {}, [
+          { ...TEST_PLUGIN, staticMethods: methods },
+        ]),
+      )
+    })
+  },
+)
 
 each(
   [
