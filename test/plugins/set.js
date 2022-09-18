@@ -42,15 +42,15 @@ test('plugin.set() is passed AnyError', (t) => {
   t.is(new TestError('test').set.AnyError, AnyError)
 })
 
-test('plugin.set() is passed KnownClasses', (t) => {
-  t.deepEqual(new TestError('test').set.KnownClasses, {
+test('plugin.set() is passed ErrorClasses', (t) => {
+  t.deepEqual(new TestError('test').set.ErrorClasses, {
     TestError,
     UnknownError,
   })
 })
 
-test('plugin.set() cannot modify KnownClasses', (t) => {
+test('plugin.set() cannot modify ErrorClasses', (t) => {
   const error = new TestError('test')
-  error.set.KnownClasses.prop = true
-  t.false('prop' in error.getInstance().KnownClasses)
+  error.set.ErrorClasses.prop = true
+  t.false('prop' in error.getInstance().ErrorClasses)
 })

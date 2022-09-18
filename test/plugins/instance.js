@@ -59,16 +59,16 @@ test('plugin.instanceMethods are passed AnyError', (t) => {
   t.is(new TestError('message').getInstance().AnyError, AnyError)
 })
 
-test('plugin.instanceMethods are passed KnownClasses', (t) => {
-  t.deepEqual(new TestError('message').getInstance().KnownClasses, {
+test('plugin.instanceMethods are passed ErrorClasses', (t) => {
+  t.deepEqual(new TestError('message').getInstance().ErrorClasses, {
     TestError,
     UnknownError,
   })
 })
 
-test('plugin.instanceMethods cannot modify KnownClasses', (t) => {
+test('plugin.instanceMethods cannot modify ErrorClasses', (t) => {
   const error = new TestError('message')
   // eslint-disable-next-line fp/no-mutation
-  error.getInstance().KnownClasses.prop = true
-  t.false('prop' in error.getInstance().KnownClasses)
+  error.getInstance().ErrorClasses.prop = true
+  t.false('prop' in error.getInstance().ErrorClasses)
 })

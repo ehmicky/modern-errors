@@ -8,11 +8,11 @@ import { normalizePluginOpts } from './normalize.js'
 export const addAllStaticMethods = function ({
   plugins,
   globalOpts,
-  KnownClasses,
+  ErrorClasses,
   AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addStaticMethods({ plugin, globalOpts, KnownClasses, AnyError })
+    addStaticMethods({ plugin, globalOpts, ErrorClasses, AnyError })
   })
 }
 
@@ -20,7 +20,7 @@ const addStaticMethods = function ({
   plugin,
   plugin: { staticMethods },
   globalOpts,
-  KnownClasses,
+  ErrorClasses,
   AnyError,
 }) {
   if (staticMethods === undefined) {
@@ -33,7 +33,7 @@ const addStaticMethods = function ({
       methodFunc,
       plugin,
       globalOpts,
-      KnownClasses,
+      ErrorClasses,
       AnyError,
     })
   })
@@ -44,7 +44,7 @@ const addStaticMethod = function ({
   methodFunc,
   plugin,
   globalOpts,
-  KnownClasses,
+  ErrorClasses,
   AnyError,
 }) {
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
@@ -52,18 +52,18 @@ const addStaticMethod = function ({
     methodFunc,
     plugin,
     globalOpts,
-    KnownClasses,
+    ErrorClasses,
     AnyError,
   })
 }
 
 const callStaticMethods = function (
-  { methodFunc, plugin, globalOpts, KnownClasses, AnyError },
+  { methodFunc, plugin, globalOpts, ErrorClasses, AnyError },
   ...args
 ) {
   const options = normalizePluginOpts(globalOpts, plugin)
   return methodFunc(
-    { options, AnyError, KnownClasses: { ...KnownClasses } },
+    { options, AnyError, ErrorClasses: { ...ErrorClasses } },
     ...args,
   )
 }

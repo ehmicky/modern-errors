@@ -20,14 +20,14 @@ test('plugin.staticMethods is passed AnyError', (t) => {
   t.is(AnyError.getProp().AnyError, AnyError)
 })
 
-test('plugin.staticMethods is passed KnownClasses', (t) => {
-  t.deepEqual(AnyError.getProp().KnownClasses, { TestError, UnknownError })
+test('plugin.staticMethods is passed ErrorClasses', (t) => {
+  t.deepEqual(AnyError.getProp().ErrorClasses, { TestError, UnknownError })
 })
 
-test('plugin.staticMethods cannot modify KnownClasses', (t) => {
+test('plugin.staticMethods cannot modify ErrorClasses', (t) => {
   // eslint-disable-next-line fp/no-mutation
-  AnyError.getProp().KnownClasses.prop = true
-  t.false('prop' in AnyError.getProp().KnownClasses)
+  AnyError.getProp().ErrorClasses.prop = true
+  t.false('prop' in AnyError.getProp().ErrorClasses)
 })
 
 test('plugin.staticMethods are passed the normalized global options', (t) => {

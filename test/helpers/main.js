@@ -29,13 +29,13 @@ export const defineClassesOpts = function (
   const { UnknownError: unknownErrorOpts = {}, ...ErrorClassesA } =
     typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
   const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
-  const KnownClasses = Object.fromEntries(
+  const ErrorClassesB = Object.fromEntries(
     Object.entries(ErrorClassesA).map(([errorName, classOpts]) => [
       errorName,
       AnyError.create(errorName, classOpts),
     ]),
   )
-  return { AnyError, UnknownError, ...KnownClasses }
+  return { AnyError, UnknownError, ...ErrorClassesB }
 }
 
 export const TEST_PLUGIN = {

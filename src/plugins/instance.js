@@ -4,19 +4,19 @@ import { getErrorOpts } from './normalize.js'
 // `AnyError.prototype.*`.
 export const addAllInstanceMethods = function ({
   plugins,
-  KnownClasses,
+  ErrorClasses,
   errorData,
   AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, KnownClasses, errorData, AnyError })
+    addInstanceMethods({ plugin, ErrorClasses, errorData, AnyError })
   })
 }
 
 const addInstanceMethods = function ({
   plugin,
   plugin: { instanceMethods },
-  KnownClasses,
+  ErrorClasses,
   errorData,
   AnyError,
 }) {
@@ -29,7 +29,7 @@ const addInstanceMethods = function ({
       methodName,
       methodFunc,
       plugin,
-      KnownClasses,
+      ErrorClasses,
       errorData,
       AnyError,
     })
@@ -40,7 +40,7 @@ const addInstanceMethod = function ({
   methodName,
   methodFunc,
   plugin,
-  KnownClasses,
+  ErrorClasses,
   errorData,
   AnyError,
 }) {
@@ -49,7 +49,7 @@ const addInstanceMethod = function ({
     const error = this
     const options = getErrorOpts(error, errorData, plugin)
     return methodFunc(
-      { error, options, AnyError, KnownClasses: { ...KnownClasses } },
+      { error, options, AnyError, ErrorClasses: { ...ErrorClasses } },
       ...args,
     )
   }

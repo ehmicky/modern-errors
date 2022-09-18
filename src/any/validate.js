@@ -11,8 +11,8 @@
 //    `AnyError.create()`
 //  - A class was extended from a known class, without being passed itself to
 //    `AnyError.create()`
-export const validateClass = function (ChildError, KnownClasses, isAnyError) {
-  if (!Object.values(KnownClasses).includes(ChildError) && !isAnyError) {
+export const validateClass = function (ChildError, ErrorClasses, isAnyError) {
+  if (!Object.values(ErrorClasses).includes(ChildError) && !isAnyError) {
     throw new Error(
       `"${ChildError.name}" must be passed as a "custom" option with "AnyError.create()" before being instantiated.`,
     )

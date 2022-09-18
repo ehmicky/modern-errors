@@ -37,7 +37,7 @@ export const CoreError = errorCustomClass('CoreError')
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
 export const createAnyError = function ({
-  KnownClasses,
+  ErrorClasses,
   errorData,
   plugins,
   globalOpts,
@@ -48,7 +48,7 @@ export const createAnyError = function ({
       const isAnyError = new.target === AnyError
       const optsA = normalizeConstructorArgs({
         opts,
-        UnknownError: KnownClasses.UnknownError,
+        UnknownError: ErrorClasses.UnknownError,
         AnyError,
         isAnyError,
       })
@@ -57,7 +57,7 @@ export const createAnyError = function ({
 
       const { error, cause } = mergeCause(this, isAnyError)
       const ChildError = error.constructor
-      validateClass(ChildError, KnownClasses, isAnyError)
+      validateClass(ChildError, ErrorClasses, isAnyError)
       computePluginsOpts({
         error,
         ChildError,
@@ -69,7 +69,7 @@ export const createAnyError = function ({
       applyPluginsSet({
         error,
         AnyError,
-        KnownClasses,
+        ErrorClasses,
         errorData,
         cause,
         plugins,
@@ -83,7 +83,7 @@ export const createAnyError = function ({
     static create = create.bind(undefined, {
       globalOpts,
       AnyError,
-      KnownClasses,
+      ErrorClasses,
       errorData,
       plugins,
     })

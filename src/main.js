@@ -8,24 +8,24 @@ import { normalizePlugins } from './plugins/validate.js'
 export default function modernErrors(plugins, globalOpts) {
   const pluginsA = normalizePlugins(plugins)
   const globalOptsA = getGlobalOpts(pluginsA, globalOpts)
-  const KnownClasses = {}
+  const ErrorClasses = {}
   const errorData = new WeakMap()
   const AnyError = createAnyError({
-    KnownClasses,
+    ErrorClasses,
     errorData,
     plugins: pluginsA,
     globalOpts: globalOptsA,
   })
   addAllInstanceMethods({
     plugins: pluginsA,
-    KnownClasses,
+    ErrorClasses,
     errorData,
     AnyError,
   })
   addAllStaticMethods({
     plugins: pluginsA,
     globalOpts: globalOptsA,
-    KnownClasses,
+    ErrorClasses,
     AnyError,
   })
   return AnyError

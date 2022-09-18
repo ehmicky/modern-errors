@@ -54,17 +54,17 @@ test('plugin.unset() is passed AnyError', (t) => {
   t.is(new TestError('test', { cause }).unset.AnyError, AnyError)
 })
 
-test('plugin.unset() is passed KnownClasses', (t) => {
+test('plugin.unset() is passed ErrorClasses', (t) => {
   const cause = new TestError('causeMessage')
-  t.deepEqual(new TestError('test', { cause }).unset.KnownClasses, {
+  t.deepEqual(new TestError('test', { cause }).unset.ErrorClasses, {
     TestError,
     UnknownError,
   })
 })
 
-test('plugin.unset() cannot modify KnownClasses', (t) => {
+test('plugin.unset() cannot modify ErrorClasses', (t) => {
   const cause = new TestError('causeMessage')
   const error = new TestError('test', { cause })
-  error.unset.KnownClasses.prop = true
-  t.false('prop' in error.getInstance().KnownClasses)
+  error.unset.ErrorClasses.prop = true
+  t.false('prop' in error.getInstance().ErrorClasses)
 })

@@ -4,13 +4,13 @@ import { getErrorOpts } from './normalize.js'
 export const applyPluginsSet = function ({
   error,
   AnyError,
-  KnownClasses,
+  ErrorClasses,
   errorData,
   cause,
   plugins,
 }) {
   plugins.forEach((plugin) => {
-    applyPluginSet({ error, AnyError, KnownClasses, errorData, cause, plugin })
+    applyPluginSet({ error, AnyError, ErrorClasses, errorData, cause, plugin })
   })
 }
 
@@ -41,7 +41,7 @@ export const applyPluginsSet = function ({
 const applyPluginSet = function ({
   error,
   AnyError,
-  KnownClasses,
+  ErrorClasses,
   errorData,
   cause,
   plugin,
@@ -56,7 +56,7 @@ const applyPluginSet = function ({
       error,
       options: causeOpts,
       AnyError,
-      KnownClasses: { ...KnownClasses },
+      ErrorClasses: { ...ErrorClasses },
     })
   }
 
@@ -65,6 +65,6 @@ const applyPluginSet = function ({
     error,
     options: pluginOpts,
     AnyError,
-    KnownClasses: { ...KnownClasses },
+    ErrorClasses: { ...ErrorClasses },
   })
 }
