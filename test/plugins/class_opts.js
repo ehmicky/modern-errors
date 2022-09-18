@@ -7,11 +7,15 @@ import {
   defineClassOpts,
 } from '../helpers/main.js'
 
-test('Validate invalid class options', (t) => {
-  t.throws(defineClassOpts.bind(undefined, true))
+test('Cannot pass global "custom"', (t) => {
+  t.throws(defineGlobalOpts.bind(undefined, { custom: true }))
 })
 
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
+  test(`Validate invalid global and class options | ${title}`, (t) => {
+    t.throws(defineOpts.bind(undefined, true))
+  })
+
   test(`Can pass global and class options | ${title}`, (t) => {
     const { InputError } = defineOpts({ prop: true })
     t.true(new InputError('test').set.options.prop)
