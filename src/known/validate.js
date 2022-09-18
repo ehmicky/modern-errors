@@ -1,16 +1,36 @@
-import { CoreError } from '../any/main.js'
-
 // Validate a custom error class
-export const validateCustomClass = function (custom, propName) {
+export const validateCustomClass = function (custom, AnyError, propName) {
   if (typeof custom !== 'function') {
     throw new TypeError(
       `The first argument's "${propName}.custom" property must be a class: ${custom}`,
     )
   }
 
-  validateParent(custom, propName)
+  validateClass(custom, AnyError, propName)
+  validateParent(custom, AnyError, propName)
   validatePrototype(custom, propName)
 }
+
+const validateClass = function (custom, AnyError, propName) {
+  if (custom === AnyError) {
+    throw new TypeError(`The "${propName}.custom" class must not be AnyError.`)
+  }
+
+  if (FORBIDDEN_ERROR_CLASSES.has(custom)) {
+    throw new TypeError(
+      `The "${propName}.custom" class must not be ${custom.name}.`,
+    )
+  }
+}
+
+const FORBIDDEN_ERROR_CLASSES = new Set([
+  ReferenceError,
+  TypeError,
+  SyntaxError,
+  RangeError,
+  URIError,
+  EvalError,
+])
 
 // We do not allow the custom class to extend from `Error` indirectly since:
 //  - Composition can usually be used instead of inheritance
@@ -18,16 +38,10 @@ export const validateCustomClass = function (custom, propName) {
 //  - This removes any complexity due to two custom classes sharing the same
 //    parent
 //  - User might not expect parent classes to be mutated
-const validateParent = function (custom, propName) {
-  if (FORBIDDEN_ERROR_CLASSES.has(custom)) {
-    throw new TypeError(
-      `The "${propName}.custom" class must not be ${custom.name}.`,
-    )
-  }
-
+const validateParent = function (custom, AnyError, propName) {
   const ParentClass = Object.getPrototypeOf(custom)
 
-  if (isPassedTwice(ParentClass)) {
+  if (isPassedTwice(ParentClass, AnyError)) {
     throw new TypeError(
       `The "${propName}.custom" class must not be passed to modernErrors() twice.`,
     )
@@ -40,20 +54,11 @@ const validateParent = function (custom, propName) {
   }
 }
 
-const FORBIDDEN_ERROR_CLASSES = new Set([
-  CoreError,
-  ReferenceError,
-  TypeError,
-  SyntaxError,
-  RangeError,
-  URIError,
-  EvalError,
-])
-
-const isPassedTwice = function (ParentClass) {
+const isPassedTwice = function (ParentClass, AnyError) {
   return (
-    ParentClass === CoreError ||
-    (ParentClass !== null && isPassedTwice(Object.getPrototypeOf(ParentClass)))
+    ParentClass === AnyError ||
+    (ParentClass !== null &&
+      isPassedTwice(Object.getPrototypeOf(ParentClass), AnyError))
   )
 }
 

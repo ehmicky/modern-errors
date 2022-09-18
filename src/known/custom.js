@@ -8,17 +8,32 @@ export const createGlobalAnyError = function ({ custom }, AnyError) {
     return AnyError
   }
 
-  const GlobalAnyError = getCustomClass(custom, AnyError, 'AnyError')
+  const GlobalAnyError = getCustomClass({
+    custom,
+    ParentAnyError: AnyError,
+    AnyError,
+    propName: 'AnyError',
+  })
   setErrorName(GlobalAnyError, 'GlobalAnyError')
   return GlobalAnyError
 }
 
 // `*Error.custom` can be used to customize a specific error class
-export const getErrorClass = function (custom, GlobalAnyError, className) {
+export const getErrorClass = function ({
+  custom,
+  AnyError,
+  GlobalAnyError,
+  className,
+}) {
   const ErrorClass =
     custom === undefined
       ? newErrorClass(GlobalAnyError)
-      : getCustomClass(custom, GlobalAnyError, className)
+      : getCustomClass({
+          custom,
+          ParentAnyError: GlobalAnyError,
+          AnyError,
+          propName: className,
+        })
   setErrorName(ErrorClass, className)
   return ErrorClass
 }
@@ -27,8 +42,13 @@ const newErrorClass = function (GlobalAnyError) {
   return class extends GlobalAnyError {}
 }
 
-const getCustomClass = function (custom, ParentAnyError, propName) {
-  validateCustomClass(custom, propName)
+const getCustomClass = function ({
+  custom,
+  ParentAnyError,
+  AnyError,
+  propName,
+}) {
+  validateCustomClass(custom, AnyError, propName)
   setParentError(custom, ParentAnyError)
   return custom
 }

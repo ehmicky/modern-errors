@@ -20,6 +20,7 @@ export const create = function (
       className,
       classOpts,
       GlobalAnyError,
+      AnyError,
       KnownClasses,
       errorData,
       plugins,
@@ -33,6 +34,7 @@ const initKnownClass = function ({
   className,
   classOpts,
   GlobalAnyError,
+  AnyError,
   KnownClasses,
   errorData,
   plugins,
@@ -45,7 +47,12 @@ const initKnownClass = function ({
   }
 
   const { custom, ...classOptsA } = classOpts
-  const ErrorClass = getErrorClass(custom, GlobalAnyError, className)
+  const ErrorClass = getErrorClass({
+    custom,
+    AnyError,
+    GlobalAnyError,
+    className,
+  })
   setClassOpts({
     ErrorClass,
     globalOpts,
