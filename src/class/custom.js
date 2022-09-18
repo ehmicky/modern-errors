@@ -10,37 +10,61 @@ import { setInheritedMethods } from './inherited.js'
 //  - Creating several classes with the same `custom` option
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes.
+// We allow `ErrorClass.class()` to create subclasses.
 export const getErrorClass = function ({
+  ParentError,
   AnyError,
   className,
-  custom = AnyError,
+  custom,
   plugins,
 }) {
-  validateCustomClass(custom, AnyError)
-  const ErrorClass = class extends custom {}
+  const customA = validateCustomClass(custom, ParentError)
+  const ErrorClass = class extends customA {}
   setErrorName(ErrorClass, className)
-  setInheritedMethods({ ErrorClass, custom, plugins, className, AnyError })
+  setInheritedMethods({
+    ErrorClass,
+    custom: customA,
+    plugins,
+    className,
+    AnyError,
+  })
   return ErrorClass
 }
 
-const validateCustomClass = function (custom, AnyError) {
+const validateCustomClass = function (custom, ParentError) {
+  if (custom === undefined) {
+    return ParentError
+  }
+
   if (typeof custom !== 'function') {
     throw new TypeError(`The "custom" property must be a class: ${custom}`)
   }
 
-  if (!isAnyErrorChild(custom, AnyError)) {
-    throw new TypeError('The "custom" class must extend from AnyError.')
-  }
-
+  validateParent(custom, ParentError)
   validatePrototype(custom)
+  return custom
 }
 
-const isAnyErrorChild = function (ErrorClass, AnyError) {
-  return (
-    ErrorClass === AnyError ||
-    (ErrorClass !== null &&
-      isAnyErrorChild(Object.getPrototypeOf(ErrorClass), AnyError))
-  )
+// We do not allow extending from `ParentError` indirectly:
+//  - This promotes using subclassing through `ErrorClass.class()`, since it
+//    reduces the risk of user instantiating unregistered class
+//  - This promotes `ErrorClass.class()` as a pattern for subclassing, to
+//    reduce the risk of directly extending a registered class without
+//    registering the subclass
+// We do not allow passing `ParentError` without extending from it, since
+// `undefined` can be used for it instead.
+const validateParent = function (custom, ParentError) {
+  if (custom === ParentError) {
+    throw new TypeError(
+      `The "custom" class must extend from ${ParentError.name}, but not be ${ParentError.name} itself.`,
+    )
+  }
+
+  if (Object.getPrototypeOf(custom) !== ParentError) {
+    throw new TypeError(
+      `The "custom" class must extend directly from ${ParentError.name}.`,
+    )
+  }
 }
 
 const validatePrototype = function (custom) {

@@ -84,6 +84,7 @@ export const createAnyError = function ({
 
     static class = createClass.bind(undefined, {
       globalOpts,
+      ParentError: AnyError,
       AnyError,
       ErrorClasses,
       plugins,

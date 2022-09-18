@@ -26,7 +26,7 @@
 // For the reasons above, we throw when calling `ErrorClass.*` instead of
 // `AnyError.*`
 // We also do not allow `custom` classes to override `AnyError.*` since:
-//  - Those have core meaning (`AnyError.class()`)
+//  - Those have core meaning (`*Error.class()`)
 //  - Or might have in the future
 export const setInheritedMethods = function ({
   ErrorClass,

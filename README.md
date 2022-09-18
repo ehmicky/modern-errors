@@ -115,7 +115,7 @@ Base error class.
 
 `name`: `string`\
 `options`: [`Options?`](#options)\
-_Return value_: `typeof AnyError`
+_Return value_: `class extends AnyError {}`
 
 Creates and returns an error class. One of them must be named
 [`UnknownError`](#unknown-errors).
@@ -132,8 +132,7 @@ class to [_unknown_ errors](#unknown-errors). This should
 
 ### custom
 
-_Type_: `class extends AnyError {}`\
-_Default_: `AnyError`
+_Type_: `class extends AnyError {}`
 
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
 It must `extend` from [`AnyError`](#anyerror).
