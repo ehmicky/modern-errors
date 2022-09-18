@@ -14,7 +14,7 @@ declare class CustomError<
 }
 
 /**
- * Base class of the `ErrorClasses` passed to `modernErrors()`.
+ * Base error class.
  *
  * @example
  * ```js
@@ -52,40 +52,28 @@ export declare class AnyError<
  */
 type ClassOptions = {
   /**
-   * [Custom class](#custom-logic) to add any methods, `constructor` or
-   * properties.
-   * It must `extend` from
-   * [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error).
+   * Custom class to add any methods, `constructor` or properties.
+   * It must `extend` from `AnyError`.
    *
    * @example
    * ```js
-   * const { InputError, UnknownError, AnyError } = modernErrors({
-   *   // `*.custom` applies to a single class
-   *   InputError: {
-   *     custom: class extends Error {
-   *       constructor(message, options) {
-   *         // Modifying `message` or `options` should be done before `super()`
-   *         message += message.endsWith('.') ? '' : '.'
+   * export const InputError = AnyError.create('InputError', {
+   *   custom: class extends AnyError {
+   *     constructor(message, options) {
+   *       // Modifying `message` or `options` should be done before `super()`
+   *       message += message.endsWith('.') ? '' : '.'
    *
-   *         // `super()` should be called with both arguments
-   *         super(message, options)
+   *       // `super()` should be called with both arguments
+   *       super(message, options)
    *
-   *         // `name` is automatically added, so this is not necessary
-   *         // this.name = 'InputError'
-   *       }
-   *     },
+   *       // `name` is automatically added, so this is not necessary
+   *       // this.name = 'InputError'
+   *     }
+   *
+   *     isUserInput() {
+   *       return this.message.includes('user')
+   *     }
    *   },
-   *
-   *   // `AnyError.custom` applies to all classes
-   *   AnyError: {
-   *     custom: class extends Error {
-   *       isUserInput() {
-   *         return this.message.includes('user')
-   *       }
-   *     },
-   *   },
-   *
-   *   UnknownError: {},
    * })
    *
    * const error = new InputError('Wrong user name')
@@ -108,7 +96,7 @@ type Definitions = {
 }
 
 /**
- * Error class returned by `modernErrors()`
+ * Error class returned by `AnyError.create()`
  */
 type ReturnErrorClass<
   DefinitionsArg extends Definitions,
@@ -128,8 +116,7 @@ type ReturnErrorClasses<DefinitionsArg extends Definitions> = {
 }
 
 /**
- * Creates and returns error classes.
- * Also returns their base class `AnyError`.
+ * Creates and returns `AnyError`.
  *
  * @example
  * ```js
