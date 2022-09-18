@@ -20,12 +20,8 @@ export const definePlugins = function (plugins) {
   return defineClassesOpts({}, {}, plugins)
 }
 
-export const defineClassesOpts = function (
-  ErrorClasses,
-  globalOpts = {},
-  plugins = [TEST_PLUGIN],
-) {
-  const AnyError = modernErrors(plugins, globalOpts)
+export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
+  const AnyError = createAnyError(globalOpts, plugins)
   const { UnknownError: unknownErrorOpts = {}, ...ErrorClassesA } =
     typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
   const UnknownError = AnyError.create('UnknownError', unknownErrorOpts)
@@ -36,6 +32,13 @@ export const defineClassesOpts = function (
     ]),
   )
   return { AnyError, UnknownError, ...ErrorClassesB }
+}
+
+export const createAnyError = function (
+  globalOpts = {},
+  plugins = [TEST_PLUGIN],
+) {
+  return modernErrors(plugins, globalOpts)
 }
 
 export const TEST_PLUGIN = {

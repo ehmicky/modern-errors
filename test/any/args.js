@@ -10,7 +10,7 @@ test('Allows empty options', (t) => {
 })
 
 // eslint-disable-next-line unicorn/no-null
-each([null, '', { custom: class extends Error {} }], ({ title }, opts) => {
+each([null, '', { custom: true }], ({ title }, opts) => {
   test(`Validate against invalid options | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() => new TestError('test', opts))
