@@ -65,8 +65,8 @@ if (wideError instanceof SSError) {
 }
 
 class BCError extends AnyError {
-  constructor(message: string | boolean, options?: object, other?: string) {
-    super(`${message}${other}`, options)
+  constructor(message: string | boolean, options?: object) {
+    super(String(message), options)
   }
   prop = true as const
   static staticProp = true as const
