@@ -41,7 +41,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
 
 // Validate and compute class options when `modernErrors()` is called so this
 // throws at load time instead of at runtime.
-// Merging priority is: global < class < instance options.
+// Merging priority is: global < parent class < child class < instance options.
 export const getClassOpts = function ({
   plugins,
   parentOpts,
