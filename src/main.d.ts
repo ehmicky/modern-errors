@@ -1,11 +1,12 @@
 import { ErrorName } from 'error-custom-class'
 
-type ErrorInstance<ErrorNameArg extends ErrorName = ErrorName> = Error & {
-  name: ErrorNameArg
-}
+type ErrorInstance<
+  ErrorNameArg extends ErrorName = ErrorName,
+  ErrorArg extends Error = Error,
+> = ErrorArg & { name: ErrorNameArg }
 
 type ErrorClass<
-  ErrorInstanceArg extends ErrorInstance<ErrorName> = ErrorInstance<ErrorName>,
+  ErrorInstanceArg extends ErrorInstance = ErrorInstance,
   ErrorConstructorArgs extends any[] = any[],
 > = {
   new (...args: ErrorConstructorArgs): ErrorInstanceArg
@@ -59,7 +60,7 @@ type ErrorSubclass<
   ParentErrorClass extends ErrorClass,
 > = MaybeIntersect<
   ErrorClass<
-    InstanceType<ParentErrorClass> & { name: ErrorNameArg },
+    ErrorInstance<ErrorNameArg, InstanceType<ParentErrorClass>>,
     ConstructorParameters<ParentErrorClass>
   >,
   Omit<ParentErrorClass, keyof AnyErrorClass>
