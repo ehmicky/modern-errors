@@ -1,5 +1,4 @@
 import test from 'ava'
-import { setErrorName } from 'error-class-utils'
 import { each } from 'test-each'
 
 import { defineSimpleClass } from '../helpers/main.js'
@@ -38,8 +37,6 @@ test('AnyError.normalize() uses UnknownError if unknown', (t) => {
 })
 
 test('AnyError.normalize() prevents naming collisions', (t) => {
-  // eslint-disable-next-line no-shadow
-  class TestError extends Error {}
-  setErrorName(TestError, 'TestError')
-  t.true(AnyError.normalize(new TestError('test')) instanceof UnknownError)
+  const { TestError: OtherTestError } = defineSimpleClass()
+  t.true(AnyError.normalize(new OtherTestError('test')) instanceof UnknownError)
 })
