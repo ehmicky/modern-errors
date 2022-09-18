@@ -10,7 +10,7 @@ import {
 
 const { TestError, AnyError } = defineClassOpts()
 const { SimpleCustomError, AnyError: CustomAnyError } = defineSimpleCustom()
-const { DeepCustomError, SimpleCustomError: DeepCustomParentError } =
+const { TestError: DeepCustomError, SimpleCustomError: DeepCustomParentError } =
   defineDeepCustom()
 
 each([AnyError, TestError], ({ title }, ParentError) => {

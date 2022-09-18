@@ -9,7 +9,7 @@ import {
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineClassOpts()
-const { DeepCustomError } = defineDeepCustom()
+const { TestError: DeepCustomError } = defineDeepCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 
 test('Validate against duplicate names', (t) => {

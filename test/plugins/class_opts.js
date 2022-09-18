@@ -5,6 +5,7 @@ import {
   createAnyError,
   defineGlobalOpts,
   defineClassOpts,
+  defineDeepCustom,
 } from '../helpers/main.js'
 
 test('Cannot pass global "custom"', (t) => {
@@ -30,9 +31,11 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('Class options have priority over global options', (t) => {
-  const { TestError } = defineClassOpts({ prop: true }, { prop: false })
-  t.true(new TestError('test').set.options.prop)
+each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {
+  test(`Class options have priority over global options | ${title}`, (t) => {
+    const { TestError } = defineOpts({ prop: true }, { prop: false })
+    t.true(new TestError('test').set.options.prop)
+  })
 })
 
 test('undefined class options are ignored over global ones', (t) => {
