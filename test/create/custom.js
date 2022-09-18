@@ -25,6 +25,11 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
   test(`Parent class is custom class when passed | ${title}`, (t) => {
     t.is(Object.getPrototypeOf(ErrorClass).name, ErrorClass.name)
   })
+
+  test(`Can define custom classes| ${title}`, (t) => {
+    t.true(ErrorClass.staticProp)
+    t.true(new ErrorClass('test').prop)
+  })
 })
 
 class NullClass {}
@@ -81,13 +86,6 @@ test('Validate against invalid constructor', (t) => {
       return { InputError: { custom } }
     }),
   )
-})
-
-each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
-  test(`Can define custom classes| ${title}`, (t) => {
-    t.true(ErrorClass.staticProp)
-    t.true(new ErrorClass('test').prop)
-  })
 })
 
 each(
