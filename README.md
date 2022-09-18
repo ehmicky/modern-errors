@@ -640,23 +640,17 @@ cliMain()
 
 _Plugin_: [`modern-errors-bugs`](https://github.com/ehmicky/modern-errors-bugs)
 
-If the `bugs` option is defined, errors will include it in their message.
-
-```js
-throw new InputError('Could not read the file.', {
-  bugs: 'https://github.com/my-name/my-project/issues',
-})
-// InputError: Could not read the file.
-// Please report this bug at: https://github.com/my-name/my-project/issues
-```
-
-Although any error class can use it, it is especially useful with
-[_unknown_ errors](#unknown-errors).
+The `bugs` option includes a bug reports URL in error messages. Although any
+error class can use it, it is especially useful with
+[`UnknownError`](#unknown-errors).
 
 ```js
 export const UnknownError = AnyError.create('UnknownError', {
   bugs: 'https://github.com/my-name/my-project/issues',
 })
+
+// UnknownError: Cannot read properties of null (reading 'trim')
+// Please report this bug at: https://github.com/my-name/my-project/issues
 ```
 
 ### Serialization/parsing
