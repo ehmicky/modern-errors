@@ -25,6 +25,22 @@ each([AnyError, TestError], ({ title }, ParentError) => {
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() => ParentError.class('SelfError', { custom: ParentError }))
   })
+
+  test(`Subclasses must not extend from their parent indirectly | ${title}`, (t) => {
+    const IndirectError = ParentError.class(`Sub${ParentError.name}`)
+    // eslint-disable-next-line max-nested-callbacks
+    t.throws(() =>
+      ParentError.class('SubError', { custom: class extends IndirectError {} }),
+    )
+  })
+
+  test(`Subclasses must not extend from siblings | ${title}`, (t) => {
+    const SiblingError = ParentError.class(`Sibling${ParentError.name}`)
+    // eslint-disable-next-line max-nested-callbacks
+    t.throws(() =>
+      SiblingError.class('SubError', { custom: class extends TestError {} }),
+    )
+  })
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
@@ -36,20 +52,6 @@ each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
 
 test('Parent class is custom class when passed', (t) => {
   t.is(Object.getPrototypeOf(SimpleCustomError).name, SimpleCustomError.name)
-})
-
-test('Subclasses must not extend from siblings', (t) => {
-  const SiblingError = AnyError.class('SiblingError')
-  t.throws(() =>
-    SiblingError.class('SubError', { custom: class extends TestError {} }),
-  )
-})
-
-test('Subclasses must not extend from their parent indirectly', (t) => {
-  const SubTestError = TestError.class('SubTestError')
-  t.throws(() =>
-    TestError.class('SubError', { custom: class extends SubTestError {} }),
-  )
 })
 
 class NullClass {}
