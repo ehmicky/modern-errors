@@ -101,11 +101,8 @@ test('"custom" option is not modified', (t) => {
 
 test('"custom" option can be shared', (t) => {
   const { TwoError } = defineClassesOpts((TestAnyError) => {
-    class ParentClass extends TestAnyError {}
-    return {
-      OneError: { custom: ParentClass },
-      TwoError: { custom: ParentClass },
-    }
+    class Parent extends TestAnyError {}
+    return { OneError: { custom: Parent }, TwoError: { custom: Parent } }
   })
-  t.is(Object.getPrototypeOf(TwoError).name, 'ParentClass')
+  t.is(Object.getPrototypeOf(TwoError).name, 'Parent')
 })
