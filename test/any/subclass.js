@@ -16,13 +16,13 @@ test('Cannot extend from known classes without AnyError.class()', (t) => {
 
 test('Can extend from known classes with AnyError.class()', (t) => {
   class ChildError extends TestError {}
-  const KnownError = AnyError.class('KnownError', { custom: ChildError })
+  const KnownError = ChildError.class('KnownError', { custom: ChildError })
   t.is(new KnownError('test').name, 'KnownError')
 })
 
 test('Can extend from UnknownError', (t) => {
   class ChildUnknownError extends UnknownError {}
-  const ChildKnownError = AnyError.class('ChildUnknownError', {
+  const ChildKnownError = ChildUnknownError.class('ChildUnknownError', {
     custom: ChildUnknownError,
   })
   t.is(new ChildKnownError('test').name, 'ChildUnknownError')

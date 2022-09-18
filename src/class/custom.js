@@ -61,7 +61,7 @@ const validateParent = function (custom, ParentError) {
 
   if (Object.getPrototypeOf(custom) !== ParentError) {
     throw new TypeError(
-      `The "custom" class must extend directly from ${ParentError.name}.`,
+      `The "custom" class must extend directly from ${ParentError.name}.\n\n${custom}`,
     )
   }
 }

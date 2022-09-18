@@ -4,14 +4,12 @@ import { each } from 'test-each'
 import {
   defineClassOpts,
   defineSimpleClass,
-  defineShallowCustom,
   defineSimpleCustom,
   defineDeepCustom,
   defineClassesOpts,
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineSimpleClass()
-const { ShallowError } = defineShallowCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
@@ -19,8 +17,12 @@ test('Parent class is AnyError by default', (t) => {
   t.is(Object.getPrototypeOf(TestError), AnyError)
 })
 
-test('AnyError can be passed as is', (t) => {
-  t.is(Object.getPrototypeOf(ShallowError).name, 'AnyError')
+test('AnyError cannot be passed as is', (t) => {
+  t.throws(
+    defineClassesOpts.bind(undefined, (TestAnyError) => ({
+      ShallowError: { custom: TestAnyError },
+    })),
+  )
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {

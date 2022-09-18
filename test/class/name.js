@@ -3,13 +3,11 @@ import { each } from 'test-each'
 
 import {
   defineSimpleClass,
-  defineShallowCustom,
   defineSimpleCustom,
   defineDeepCustom,
 } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineSimpleClass()
-const { ShallowError } = defineShallowCustom()
 const { DeepCustomError } = defineDeepCustom()
 const { SimpleCustomError } = defineSimpleCustom()
 
@@ -37,7 +35,7 @@ each(
 )
 
 each(
-  [TestError, ShallowError, SimpleCustomError, DeepCustomError],
+  [TestError, SimpleCustomError, DeepCustomError],
   ({ title }, ErrorClass) => {
     test(`prototype.name is correct | ${title}`, (t) => {
       t.is(ErrorClass.prototype.name, ErrorClass.name)
