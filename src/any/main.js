@@ -8,7 +8,7 @@ import { applyPluginsSet } from '../plugins/set.js'
 import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
-import { validateClass } from './validate.js'
+import { validateSubClass } from './subclass.js'
 
 export const CoreError = errorCustomClass('CoreError')
 
@@ -49,7 +49,7 @@ export const createAnyError = function ({
   /* eslint-disable fp/no-this */
   class AnyError extends CoreError {
     constructor(message, opts) {
-      const isAnyError = new.target === AnyError
+      const isAnyError = validateSubClass(new.target, AnyError, ErrorClasses)
       const optsA = normalizeConstructorArgs({
         opts,
         ErrorClasses,
@@ -60,7 +60,6 @@ export const createAnyError = function ({
       super(message, optsA)
 
       const { error, cause } = mergeCause(this, isAnyError)
-      validateClass(error, ErrorClasses, isAnyError)
       computePluginsOpts({
         error,
         opts: optsA,

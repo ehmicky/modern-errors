@@ -9,10 +9,16 @@
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `AnyError.create()`
 //  - But was extended from either `AnyError` or a known class
-export const validateClass = function ({ name }, ErrorClasses, isAnyError) {
-  if (!isAnyError && ErrorClasses[name] === undefined) {
+export const validateSubClass = function (ChildError, AnyError, ErrorClasses) {
+  if (ChildError === AnyError) {
+    return true
+  }
+
+  if (ErrorClasses[ChildError.name] === undefined) {
     throw new Error(
-      `"${name}" must be passed to the "custom" option of "AnyError.create()" before being instantiated.`,
+      `"${ChildError.name}" must be passed to the "custom" option of "AnyError.create()" before being instantiated.`,
     )
   }
+
+  return false
 }
