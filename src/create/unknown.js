@@ -14,33 +14,55 @@ export const checkUnknownError = function (ErrorClass, className) {
     return
   }
 
-  POSSIBLE_CAUSES.forEach((cause) => {
-    checkUnknownErrorCause(ErrorClass, cause)
+  POSSIBLE_CAUSES.forEach((cause, index) => {
+    checkUnknownErrorCause(ErrorClass, cause, index === 0)
   })
 }
 
+const CHECK_MESSAGE = 'unknownErrorCheck'
 // Goes from least to most likely to throw
 // eslint-disable-next-line unicorn/no-null
-const POSSIBLE_CAUSES = [new Error('check'), {}, '', undefined, null]
+const POSSIBLE_CAUSES = [new Error(CHECK_MESSAGE), {}, '', undefined, null]
 
-const checkUnknownErrorCause = function (UnknownError, cause) {
-  const unknownError = newUnknownError(UnknownError, cause)
+const checkUnknownErrorCause = function (UnknownError, cause, firstCheck) {
+  const unknownError = newUnknownError(UnknownError, cause, firstCheck)
+  checkReturnType(unknownError, UnknownError)
+  checkSuper(unknownError, firstCheck)
+}
 
-  if (unknownError.constructor !== UnknownError) {
+const newUnknownError = function (UnknownError, cause, firstCheck) {
+  try {
+    return new UnknownError('', { cause })
+  } catch (error) {
+    const causeString = firstCheck ? '' : ` when the cause is ${cause}`
     throw new Error(
-      "The UnknownError class's constructor is invalid: it does not return an UnknownError instance.",
+      `${MESSAGE_PREFIX}It should not throw${causeString}.\n${
+        normalizeException(error).stack
+      }`,
     )
   }
 }
 
-const newUnknownError = function (UnknownError, cause) {
-  try {
-    return new UnknownError('', { cause })
-  } catch (error) {
-    const causeString =
-      cause === POSSIBLE_CAUSES[0] ? '' : ` when the cause is ${cause}`
-    throw new Error(`The UnknownError class's constructor is invalid.
-It should not throw${causeString}.
-${normalizeException(error).stack}`)
+const checkReturnType = function (unknownError, UnknownError) {
+  if (!(unknownError instanceof Error)) {
+    throw new TypeError(
+      `${MESSAGE_PREFIX}It does not return an Error instance.`,
+    )
+  }
+
+  if (unknownError.constructor !== UnknownError) {
+    throw new Error(
+      `${MESSAGE_PREFIX}It does not return an UnknownError instance.`,
+    )
   }
 }
+
+const checkSuper = function (unknownError, firstCheck) {
+  if (firstCheck && !unknownError.message.includes(CHECK_MESSAGE)) {
+    throw new Error(
+      `${MESSAGE_PREFIX}"super(message, options)" must be called with both arguments.`,
+    )
+  }
+}
+
+const MESSAGE_PREFIX = "The UnknownError class's constructor is invalid.\n"
