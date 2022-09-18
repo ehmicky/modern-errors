@@ -3,7 +3,7 @@ import modernErrors from 'modern-errors'
 import { TEST_PLUGIN } from './plugin.js'
 
 export const defineGlobalOpts = function (globalOpts, plugins) {
-  return defineClassesOpts({ InputError: {} }, globalOpts, plugins)
+  return defineClassOpts({}, globalOpts, plugins)
 }
 
 export const defineClassOpts = function (classOpts, globalOpts, plugins) {
