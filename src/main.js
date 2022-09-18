@@ -1,4 +1,4 @@
-import { createAnyError } from './base/main.js'
+import { createAnyError } from './any/main.js'
 import { normalizeInput } from './input.js'
 import { initKnownClasses } from './known/init.js'
 import { addAllInstanceMethods } from './plugins/instance.js'

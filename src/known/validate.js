@@ -1,4 +1,4 @@
-import { CoreError } from '../base/main.js'
+import { CoreError } from '../any/main.js'
 
 // Validate a custom error class
 export const validateCustomClass = function (custom, propName) {
