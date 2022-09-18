@@ -59,7 +59,6 @@ expectType<true>(shallowCustomError.prop)
 
 const deepSimpleCustomError = new DeepSimpleCustomError(true)
 expectType<DeepSimpleCustomErrorInstance>(deepSimpleCustomError)
-expectType<ShallowCustomErrorInstance>(deepSimpleCustomError)
 expectAssignable<BaseShallowCustomError>(deepSimpleCustomError)
 expectAssignable<AnyErrorInstance>(deepSimpleCustomError)
 expectAssignable<Error>(deepSimpleCustomError)
@@ -91,9 +90,9 @@ if (error instanceof AnyError) {
 // if (anyError instanceof ShallowCustomError) {
 //   expectType<ShallowCustomErrorInstance>(anyError)
 // }
-if (anyError instanceof DeepSimpleCustomError) {
-  expectType<DeepSimpleCustomErrorInstance>(anyError)
-}
+// if (anyError instanceof DeepSimpleCustomError) {
+//   expectType<DeepSimpleCustomErrorInstance>(anyError)
+// }
 
 if (anyError instanceof SimpleError) {
   expectType<SimpleErrorInstance>(anyError)

@@ -1,20 +1,34 @@
 import { ErrorName } from 'error-custom-class'
 
-type ErrorInstance<
-  ErrorArg extends Error = Error,
-  ErrorNameArg extends ErrorName = ErrorName,
-> = ErrorArg & { name: ErrorNameArg }
+type NamedError<
+  ErrorInstance extends Error,
+  ErrorNameArg extends ErrorName,
+> = ErrorInstance & { name: ErrorNameArg }
 
-type ErrorClass<ErrorInstanceArg extends ErrorInstance = ErrorInstance> = {
-  new (...args: any[]): ErrorInstanceArg
-  prototype: ErrorInstanceArg
-  subclass: CreateSubclass<ErrorClass<ErrorInstanceArg>>
-}
+type MaybeIntersect<T extends object, U extends object> = keyof U extends never
+  ? T
+  : T & U
+
+type ErrorClass<
+  ErrorInstance extends Error,
+  ParentErrorClass extends object,
+  ErrorNameArg extends ErrorName,
+> = MaybeIntersect<
+  {
+    new (...args: any[]): NamedError<ErrorInstance, ErrorNameArg>
+    prototype: NamedError<ErrorInstance, ErrorNameArg>
+    subclass: CreateSubclass<ErrorInstance, ParentErrorClass>
+  },
+  Omit<ParentErrorClass, keyof AnyErrorClass>
+>
 
 /**
  * Class-specific options
  */
-type ClassOptions<ParentError extends ErrorClass> = {
+type ClassOptions<
+  ErrorInstance extends Error,
+  ParentErrorClass extends object,
+> = {
   /**
    * Custom class to add any methods, `constructor` or properties.
    * It must `extend` from `AnyError`.
@@ -45,33 +59,25 @@ type ClassOptions<ParentError extends ErrorClass> = {
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: ParentError
+  readonly custom?: ErrorClass<ErrorInstance, ParentErrorClass, ErrorName>
 }
 
-type MaybeIntersect<T extends object, U extends object> = keyof U extends never
-  ? T
-  : T & U
-
-type ErrorSubclass<
+type CreateSubclass<
+  ErrorInstance extends Error,
+  ParentErrorClass extends object,
+> = <
   ErrorNameArg extends ErrorName,
-  ParentErrorClass extends ErrorClass,
-> = MaybeIntersect<
-  ErrorClass<ErrorInstance<InstanceType<ParentErrorClass>, ErrorNameArg>>,
-  Omit<ParentErrorClass, keyof AnyErrorClass>
->
-
-type CreateSubclass<ParentErrorClass extends ErrorClass> = <
-  ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions<ParentErrorClass>,
+  OptionsArg extends ClassOptions<ErrorInstance, ParentErrorClass>,
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
-) => ErrorSubclass<
-  ErrorNameArg,
-  OptionsArg['custom'] extends ErrorClass
-    ? OptionsArg['custom']
-    : ParentErrorClass
->
+) => OptionsArg['custom'] extends object
+  ? ErrorClass<
+      InstanceType<OptionsArg['custom']>,
+      OptionsArg['custom'],
+      ErrorNameArg
+    >
+  : ErrorClass<ErrorInstance, ParentErrorClass, ErrorNameArg>
 
 /**
  * Base error class.
@@ -87,8 +93,8 @@ type CreateSubclass<ParentErrorClass extends ErrorClass> = <
  * ```
  */
 type AnyErrorClass = {
-  new (message: string, options?: ErrorOptions): ErrorInstance
-  prototype: ErrorInstance
+  new (message: string, options?: ErrorOptions): NamedError<Error, ErrorName>
+  prototype: NamedError<Error, ErrorName>
 
   /**
    * Creates and returns an error subclass.
@@ -100,7 +106,7 @@ type AnyErrorClass = {
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<AnyErrorClass>
+  subclass: CreateSubclass<Error, AnyErrorClass>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
@@ -117,7 +123,7 @@ type AnyErrorClass = {
    * }
    * ```
    */
-  normalize(error: unknown): ErrorInstance
+  normalize(error: unknown): NamedError<Error, ErrorName>
 }
 
 /**
