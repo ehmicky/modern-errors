@@ -150,6 +150,15 @@ expectError(
     },
   }),
 )
+expectError(
+  CError.subclass('TestError', {
+    custom: class extends CError {
+      constructor(message: string | true, options?: object) {
+        super(String(message), options)
+      }
+    },
+  }),
+)
 
 const error = new Error('')
 
