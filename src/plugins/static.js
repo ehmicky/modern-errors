@@ -1,3 +1,5 @@
+import { requireUnknownError } from '../class/unknown.js'
+
 import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -58,6 +60,7 @@ const callStaticMethods = function (
   { methodFunc, plugin, globalOpts, ErrorClasses, AnyError },
   ...args
 ) {
+  requireUnknownError(ErrorClasses)
   const options = normalizePluginOpts(globalOpts, plugin)
   return methodFunc(
     { options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },

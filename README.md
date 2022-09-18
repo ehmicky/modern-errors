@@ -117,7 +117,7 @@ Base error class.
 `options`: [`Options?`](#options)\
 _Return value_: `typeof AnyError`
 
-Creates and returns an error class. The first error class must be named
+Creates and returns an error class. One of them must be named
 [`UnknownError`](#unknown-errors).
 
 ### AnyError.normalize(anyException)
@@ -153,7 +153,7 @@ Any [plugin options](#plugin-options-1) can also be specified.
 export const AnyError = modernErrors()
 
 // Custom error classes
-// The first class must be named "UnknownError"
+// One of them must be named "UnknownError"
 export const UnknownError = AnyError.class('UnknownError')
 export const InputError = AnyError.class('InputError')
 export const AuthError = AnyError.class('AuthError')

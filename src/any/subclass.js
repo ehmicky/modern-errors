@@ -1,3 +1,5 @@
+import { requireUnknownError } from '../class/unknown.js'
+
 // We forbid subclasses that are not known, i.e. not passed to
 // `AnyError.class()`
 //  - They would not be validated at load time
@@ -10,6 +12,8 @@
 //  - Not passed to the `custom` option of `AnyError.class()`
 //  - But was extended from either `AnyError` or a known class
 export const validateSubClass = function (ChildError, AnyError, ErrorClasses) {
+  requireUnknownError(ErrorClasses)
+
   if (ChildError === AnyError) {
     return true
   }

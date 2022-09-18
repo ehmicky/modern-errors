@@ -1,6 +1,21 @@
 import normalizeException from 'normalize-exception'
 
 // `UnknownError` is used by `new AnyError()` and `AnyError.normalize()`.
+// Therefore, it is required.
+// We do not automatically create `UnknownError` to allow configuring it.
+export const requireUnknownError = function (ErrorClasses) {
+  if (Object.keys(ErrorClasses).length === 0) {
+    throw new Error(`At least one error class must be created.
+This is done by calling "AnyError.class()".`)
+  }
+
+  if (ErrorClasses.UnknownError === undefined) {
+    throw new Error(`One of the error classes must be named "UnknownError".
+This is done by calling "AnyError.class('UnknownError')".
+"UnknownError" is assigned by "AnyError.normalize()" to exceptions with an unknown class.`)
+  }
+}
+
 // It might have a custom constructor, which might be invalid. We try to check
 // this by instantiating some test errors.
 // We discourage extending or instantiating UnknownError but do not forbid it

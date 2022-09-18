@@ -87,7 +87,7 @@ type AnyErrorClass = {
 
   /**
    * Creates and returns an error class.
-   * The first error class must be named `UnknownError`.
+   * One of them must be named `UnknownError`.
    *
    * @example
    * ```js

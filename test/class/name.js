@@ -2,7 +2,6 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  createAnyError,
   defineSimpleClass,
   defineShallowCustom,
   defineSimpleCustom,
@@ -13,11 +12,6 @@ const { TestError, AnyError } = defineSimpleClass()
 const { ShallowError } = defineShallowCustom()
 const { DeepCustomError } = defineDeepCustom()
 const { SimpleCustomError } = defineSimpleCustom()
-
-test('Require defining UnknownError', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(TestAnyError.class.bind(undefined, 'InputError'))
-})
 
 test('Validate against duplicate names', (t) => {
   t.throws(AnyError.class.bind(undefined, 'TestError'))
