@@ -29,7 +29,7 @@ export const createClass = function (
     plugins,
   })
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(ErrorClass, 'create', {
+  Object.defineProperty(ErrorClass, 'class', {
     value: createClass.bind(undefined, {
       globalOpts,
       ParentError: ErrorClass,
