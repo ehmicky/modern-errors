@@ -18,6 +18,15 @@ export const definePlugins = function (plugins) {
   return defineClassesOpts({}, {}, plugins)
 }
 
+export const defineDeepCustom = function (globalOpts, plugins) {
+  const { AnyError, UnknownError, SimpleCustomError } = defineSimpleCustom(
+    globalOpts,
+    plugins,
+  )
+  const DeepCustomError = SimpleCustomError.class('DeepCustomError')
+  return { AnyError, UnknownError, SimpleCustomError, DeepCustomError }
+}
+
 export const defineSimpleCustom = function (globalOpts, plugins) {
   return defineClassesOpts(
     (AnyError) => ({
@@ -31,21 +40,6 @@ export const defineSimpleCustom = function (globalOpts, plugins) {
     globalOpts,
     plugins,
   )
-}
-
-export const defineDeepCustom = function (globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
-  const UnknownError = AnyError.class('UnknownError')
-  const DeepParentError = AnyError.class('DeepParentError', {
-    custom: class DeepParentError extends AnyError {
-      prop = true
-      static staticProp = true
-    },
-  })
-  const DeepCustomError = DeepParentError.class('DeepCustomError', {
-    custom: class DeepCustomError extends DeepParentError {},
-  })
-  return { AnyError, UnknownError, DeepParentError, DeepCustomError }
 }
 
 export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {

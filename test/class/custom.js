@@ -13,15 +13,14 @@ const { TestError, AnyError } = defineSimpleClass()
 const { SimpleCustomError } = defineSimpleCustom()
 const { DeepCustomError } = defineDeepCustom()
 
-test('Custom option defaults to parent class with AnyError', (t) => {
-  t.is(Object.getPrototypeOf(TestError), AnyError)
-})
-
-test('Custom option defaults to parent class with subclasses', (t) => {
-  t.is(Object.getPrototypeOf(TestError.class('DefaultTestError')), TestError)
-})
-
 each([AnyError, TestError], ({ title }, ParentError) => {
+  test(`Custom option defaults to parent class | ${title}`, (t) => {
+    t.is(
+      Object.getPrototypeOf(ParentError.class(`Default${ParentError.name}`)),
+      ParentError,
+    )
+  })
+
   test(`Parent error cannot be passed as is | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() => ParentError.class('SelfError', { custom: ParentError }))
@@ -29,14 +28,14 @@ each([AnyError, TestError], ({ title }, ParentError) => {
 })
 
 each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
-  test(`Parent class is custom class when passed | ${title}`, (t) => {
-    t.is(Object.getPrototypeOf(ErrorClass).name, ErrorClass.name)
-  })
-
   test(`Custom classes are inherited | ${title}`, (t) => {
     t.true(ErrorClass.staticProp)
     t.true(new ErrorClass('test').prop)
   })
+})
+
+test('Parent class is custom class when passed', (t) => {
+  t.is(Object.getPrototypeOf(SimpleCustomError).name, SimpleCustomError.name)
 })
 
 class NullClass {}
