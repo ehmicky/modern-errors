@@ -103,3 +103,12 @@ each(
     })
   },
 )
+
+test('"custom" option is not modified', (t) => {
+  const { InputError } = defineClassesOpts((TestAnyError) => ({
+    InputError: {
+      custom: class ReadonlyClass extends TestAnyError {},
+    },
+  }))
+  t.is(Object.getPrototypeOf(InputError).name, 'ReadonlyClass')
+})
