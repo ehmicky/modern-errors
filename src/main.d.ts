@@ -71,9 +71,12 @@ type CreateSubclass<ParentErrorClass extends ErrorClass> = <
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
-) => OptionsArg['custom'] extends ParentErrorClass
-  ? CustomErrorClass<ErrorNameArg, OptionsArg['custom']>
-  : CustomErrorClass<ErrorNameArg, ParentErrorClass>
+) => CustomErrorClass<
+  ErrorNameArg,
+  OptionsArg['custom'] extends ParentErrorClass
+    ? OptionsArg['custom']
+    : ParentErrorClass
+>
 
 /**
  * Base error class.
