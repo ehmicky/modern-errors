@@ -2,7 +2,8 @@ import normalizeException from 'normalize-exception'
 
 // `UnknownError` is used by `new AnyError()` and `AnyError.normalize()`.
 // Therefore, it is required.
-// We do not automatically create `UnknownError` to allow configuring it.
+// We do not automatically create `UnknownError` to encourage exporting it and
+// optionally configuring it.
 export const requireUnknownError = function (ErrorClasses) {
   if (Object.keys(ErrorClasses).length === 0) {
     throw new Error(`At least one error class must be created.
