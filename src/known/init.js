@@ -2,7 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { setClassOpts } from '../plugins/class_opts.js'
 
-import { getErrorClass } from './custom.js'
+import { getErrorClass, createGlobalAnyError } from './custom.js'
 
 // Validate, normalize and create each error class.
 // `setErrorName()` also checks that `name` is a string and is not one of the
@@ -10,17 +10,18 @@ import { getErrorClass } from './custom.js'
 export const initKnownClasses = function ({
   classesOpts,
   globalOpts,
-  GlobalBaseError,
+  AnyError,
   errorData,
   plugins,
 }) {
+  const GlobalAnyError = createGlobalAnyError(globalOpts, AnyError)
   return Object.fromEntries(
     Object.entries(classesOpts).map(([className, classOpts]) => [
       className,
       initKnownClass({
         className,
         classOpts,
-        GlobalBaseError,
+        GlobalAnyError,
         errorData,
         plugins,
         globalOpts,
@@ -32,7 +33,7 @@ export const initKnownClasses = function ({
 const initKnownClass = function ({
   className,
   classOpts,
-  GlobalBaseError,
+  GlobalAnyError,
   errorData,
   plugins,
   globalOpts,
@@ -44,7 +45,7 @@ const initKnownClass = function ({
   }
 
   const { custom, ...classOptsA } = classOpts
-  const ErrorClass = getErrorClass(custom, GlobalBaseError, className)
+  const ErrorClass = getErrorClass(custom, GlobalAnyError, className)
   setClassOpts({
     ErrorClass,
     globalOpts,

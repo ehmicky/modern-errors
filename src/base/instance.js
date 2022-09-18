@@ -1,15 +1,15 @@
 import { getErrorOpts } from '../plugins/normalize.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
-// `BaseError.prototype.*`.
+// `AnyError.prototype.*`.
 export const addAllInstanceMethods = function ({
   plugins,
   errorData,
-  BaseError,
+  AnyError,
   state,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, errorData, BaseError, state })
+    addInstanceMethods({ plugin, errorData, AnyError, state })
   })
 }
 
@@ -17,7 +17,7 @@ const addInstanceMethods = function ({
   plugin,
   plugin: { instanceMethods },
   errorData,
-  BaseError,
+  AnyError,
   state,
 }) {
   if (instanceMethods === undefined) {
@@ -30,7 +30,7 @@ const addInstanceMethods = function ({
       methodFunc,
       plugin,
       errorData,
-      BaseError,
+      AnyError,
       state,
     })
   })
@@ -41,22 +41,21 @@ const addInstanceMethod = function ({
   methodFunc,
   plugin,
   errorData,
-  BaseError,
+  AnyError,
   state,
 }) {
   const value = function (...args) {
     // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
     const error = this
     const options = getErrorOpts(error, errorData, plugin)
-    const { AnyError, KnownClasses } = state
     return methodFunc(
-      { error, options, AnyError, KnownClasses: { ...KnownClasses } },
+      { error, options, AnyError, KnownClasses: { ...state.KnownClasses } },
       ...args,
     )
   }
 
   // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(BaseError.prototype, methodName, {
+  Object.defineProperty(AnyError.prototype, methodName, {
     value,
     enumerable: false,
     writable: true,

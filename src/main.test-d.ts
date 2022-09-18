@@ -5,7 +5,6 @@ import modernErrors from './main.js'
 import type { AnyError as AnyErrorType } from './main.js'
 
 type AnyErrorInstance = AnyErrorType<ErrorName>
-type AnyErrorClass = typeof AnyErrorType<ErrorName>
 type TestBaseErrorInstance = AnyErrorType<'TestError'>
 type TestBaseErrorClass = typeof AnyErrorType<'TestError'>
 type UnknownBaseErrorInstance = AnyErrorType<'UnknownError'>

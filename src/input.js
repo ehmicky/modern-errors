@@ -40,8 +40,8 @@ const validateUnknown = function ({ UnknownError }) {
 }
 
 const validateClassName = function (className) {
-  if (className === 'BaseError' || className === 'GlobalBaseError') {
-    throw new TypeError(`Error class name must not be "${className}".
+  if (className === 'GlobalAnyError') {
+    throw new TypeError(`Error class name must not be "GlobalAnyError".
 It is reserved for some internal error class.`)
   }
 }

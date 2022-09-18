@@ -1,7 +1,5 @@
-import { createAnyError } from './any/main.js'
-import { createBaseError } from './base/main.js'
+import { createAnyError } from './base/main.js'
 import { normalizeInput } from './input.js'
-import { createGlobalBaseError } from './known/custom.js'
 import { initKnownClasses } from './known/init.js'
 import { checkUnknownError } from './known/unknown.js'
 
@@ -14,21 +12,20 @@ export default function modernErrors(classesOpts, plugins) {
   } = normalizeInput(classesOpts, plugins)
   const state = {}
   const errorData = new WeakMap()
-  const BaseError = createBaseError({
+  const AnyError = createAnyError({
     state,
     errorData,
     globalOpts,
     plugins: pluginsA,
   })
-  state.GlobalBaseError = createGlobalBaseError(globalOpts, BaseError)
-  state.AnyError = createAnyError(BaseError)
-  state.KnownClasses = initKnownClasses({
+  const KnownClasses = initKnownClasses({
     classesOpts: classesOptsA,
     globalOpts,
-    GlobalBaseError: state.GlobalBaseError,
+    AnyError,
     errorData,
     plugins: pluginsA,
   })
-  checkUnknownError(state.KnownClasses)
-  return { ...state.KnownClasses, AnyError: state.AnyError }
+  state.KnownClasses = KnownClasses
+  checkUnknownError(KnownClasses)
+  return { ...KnownClasses, AnyError }
 }

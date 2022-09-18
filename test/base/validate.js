@@ -6,18 +6,13 @@ import { defineSimpleClass, defineClassesOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError } = defineSimpleClass()
 
-test('Prevent instantiating BaseError', (t) => {
-  const BaseError = Object.getPrototypeOf(TestError)
-  t.throws(() => new BaseError('test'))
-})
-
-test('Prevent instantiating GlobalBaseError', (t) => {
+test('Prevent instantiating GlobalAnyError', (t) => {
   const { InputError } = defineClassesOpts({
     AnyError: { custom: class extends Error {} },
     InputError: {},
   })
-  const GlobalBaseError = Object.getPrototypeOf(InputError)
-  t.throws(() => new GlobalBaseError('test'))
+  const GlobalAnyError = Object.getPrototypeOf(InputError)
+  t.throws(() => new GlobalAnyError('test'))
 })
 
 each([TestError, UnknownError], ({ title }, ErrorClass) => {

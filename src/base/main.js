@@ -16,6 +16,9 @@ export const CoreError = errorCustomClass('CoreError')
 // Base class for all error classes.
 // This is not a global class since it is bound to call-specific plugins.
 // Also used to wrap errors without changing their class.
+//  - As opposed to exporting a separate class for it since it:
+//     - Avoids confusion between both classes
+//     - Removes some exports, simplifying the API
 // We encourage `instanceof` over `error.name` for checking since this:
 //  - Prevents name collisions with other libraries
 //  - Allows checking if any error came from a given library
@@ -34,26 +37,24 @@ export const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createBaseError = function ({
+export const createAnyError = function ({
   state,
   errorData,
   globalOpts,
   plugins,
 }) {
   /* eslint-disable fp/no-this */
-  class BaseError extends CoreError {
+  class AnyError extends CoreError {
     constructor(message, opts) {
       const {
         KnownClasses,
         KnownClasses: { UnknownError },
-        GlobalBaseError,
-        AnyError,
       } = state
       const isAnyError = new.target === AnyError
       const optsA = normalizeConstructorArgs({
         opts,
         UnknownError,
-        BaseError,
+        AnyError,
         isAnyError,
       })
 
@@ -61,7 +62,7 @@ export const createBaseError = function ({
 
       const { error, cause } = mergeCause(this, isAnyError)
       const ChildError = error.constructor
-      validateClass({ ChildError, GlobalBaseError, KnownClasses, isAnyError })
+      validateClass(ChildError, KnownClasses, isAnyError)
       computePluginsOpts({
         error,
         ChildError,
@@ -84,11 +85,11 @@ export const createBaseError = function ({
     }
     /* c8 ignore stop */
 
-    static normalize = normalize.bind(undefined, state, BaseError)
+    static normalize = normalize.bind(undefined, AnyError)
   }
   /* eslint-enable fp/no-this */
-  setErrorName(BaseError, 'BaseError')
-  addAllInstanceMethods({ plugins, errorData, BaseError, state })
-  addAllStaticMethods({ plugins, globalOpts, BaseError, state })
-  return BaseError
+  setErrorName(AnyError, 'AnyError')
+  addAllInstanceMethods({ plugins, errorData, AnyError, state })
+  addAllStaticMethods({ plugins, globalOpts, AnyError, state })
+  return AnyError
 }

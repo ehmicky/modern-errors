@@ -15,7 +15,7 @@ import isPlainObj from 'is-plain-obj'
 export const normalizeConstructorArgs = function ({
   opts = {},
   UnknownError,
-  BaseError,
+  AnyError,
   isAnyError,
 }) {
   if (!isPlainObj(opts)) {
@@ -30,7 +30,7 @@ export const normalizeConstructorArgs = function ({
     )
   }
 
-  return normalizeCause({ opts, UnknownError, BaseError, isAnyError })
+  return normalizeCause({ opts, UnknownError, AnyError, isAnyError })
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it
@@ -41,12 +41,7 @@ export const normalizeConstructorArgs = function ({
 //       i.e. the message and stack are not changed
 // If the error is not from a known class or `UnknownError`, we wrap it in
 // `UnknownError` to ensure `AnyError` instance type is a child of `AnyError`.
-const normalizeCause = function ({
-  opts,
-  UnknownError,
-  BaseError,
-  isAnyError,
-}) {
+const normalizeCause = function ({ opts, UnknownError, AnyError, isAnyError }) {
   if (!isAnyError) {
     return opts
   }
@@ -57,10 +52,10 @@ const normalizeCause = function ({
     )
   }
 
-  const cause = getCause(opts.cause, UnknownError, BaseError)
+  const cause = getCause(opts.cause, UnknownError, AnyError)
   return { ...opts, cause }
 }
 
-const getCause = function (cause, UnknownError, BaseError) {
-  return cause instanceof BaseError ? cause : new UnknownError('', { cause })
+const getCause = function (cause, UnknownError, AnyError) {
+  return cause instanceof AnyError ? cause : new UnknownError('', { cause })
 }

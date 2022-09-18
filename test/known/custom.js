@@ -14,12 +14,12 @@ each(
     {
       ErrorClass: TestError,
       className: 'TestError',
-      parentClassName: 'BaseError',
+      parentClassName: 'AnyError',
     },
     {
       ErrorClass: defineCustomClass(class extends Error {}).InputError,
       className: 'InputError',
-      parentClassName: 'BaseError',
+      parentClassName: 'AnyError',
     },
     {
       ErrorClass: defineClassesOpts({
@@ -27,11 +27,11 @@ each(
         InputError: { custom: class extends Error {} },
       }).InputError,
       className: 'InputError',
-      parentClassName: 'GlobalBaseError',
+      parentClassName: 'GlobalAnyError',
     },
   ],
   ({ title }, { ErrorClass, className, parentClassName }) => {
-    test(`Errors extend from BaseError or GlobalBaseError | ${title}`, (t) => {
+    test(`Errors extend from AnyError or GlobalAnyError | ${title}`, (t) => {
       t.is(Object.getPrototypeOf(ErrorClass).name, parentClassName)
       t.is(Object.getPrototypeOf(ErrorClass.prototype).name, parentClassName)
     })
@@ -50,8 +50,7 @@ each(
 
 each(
   [
-    'BaseError',
-    'GlobalBaseError',
+    'GlobalAnyError',
     'Error',
     'TypeError',
     'inputError',

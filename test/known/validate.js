@@ -3,7 +3,7 @@ import { each } from 'test-each'
 
 import { defineSimpleClass, defineCustomClass } from '../helpers/main.js'
 
-const { TestError } = defineSimpleClass()
+const { TestError, AnyError } = defineSimpleClass()
 
 each(
   [
@@ -13,7 +13,7 @@ each(
     () => {},
     Error,
     TypeError,
-    class NotBaseTypeError extends TypeError {},
+    class ChildTypeError extends TypeError {},
     class NoParentError {},
     class InvalidError extends Object {},
   ],
@@ -28,13 +28,12 @@ test('Cannot pass twice the same classes', (t) => {
   t.throws(() => defineCustomClass(TestError))
 })
 
-test('Cannot pass BaseError', (t) => {
-  const BaseError = Object.getPrototypeOf(TestError)
-  t.throws(() => defineCustomClass(BaseError))
+test('Cannot pass AnyError', (t) => {
+  t.throws(() => defineCustomClass(AnyError))
 })
 
 test('Cannot pass CoreError', (t) => {
-  const CoreError = Object.getPrototypeOf(Object.getPrototypeOf(TestError))
+  const CoreError = Object.getPrototypeOf(AnyError)
   t.throws(() => defineCustomClass(CoreError))
 })
 
