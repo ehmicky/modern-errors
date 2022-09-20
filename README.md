@@ -530,7 +530,7 @@ throw new InputError('Could not read the file.', options)
 ### Error class options
 
 Options passed as a second argument to
-[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of a
+[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of that
 specific class.
 
 ```js
@@ -597,11 +597,8 @@ console.log(error.isUserError) // true
 Or on [all errors of the same class](#error-class-options).
 
 ```js
-modernErrors({
-  InputError: {
-    props: { isUserError: true },
-  },
-  UnknownError: {},
+export const InputError = AnyError.create('InputError', {
+  props: { isUserError: true },
 })
 ```
 
@@ -657,8 +654,8 @@ Although any error class can use it, it is especially useful with
 [_unknown_ errors](#unknown-errors).
 
 ```js
-modernErrors({
-  UnknownError: { bugs: 'https://github.com/my-name/my-project/issues' },
+export const UnknownError = AnyError.create('UnknownError', {
+  bugs: 'https://github.com/my-name/my-project/issues',
 })
 ```
 
