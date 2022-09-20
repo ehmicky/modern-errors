@@ -104,7 +104,6 @@ not `require()`.
 
 `plugins`: [`Plugin[]?`](#plugins)\
 `options`: [`Options?`](#options)\
-_Return value_: [`AnyError`](#anyerror)
 
 Creates and returns [`AnyError`](#anyerror).
 
