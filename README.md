@@ -129,9 +129,9 @@ Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors). This should
 [wrap each main function](#top-level-error-handler).
 
-### Options
+## Options
 
-#### custom
+### custom
 
 _Type_: `class extends AnyError {}`\
 _Default_: `AnyError`
@@ -139,7 +139,7 @@ _Default_: `AnyError`
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
 It must `extend` from [`AnyError`](#anyerror).
 
-#### Plugin options
+### Plugin options
 
 Any [plugin options](#plugin-options-1) can also be specified.
 
