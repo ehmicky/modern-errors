@@ -41,7 +41,8 @@ Core features:
 Create custom error classes.
 
 ```js
-// `error.js`
+// `errors.js`
+
 import modernErrors from 'modern-errors'
 
 // Base error class
@@ -57,7 +58,7 @@ export const DatabaseError = AnyError.create('DatabaseError')
 Throw/re-throw errors.
 
 ```js
-import { InputError } from './error.js'
+import { InputError } from './errors.js'
 
 const readContents = async function (filePath) {
   try {
@@ -71,7 +72,7 @@ const readContents = async function (filePath) {
 Wrap the main functions to normalize any errors.
 
 ```js
-import { AnyError } from './error.js'
+import { AnyError } from './errors.js'
 
 export const main = async function (filePath) {
   try {
@@ -154,9 +155,6 @@ Any [plugin options](#plugin-options-1) can also be specified.
 ### Create custom error classes
 
 ```js
-// `error.js`
-import modernErrors from 'modern-errors'
-
 // Base error class
 export const AnyError = modernErrors()
 
@@ -174,7 +172,7 @@ Each main function should be wrapped with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception).
 
 ```js
-import { AnyError } from './error.js'
+import { AnyError } from './errors.js'
 
 export const main = async function (filePath) {
   try {
@@ -190,7 +188,7 @@ export const main = async function (filePath) {
 ### Simple errors
 
 ```js
-import { InputError } from './error.js'
+import { InputError } from './errors.js'
 
 const validateFilePath = function (filePath) {
   if (filePath === '') {
@@ -207,7 +205,7 @@ This allows wrapping the error [message](#wrap-error-message),
 [class](#set-error-class), or [options](#modify-options).
 
 ```js
-import { InputError } from './error.js'
+import { InputError } from './errors.js'
 
 const readContents = async function (filePath) {
   try {
@@ -256,7 +254,7 @@ try {
 <!-- eslint-disable no-throw-literal -->
 
 ```js
-import { AnyError } from './error.js'
+import { AnyError } from './errors.js'
 
 try {
   throw 'Missing file path.'
@@ -388,7 +386,7 @@ Each main function should be wrapped with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception).
 
 ```js
-import { AnyError } from './error.js'
+import { AnyError } from './errors.js'
 
 export const main = async function (filePath) {
   try {
@@ -620,7 +618,7 @@ class by using
 #!/usr/bin/env node
 import handleCliError from 'handle-cli-error'
 
-import { AnyError } from './error.js'
+import { AnyError } from './errors.js'
 import programmaticMain from './main.js'
 
 const cliMain = function () {
