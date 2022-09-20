@@ -103,7 +103,7 @@ not `require()`.
 ## modernErrors(plugins?, options?)
 
 `plugins`: [`Plugin[]?`](#plugins)\
-`options`: [`Options?`](#options)\
+`options`: [`Options?`](#options)
 
 Creates and returns [`AnyError`](#anyerror).
 
@@ -113,6 +113,7 @@ Base error class.
 
 ### AnyError.create(name, options?)
 
+`name`: `string`\
 `options`: [`Options?`](#options)\
 _Return value_: `typeof AnyError`
 
