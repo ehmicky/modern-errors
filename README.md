@@ -28,7 +28,7 @@ Core features:
   [`class`](#custom-logic), [`toJSON()`](#serialize)
 - [Custom logic](#custom-logic)
 
-[Plugins](#plugins-1) are also available to:
+[Plugins](#plugins) are also available to:
 
 - Handle errors in [CLI](#cli-errors) modules
 - [Set properties](#error-properties) on individual errors or on all errors of
@@ -88,7 +88,7 @@ export const main = async function (filePath) {
 npm install modern-errors
 ```
 
-If any [plugin](#plugins-1) is used, it must also be installed.
+If any [plugin](#plugins) is used, it must also be installed.
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -102,7 +102,7 @@ not `require()`.
 
 ## modernErrors(plugins?, options?)
 
-`plugins`: [`Plugin[]?`](#plugins-1)\
+`plugins`: [`Plugin[]?`](#plugins)\
 `options`: [`Options?`](#options)\
 _Return value_: [`AnyError`](#anyerror)
 
