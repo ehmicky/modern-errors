@@ -6,11 +6,8 @@
 
 The [main function](README.md#modernerrorsplugins-options) now returns the base
 error class [`AnyError`](README.md#anyerror).
-
 [`AnyError.create(name)`](README.md#anyerrorcreatename-options) must be used to
-create each error class.
-
-The first error class must now be named
+create each error class. The first error class must now be named
 [`UnknownError`](README.md#unknown-errors).
 
 Before:
