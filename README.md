@@ -458,7 +458,7 @@ console.log(error.isUserInput()) // true
 
 ### Shared custom logic
 
-Inheritance can be used to share some logic between error classes.
+Inheritance can be used to share logic between error classes.
 
 <!-- eslint-disable fp/no-this -->
 
@@ -520,7 +520,8 @@ const options = {
 
 ### Error instance options
 
-Options can be passed a a second argument to any error instance.
+Options passed as a second argument to an error's constructor apply to that
+specific error.
 
 ```js
 throw new InputError('Could not read the file.', options)
@@ -529,8 +530,8 @@ throw new InputError('Could not read the file.', options)
 ### Error class options
 
 Options passed as a second argument to
-[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of any
-class.
+[`AnyError.create()`](#anyerrorcreatename-options) apply to any error of a
+specific class.
 
 ```js
 export const InputError = AnyError.create('InputError', options)
@@ -539,8 +540,8 @@ export const InputError = AnyError.create('InputError', options)
 ### General options
 
 Options passed as a second argument to
-[`modernErrors()`](#modernerrorsplugins-options) apply to any error of a
-specific class.
+[`modernErrors()`](#modernerrorsplugins-options) apply to any error of any
+classes.
 
 ```js
 export const AnyError = modernErrors(plugins, options)
