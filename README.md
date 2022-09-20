@@ -42,7 +42,6 @@ Create custom error classes.
 
 ```js
 // `errors.js`
-
 import modernErrors from 'modern-errors'
 
 // Base error class
@@ -103,15 +102,11 @@ not `require()`.
 
 ## modernErrors(plugins?, options?)
 
-`plugins`: [`Plugin[]?`](#plugins)\
+`plugins`: [`Plugin[]?`](#plugins-1)\
 `options`: [`Options?`](#options)\
 _Return value_: [`AnyError`](#anyerror)
 
 Creates and returns [`AnyError`](#anyerror).
-
-### plugins
-
-List of [plugins](#plugins-1) to use.
 
 ## AnyError
 
