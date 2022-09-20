@@ -103,7 +103,7 @@ not `require()`.
 ## modernErrors(plugins?, options?)
 
 `plugins`: [`Plugin[]?`](#plugins)\
-`options`: [`Options?`](#options)
+`options`: [`Options?`](#plugin-options-1)
 
 Creates and returns [`AnyError`](#anyerror).
 
@@ -117,9 +117,8 @@ Base error class.
 `options`: [`Options?`](#options)\
 _Return value_: `typeof AnyError`
 
-Creates and returns an error class.
-
-The first error class must be named [`UnknownError`](#unknown-errors).
+Creates and returns an error class. The first error class must be named
+[`UnknownError`](#unknown-errors).
 
 ### AnyError.normalize(anyException)
 
@@ -424,6 +423,8 @@ main(null) // InputError: Invalid file path: Cannot read properties of null (rea
 
 ## Custom logic
 
+### Class custom logic
+
 The [`custom`](#custom) option can be used to provide an error `class` with
 additional methods, `constructor` or properties. It must extend from
 [`AnyError`](#anyerror).
@@ -454,6 +455,8 @@ const error = new InputError('Wrong user name')
 console.log(error.message) // 'Wrong user name.'
 console.log(error.isUserInput()) // true
 ```
+
+### Shared custom logic
 
 Inheritance can be used to share some logic between error classes.
 
