@@ -45,9 +45,7 @@ export const DatabaseError = AnyError.create('DatabaseError')
 Before:
 
 ```js
-const { errorHandler } = modernErrors([
-  /* ... */
-])
+const { errorHandler } = modernErrors(errorNames)
 
 const normalizedError = errorHandler(error)
 ```
@@ -55,9 +53,7 @@ const normalizedError = errorHandler(error)
 After:
 
 ```js
-const { AnyError } = modernErrors({
-  /* ... */
-})
+const AnyError = modernErrors()
 
 const normalizedError = AnyError.normalize(error)
 ```
