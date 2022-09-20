@@ -4,45 +4,39 @@
 
 ### Creating error classes
 
-The [main function](README.md#modernerrorsdefinitions) now takes an object of
-class options as arguments instead of an array of class names. One of the errors
-must now be named [`UnknownError`](README.md#unknown-errors).
+The [main function](README.md#modernerrorsplugins-options) now returns the base
+error class [`AnyError`](README.md#anyerror).
+
+[`AnyError.create(name)`](README.md#anyerrorcreatename-options) must be used to
+create each error class.
+
+The first error class must now be named
+[`UnknownError`](README.md#unknown-errors).
 
 Before:
 
 ```js
 export const {
+  // Custom error classes
   InputError,
   AuthError,
   DatabaseError,
   // Error handler
   errorHandler,
-} = modernErrors([
-  // Custom error names
-  'InputError',
-  'AuthError',
-  'DatabaseError',
-])
+} = modernErrors(['InputError', 'AuthError', 'DatabaseError'])
 ```
 
 After:
 
 ```js
-export const {
-  InputError,
-  AuthError,
-  DatabaseError,
-  UnknownError,
-  // Base error class
-  AnyError,
-} = modernErrors({
-  // Custom error classes definitions
-  InputError: {},
-  AuthError: {},
-  DatabaseError: {},
-  // One of the classes must be named `UnknownError`
-  UnknownError: {},
-})
+// Base error class
+export const AnyError = modernErrors()
+
+// Custom error classes
+export const UnknownError = AnyError.create('UnknownError')
+export const InputError = AnyError.create('InputError')
+export const AuthError = AnyError.create('AuthError')
+export const DatabaseError = AnyError.create('DatabaseError')
 ```
 
 ### Error handler
@@ -72,7 +66,9 @@ const normalizedError = AnyError.normalize(error)
 
 ### Options
 
-Global options must now be passed to the `AnyError` definition.
+Although the first argument and return value of
+[`modernErrors()`](README.md#modernerrorsplugins-options) have changes, the
+second argument can still be used for global [options](README.md#options).
 
 Before:
 
@@ -85,10 +81,8 @@ export const { InputError, errorHandler } = modernErrors(['InputError'], {
 After:
 
 ```js
-export const { InputError, UnknownError, AnyError } = modernErrors({
-  InputError: {},
-  UnknownError: {},
-  AnyError: { bugs: 'https://github.com/my-name/my-project/issues' },
+export const AnyError = modernErrors(plugins, {
+  bugs: 'https://github.com/my-name/my-project/issues',
 })
 ```
 
@@ -138,16 +132,14 @@ throw new InputError('Could not read the file.', {
 
 ### Parsing
 
-`parse()` has renamed to [`AnyError.parse()`](README.md#parse). This also
+`parse()` has been renamed to [`AnyError.parse()`](README.md#parse). This also
 requires adding the `modern-errors-serialize`
 [plugin](README.md#adding-plugins).
 
 Before:
 
 ```js
-const { parse } = modernErrors([
-  /* ... */
-])
+const { parse } = modernErrors(errorNames)
 
 const newErrorObject = JSON.parse(errorString)
 const newError = parse(newErrorObject)
@@ -158,12 +150,7 @@ After:
 ```js
 import modernErrorsSerialize from 'modern-errors-serialize'
 
-const { AnyError } = modernErrors(
-  {
-    /* ... */
-  },
-  [modernErrorsSerialize],
-)
+const AnyError = modernErrors([modernErrorsSerialize])
 
 const newErrorObject = JSON.parse(errorString)
 const newError = AnyError.parse(newErrorObject)
@@ -214,23 +201,19 @@ After:
 <!-- eslint-disable fp/no-this, fp/no-mutation -->
 
 ```js
-modernErrors({
-  // ...
+export const InputError = AnyError.create('InputError', {
+  custom: class extends AnyError {
+    constructor(message, options = {}) {
+      super(message, options)
 
-  AnyError: {
-    custom: class extends Error {
-      constructor(message, options = {}) {
-        super(message, options)
+      const { filePath } = options
 
-        const { filePath } = options
-
-        if (typeof filePath !== 'string') {
-          throw new TypeError('filePath must be a string.')
-        }
-
-        this.filePath = filePath
+      if (typeof filePath !== 'string') {
+        throw new TypeError('filePath must be a string.')
       }
-    },
+
+      this.filePath = filePath
+    }
   },
 })
 ```
