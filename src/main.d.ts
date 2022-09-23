@@ -12,7 +12,7 @@ type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
 type ClassOptions = {
   /**
    * Custom class to add any methods, `constructor` or properties.
-   * It must `extend` from `ErrorClass`.
+   * It must `extend` from `AnyError`.
    *
    * @example
    * ```js
@@ -87,7 +87,8 @@ type AnyErrorClass = {
 
   /**
    * Creates and returns an error subclass.
-   * One of error classes must be named `UnknownError`.
+   * One of them must be named `UnknownError`.
+   * Subclasses can also call `ErrorClass.class()` themselves.
    *
    * @example
    * ```js
