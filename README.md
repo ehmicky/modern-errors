@@ -116,10 +116,10 @@ Base error class.
 `options`: [`Options?`](#options)\
 _Return value_: `class extends AnyError {}`
 
-Creates and returns an error subclass. Subclasses can also
-[call this method](#shared-custom-logic).
+Creates and returns an error subclass. One of them must be named
+[`UnknownError`](#unknown-errors).
 
-One of the error classes must be named [`UnknownError`](#unknown-errors).
+Subclasses can also [call `ErrorClass.class()`](#shared-custom-logic).
 
 ### AnyError.normalize(anyException)
 
