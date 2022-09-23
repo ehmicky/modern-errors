@@ -110,6 +110,17 @@ Creates and returns [`AnyError`](#anyerror).
 
 Base error class.
 
+### AnyError.class(name, options?)
+
+`name`: `string`\
+`options`: [`Options?`](#options)\
+_Return value_: `class extends ErrorClass {}`
+
+Creates and returns an error subclass. This can also be
+[called by the subclasses](#shared-custom-logic) themselves.
+
+One of the error classes must be named [`UnknownError`](#unknown-errors).
+
 ### AnyError.normalize(anyException)
 
 _Type_: `(anyException) => AnyError`
@@ -118,28 +129,14 @@ Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors). This should
 [wrap each main function](#top-level-error-handler).
 
-## ErrorClass
-
-Either [`AnyError`](#anyerror) or one its subclasses.
-
-### ErrorClass.class(name, options?)
-
-`name`: `string`\
-`options`: [`Options?`](#options)\
-_Return value_: `class extends ErrorClass {}`
-
-Creates and returns an error subclass.
-
-One of the error classes must be named [`UnknownError`](#unknown-errors).
-
 ## Options
 
 ### custom
 
-_Type_: `class extends ErrorClass {}`
+_Type_: `class extends AnyError {}`
 
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extend` from [`ErrorClass`](#errorclassclassname-options).
+It must `extend` from [`AnyError`](#anyerror).
 
 ### Plugin options
 
@@ -395,8 +392,8 @@ export const main = async function (filePath) {
 ```
 
 This assigns the `UnknownError` class to any error without a _known_ class: the
-ones created by [`ErrorClass.class()`](#errorclassclassname-options). Those
-indicate unexpected exceptions and bugs.
+ones created by [`AnyError.class()`](#anyerrorclassname-options). Those indicate
+unexpected exceptions and bugs.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -460,7 +457,7 @@ console.log(error.isUserInput()) // true
 
 ### Shared custom logic
 
-[`ErrorClass.class()`](#errorclassclassname-options) can be used to share logic
+[`ErrorClass.class()`](#anyerrorclassname-options) can be used to share logic
 between error classes.
 
 <!-- eslint-disable fp/no-this -->
@@ -535,14 +532,15 @@ export const AnyError = modernErrors(plugins, options)
 ### Error class options
 
 Options passed as a second argument to
-[`ErrorClass.class()`](#errorclassclassname-options) apply to any error of that
+[`AnyError.class()`](#anyerrorclassname-options) apply to any error of that
 specific class.
 
 ```js
 export const InputError = AnyError.class('InputError', options)
 ```
 
-Subclassing can be used to share options between multiple error classes.
+`ErrorClass.class()` can be used to share options between multiple error
+classes.
 
 ```js
 export const SharedError = AnyError.class('SharedError', options)
