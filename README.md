@@ -119,7 +119,8 @@ _Return value_: `class extends AnyError {}`
 Creates and returns an error subclass. One of them must be named
 [`UnknownError`](#unknown-errors).
 
-Subclasses can also [call `ErrorClass.class()`](#shared-custom-logic).
+Subclasses can [also call](#shared-custom-logic) `ErrorClass.class()`
+themselves.
 
 ### AnyError.normalize(anyException)
 
