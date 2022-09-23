@@ -62,6 +62,33 @@ export const InputError = AnyError.class('InputError', {
 })
 ```
 
+### Subclasses
+
+Error subclasses can now be created using
+[`ErrorClass.class()`](README.md#shared-custom-logic) to share custom logic
+between classes.
+
+<!-- eslint-disable fp/no-this -->
+
+```js
+const SharedError = AnyError.class('SharedError', {
+  custom: class extends AnyError {
+    isUserInput() {
+      return this.message.includes('user')
+    }
+  },
+})
+
+export const InputError = SharedError.class('InputError')
+export const AuthError = SharedError.class('AuthError', {
+  custom: class extends SharedError {
+    isAuth() {
+      return this.message.includes('auth')
+    }
+  },
+})
+```
+
 ### Improved options
 
 Options can now be applied to
@@ -69,6 +96,15 @@ Options can now be applied to
 
 ```js
 export const InputError = AnyError.class('InputError', options)
+```
+
+Or to [multiple classes](README.md#error-class-options).
+
+```js
+export const SharedError = AnyError.class('SharedError', options)
+
+export const InputError = SharedError.class('InputError')
+export const AuthError = SharedError.class('AuthError')
 ```
 
 Or to [individual errors](README.md#error-instance-options).
@@ -107,7 +143,6 @@ After:
 // Base error class
 export const AnyError = modernErrors()
 
-// Custom error classes
 export const UnknownError = AnyError.class('UnknownError')
 export const InputError = AnyError.class('InputError')
 export const AuthError = AnyError.class('AuthError')
@@ -273,9 +308,7 @@ Error classes should now be exported to be re-used across modules.
 
 ### TypeScript types
 
-- Removed TypeScript types `Result`, `ErrorHandler`, `Parse`, `ErrorName`,
-  `ErrorObject`, `ErrorParams` and `Options`
-- Renamed TypeScript types `CustomError` to `BaseError`
+Most TypeScript types have been removed, except the top-level function.
 
 ## Minor features
 
