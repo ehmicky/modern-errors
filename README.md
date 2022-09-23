@@ -546,8 +546,8 @@ classes.
 ```js
 export const SharedError = AnyError.class('SharedError', options)
 
-export const InputError = SharedError.class('InputError', options)
-export const AuthError = SharedError.class('AuthError', options)
+export const InputError = SharedError.class('InputError')
+export const AuthError = SharedError.class('AuthError')
 ```
 
 ### Error instance options
