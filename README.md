@@ -47,7 +47,6 @@ import modernErrors from 'modern-errors'
 // Base error class
 export const AnyError = modernErrors()
 
-// Custom error classes
 export const UnknownError = AnyError.class('UnknownError')
 export const InputError = AnyError.class('InputError')
 export const AuthError = AnyError.class('AuthError')
@@ -111,15 +110,6 @@ Creates and returns [`AnyError`](#anyerror).
 
 Base error class.
 
-### AnyError.class(name, options?)
-
-`name`: `string`\
-`options`: [`Options?`](#options)\
-_Return value_: `class extends AnyError {}`
-
-Creates and returns an error class. One of them must be named
-[`UnknownError`](#unknown-errors).
-
 ### AnyError.normalize(anyException)
 
 _Type_: `(anyException) => AnyError`
@@ -128,14 +118,28 @@ Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors). This should
 [wrap each main function](#top-level-error-handler).
 
+## ErrorClass
+
+Either [`AnyError`](#anyerror) or one its subclasses.
+
+### ErrorClass.class(name, options?)
+
+`name`: `string`\
+`options`: [`Options?`](#options)\
+_Return value_: `class extends ErrorClass {}`
+
+Creates and returns an error subclass.
+
+One of the error classes must be named [`UnknownError`](#unknown-errors).
+
 ## Options
 
 ### custom
 
-_Type_: `class extends AnyError {}`
+_Type_: `class extends ErrorClass {}`
 
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extend` from [`AnyError`](#anyerror).
+It must `extend` from [`ErrorClass`](#errorclassclassname-options).
 
 ### Plugin options
 
@@ -151,8 +155,7 @@ Any [plugin options](#plugin-options-1) can also be specified.
 // Base error class
 export const AnyError = modernErrors()
 
-// Custom error classes
-// One of them must be named "UnknownError"
+// One of the error classes must be named "UnknownError"
 export const UnknownError = AnyError.class('UnknownError')
 export const InputError = AnyError.class('InputError')
 export const AuthError = AnyError.class('AuthError')
@@ -392,8 +395,8 @@ export const main = async function (filePath) {
 ```
 
 This assigns the `UnknownError` class to any error without a _known_ class: the
-ones created by [`AnyError.class()`](#anyerrorclassname-options). Those indicate
-unexpected exceptions and bugs.
+ones created by [`ErrorClass.class()`](#errorclassclassname-options). Those
+indicate unexpected exceptions and bugs.
 
 <!-- eslint-disable unicorn/no-null -->
 
@@ -457,20 +460,22 @@ console.log(error.isUserInput()) // true
 
 ### Shared custom logic
 
-Inheritance can be used to share logic between error classes.
+[`ErrorClass.class()`](#errorclassclassname-options) can be used to share logic
+between error classes.
 
 <!-- eslint-disable fp/no-this -->
 
 ```js
-class SharedError extends AnyError {
-  isUserInput() {
-    return this.message.includes('user')
-  }
-}
+const SharedError = AnyError.class('SharedError', {
+  custom: class extends AnyError {
+    isUserInput() {
+      return this.message.includes('user')
+    }
+  },
+})
 
-export const InputError = AnyError.class('InputError', { custom: SharedError })
-
-export const AuthError = AnyError.class('AuthError', {
+export const InputError = SharedError.class('InputError')
+export const AuthError = SharedError.class('AuthError', {
   custom: class extends SharedError {
     isAuth() {
       return this.message.includes('auth')
@@ -517,25 +522,6 @@ const options = {
 }
 ```
 
-### Error instance options
-
-Options passed as a second argument to an error's constructor apply to that
-specific error.
-
-```js
-throw new InputError('Could not read the file.', options)
-```
-
-### Error class options
-
-Options passed as a second argument to
-[`AnyError.class()`](#anyerrorclassname-options) apply to any error of that
-specific class.
-
-```js
-export const InputError = AnyError.class('InputError', options)
-```
-
 ### General options
 
 Options passed as a second argument to
@@ -544,6 +530,34 @@ classes.
 
 ```js
 export const AnyError = modernErrors(plugins, options)
+```
+
+### Error class options
+
+Options passed as a second argument to
+[`ErrorClass.class()`](#errorclassclassname-options) apply to any error of that
+specific class.
+
+```js
+export const InputError = AnyError.class('InputError', options)
+```
+
+Subclassing can be used to share options between multiple error classes.
+
+```js
+export const SharedError = AnyError.class('SharedError', options)
+
+export const InputError = SharedError.class('InputError', options)
+export const AuthError = SharedError.class('AuthError', options)
+```
+
+### Error instance options
+
+Options passed as a second argument to an error's constructor apply to that
+specific error.
+
+```js
+throw new InputError('Could not read the file.', options)
 ```
 
 ### Modify options

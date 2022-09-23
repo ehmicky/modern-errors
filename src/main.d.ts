@@ -12,7 +12,7 @@ type ErrorConstructorArgs = [message: string, options?: ErrorOptions]
 type ClassOptions = {
   /**
    * Custom class to add any methods, `constructor` or properties.
-   * It must `extend` from `AnyError`.
+   * It must `extend` from `ErrorClass`.
    *
    * @example
    * ```js
@@ -86,8 +86,8 @@ type AnyErrorClass = {
   prototype: ErrorInstance<ErrorName>
 
   /**
-   * Creates and returns an error class.
-   * One of them must be named `UnknownError`.
+   * Creates and returns an error subclass.
+   * One of error classes must be named `UnknownError`.
    *
    * @example
    * ```js
@@ -125,7 +125,6 @@ type AnyErrorClass = {
  *  // Base error class
  *  export const AnyError = modernErrors()
  *
- *  // Custom error classes
  *  export const UnknownError = AnyError.class('UnknownError')
  *  export const InputError = AnyError.class('InputError')
  *  export const AuthError = AnyError.class('AuthError')
