@@ -1,8 +1,8 @@
 import { ErrorName } from 'error-custom-class'
 
 type ErrorInstance<
-  ErrorNameArg extends ErrorName = ErrorName,
   ErrorArg extends Error = Error,
+  ErrorNameArg extends ErrorName = ErrorName,
 > = ErrorArg & { name: ErrorNameArg }
 
 type ErrorClass<
@@ -60,7 +60,7 @@ type ErrorSubclass<
   ParentErrorClass extends ErrorClass,
 > = MaybeIntersect<
   ErrorClass<
-    ErrorInstance<ErrorNameArg, InstanceType<ParentErrorClass>>,
+    ErrorInstance<InstanceType<ParentErrorClass>, ErrorNameArg>,
     ConstructorParameters<ParentErrorClass>
   >,
   Omit<ParentErrorClass, keyof AnyErrorClass>
