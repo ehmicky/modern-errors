@@ -75,13 +75,14 @@ const callStaticMethod = function (
   ...args
 ) {
   validateNonEmpty(ErrorClasses)
-  const { args: argsA, pluginsOpts } = applyIsOptions({
+  const pluginsOpts = deepClone(globalOpts)
+  const { args: argsA, pluginsOpts: pluginsOptsA } = applyIsOptions({
     args,
-    pluginsOpts: deepClone(globalOpts),
+    pluginsOpts,
     plugin,
     plugins,
   })
-  const options = normalizePluginOpts(pluginsOpts, plugin, true)
+  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return methodFunc(
     { options, AnyError, ErrorClasses: ErrorClassesA },

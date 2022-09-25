@@ -71,7 +71,7 @@ const applyPluginUnset = function ({
     return
   }
 
-  const info = getInfo({
+  const info = getSetUnsetInfo({
     target: cause,
     error,
     AnyError,
@@ -96,7 +96,7 @@ const applyPluginSet = function ({
     return
   }
 
-  const info = getInfo({
+  const info = getSetUnsetInfo({
     target: error,
     error,
     AnyError,
@@ -108,7 +108,7 @@ const applyPluginSet = function ({
   set(info)
 }
 
-const getInfo = function ({
+const getSetUnsetInfo = function ({
   target,
   error,
   AnyError,
