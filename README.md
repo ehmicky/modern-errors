@@ -508,6 +508,8 @@ export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
 
 ## Plugin options
 
+### Configure options
+
 Most plugins can be configured with options. The option's name is the same as
 the plugin.
 
@@ -551,7 +553,7 @@ export const AuthError = SharedError.subclass('AuthError')
 throw new InputError('Could not read the file.', options)
 ```
 
-- A function call: last argument, using only the options for the specific plugin
+- A plugin method call: last argument, passing only that plugin's options
 
 ```js
 AnyError[methodName](...args, options[pluginName])
