@@ -3,7 +3,7 @@ import { each } from 'test-each'
 
 import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 
-const { TestError } = defineClassOpts()
+const { TestError, AnyError } = defineClassOpts()
 
 const message = 'test'
 
@@ -66,3 +66,55 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
     t.deepEqual(new OtherTestError(message).constructorArgs, [message, {}])
   })
 })
+
+each(
+  [
+    { ErrorClass: TestError, innerOpts: {}, outerOpts: {}, finalOpts: {} },
+    { ErrorClass: AnyError, innerOpts: {}, outerOpts: {}, finalOpts: {} },
+    {
+      ErrorClass: TestError,
+      innerOpts: {},
+      outerOpts: { prop: true },
+      finalOpts: { prop: true },
+    },
+    {
+      ErrorClass: AnyError,
+      innerOpts: {},
+      outerOpts: { prop: true },
+      finalOpts: { prop: true },
+    },
+    {
+      ErrorClass: TestError,
+      innerOpts: { prop: true },
+      outerOpts: {},
+      finalOpts: {},
+    },
+    {
+      ErrorClass: AnyError,
+      innerOpts: { prop: true },
+      outerOpts: {},
+      finalOpts: { prop: true },
+    },
+    {
+      ErrorClass: TestError,
+      innerOpts: { prop: { one: false, two: false } },
+      outerOpts: { prop: { one: true, three: true } },
+      finalOpts: { prop: { one: true, three: true } },
+    },
+    {
+      ErrorClass: AnyError,
+      innerOpts: { prop: { one: false, two: false } },
+      outerOpts: { prop: { one: true, three: true } },
+      finalOpts: { prop: { one: true, two: false, three: true } },
+    },
+  ],
+  ({ title }, { ErrorClass, innerOpts, outerOpts, finalOpts }) => {
+    test(`error.constructorArgs uses merged options | ${title}`, (t) => {
+      const cause = new TestError('', innerOpts)
+      t.deepEqual(
+        new ErrorClass(message, { cause, ...outerOpts }).constructorArgs,
+        [message, finalOpts],
+      )
+    })
+  },
+)
