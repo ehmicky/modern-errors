@@ -40,7 +40,7 @@ test('plugin.unset() cannot modify "options"', (t) => {
   t.true(new TestError('test', { cause, prop: true }).unset.options.prop.one)
 })
 
-test('plugin.unset() has "full: true" with normalize()', (t) => {
+test('plugin.unset() has "full: true" with getOptions()', (t) => {
   const cause = new TestError('causeMessage')
   t.true(new TestError('test', { cause }).unset.options.full)
 })

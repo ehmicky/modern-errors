@@ -24,7 +24,7 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
     t.true(callMethod({ AnyError, TestError }).options.prop)
   })
 
-  test(`plugin methods have "full: true" with normalize() | ${title}`, (t) => {
+  test(`plugin methods have "full: true" with getOptions() | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts()
     t.true(callMethod({ AnyError, TestError }).options.full)
   })
@@ -67,9 +67,9 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
     t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [0])
   })
 
-  test(`plugin methods do not pass last argument as method options if plugin.isOptions() and normalize() are both undefined | ${title}`, (t) => {
+  test(`plugin methods do not pass last argument as method options if plugin.isOptions() and getOptions() are both undefined | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({}, [
-      { ...TEST_PLUGIN, isOptions: undefined, normalize: undefined },
+      { ...TEST_PLUGIN, isOptions: undefined, getOptions: undefined },
     ])
     t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [
       0,

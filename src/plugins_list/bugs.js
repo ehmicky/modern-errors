@@ -3,7 +3,7 @@
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
 // eslint-disable-next-line filenames/match-exported
-const normalizeBugs = function ({ options: bugs = '' }) {
+const getOptions = function ({ options: bugs = '' }) {
   return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
 }
 
@@ -45,11 +45,11 @@ const EXAMPLE_ORIGIN = 'https://example.com'
 // `bugs` is set at instantiation time instead of during error handling as:
 //   - This simplifies error handling logic
 //   - This provides with better debugging and more immediate experience
-const setBugs = function ({ error, options: bugs }) {
+const set = function ({ error, options: bugs }) {
   return bugs === '' ? {} : { message: `${error.message}\n${bugs}` }
 }
 
-const unsetBugs = function ({ error }) {
+const unset = function ({ error }) {
   return { message: error.message.split('\n').filter(isNotBugs).join('\n') }
 }
 
@@ -61,12 +61,7 @@ const isBugs = function (line) {
   return line.startsWith(BUGS_PREFIX)
 }
 
-const BUGS_PLUGIN = {
-  name: 'bugs',
-  normalize: normalizeBugs,
-  set: setBugs,
-  unset: unsetBugs,
-}
+const BUGS_PLUGIN = { name: 'bugs', getOptions, set, unset }
 
 // eslint-disable-next-line import/no-default-export
 export default BUGS_PLUGIN

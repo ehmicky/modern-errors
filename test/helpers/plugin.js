@@ -13,7 +13,7 @@ export const TEST_PLUGIN = {
     validateContext(this)
     return typeof prop === 'boolean' || isPlainObj(prop)
   },
-  normalize({ options: prop, full }) {
+  getOptions({ options: prop, full }) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
 

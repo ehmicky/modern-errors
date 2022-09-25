@@ -2,7 +2,7 @@
 import isPlainObj from 'is-plain-obj'
 
 // Error properties can be set using the `props` option
-const normalizeProps = function ({ options: props = {} }) {
+const getOptions = function ({ options: props = {} }) {
   if (!isPlainObj(props)) {
     throw new TypeError(`"props" option must be a plain object: ${props}`)
   }
@@ -13,11 +13,11 @@ const normalizeProps = function ({ options: props = {} }) {
 }
 
 // Set `props` option as error properties
-const setProps = function ({ options }) {
+const set = function ({ options }) {
   return options
 }
 
-const unsetProps = function ({ options }) {
+const unset = function ({ options }) {
   return Object.assign({}, ...Reflect.ownKeys(options).map(getUnsetProp))
 }
 
@@ -25,12 +25,7 @@ const getUnsetProp = function (key) {
   return { [key]: undefined }
 }
 
-const PROPS_PLUGIN = {
-  name: 'props',
-  normalize: normalizeProps,
-  set: setProps,
-  unset: unsetProps,
-}
+const PROPS_PLUGIN = { name: 'props', getOptions, set, unset }
 
 // eslint-disable-next-line import/no-default-export
 export default PROPS_PLUGIN

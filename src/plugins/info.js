@@ -1,5 +1,5 @@
 import { deepClone } from './clone.js'
-import { normalizePluginOpts } from './get.js'
+import { getPluginOpts } from './get.js'
 
 // Retrieve `info` passed to all `plugin.*`
 export const getPluginInfo = function ({
@@ -9,7 +9,7 @@ export const getPluginInfo = function ({
   ErrorClasses,
 }) {
   const pluginsOptsA = deepClone(pluginsOpts)
-  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
+  const options = getPluginOpts(pluginsOptsA, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return { options, AnyError, ErrorClasses: ErrorClassesA }
 }

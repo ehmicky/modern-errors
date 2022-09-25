@@ -1,12 +1,12 @@
 // eslint-disable-next-line filenames/match-exported
-import { serialize, parse } from 'error-serializer'
+import { serialize, parse as parseLib } from 'error-serializer'
 
 const toJSON = function ({ error }) {
   return serialize(error)
 }
 
-const parseError = function ({ ErrorClasses, AnyError }, errorObject) {
-  const value = parse(errorObject, { classes: ErrorClasses })
+const parse = function ({ ErrorClasses, AnyError }, errorObject) {
+  const value = parseLib(errorObject, { classes: ErrorClasses })
   return isErrorInstance(value) ? AnyError.normalize(value) : value
 }
 
@@ -17,7 +17,7 @@ const isErrorInstance = function (value) {
 const SERIALIZE_PLUGIN = {
   name: 'serialize',
   instanceMethods: { toJSON },
-  staticMethods: { parse: parseError },
+  staticMethods: { parse },
 }
 
 // eslint-disable-next-line import/no-default-export

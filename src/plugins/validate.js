@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { normalizeNormalize } from './get.js'
+import { normalizeGetOptions } from './get.js'
 import { normalizeIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
 
@@ -25,7 +25,7 @@ const normalizePlugin = function (plugin) {
   const pluginB = normalizeMethods(pluginA, 'instanceMethods')
   const pluginC = normalizeMethods(pluginB, 'staticMethods')
   const pluginD = normalizeIsOptions({ plugin: pluginC })
-  const pluginE = normalizeNormalize(pluginD)
+  const pluginE = normalizeGetOptions(pluginD)
   return pluginE
 }
 
@@ -37,7 +37,7 @@ const validateOptionalFuncs = function (plugin) {
   validateSetWithoutUnset(plugin)
 }
 
-const OPTIONAL_FUNCS = ['isOptions', 'normalize', 'unset', 'set']
+const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'unset', 'set']
 
 const validateOptionalMethod = function (plugin, funcName) {
   const funcValue = plugin[funcName]

@@ -2,7 +2,7 @@ import { assignError } from './assign.js'
 import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
 
-// Apply each `plugin.normalize()` then `plugin.set()`
+// Apply each `plugin.unset()` then `plugin.set()`
 export const applyPluginsSet = function ({
   error,
   AnyError,

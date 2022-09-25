@@ -37,15 +37,15 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('plugin.normalize() full is false for global options', (t) => {
+test('plugin.getOptions() full is false for global options', (t) => {
   t.throws(defineGlobalOpts.bind(undefined, { prop: 'partial' }))
 })
 
-test('plugin.normalize() full is false for class options', (t) => {
+test('plugin.getOptions() full is false for class options', (t) => {
   t.throws(defineClassOpts.bind(undefined, { prop: 'partial' }))
 })
 
-test('plugin.normalize() full is false for UnknownError options with plugin.set undefined', (t) => {
+test('plugin.getOptions() full is false for UnknownError options with plugin.set undefined', (t) => {
   t.throws(
     defineClassesOpts.bind(
       undefined,
@@ -56,7 +56,7 @@ test('plugin.normalize() full is false for UnknownError options with plugin.set 
   )
 })
 
-test('plugin.normalize() full is true for UnknownError options with plugin.set defined', (t) => {
+test('plugin.getOptions() full is true for UnknownError options with plugin.set defined', (t) => {
   t.notThrows(
     defineClassesOpts.bind(undefined, { UnknownError: { prop: 'partial' } }),
   )

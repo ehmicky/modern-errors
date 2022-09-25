@@ -31,7 +31,7 @@ test('plugin.set() cannot modify "options"', (t) => {
   t.true(unset.options.prop.one)
 })
 
-test('plugin.set() has "full: true" with normalize()', (t) => {
+test('plugin.set() has "full: true" with getOptions()', (t) => {
   t.true(new TestError('test').set.options.full)
 })
 

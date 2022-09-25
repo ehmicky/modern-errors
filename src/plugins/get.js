@@ -1,17 +1,17 @@
-// `options` is `undefined` unless `plugin.normalize()` is defined
-//  - This encourages using `plugin.normalize()`
-export const normalizeNormalize = function (plugin) {
+// `options` is `undefined` unless `plugin.getOptions()` is defined
+//  - This encourages using `plugin.getOptions()`
+export const normalizeGetOptions = function (plugin) {
   return {
     ...plugin,
-    normalize:
-      plugin.normalize ?? defaultNormalize.bind(undefined, plugin.fullName),
+    getOptions:
+      plugin.getOptions ?? defaultGetOptions.bind(undefined, plugin.fullName),
   }
 }
 
-const defaultNormalize = function (fullName, { options }) {
+const defaultGetOptions = function (fullName, { options }) {
   if (options !== undefined) {
     throw new Error(
-      `The plugin "${fullName}" does not have any option: ${options}`,
+      `The plugin "${fullName}" does not have any options: ${options}`,
     )
   }
 }
@@ -28,11 +28,11 @@ const defaultNormalize = function (fullName, { options }) {
 //     - Required properties
 //     - Properties depending on others
 //  - While still encouraging validation to be performed as early as possible
-//     - As opposed to splitting `normalize()` into two different methods, since
-//       that might encourage using only the method with the full `options`
-//       object, which would prevent any early validation
+//     - As opposed to splitting `getOptions()` into two different methods,
+//       since that might encourage using only the method with the full
+//       `options` object, which would prevent any early validation
 // Any validation|normalization specific to a method should be done inside that
-// method, as opposed to inside `plugin.normalize()`
+// method, as opposed to inside `plugin.getOptions()`
 // Plugins should avoid:
 //  - Letting options be optionally a function: class constructors can be used
 //    for this, by manipulating `options` and passing it to `super()`
@@ -44,10 +44,10 @@ const defaultNormalize = function (fullName, { options }) {
 //    for name conflict
 //  - This reduces cross-plugin dependencies since they cannot easily reference
 //    each other, keeping them decoupled from each other
-export const normalizePluginOpts = function (
+export const getPluginOpts = function (
   pluginsOpts,
-  { name, normalize },
+  { name, getOptions },
   full,
 ) {
-  return normalize({ options: pluginsOpts[name], full })
+  return getOptions({ options: pluginsOpts[name], full })
 }

@@ -1,7 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
 import { deepClone } from './clone.js'
-import { normalizePluginOpts } from './get.js'
+import { getPluginOpts } from './get.js'
 import { mergePluginsOpts } from './merge.js'
 import { validatePluginsOptsNames } from './name.js'
 
@@ -38,7 +38,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
   const globalOptsA = deepClone(globalOpts)
   validatePluginsOptsNames(globalOptsA, plugins)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(globalOptsA, plugin, false)
+    getPluginOpts(globalOptsA, plugin, false)
   })
   return globalOptsA
 }
@@ -64,7 +64,7 @@ export const getClassOpts = function ({
   const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
   const classOptsC = deepClone(classOptsB)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(classOptsC, plugin, getClassOptsFull(className, plugin))
+    getPluginOpts(classOptsC, plugin, getClassOptsFull(className, plugin))
   })
   return { custom, classOpts: classOptsC }
 }
