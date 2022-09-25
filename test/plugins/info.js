@@ -3,64 +3,58 @@ import { each } from 'test-each'
 
 import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
-const { TestError, UnknownError, AnyError } = defineClassOpts()
+const { TestError, AnyError, UnknownError } = defineClassOpts()
 
-each(
-  [
-    () => new TestError('test').set,
-    () => new TestError('test').getInstance(),
-    () => AnyError.getProp(),
-  ],
-  ({ title }, getValues) => {
-    test(`plugin.set|instanceMethods|staticMethods is passed AnyError | ${title}`, (t) => {
-      t.is(getValues().AnyError, AnyError)
-    })
+const getSetArgs = function ({ TestError: TestErrorClass = TestError } = {}) {
+  return new TestErrorClass('test').set
+}
 
-    test(`plugin.set|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-      t.deepEqual(getValues().ErrorClasses, { TestError, UnknownError })
-    })
+const getInstanceArgs = function ({
+  TestError: TestErrorClass = TestError,
+} = {}) {
+  return new TestErrorClass('test').getInstance()
+}
 
-    test(`plugin.set|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
-      // eslint-disable-next-line fp/no-mutation, no-param-reassign
-      getValues().ErrorClasses.prop = true
-      t.false('prop' in AnyError.getProp().ErrorClasses)
-    })
+const getStaticArgs = function ({ AnyError: AnyErrorClass = AnyError } = {}) {
+  return AnyErrorClass.getProp()
+}
 
-    test(`plugin.set|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
-      // eslint-disable-next-line fp/no-mutation, no-param-reassign
-      getValues().options.prop = false
-      t.is(AnyError.getProp().options.prop, undefined)
-    })
+each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
+  test(`plugin.set|instanceMethods|staticMethods is passed AnyError | ${title}`, (t) => {
+    t.is(getValues().AnyError, AnyError)
+  })
 
-    test(`plugin.set|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
-      t.true(getValues().options.full)
-    })
-  },
-)
+  test(`plugin.set|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
+    t.deepEqual(getValues().ErrorClasses, { TestError, UnknownError })
+  })
 
-each(
-  [
-    (ErrorClasses) => new ErrorClasses.TestError('test').set,
-    (ErrorClasses) => new ErrorClasses.TestError('test').getInstance(),
-    (ErrorClasses) => ErrorClasses.AnyError.getProp(),
-  ],
-  ({ title }, getValues) => {
-    test(`plugin.set|instanceMethods|staticMethods get the global options | ${title}`, (t) => {
-      const ErrorClasses = defineGlobalOpts({ prop: true })
-      t.true(getValues(ErrorClasses).options.prop)
-    })
-  },
-)
+  test(`plugin.set|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
+    getValues().ErrorClasses.prop = true
+    t.false('prop' in AnyError.getProp().ErrorClasses)
+  })
 
-each(
-  [
-    (ErrorClasses) => new ErrorClasses.TestError('test').set,
-    (ErrorClasses) => new ErrorClasses.TestError('test').getInstance(),
-  ],
-  ({ title }, getValues) => {
-    test(`plugin.set|instanceMethods get the class options | ${title}`, (t) => {
-      const ErrorClasses = defineClassOpts({ prop: true })
-      t.true(getValues(ErrorClasses).options.prop)
-    })
-  },
-)
+  test(`plugin.set|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
+    getValues().options.prop = false
+    t.is(AnyError.getProp().options.prop, undefined)
+  })
+
+  test(`plugin.set|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
+    t.true(getValues().options.full)
+  })
+})
+
+each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
+  test(`plugin.set|instanceMethods|staticMethods get the global options | ${title}`, (t) => {
+    const ErrorClasses = defineGlobalOpts({ prop: true })
+    t.true(getValues(ErrorClasses).options.prop)
+  })
+})
+
+each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
+  test(`plugin.set|instanceMethods get the class options | ${title}`, (t) => {
+    const ErrorClasses = defineClassOpts({ prop: true })
+    t.true(getValues(ErrorClasses).options.prop)
+  })
+})
