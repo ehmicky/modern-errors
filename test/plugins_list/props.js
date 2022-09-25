@@ -62,6 +62,14 @@ test('"props" cannot override "wrap"', (t) => {
   t.true(error instanceof TestError)
 })
 
+test('"props" cannot override "constructorArgs"', (t) => {
+  t.not(
+    new TestError('message', { props: { constructorArgs: true } })
+      .constructorArgs,
+    true,
+  )
+})
+
 test('"props" cannot override "cause"', (t) => {
   const cause = new TestError('causeMessage')
   const error = new TestError('message', { cause, props: { cause: true } })

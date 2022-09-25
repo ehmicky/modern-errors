@@ -15,7 +15,7 @@ const normalizeProps = function ({ options: props = {} }) {
 // Reserved top-level properties do not throw: they are silently omitted instead
 // since `props` might be dynamically generated making it cumbersome for user to
 // filter those.
-const OMITTED_PROPS = ['wrap']
+const OMITTED_PROPS = ['wrap', 'constructorArgs']
 
 // `props` are shallowly merged, so we also shallowly unset them
 // We make sure `props` ignored by `set-error-props` during `plugin.set()`,
