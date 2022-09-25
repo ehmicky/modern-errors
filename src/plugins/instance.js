@@ -24,14 +24,9 @@ const addInstanceMethods = function ({
   errorData,
   AnyError,
 }) {
+  const arg = { plugin, plugins, ErrorClasses, errorData, AnyError }
   Object.entries(instanceMethods).forEach(
-    addInstanceMethod.bind(undefined, {
-      plugin,
-      plugins,
-      ErrorClasses,
-      errorData,
-      AnyError,
-    }),
+    addInstanceMethod.bind(undefined, arg),
   )
 }
 
