@@ -1,9 +1,9 @@
 import isPlainObj from 'is-plain-obj'
 
 import { deepClone } from './clone.js'
+import { normalizePluginOpts } from './get.js'
 import { mergePluginsOpts } from './merge.js'
 import { validatePluginsOptsNames } from './name.js'
-import { normalizePluginOpts } from './normalize.js'
 
 // The second argument to `modernErrors()` are global options applied to all
 // classes.

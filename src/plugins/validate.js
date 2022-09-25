@@ -1,8 +1,8 @@
 import isPlainObj from 'is-plain-obj'
 
+import { normalizeNormalize } from './get.js'
 import { normalizeIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
-import { normalizeNormalize } from './normalize.js'
 
 // Validate and normalize plugins
 export const normalizePlugins = function (plugins = []) {

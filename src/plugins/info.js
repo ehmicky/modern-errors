@@ -1,5 +1,5 @@
 import { deepClone } from './clone.js'
-import { normalizePluginOpts } from './normalize.js'
+import { normalizePluginOpts } from './get.js'
 
 // Retrieve `info` passed to all `plugin.*`
 export const getPluginInfo = function ({
