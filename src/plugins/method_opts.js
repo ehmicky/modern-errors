@@ -28,10 +28,10 @@ export const mergeMethodOpts = function ({
   args,
   pluginsOpts,
   plugin,
-  plugin: { name, isOptions },
+  plugin: { name },
   plugins,
 }) {
-  if (isOptions === undefined || args.length === 0) {
+  if (args.length === 0) {
     return { args, pluginsOpts }
   }
 
