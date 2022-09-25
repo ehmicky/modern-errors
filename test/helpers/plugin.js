@@ -35,7 +35,10 @@ export const TEST_PLUGIN = {
   set(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
-    return { set: { ...utils } }
+    const toSet = isPlainObj(utils.options?.prop)
+      ? utils.options?.prop.toSet
+      : {}
+    return { ...toSet, set: { ...utils } }
   },
   instanceMethods: {
     getInstance(utils, ...args) {

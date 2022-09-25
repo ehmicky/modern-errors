@@ -10,7 +10,7 @@ import setErrorProps from 'set-error-props'
 export const assignError = function ({ error, newProps, plugin, methodName }) {
   if (!isPlainObj(newProps)) {
     throw new TypeError(
-      `Plugin "${plugin.name}" "${methodName}()" must return a plain object`,
+      `Plugin "${plugin.name}" "${methodName}()" must return a plain object: ${newProps}`,
     )
   }
 
@@ -20,12 +20,9 @@ export const assignError = function ({ error, newProps, plugin, methodName }) {
     setErrorMessage(error, message)
   }
 
-  if (Reflect.ownKeys(newPropsA).length === 0) {
-    return
+  if (Reflect.ownKeys(newPropsA).length !== 0) {
+    setErrorProps(error, excludeKeys(newPropsA, OMITTED_PROPS))
   }
-
-  const newPropsB = excludeKeys(newPropsA, OMITTED_PROPS)
-  setErrorProps(error, newPropsB)
 }
 
 // Reserved top-level properties do not throw: they are silently omitted instead

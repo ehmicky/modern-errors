@@ -55,28 +55,6 @@ test('"props" are merged with AnyError', (t) => {
   t.true(error.two)
 })
 
-test('"props" cannot override "wrap"', (t) => {
-  const cause = new TestError('causeMessage')
-  const error = new TestError('message', { cause, props: { wrap: true } })
-  t.false('wrap' in error)
-  t.true(error instanceof TestError)
-})
-
-test('"props" cannot override "constructorArgs"', (t) => {
-  t.not(
-    new TestError('message', { props: { constructorArgs: true } })
-      .constructorArgs,
-    true,
-  )
-})
-
-test('"props" cannot override "cause"', (t) => {
-  const cause = new TestError('causeMessage')
-  const error = new TestError('message', { cause, props: { cause: true } })
-  t.false('cause' in error)
-  t.is(error.message, 'causeMessage\nmessage')
-})
-
 test('"props" cannot override "message"', (t) => {
   const message = 'testMessage'
   const error = new TestError('', { props: { message } })
