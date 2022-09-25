@@ -67,34 +67,15 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   })
 })
 
+const opts = { prop: true }
 each(
   [
     { ErrorClass: TestError, innerOpts: {}, outerOpts: {}, finalOpts: {} },
     { ErrorClass: AnyError, innerOpts: {}, outerOpts: {}, finalOpts: {} },
-    {
-      ErrorClass: TestError,
-      innerOpts: {},
-      outerOpts: { prop: true },
-      finalOpts: { prop: true },
-    },
-    {
-      ErrorClass: AnyError,
-      innerOpts: {},
-      outerOpts: { prop: true },
-      finalOpts: { prop: true },
-    },
-    {
-      ErrorClass: TestError,
-      innerOpts: { prop: true },
-      outerOpts: {},
-      finalOpts: {},
-    },
-    {
-      ErrorClass: AnyError,
-      innerOpts: { prop: true },
-      outerOpts: {},
-      finalOpts: { prop: true },
-    },
+    { ErrorClass: TestError, innerOpts: {}, outerOpts: opts, finalOpts: opts },
+    { ErrorClass: AnyError, innerOpts: {}, outerOpts: opts, finalOpts: opts },
+    { ErrorClass: TestError, innerOpts: opts, outerOpts: {}, finalOpts: {} },
+    { ErrorClass: AnyError, innerOpts: opts, outerOpts: {}, finalOpts: opts },
     {
       ErrorClass: TestError,
       innerOpts: { prop: { one: false, two: false } },
