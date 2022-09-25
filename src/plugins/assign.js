@@ -14,14 +14,28 @@ export const assignError = function ({ error, newProps, plugin, methodName }) {
     )
   }
 
-  const { message, ...newPropsA } = newProps
+  const { message, stack, ...newPropsA } = newProps
 
   if (message !== undefined) {
     setErrorMessage(error, message)
   }
 
-  if (Reflect.ownKeys(newPropsA).length !== 0) {
-    setErrorProps(error, excludeKeys(newPropsA, OMITTED_PROPS))
+  if (stack !== undefined) {
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.defineProperty(error, 'stack', {
+      value: stack,
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    })
+  }
+
+  setProps(error, newPropsA)
+}
+
+const setProps = function (error, newProps) {
+  if (Reflect.ownKeys(newProps).length !== 0) {
+    setErrorProps(error, excludeKeys(newProps, OMITTED_PROPS))
   }
 }
 

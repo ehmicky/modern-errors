@@ -27,14 +27,20 @@ each(
   },
 )
 
-each(setUnsetProps, ({ title }, { propName, name, getError }) => {
-  test(`plugin.set() and unset() can modify error.message | ${title}`, (t) => {
-    const error = new TestError('test', {
-      prop: { [propName]: { message: '0' } },
+each(
+  setUnsetProps,
+  ['message', 'stack'],
+  ({ title }, { propName, name, getError }, corePropName) => {
+    test(`plugin.set() and unset() can modify some core properties | ${title}`, (t) => {
+      const error = new TestError('test', {
+        prop: { [propName]: { [corePropName]: '0' } },
+      })
+      const errorA = getError(error, AnyError)[name].error
+      t.is(errorA[corePropName], '0')
+      t.false(Object.getOwnPropertyDescriptor(errorA, corePropName).enumerable)
     })
-    t.is(getError(error, AnyError)[name].error.message, '0')
-  })
-})
+  },
+)
 
 each(
   setUnsetProps,
@@ -51,7 +57,7 @@ each(
 
 each(
   setUnsetProps,
-  ['wrap', 'constructorArgs', 'name', 'stack', 'cause', 'errors'],
+  ['wrap', 'constructorArgs', 'name', 'cause', 'errors'],
   ({ title }, { propName, name, getError }, key) => {
     test(`plugin.set() and unset() cannot set forbidden properties | ${title}`, (t) => {
       const error = new TestError('test', {
