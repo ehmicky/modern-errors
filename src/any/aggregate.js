@@ -6,7 +6,7 @@
 //  - This uses a named parameter instead of a positional one:
 //     - This is more monomorphic
 //     - This parallels the `cause` option
-// `new AnyError()` can be used to append more `errors`.
+// Child `errors` are always kept, only appended to.
 export const setAggregateErrors = function (error, { errors }, AnyError) {
   if (errors === undefined) {
     return
