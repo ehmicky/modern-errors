@@ -2,7 +2,24 @@ import { mergePluginsOpts } from './merge.js'
 
 // We return `true` by default to enforce defining `plugin.isOptions()` to be
 // able to use any `static|instanceMethods` with arguments
-export const defaultIsOptions = function () {
+export const normalizeIsOptions = function ({
+  isOptions = defaultIsOptions,
+  ...plugin
+}) {
+  if (typeof isOptions({}) !== 'boolean') {
+    throw new TypeError(
+      `The plugin "${
+        plugin.fullName
+      }"'s "isOptions()" method must return a boolean, not: ${typeof isOptions(
+        {},
+      )}`,
+    )
+  }
+
+  return { ...plugin, isOptions }
+}
+
+const defaultIsOptions = function () {
   return true
 }
 

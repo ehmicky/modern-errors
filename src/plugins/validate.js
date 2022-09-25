@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { defaultIsOptions } from './method_opts.js'
+import { normalizeIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
 import { normalizeNormalize } from './normalize.js'
 
@@ -86,21 +86,4 @@ const validateMethod = function (methodValue, methodName, plugin) {
       `The plugin "${plugin.fullName}"'s "${methodName}" property must be a function, not: ${methodValue}`,
     )
   }
-}
-
-const normalizeIsOptions = function ({
-  isOptions = defaultIsOptions,
-  ...plugin
-}) {
-  if (typeof isOptions({}) !== 'boolean') {
-    throw new TypeError(
-      `The plugin "${
-        plugin.fullName
-      }"'s "isOptions()" method must return a boolean, not: ${typeof isOptions(
-        {},
-      )}`,
-    )
-  }
-
-  return { ...plugin, isOptions }
 }
