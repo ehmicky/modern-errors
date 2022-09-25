@@ -5,7 +5,7 @@ import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
-const { TestError, AnyError } = defineClassOpts()
+const { TestError } = defineClassOpts()
 
 test('plugin.instanceMethods are set on known errors', (t) => {
   t.is(typeof new TestError('message').getInstance, 'function')
@@ -24,10 +24,6 @@ test('plugin.instanceMethods are not enumerable', (t) => {
   )
 })
 
-test('plugin.instanceMethods forward argument', (t) => {
-  t.deepEqual(new TestError('message').getInstance(0, 1).args, [0, 1])
-})
-
 test('plugin.instanceMethods are passed the error', (t) => {
   const error = new TestError('message')
   t.is(error.getInstance().error, error)
@@ -43,22 +39,9 @@ test('plugin.instanceMethods are passed the normalized class options', (t) => {
   t.true(new OtherTestError('message').getInstance().options.prop)
 })
 
-test('plugin.instanceMethods are passed the normalized global options', (t) => {
-  const { TestError: OtherTestError } = defineGlobalOpts({ prop: true })
-  t.true(new OtherTestError('message').getInstance().options.prop)
-})
-
-test('plugin.instanceMethods have "full: true" with normalize()', (t) => {
-  t.true(new TestError('test').getInstance().options.full)
-})
-
 test('plugin.instanceMethods are passed the raw instance options of all plugins', (t) => {
   const error = new TestError('message', { prop: true })
   t.deepEqual(error.getInstance().allOptions, { prop: true })
-})
-
-test('plugin.instanceMethods are passed AnyError', (t) => {
-  t.is(new TestError('message').getInstance().AnyError, AnyError)
 })
 
 each(

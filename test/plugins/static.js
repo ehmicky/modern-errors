@@ -13,23 +13,6 @@ test('plugin.staticMethods are set on AnyError', (t) => {
   t.is(typeof AnyError.getProp, 'function')
 })
 
-test('plugin.staticMethods forward argument', (t) => {
-  t.deepEqual(AnyError.getProp(0, 1).args, [0, 1])
-})
-
-test('plugin.staticMethods is passed AnyError', (t) => {
-  t.is(AnyError.getProp().AnyError, AnyError)
-})
-
-test('plugin.staticMethods are passed the normalized global options', (t) => {
-  const { AnyError: TestAnyError } = defineGlobalOpts({ prop: true })
-  t.true(TestAnyError.getProp().options.prop)
-})
-
-test('plugin.staticMethods have "full: true" with normalize()', (t) => {
-  t.true(AnyError.getProp().options.full)
-})
-
 test('plugin.staticMethods cannot be called before AnyError.subclass()', (t) => {
   const TestAnyError = createAnyError()
   t.throws(TestAnyError.getProp)

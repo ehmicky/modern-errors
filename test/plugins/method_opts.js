@@ -13,6 +13,26 @@ const callInstanceMethod = function ({ TestError, args }) {
 }
 
 each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
+  test(`plugin methods forward argument | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts()
+    t.deepEqual(callMethod({ AnyError, TestError, args: [0, 1] }).args, [0, 1])
+  })
+
+  test(`plugin methods are passed AnyError | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts()
+    t.is(callMethod({ AnyError, TestError, args: [0, 1] }).AnyError, AnyError)
+  })
+
+  test(`plugin methods are passed the normalized global options | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts({ prop: true })
+    t.true(callMethod({ AnyError, TestError, args: [] }).options.prop)
+  })
+
+  test(`plugin methods have "full: true" with normalize() | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts()
+    t.true(callMethod({ AnyError, TestError, args: [] }).options.full)
+  })
+
   test(`plugin methods can pass method options | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({ prop: false })
     t.true(callMethod({ AnyError, TestError, args: [true] }).options.prop)
