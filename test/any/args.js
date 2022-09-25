@@ -134,3 +134,14 @@ each(
     })
   },
 )
+
+each([true, ['', true]], ({ title }, constructorArgs) => {
+  test(`error.constructorArgs ignores invalid inner constructorArgs | ${title}`, (t) => {
+    const error = new TestError(message, { one: true })
+    error.constructorArgs = constructorArgs
+    t.deepEqual(new AnyError('', { cause: error }).constructorArgs, [
+      message,
+      {},
+    ])
+  })
+})
