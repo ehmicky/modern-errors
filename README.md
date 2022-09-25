@@ -311,6 +311,34 @@ throw new InputError('', { cause })
 // InputError: File does not exist.
 ```
 
+### Aggregate errors
+
+The `errors` option can be used to aggregate multiple errors into one. This is
+like
+[`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
+except that it works with any error class.
+
+```js
+const inputError = new InputError('Could not read file.')
+const authError = new AuthError('Invalid username.')
+const aggregateError = new InputError('Wrong file.', {
+  errors: [inputError, authError],
+})
+
+console.log(aggregateError)
+// InputError: Wrong file.
+//     at ...
+//   [errors]: [
+//     InputError: Could not read file.
+//         at ...
+//     AuthError: Invalid username.
+//         at ...
+//   ]
+// }
+console.log(aggregateError.errors)
+// [inputError, authError]
+```
+
 ## Error class
 
 ### Check error class
