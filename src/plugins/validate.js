@@ -102,6 +102,8 @@ const normalizeIsOptions = function ({
   return { ...plugin, isOptions }
 }
 
+// We return `true` by default to enforce defining `plugin.isOptions()` to be
+// able to use any `static|instanceMethods` with arguments
 const defaultIsOptions = function () {
   return true
 }
