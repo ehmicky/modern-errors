@@ -59,6 +59,7 @@ export const createAnyError = function ({
       computePluginsOpts({
         error,
         opts: optsA,
+        cause,
         isAnyError,
         ErrorClasses,
         errorData,

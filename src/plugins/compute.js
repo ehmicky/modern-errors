@@ -10,7 +10,7 @@ import { mergePluginsOpts } from './merge.js'
 export const computePluginsOpts = function ({
   error,
   opts,
-  opts: { cause },
+  cause,
   isAnyError,
   ErrorClasses,
   errorData,
