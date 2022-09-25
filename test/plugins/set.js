@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { TestError, AnyError } = defineClassOpts()
+const { TestError } = defineClassOpts()
 
 test('Passes error to plugin.set()', (t) => {
   t.true(new TestError('test').set.error instanceof Error)
@@ -52,8 +52,4 @@ test('plugin.set() is optional', (t) => {
     { ...TEST_PLUGIN, set: undefined },
   ])
   t.false('set' in new OtherTestError('test'))
-})
-
-test('plugin.set() is passed AnyError', (t) => {
-  t.is(new TestError('test').set.AnyError, AnyError)
 })
