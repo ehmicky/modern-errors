@@ -65,7 +65,14 @@ export const createAnyError = function ({
         errorData,
         plugins,
       })
-      setConstructorArgs({ error, opts: optsB, pluginsOpts, args })
+      setConstructorArgs({
+        error,
+        opts: optsB,
+        cause,
+        isAnyError,
+        pluginsOpts,
+        args,
+      })
       applyPluginsSet({
         error,
         AnyError,
