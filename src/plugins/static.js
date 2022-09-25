@@ -4,7 +4,6 @@ import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
 import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
-import { mergePluginsOpts } from './merge.js'
 import { mergeMethodOpts } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 

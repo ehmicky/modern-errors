@@ -1,7 +1,7 @@
 import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
-import { mergePluginsOpts, mergeClassOpts } from './merge.js'
+import { mergeClassOpts } from './merge.js'
 import { mergeMethodOpts } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 
