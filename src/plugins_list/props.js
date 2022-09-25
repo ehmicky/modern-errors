@@ -1,7 +1,6 @@
 // eslint-disable-next-line filenames/match-exported
 import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
-import setErrorProps from 'set-error-props'
 
 // Error properties can be set using the `props` option
 const normalizeProps = function ({ options: props = {} }) {
@@ -15,28 +14,18 @@ const normalizeProps = function ({ options: props = {} }) {
 // Reserved top-level properties do not throw: they are silently omitted instead
 // since `props` might be dynamically generated making it cumbersome for user to
 // filter those.
-const OMITTED_PROPS = ['wrap', 'constructorArgs']
+const OMITTED_PROPS = ['wrap', 'constructorArgs', 'message']
 
 // Set `props` option as error properties
-const setProps = function ({ error, options: props }) {
-  setErrorProps(error, props)
-  return {}
+const setProps = function ({ options }) {
+  return options
 }
 
-// `props` are shallowly merged, so we also shallowly unset them
-// We make sure `props` ignored by `set-error-props` during `plugin.set()`,
-// e.g. core error properties, are also ignored during `plugin.unset()`.
-const unsetProps = function ({ error, options: props }) {
-  const propsA = getEmptyProps(props)
-  setErrorProps(error, propsA)
-  return {}
+const unsetProps = function ({ options }) {
+  return Object.assign({}, ...Reflect.ownKeys(options).map(getUnsetProp))
 }
 
-const getEmptyProps = function (props) {
-  return Object.assign({}, ...Reflect.ownKeys(props).map(getEmptyProp))
-}
-
-const getEmptyProp = function (key) {
+const getUnsetProp = function (key) {
   return { [key]: undefined }
 }
 
