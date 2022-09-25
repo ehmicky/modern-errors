@@ -5,10 +5,12 @@ import { computePluginsOpts } from '../plugins/compute.js'
 import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
+import { setAggregateErrors } from './aggregate.js'
 import { setConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
+// eslint-disable-next-line import/max-dependencies
 import { validateSubClass } from './subclass.js'
 
 const CoreError = errorCustomClass('CoreError')
@@ -99,6 +101,7 @@ const applyInstanceLogic = function ({
   AnyError,
   isAnyError,
 }) {
+  setAggregateErrors(currentError, opts, AnyError)
   const { error, cause } = mergeCause(currentError, isAnyError)
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     error,

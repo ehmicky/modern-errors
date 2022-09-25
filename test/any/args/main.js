@@ -45,7 +45,7 @@ test('error.constructorArgs additional arguments cannot be mutated', (t) => {
 each(['cause', 'errors'], ({ title }, propName) => {
   test(`error.constructorArgs omits cause and errors | ${title}`, (t) => {
     t.deepEqual(
-      new TestError(message, { [propName]: true }).constructorArgs[1],
+      new TestError(message, { [propName]: [true] }).constructorArgs[1],
       {},
     )
   })
