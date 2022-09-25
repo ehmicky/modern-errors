@@ -4,7 +4,7 @@ import modernErrors from './main.js'
 
 const genericError = {} as Error & { genericProp: true }
 
-const AnyError = modernErrors()
+const AnyError = modernErrors([])
 type AnyInstance = InstanceType<typeof AnyError>
 const wideError = {} as any as AnyInstance
 expectAssignable<Error>(wideError)
@@ -153,7 +153,10 @@ expectError(CCError.normalize(''))
 //   expectType<CCInstance>(wideError)
 // }
 
+expectError(modernErrors())
 expectError(modernErrors(true))
+expectError(modernErrors([{}]))
+modernErrors([{ name: 'test' }])
 
 expectError(AnyError.subclass())
 expectError(AnyError.subclass({}))
