@@ -2,8 +2,8 @@ import test from 'ava'
 import { each } from 'test-each'
 
 // eslint-disable-next-line no-restricted-imports
-import SERIALIZE_PLUGIN from '../../src/plugins_list/serialize.js'
-import { defineClassOpts } from '../helpers/main.js'
+import SERIALIZE_PLUGIN from '../../../src/plugins_list/serialize.js'
+import { defineClassOpts } from '../../helpers/main.js'
 
 const { TestError, AnyError, UnknownError } = defineClassOpts({}, {}, [
   SERIALIZE_PLUGIN,
