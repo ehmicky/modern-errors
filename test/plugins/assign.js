@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { defineClassOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { TestError } = defineClassOpts()
+const { TestError, AnyError } = defineClassOpts()
 
 each([undefined, true], ({ title }, value) => {
   test(`plugin.set() must return a plain object | ${title}`, (t) => {
@@ -52,4 +52,22 @@ test('plugin.set() shallow merge properties', (t) => {
   t.true(one)
   t.false(two)
   t.true(three)
+})
+
+test('plugin.set() non-enumerable properties can be assigned', (t) => {
+  const cause = new TestError('test')
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(cause, 'nonEnumProp', {
+    value: true,
+    enumerable: false,
+    writable: true,
+    configurable: true,
+  })
+
+  const error = new AnyError('test', {
+    cause,
+    prop: { toSet: { nonEnumProp: false } },
+  })
+  t.false(error.nonEnumProp)
+  t.false(Object.getOwnPropertyDescriptor(error, 'nonEnumProp').enumerable)
 })
