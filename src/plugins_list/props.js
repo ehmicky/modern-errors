@@ -2,7 +2,7 @@
 import isPlainObj from 'is-plain-obj'
 
 // Error properties can be set using the `props` option
-const getOptions = function ({ options: props = {} }) {
+const getOptions = function (props = {}) {
   if (!isPlainObj(props)) {
     throw new TypeError(`"props" option must be a plain object: ${props}`)
   }

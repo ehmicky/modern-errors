@@ -3,7 +3,7 @@
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
 // eslint-disable-next-line filenames/match-exported
-const getOptions = function ({ options: bugs = '' }) {
+const getOptions = function (bugs = '') {
   return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
 }
 

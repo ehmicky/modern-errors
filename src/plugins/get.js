@@ -10,7 +10,7 @@ export const normalizeGetOptions = function ({
   return { ...plugin, getOptions }
 }
 
-const defaultGetOptions = function (fullName, { options }) {
+const defaultGetOptions = function (fullName, options) {
   if (options !== undefined) {
     throw new Error(
       `The plugin "${fullName}" does not have any options: ${options}`,
@@ -33,6 +33,10 @@ const defaultGetOptions = function (fullName, { options }) {
 //     - As opposed to splitting `getOptions()` into two different methods,
 //       since that might encourage using only the method with the full
 //       `options` object, which would prevent any early validation
+// We pass positional arguments to `plugin.isOptions()` and `getOptions()` as
+// opposed to the object passed to other methods since:
+//  - Those two methods are simpler and more functional
+//  - This makes it clear that `options` is post-getOptions
 // Any validation|normalization specific to a method should be done inside that
 // method, as opposed to inside `plugin.getOptions()`
 // Plugins should avoid:
@@ -51,5 +55,5 @@ export const getPluginOpts = function (
   { name, getOptions },
   full,
 ) {
-  return getOptions({ options: pluginsOpts[name], full })
+  return getOptions(pluginsOpts[name], full)
 }
