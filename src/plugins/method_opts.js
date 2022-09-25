@@ -38,27 +38,23 @@ const getIsOptions = function ({ isOptions, normalize }) {
 export const mergeMethodOpts = function ({
   args,
   pluginsOpts,
-  plugin,
+  plugin: { name, isOptions },
   plugins,
 }) {
-  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-  const pluginsOptsA =
-    methodOpts === undefined
-      ? pluginsOpts
-      : mergePluginsOpts(pluginsOpts, methodOpts, plugins)
-  return { args: argsA, pluginsOpts: pluginsOptsA }
-}
-
-export const getMethodOpts = function (args, { name, isOptions }) {
   if (isOptions === undefined || args.length === 0) {
-    return { args }
+    return { args, pluginsOpts }
   }
 
   const lastArg = args[args.length - 1]
 
   if (!isOptions({ options: lastArg })) {
-    return { args }
+    return { args, pluginsOpts }
   }
 
-  return { args: args.slice(0, -1), methodOpts: { [name]: lastArg } }
+  const pluginsOptsA = mergePluginsOpts(
+    pluginsOpts,
+    { [name]: lastArg },
+    plugins,
+  )
+  return { args: args.slice(0, -1), pluginsOpts: pluginsOptsA }
 }
