@@ -1,5 +1,5 @@
 import { deepClone } from './clone.js'
-import { mergePluginsOpts } from './merge.js'
+import { mergeClassOpts, mergePluginsOpts } from './merge.js'
 
 // We keep track of un-normalized plugins options to re-use them later:
 //  - When merging with parent `AnyError`
@@ -16,8 +16,7 @@ export const computePluginsOpts = function ({
   errorData,
   plugins,
 }) {
-  const { classOpts } = ErrorClasses[error.name]
-  const parentOpts = mergePluginsOpts(classOpts, opts, plugins)
+  const parentOpts = mergeClassOpts({ opts, error, ErrorClasses, plugins })
   const pluginsOpts = wrapPluginsOpts({
     parentOpts,
     cause,

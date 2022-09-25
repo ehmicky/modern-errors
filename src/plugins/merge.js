@@ -1,6 +1,19 @@
 import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
+// Merge global and class options with instance options.
+// This is done as late as possible to ensure `errorData` only contains instance
+// options, since `constructorArgs` should not have global nor class options.
+export const mergeClassOpts = function ({
+  opts,
+  error,
+  ErrorClasses,
+  plugins,
+}) {
+  const { classOpts } = ErrorClasses[error.name]
+  return mergePluginsOpts(classOpts, opts, plugins)
+}
+
 // Merge:
 //  - child class options with parent class options
 //  - class options with instance options
