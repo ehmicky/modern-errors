@@ -3,6 +3,7 @@ import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
 
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
+import { applyIsOptions } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
@@ -53,9 +54,10 @@ const addStaticMethod = function ({
 }) {
   validateMethodName(methodName, plugin, plugins)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  AnyError[methodName] = callStaticMethods.bind(undefined, {
+  AnyError[methodName] = callStaticMethod.bind(undefined, {
     methodFunc,
     plugin,
+    plugins,
     globalOpts,
     ErrorClasses,
     AnyError,
@@ -78,14 +80,23 @@ const validateMethodName = function (methodName, plugin, plugins) {
   })
 }
 
-const callStaticMethods = function (
-  { methodFunc, plugin, globalOpts, ErrorClasses, AnyError },
+const callStaticMethod = function (
+  { methodFunc, plugin, plugins, globalOpts, ErrorClasses, AnyError },
   ...args
 ) {
   validateNonEmpty(ErrorClasses)
-  const options = normalizePluginOpts(globalOpts, plugin, true)
+  const { args: argsA, pluginsOpts } = applyIsOptions({
+    args,
+    pluginsOpts: globalOpts,
+    plugin,
+    plugins,
+  })
   return methodFunc(
-    { options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },
-    ...args,
+    {
+      options: normalizePluginOpts(pluginsOpts, plugin, true),
+      AnyError,
+      ErrorClasses: getErrorClasses(ErrorClasses),
+    },
+    ...argsA,
   )
 }

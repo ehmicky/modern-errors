@@ -1,5 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
+import { defaultIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
 
 // Validate and normalize plugins
@@ -100,10 +101,4 @@ const normalizeIsOptions = function ({
   }
 
   return { ...plugin, isOptions }
-}
-
-// We return `true` by default to enforce defining `plugin.isOptions()` to be
-// able to use any `static|instanceMethods` with arguments
-const defaultIsOptions = function () {
-  return true
 }

@@ -559,6 +559,20 @@ specific error.
 throw new InputError('Could not read the file.', options)
 ```
 
+### Method options
+
+Options passed as the last argument to `AnyError.*(...)` or `error.*(...)` apply
+to that specific function call. Only the options for the specific plugin should
+be passed.
+
+```js
+AnyError[methodName](...args, options[pluginName])
+```
+
+```js
+error[methodName](...args, options[pluginName])
+```
+
 ### Modify options
 
 When [re-throwing errors](#re-throw-errors), the outer error's options replace

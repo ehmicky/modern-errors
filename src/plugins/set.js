@@ -1,5 +1,5 @@
 import { getErrorClasses } from './error_classes.js'
-import { getErrorOpts } from './normalize.js'
+import { normalizePluginOpts } from './normalize.js'
 
 // Apply each `plugin.normalize()` then `plugin.set()`
 export const applyPluginsSet = function ({
@@ -11,7 +11,15 @@ export const applyPluginsSet = function ({
   plugins,
 }) {
   plugins.forEach((plugin) => {
-    applyPluginSet({ error, AnyError, ErrorClasses, errorData, cause, plugin })
+    applyPluginUnset({
+      error,
+      AnyError,
+      ErrorClasses,
+      errorData,
+      cause,
+      plugin,
+    })
+    applyPluginSet({ error, AnyError, ErrorClasses, errorData, plugin })
   })
 }
 
@@ -39,29 +47,45 @@ export const applyPluginsSet = function ({
 //       after applying `AnyError.normalize()`
 // This also keeps options merging with inner error separate and orthogonal
 // from merging its class, message and stack.
-const applyPluginSet = function ({
+const applyPluginUnset = function ({
   error,
   AnyError,
   ErrorClasses,
   errorData,
   cause,
   plugin,
+  plugin: { unset },
 }) {
-  if (plugin.set === undefined) {
+  if (unset === undefined || !(cause instanceof AnyError)) {
     return
   }
 
-  if (cause instanceof AnyError) {
-    plugin.unset.call(undefined, {
-      ...getErrorOpts({ error: cause, errorData, plugin, full: true }),
-      error,
-      AnyError,
-      ErrorClasses: getErrorClasses(ErrorClasses),
-    })
+  const { pluginsOpts } = errorData.get(cause)
+  unset({
+    options: normalizePluginOpts(pluginsOpts, plugin, true),
+    allOptions: pluginsOpts,
+    error,
+    AnyError,
+    ErrorClasses: getErrorClasses(ErrorClasses),
+  })
+}
+
+const applyPluginSet = function ({
+  error,
+  AnyError,
+  ErrorClasses,
+  errorData,
+  plugin,
+  plugin: { set },
+}) {
+  if (set === undefined) {
+    return
   }
 
-  plugin.set.call(undefined, {
-    ...getErrorOpts({ error, errorData, plugin, full: true }),
+  const { pluginsOpts } = errorData.get(error)
+  set({
+    options: normalizePluginOpts(pluginsOpts, plugin, true),
+    allOptions: pluginsOpts,
     error,
     AnyError,
     ErrorClasses: getErrorClasses(ErrorClasses),

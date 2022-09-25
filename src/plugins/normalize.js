@@ -26,12 +26,6 @@
 //    for name conflict
 //  - This reduces cross-plugin dependencies since they cannot easily reference
 //    each other, keeping them decoupled from each other
-export const getErrorOpts = function ({ error, errorData, plugin, full }) {
-  const { pluginsOpts } = errorData.get(error)
-  const options = normalizePluginOpts(pluginsOpts, plugin, full)
-  return { options, allOptions: pluginsOpts }
-}
-
 export const normalizePluginOpts = function (
   pluginsOpts,
   { name, normalize },
