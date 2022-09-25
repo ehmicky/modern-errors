@@ -1,10 +1,8 @@
-// eslint-disable-next-line filenames/match-exported
-import setErrorMessage from 'set-error-message'
-
 // If defined, the `bugs` option prints a line recommending to report any
 // unknown error.
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
+// eslint-disable-next-line filenames/match-exported
 const normalizeBugs = function ({ options: bugs = '' }) {
   return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
 }
@@ -48,16 +46,11 @@ const EXAMPLE_ORIGIN = 'https://example.com'
 //   - This simplifies error handling logic
 //   - This provides with better debugging and more immediate experience
 const setBugs = function ({ error, options: bugs }) {
-  if (bugs === '') {
-    return
-  }
-
-  setErrorMessage(error, `${error.message}\n${bugs}`)
+  return bugs === '' ? {} : { message: `${error.message}\n${bugs}` }
 }
 
 const unsetBugs = function ({ error }) {
-  const newMessage = error.message.split('\n').filter(isNotBugs).join('\n')
-  setErrorMessage(error, newMessage)
+  return { message: error.message.split('\n').filter(isNotBugs).join('\n') }
 }
 
 const isNotBugs = function (line) {

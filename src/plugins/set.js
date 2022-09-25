@@ -1,3 +1,4 @@
+import { assignError } from './assign.js'
 import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
 
@@ -76,7 +77,8 @@ const applyPluginUnset = function ({
     plugins,
   })
   const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
-  unset({ ...info, error })
+  const newProps = unset({ ...info, error })
+  assignError({ error, newProps, plugin, methodName: 'unset' })
 }
 
 const applyPluginSet = function ({
@@ -99,5 +101,6 @@ const applyPluginSet = function ({
     plugins,
   })
   const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
-  set({ ...info, error })
+  const newProps = set({ ...info, error })
+  assignError({ error, newProps, plugin, methodName: 'set' })
 }

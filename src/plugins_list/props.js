@@ -20,6 +20,7 @@ const OMITTED_PROPS = ['wrap', 'constructorArgs']
 // Set `props` option as error properties
 const setProps = function ({ error, options: props }) {
   setErrorProps(error, props)
+  return {}
 }
 
 // `props` are shallowly merged, so we also shallowly unset them
@@ -28,6 +29,7 @@ const setProps = function ({ error, options: props }) {
 const unsetProps = function ({ error, options: props }) {
   const propsA = getEmptyProps(props)
   setErrorProps(error, propsA)
+  return {}
 }
 
 const getEmptyProps = function (props) {
