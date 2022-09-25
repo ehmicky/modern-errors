@@ -1,50 +1,29 @@
 import test from 'ava'
+import { each } from 'test-each'
 
 import { defineClassOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineClassOpts()
 
-const testError = new TestError('test')
+each(
+  [
+    () => new TestError('test').set,
+    () => new TestError('test').getInstance(),
+    () => AnyError.getProp(),
+  ],
+  ({ title }, getValues) => {
+    test(`plugin.set|instanceMethods|staticMethods is passed AnyError | ${title}`, (t) => {
+      t.is(getValues().AnyError, AnyError)
+    })
 
-test('plugin.set() is passed AnyError', (t) => {
-  t.is(testError.set.AnyError, AnyError)
-})
+    test(`plugin.set|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
+      t.deepEqual(getValues().ErrorClasses, { TestError, UnknownError })
+    })
 
-test('plugin.instanceMethods are passed AnyError', (t) => {
-  t.is(testError.getInstance().AnyError, AnyError)
-})
-
-test('plugin.staticMethods are passed AnyError', (t) => {
-  t.is(AnyError.getProp().AnyError, AnyError)
-})
-
-test('plugin.set() is passed ErrorClasses', (t) => {
-  t.deepEqual(testError.set.ErrorClasses, { TestError, UnknownError })
-})
-
-test('plugin.instanceMethods are passed ErrorClasses', (t) => {
-  t.deepEqual(testError.getInstance().ErrorClasses, { TestError, UnknownError })
-})
-
-test('plugin.staticMethods are passed ErrorClasses', (t) => {
-  t.deepEqual(AnyError.getProp().ErrorClasses, { TestError, UnknownError })
-})
-
-test('plugin.set() cannot modify ErrorClasses', (t) => {
-  const error = new TestError('test')
-  error.set.ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
-})
-
-test('plugin.instanceMethods cannot modify ErrorClasses', (t) => {
-  const error = new TestError('test')
-  // eslint-disable-next-line fp/no-mutation
-  error.getInstance().ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
-})
-
-test('plugin.staticMethods cannot modify ErrorClasses', (t) => {
-  // eslint-disable-next-line fp/no-mutation
-  AnyError.getProp().ErrorClasses.prop = true
-  t.false('prop' in AnyError.getProp().ErrorClasses)
-})
+    test(`plugin.set|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
+      // eslint-disable-next-line fp/no-mutation, no-param-reassign
+      getValues().ErrorClasses.prop = true
+      t.false('prop' in AnyError.getProp().ErrorClasses)
+    })
+  },
+)
