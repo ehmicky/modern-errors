@@ -26,11 +26,16 @@ const setProps = function ({ error, options: props }) {
 // We make sure `props` ignored by `set-error-props` during `plugin.set()`,
 // e.g. core error properties, are also ignored during `plugin.unset()`.
 const unsetProps = function ({ error, options: props }) {
-  // eslint-disable-next-line fp/no-loops
-  for (const key of Reflect.ownKeys(setErrorProps({}, props))) {
-    // eslint-disable-next-line fp/no-delete
-    delete error[key]
-  }
+  const propsA = getEmptyProps(props)
+  setErrorProps(error, propsA)
+}
+
+const getEmptyProps = function (props) {
+  return Object.assign({}, ...Reflect.ownKeys(props).map(getEmptyProp))
+}
+
+const getEmptyProp = function (key) {
+  return { [key]: undefined }
 }
 
 const PROPS_PLUGIN = {
