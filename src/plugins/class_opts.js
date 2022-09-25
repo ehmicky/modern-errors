@@ -2,6 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { deepClone } from './clone.js'
 import { mergePluginsOpts } from './merge.js'
+import { validatePluginsOptsNames } from './name.js'
 import { normalizePluginOpts } from './normalize.js'
 
 // The second argument to `modernErrors()` are global options applied to all
@@ -35,6 +36,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
   }
 
   const globalOptsA = deepClone(globalOpts)
+  validatePluginsOptsNames(globalOptsA, plugins)
   plugins.forEach((plugin) => {
     normalizePluginOpts(globalOptsA, plugin, false)
   })
@@ -58,6 +60,7 @@ export const getClassOpts = function ({
 
   const { custom, ...classOptsA } = classOpts
   validateCustomUnknown(custom, className)
+  validatePluginsOptsNames(classOptsA, plugins)
   const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
   const classOptsC = deepClone(classOptsB)
   plugins.forEach((plugin) => {

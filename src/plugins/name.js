@@ -1,3 +1,20 @@
+// Ensure global and class options:
+//  - Only contain plugins options
+//  - Do not refer to unloaded plugins
+export const validatePluginsOptsNames = function (pluginsOpts, plugins) {
+  Object.entries(pluginsOpts).forEach(([optName, pluginOpts]) => {
+    validatePluginOptsName(optName, pluginOpts, plugins)
+  })
+}
+
+const validatePluginOptsName = function (optName, pluginOpts, plugins) {
+  if (!plugins.some(({ name }) => name === optName)) {
+    throw new TypeError(
+      `Invalid option "${optName}": the plugin "${NAME_PREFIX}${optName}" must be passed to "modernErrors(plugins)"`,
+    )
+  }
+}
+
 // Validate `plugin.name`
 export const validatePluginName = function (plugin) {
   if (plugin.name === undefined) {

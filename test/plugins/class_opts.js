@@ -31,6 +31,10 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
     classOpts.prop.one = false
     t.true(new TestError('test').set.options.prop.one)
   })
+
+  test(`Cannot pass unknown options | ${title}`, (t) => {
+    t.throws(defineOpts.bind(undefined, { one: true }))
+  })
 })
 
 test('plugin.normalize() full is false for global options', (t) => {
