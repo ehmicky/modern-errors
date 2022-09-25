@@ -10,7 +10,7 @@ import setErrorProps from 'set-error-props'
 export const assignError = function ({ error, newProps, plugin, methodName }) {
   if (!isPlainObj(newProps)) {
     throw new TypeError(
-      `Plugin "${plugin.name}" "${methodName}()" must return a plain object: ${newProps}`,
+      `Plugin "${plugin.fullName}" "${methodName}()" must return a plain object: ${newProps}`,
     )
   }
 

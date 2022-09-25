@@ -4,13 +4,15 @@ export const normalizeNormalize = function (plugin) {
   return {
     ...plugin,
     normalize:
-      plugin.normalize ?? defaultNormalize.bind(undefined, plugin.name),
+      plugin.normalize ?? defaultNormalize.bind(undefined, plugin.fullName),
   }
 }
 
-const defaultNormalize = function (name, { options }) {
+const defaultNormalize = function (fullName, { options }) {
   if (options !== undefined) {
-    throw new Error(`The plugin "${name}" does not have any option: ${options}`)
+    throw new Error(
+      `The plugin "${fullName}" does not have any option: ${options}`,
+    )
   }
 }
 
