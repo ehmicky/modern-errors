@@ -2,17 +2,6 @@ import { mergePluginsOpts } from './merge.js'
 
 export const normalizeIsOptions = function (plugin) {
   const isOptions = getIsOptions(plugin)
-
-  if (typeof isOptions({}) !== 'boolean') {
-    throw new TypeError(
-      `The plugin "${
-        plugin.fullName
-      }"'s "isOptions()" method must return a boolean, not: ${typeof isOptions(
-        {},
-      )}`,
-    )
-  }
-
   return { ...plugin, isOptions }
 }
 
@@ -38,6 +27,7 @@ const getIsOptions = function ({ isOptions, normalize }) {
 export const mergeMethodOpts = function ({
   args,
   pluginsOpts,
+  plugin,
   plugin: { name, isOptions },
   plugins,
 }) {
@@ -47,7 +37,7 @@ export const mergeMethodOpts = function ({
 
   const lastArg = args[args.length - 1]
 
-  if (!isOptions({ options: lastArg })) {
+  if (!lastArgIsOptions(plugin, lastArg)) {
     return { args, pluginsOpts }
   }
 
@@ -57,4 +47,16 @@ export const mergeMethodOpts = function ({
     plugins,
   )
   return { args: args.slice(0, -1), pluginsOpts: pluginsOptsA }
+}
+
+const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
+  const isOptionsResult = isOptions({ options: lastArg })
+
+  if (typeof isOptionsResult !== 'boolean') {
+    throw new TypeError(
+      `The plugin "${fullName}"'s "isOptions()" method must return a boolean, not: ${typeof isOptionsResult}`,
+    )
+  }
+
+  return isOptionsResult
 }

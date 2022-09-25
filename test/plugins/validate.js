@@ -77,11 +77,3 @@ each(['set', 'unset'], ({ title }, optName) => {
     )
   })
 })
-
-test('Should validate that plugin.isOptions returns a boolean', (t) => {
-  t.throws(
-    defineGlobalOpts.bind(undefined, {}, [
-      { ...TEST_PLUGIN, isOptions: () => '' },
-    ]),
-  )
-})

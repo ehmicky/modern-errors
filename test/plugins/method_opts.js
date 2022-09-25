@@ -77,6 +77,13 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
     ])
   })
 
+  test(`plugin methods throw if plugin.isOptions() does not return a boolean | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts({}, [
+      { ...TEST_PLUGIN, isOptions() {} },
+    ])
+    t.throws(callMethod.bind(undefined, { AnyError, TestError, args: [0] }))
+  })
+
   test(`plugin methods only pass method options if plugin.isOptions() returns true | ${title}`, (t) => {
     const { AnyError, TestError } = defineClassOpts()
     t.deepEqual(callMethod({ AnyError, TestError, args: [1] }).args, [1])
