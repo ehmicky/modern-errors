@@ -30,7 +30,10 @@ export const TEST_PLUGIN = {
   unset(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
-    return { unset: { ...utils } }
+    const toUnset = isPlainObj(utils.options?.prop)
+      ? utils.options?.prop.toUnset
+      : {}
+    return { ...toUnset, unset: { ...utils } }
   },
   set(utils) {
     // eslint-disable-next-line fp/no-this
