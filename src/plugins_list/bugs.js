@@ -48,9 +48,11 @@ const EXAMPLE_ORIGIN = 'https://example.com'
 //   - This simplifies error handling logic
 //   - This provides with better debugging and more immediate experience
 const setBugs = function ({ error, options: bugs }) {
-  if (bugs !== '') {
-    setErrorMessage(error, `${error.message}\n${bugs}`)
+  if (bugs === '') {
+    return
   }
+
+  setErrorMessage(error, `${error.message}\n${bugs}`)
 }
 
 const unsetBugs = function ({ error }) {
