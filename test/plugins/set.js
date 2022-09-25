@@ -37,10 +37,6 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('plugin.set() has "full: true" with getOptions()', (t) => {
-  t.true(new TestError('test').set.options.full)
-})
-
 test('plugin.set() is optional', (t) => {
   const { TestError: OtherTestError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, set: undefined },

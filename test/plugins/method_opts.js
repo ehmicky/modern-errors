@@ -18,11 +18,6 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
     t.true(callMethod({ AnyError, TestError }).options.prop)
   })
 
-  test(`plugin methods have "full: true" with getOptions() | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts()
-    t.true(callMethod({ AnyError, TestError }).options.full)
-  })
-
   test(`plugin methods can pass method options | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({ prop: false })
     t.true(callMethod({ AnyError, TestError, args: [true] }).options.prop)

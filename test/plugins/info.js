@@ -31,5 +31,9 @@ each(
       getValues().options.prop = false
       t.is(AnyError.getProp().options.prop, undefined)
     })
+
+    test(`plugin.set|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
+      t.true(getValues().options.full)
+    })
   },
 )
