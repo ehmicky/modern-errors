@@ -12,7 +12,7 @@ import isPlainObj from 'is-plain-obj'
 //     - More standard
 //     - More monomorphic
 //     - Safer against injections
-export const normalizeConstructorArgs = function ({
+export const normalizeOpts = function ({
   opts = {},
   ErrorClasses: {
     UnknownError: { ErrorClass: UnknownError },

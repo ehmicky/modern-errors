@@ -5,9 +5,9 @@ import { computePluginsOpts } from '../plugins/compute.js'
 import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
-import { normalizeConstructorArgs } from './args.js'
 import { mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
+import { normalizeOpts } from './options.js'
 import { validateSubClass } from './subclass.js'
 
 const CoreError = errorCustomClass('CoreError')
@@ -51,12 +51,7 @@ export const createAnyError = function ({
     constructor(message, opts) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      const optsA = normalizeConstructorArgs({
-        opts,
-        ErrorClasses,
-        AnyError,
-        isAnyError,
-      })
+      const optsA = normalizeOpts({ opts, ErrorClasses, AnyError, isAnyError })
 
       super(message, optsA)
 
