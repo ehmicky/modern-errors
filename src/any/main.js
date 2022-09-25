@@ -41,7 +41,6 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-// eslint-disable-next-line max-lines-per-function
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
@@ -60,37 +59,19 @@ export const createAnyError = function ({
         AnyError,
         isAnyError,
       })
-
       super(message, optsA)
-
-      const { error, cause } = mergeCause(this, isAnyError)
-      const { opts: optsB, pluginsOpts } = computePluginsOpts({
-        error,
-        opts: optsA,
-        cause,
-        isAnyError,
-        errorData,
-        plugins,
-      })
-      setConstructorArgs({
-        error,
-        opts: optsB,
-        cause,
-        isAnyError,
-        pluginsOpts,
-        args,
-      })
-      applyPluginsSet({
-        error,
-        AnyError,
-        ErrorClasses,
-        errorData,
-        cause,
-        plugins,
-      })
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
-      return error
+      return applyInstanceLogic({
+        currentError: this,
+        opts: optsA,
+        args,
+        ErrorClasses,
+        errorData,
+        plugins,
+        AnyError,
+        isAnyError,
+      })
     }
     /* c8 ignore stop */
 
@@ -106,4 +87,35 @@ export const createAnyError = function ({
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
   return AnyError
+}
+
+const applyInstanceLogic = function ({
+  currentError,
+  opts,
+  args,
+  ErrorClasses,
+  errorData,
+  plugins,
+  AnyError,
+  isAnyError,
+}) {
+  const { error, cause } = mergeCause(currentError, isAnyError)
+  const { opts: optsA, pluginsOpts } = computePluginsOpts({
+    error,
+    opts,
+    cause,
+    isAnyError,
+    errorData,
+    plugins,
+  })
+  setConstructorArgs({
+    error,
+    opts: optsA,
+    cause,
+    isAnyError,
+    pluginsOpts,
+    args,
+  })
+  applyPluginsSet({ error, AnyError, ErrorClasses, errorData, cause, plugins })
+  return error
 }
