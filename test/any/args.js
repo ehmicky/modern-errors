@@ -102,32 +102,35 @@ each(
   },
 )
 
-test('error.constructorArgs merges inner non plugin options if outer class is AnyError', (t) => {
-  const cause = new TestError(message, { one: false, two: false })
-  t.deepEqual(
-    new AnyError('', { cause, one: true, three: true }).constructorArgs,
-    [message, { one: true, two: false, three: true }],
-  )
-})
+each(
+  [
+    { ErrorClass: AnyError, finalOpts: { one: true, two: false, three: true } },
+    { ErrorClass: TestError, finalOpts: { one: true, three: true } },
+  ],
+  ({ title }, { ErrorClass, finalOpts }) => {
+    test(`error.constructorArgs merges inner non plugin options if AnyError | ${title}`, (t) => {
+      const cause = new TestError(message, { one: false, two: false })
+      t.deepEqual(
+        new ErrorClass('', { cause, one: true, three: true }).constructorArgs,
+        [message, finalOpts],
+      )
+    })
+  },
+)
 
-test('error.constructorArgs ignores inner non plugin options if outer class is not AnyError', (t) => {
-  const cause = new TestError(message, { one: false, two: false })
-  t.deepEqual(
-    new TestError('', { cause, one: true, three: true }).constructorArgs,
-    [message, { one: true, three: true }],
-  )
-})
-
-test('error.constructorArgs uses inner arguments if outer class is AnyError', (t) => {
-  const cause = new TestError(message, {}, true)
-  t.deepEqual(new AnyError('', { cause }).constructorArgs, [message, {}, true])
-})
-
-test('error.constructorArgs ignores inner arguments if outer class is not AnyError', (t) => {
-  const cause = new TestError(message, {}, true)
-  t.deepEqual(new TestError('', { cause }, false).constructorArgs, [
-    message,
-    {},
-    false,
-  ])
-})
+each(
+  [
+    { ErrorClass: AnyError, outerArgs: [], finalArgs: [true] },
+    { ErrorClass: TestError, outerArgs: [false], finalArgs: [false] },
+  ],
+  ({ title }, { ErrorClass, outerArgs, finalArgs }) => {
+    test(`error.constructorArgs merges inner arguments if AnyError | ${title}`, (t) => {
+      const cause = new TestError(message, {}, true)
+      t.deepEqual(new ErrorClass('', { cause }, ...outerArgs).constructorArgs, [
+        message,
+        {},
+        ...finalArgs,
+      ])
+    })
+  },
+)
