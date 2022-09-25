@@ -1,7 +1,5 @@
-import { deepClone } from './clone.js'
-import { getErrorClasses } from './error_classes.js'
+import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
-import { normalizePluginOpts } from './normalize.js'
 
 // Apply each `plugin.normalize()` then `plugin.set()`
 export const applyPluginsSet = function ({
@@ -123,8 +121,6 @@ const getSetUnsetInfo = function ({
     ErrorClasses,
     plugins,
   })
-  const pluginsOptsA = deepClone(pluginsOpts)
-  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
-  const ErrorClassesA = getErrorClasses(ErrorClasses)
-  return { options, error, AnyError, ErrorClasses: ErrorClassesA }
+  const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
+  return { ...info, error }
 }
