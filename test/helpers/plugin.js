@@ -8,7 +8,7 @@ const validateContext = function (context) {
 
 export const TEST_PLUGIN = {
   name: 'prop',
-  isOptions({ options: prop }) {
+  isOptions(prop) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
     return typeof prop === 'boolean' || isPlainObj(prop)

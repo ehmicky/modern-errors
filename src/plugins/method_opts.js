@@ -48,7 +48,7 @@ export const mergeMethodOpts = function ({
 }
 
 const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
-  const isOptionsResult = isOptions({ options: lastArg })
+  const isOptionsResult = isOptions(lastArg)
 
   if (typeof isOptionsResult !== 'boolean') {
     throw new TypeError(
