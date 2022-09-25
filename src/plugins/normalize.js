@@ -4,6 +4,17 @@
 // `plugin.set|unset|instanceMethods.*`
 //  - This is mostly meant for plugins like serialization which need to
 //    re-instantiate or clone errors
+// We pass whether the `options` object is partial or not using `full`:
+//  - This allows validation|normalization that requires options to be full,
+//    such as:
+//     - Required properties
+//     - Properties depending on others
+//  - While still encouraging validation to be performed as early as possible
+//     - As opposed to splitting `normalize()` into two different methods, since
+//       that might encourage using only the method with the full `options`
+//       object, which would prevent any early validation
+// Any validation|normalization specific to a method should be done inside that
+// method, as opposed to inside `plugin.normalize()`
 // Plugins should avoid:
 //  - Letting options be optionally a function: class constructors can be used
 //    for this, by manipulating `options` and passing it to `super()`
