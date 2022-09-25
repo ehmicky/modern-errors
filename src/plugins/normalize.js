@@ -1,11 +1,21 @@
+// `options` is `undefined` unless `plugin.normalize()` is defined
+//  - This encourages using `plugin.normalize()`
+export const normalizeNormalize = function ({
+  normalize = defaultNormalize,
+  ...plugin
+}) {
+  return { ...plugin, normalize }
+}
+
+// eslint-disable-next-line no-empty-function
+const defaultNormalize = function () {}
+
 // Retrieve, validate and normalize all options for a given plugin.
 // Those are passed to `plugin.set|unset|instanceMethods.*`.
 // We also pass all plugins options, before normalization, to
 // `plugin.set|unset|instanceMethods.*`
 //  - This is mostly meant for plugins like serialization which need to
 //    re-instantiate or clone errors
-// `options` is `undefined` unless `plugin.normalize()` is defined
-//  - This encourages using `plugin.normalize()`
 // We pass whether the `options` object is partial or not using `full`:
 //  - This allows validation|normalization that requires options to be full,
 //    such as:
@@ -33,7 +43,5 @@ export const normalizePluginOpts = function (
   { name, normalize },
   full,
 ) {
-  return normalize === undefined
-    ? undefined
-    : normalize({ options: pluginsOpts[name], full })
+  return normalize({ options: pluginsOpts[name], full })
 }

@@ -2,6 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { defaultIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
+import { normalizeNormalize } from './normalize.js'
 
 // Validate and normalize plugins
 export const normalizePlugins = function (plugins = []) {
@@ -24,7 +25,8 @@ const normalizePlugin = function (plugin) {
   const pluginB = normalizeMethods(pluginA, 'instanceMethods')
   const pluginC = normalizeMethods(pluginB, 'staticMethods')
   const pluginD = normalizeIsOptions(pluginC)
-  return pluginD
+  const pluginE = normalizeNormalize(pluginD)
+  return pluginE
 }
 
 const validateOptionalFuncs = function (plugin) {
