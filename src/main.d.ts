@@ -1,6 +1,35 @@
 import type { ErrorName } from 'error-custom-class'
 import type MergeErrorCause from 'merge-error-cause'
 
+/**
+ * Plugins extend `modern-errors` features.
+ *
+ * @example
+ * ```js
+ * import modernErrorsBugs from 'modern-errors-bugs'
+ * import modernErrorsProps from 'modern-errors-props'
+ *
+ * export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
+ * ```
+ */
+interface Plugin {
+  readonly name: string
+  readonly normalize?: (input: { options: any }) => any
+}
+
+type PluginOptions<PluginArg extends Plugin> =
+  PluginArg['normalize'] extends NonNullable<Plugin['normalize']>
+    ? Parameters<PluginArg['normalize']>[0]['options']
+    : never
+
+type LiteralString<T extends string> = string extends T ? never : T
+
+type Options<Plugins extends readonly Plugin[]> = {
+  readonly [PluginArg in Plugins[number] as LiteralString<
+    PluginArg['name']
+  >]?: PluginOptions<PluginArg>
+}
+
 type MergeCause<ErrorArg extends unknown> = ReturnType<
   typeof MergeErrorCause<ErrorArg>
 >
@@ -174,32 +203,3 @@ export default function modernErrors<Plugins extends readonly Plugin[]>(
   plugins?: Plugins,
   options?: Options<Plugins>,
 ): AnyErrorClass
-
-/**
- * Plugins extend `modern-errors` features.
- *
- * @example
- * ```js
- * import modernErrorsBugs from 'modern-errors-bugs'
- * import modernErrorsProps from 'modern-errors-props'
- *
- * export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
- * ```
- */
-interface Plugin {
-  readonly name: string
-  readonly normalize?: (input: { options: any }) => any
-}
-
-type PluginOptions<PluginArg extends Plugin> =
-  PluginArg['normalize'] extends NonNullable<Plugin['normalize']>
-    ? Parameters<PluginArg['normalize']>[0]['options']
-    : never
-
-type LiteralString<T extends string> = string extends T ? never : T
-
-type Options<Plugins extends readonly Plugin[]> = {
-  readonly [PluginArg in Plugins[number] as LiteralString<
-    PluginArg['name']
-  >]?: PluginOptions<PluginArg>
-}
