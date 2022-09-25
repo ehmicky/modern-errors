@@ -600,22 +600,13 @@ try {
 _Plugin_:
 [`modern-errors-props`](https://github.com/ehmicky/modern-errors-props)
 
-Error properties can be set using the `props` option on individual error
-instances.
+Error properties can be set using the `props` option.
 
 ```js
 const error = new InputError('Could not read the file.', {
   props: { isUserError: true },
 })
 console.log(error.isUserError) // true
-```
-
-Or on [all errors of the same class](#error-class-options).
-
-```js
-export const InputError = AnyError.subclass('InputError', {
-  props: { isUserError: true },
-})
 ```
 
 ### CLI errors
