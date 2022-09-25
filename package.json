@@ -56,7 +56,7 @@
     "set-error-props": "^3.0.0"
   },
   "devDependencies": {
-    "@ehmicky/dev-tasks": "^1.0.87",
+    "@ehmicky/dev-tasks": "^1.0.88",
     "test-each": "^5.4.0"
   },
   "engines": {
