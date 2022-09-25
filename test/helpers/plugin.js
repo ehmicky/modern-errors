@@ -30,16 +30,12 @@ export const TEST_PLUGIN = {
   unset(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
-    const { error } = utils
-    error.unset = { ...utils }
-    return {}
+    return { unset: { ...utils } }
   },
   set(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
-    const { error } = utils
-    error.set = { ...utils }
-    return {}
+    return { set: { ...utils } }
   },
   instanceMethods: {
     getInstance(utils, ...args) {
