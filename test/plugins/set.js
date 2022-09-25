@@ -37,12 +37,6 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('plugin.set() cannot modify "options"', (t) => {
-  const error = new TestError('causeMessage', { prop: { one: true } })
-  error.set.options.prop.one = false
-  t.true(error.getInstance().options.prop.one)
-})
-
 test('plugin.set() has "full: true" with getOptions()', (t) => {
   t.true(new TestError('test').set.options.full)
 })

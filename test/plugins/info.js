@@ -25,5 +25,11 @@ each(
       getValues().ErrorClasses.prop = true
       t.false('prop' in AnyError.getProp().ErrorClasses)
     })
+
+    test(`plugin.set|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
+      // eslint-disable-next-line fp/no-mutation, no-param-reassign
+      getValues().options.prop = false
+      t.is(AnyError.getProp().options.prop, undefined)
+    })
   },
 )

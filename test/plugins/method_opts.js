@@ -12,7 +12,6 @@ const callInstanceMethod = function ({ TestError, args = [] }) {
   return new TestError('message').getInstance(...args)
 }
 
-// eslint-disable-next-line max-statements
 each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
   test(`plugin methods are passed the normalized global options | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({ prop: true })
@@ -22,13 +21,6 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
   test(`plugin methods have "full: true" with getOptions() | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts()
     t.true(callMethod({ AnyError, TestError }).options.full)
-  })
-
-  test(`plugin methods cannot modify "options" | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({ prop: { one: true } })
-    // eslint-disable-next-line fp/no-mutation, no-param-reassign
-    callMethod({ AnyError, TestError }).options.prop.one = false
-    t.true(callMethod({ AnyError, TestError }).options.prop.one)
   })
 
   test(`plugin methods can pass method options | ${title}`, (t) => {
