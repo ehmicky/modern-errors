@@ -71,17 +71,16 @@ const applyPluginUnset = function ({
     return
   }
 
-  const { pluginsOpts } = errorData.get(cause)
-  const pluginsOptsA = mergeClassOpts({
-    pluginsOpts,
+  const info = getInfo({
+    target: cause,
     error,
+    AnyError,
     ErrorClasses,
+    errorData,
+    plugin,
     plugins,
   })
-  const pluginsOptsB = deepClone(pluginsOptsA)
-  const options = normalizePluginOpts(pluginsOptsB, plugin, true)
-  const ErrorClassesA = getErrorClasses(ErrorClasses)
-  unset({ options, error, AnyError, ErrorClasses: ErrorClassesA })
+  unset(info)
 }
 
 const applyPluginSet = function ({
@@ -97,7 +96,28 @@ const applyPluginSet = function ({
     return
   }
 
-  const { pluginsOpts } = errorData.get(error)
+  const info = getInfo({
+    target: error,
+    error,
+    AnyError,
+    ErrorClasses,
+    errorData,
+    plugin,
+    plugins,
+  })
+  set(info)
+}
+
+const getInfo = function ({
+  target,
+  error,
+  AnyError,
+  ErrorClasses,
+  errorData,
+  plugin,
+  plugins,
+}) {
+  const { pluginsOpts } = errorData.get(target)
   const pluginsOptsA = mergeClassOpts({
     pluginsOpts,
     error,
@@ -107,5 +127,5 @@ const applyPluginSet = function ({
   const pluginsOptsB = deepClone(pluginsOptsA)
   const options = normalizePluginOpts(pluginsOptsB, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
-  set({ options, error, AnyError, ErrorClasses: ErrorClassesA })
+  return { options, error, AnyError, ErrorClasses: ErrorClassesA }
 }
