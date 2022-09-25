@@ -27,15 +27,32 @@ export const validatePluginName = function (plugin) {
     throw new TypeError(`The plugin "name" must be a string: ${name}`)
   }
 
+  validateNameString(name)
+
+  return { ...plugin, fullName: `${NAME_PREFIX}${name}` }
+}
+
+const validateNameString = function (name) {
+  if (FORBIDDEN_NAMES.has(name)) {
+    throw new TypeError(
+      `The plugin "name" must not be the following reserved word: ${name}`,
+    )
+  }
+
   if (!NAME_REGEXP.test(name)) {
     throw new TypeError(
       `The plugin "name" must only contain lowercase letters and digits: ${name}`,
     )
   }
-
-  return { ...plugin, fullName: `${NAME_PREFIX}${name}` }
 }
 
+const FORBIDDEN_NAMES = new Set([
+  'cause',
+  'errors',
+  'custom',
+  'wrap',
+  'constructorArgs',
+])
 const NAME_REGEXP = /^[a-z][a-z\d]*$/u
 
 // Plugin package names should start with this prefix, but not `plugin.name`
