@@ -85,16 +85,16 @@ const callInstanceMethod = function ({
   args,
 }) {
   const { pluginsOpts } = errorData.get(error)
-  const { args: argsA, pluginsOpts: allOptions } = applyIsOptions({
+  const { args: argsA, pluginsOpts: pluginsOptsA } = applyIsOptions({
     args,
     pluginsOpts: deepClone(pluginsOpts),
     plugin,
     plugins,
   })
-  const options = normalizePluginOpts(allOptions, plugin, true)
+  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return methodFunc(
-    { options, allOptions, error, AnyError, ErrorClasses: ErrorClassesA },
+    { options, error, AnyError, ErrorClasses: ErrorClassesA },
     ...argsA,
   )
 }

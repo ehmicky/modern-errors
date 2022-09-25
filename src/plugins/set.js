@@ -63,13 +63,9 @@ const applyPluginUnset = function ({
 
   const { pluginsOpts } = errorData.get(cause)
   const pluginsOptsA = deepClone(pluginsOpts)
-  unset({
-    options: normalizePluginOpts(pluginsOptsA, plugin, true),
-    allOptions: pluginsOptsA,
-    error,
-    AnyError,
-    ErrorClasses: getErrorClasses(ErrorClasses),
-  })
+  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
+  const ErrorClassesA = getErrorClasses(ErrorClasses)
+  unset({ options, error, AnyError, ErrorClasses: ErrorClassesA })
 }
 
 const applyPluginSet = function ({
@@ -86,11 +82,7 @@ const applyPluginSet = function ({
 
   const { pluginsOpts } = errorData.get(error)
   const pluginsOptsA = deepClone(pluginsOpts)
-  set({
-    options: normalizePluginOpts(pluginsOptsA, plugin, true),
-    allOptions: pluginsOptsA,
-    error,
-    AnyError,
-    ErrorClasses: getErrorClasses(ErrorClasses),
-  })
+  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
+  const ErrorClassesA = getErrorClasses(ErrorClasses)
+  set({ options, error, AnyError, ErrorClasses: ErrorClassesA })
 }

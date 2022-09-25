@@ -39,18 +39,6 @@ test('plugin.instanceMethods are passed the normalized class options', (t) => {
   t.true(new OtherTestError('message').getInstance().options.prop)
 })
 
-test('plugin.instanceMethods are passed the raw instance options of all plugins', (t) => {
-  const error = new TestError('message', { prop: true })
-  t.deepEqual(error.getInstance().allOptions, { prop: true })
-})
-
-test('plugin.instanceMethods cannot modify "allOptions"', (t) => {
-  const error = new TestError('message', { prop: { one: true } })
-  // eslint-disable-next-line fp/no-mutation
-  error.getInstance().allOptions.prop.one = false
-  t.true(error.getInstance().allOptions.prop.one)
-})
-
 each(
   [
     ...new Set([

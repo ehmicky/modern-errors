@@ -23,24 +23,16 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
-each(['options', 'allOptions'], ({ title }, propName) => {
-  test(`plugin.set() cannot modify "options" | ${title}`, (t) => {
-    const cause = new TestError('causeMessage', { prop: { one: true } })
-    // eslint-disable-next-line fp/no-mutation
-    cause.set[propName].prop.one = false
-    const { unset } = new TestError('test', { cause, prop: true })
-    t.true(unset[propName].prop.one)
-  })
+test('plugin.set() cannot modify "options"', (t) => {
+  const cause = new TestError('causeMessage', { prop: { one: true } })
+  // eslint-disable-next-line fp/no-mutation
+  cause.set.options.prop.one = false
+  const { unset } = new TestError('test', { cause, prop: true })
+  t.true(unset.options.prop.one)
 })
 
 test('plugin.set() has "full: true" with normalize()', (t) => {
   t.true(new TestError('test').set.options.full)
-})
-
-test('Passes all plugins options to plugin.set()', (t) => {
-  t.deepEqual(new TestError('test', { prop: true }).set.allOptions, {
-    prop: true,
-  })
 })
 
 test('plugin.set() is optional', (t) => {
