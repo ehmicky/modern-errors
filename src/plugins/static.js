@@ -5,7 +5,7 @@ import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { mergePluginsOpts } from './merge.js'
-import { getMethodOpts } from './method_opts.js'
+import { mergeMethodOpts } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
@@ -76,8 +76,12 @@ const callStaticMethod = function (
   ...args
 ) {
   validateNonEmpty(ErrorClasses)
-  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-  const pluginsOpts = mergePluginsOpts(globalOpts, methodOpts, plugins)
+  const { args: argsA, pluginsOpts } = mergeMethodOpts({
+    args,
+    pluginsOpts: globalOpts,
+    plugin,
+    plugins,
+  })
   const pluginsOptsA = deepClone(pluginsOpts)
   const options = normalizePluginOpts(pluginsOptsA, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)

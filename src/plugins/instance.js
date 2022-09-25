@@ -2,7 +2,7 @@ import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { mergePluginsOpts, mergeClassOpts } from './merge.js'
-import { getMethodOpts } from './method_opts.js'
+import { mergeMethodOpts } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
@@ -85,14 +85,18 @@ const callInstanceMethod = function ({
   AnyError,
   args,
 }) {
-  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
   const pluginsOpts = mergeClassOpts({
     error,
     errorData,
     ErrorClasses,
     plugins,
   })
-  const pluginsOptsA = mergePluginsOpts(pluginsOpts, methodOpts, plugins)
+  const { args: argsA, pluginsOpts: pluginsOptsA } = mergeMethodOpts({
+    args,
+    pluginsOpts,
+    plugin,
+    plugins,
+  })
   const pluginsOptsB = deepClone(pluginsOptsA)
   const options = normalizePluginOpts(pluginsOptsB, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)

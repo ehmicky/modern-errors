@@ -1,3 +1,5 @@
+import { mergePluginsOpts } from './merge.js'
+
 export const normalizeIsOptions = function (plugin) {
   const isOptions = getIsOptions(plugin)
 
@@ -33,15 +35,29 @@ const getIsOptions = function ({ isOptions, normalize }) {
 //  - Users can pass `options[pluginName]` instead of `options`
 //  - Plugin methods can have variadic and optional parameters
 //  - It does not rely on brittle `Function.length`
+export const mergeMethodOpts = function ({
+  args,
+  pluginsOpts,
+  plugin,
+  plugins,
+}) {
+  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
+  const pluginsOptsA =
+    methodOpts === undefined
+      ? pluginsOpts
+      : mergePluginsOpts(pluginsOpts, methodOpts, plugins)
+  return { args: argsA, pluginsOpts: pluginsOptsA }
+}
+
 export const getMethodOpts = function (args, { name, isOptions }) {
   if (isOptions === undefined || args.length === 0) {
-    return { args, methodOpts: {} }
+    return { args }
   }
 
   const lastArg = args[args.length - 1]
 
   if (!isOptions({ options: lastArg })) {
-    return { args, methodOpts: {} }
+    return { args }
   }
 
   return { args: args.slice(0, -1), methodOpts: { [name]: lastArg } }
