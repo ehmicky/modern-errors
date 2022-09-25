@@ -48,7 +48,7 @@
   "dependencies": {
     "error-class-utils": "^2.1.0",
     "error-custom-class": "^8.1.0",
-    "error-serializer": "^3.1.0",
+    "error-serializer": "^3.2.0",
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.0.0",
