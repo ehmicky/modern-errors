@@ -128,6 +128,11 @@ AnyError[methodName](...args, options[pluginName])
 error[methodName](...args, options[pluginName])
 ```
 
+### Aggregate errors
+
+The [`errors` option](README.md#aggregate-errors) can now be used to aggregate
+multiple errors into one, similarly to `new AggregateError(errors)`.
+
 ## Breaking changes
 
 ### Creating error classes
