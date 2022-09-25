@@ -58,9 +58,16 @@ export const getClassOpts = function ({
   validateCustomUnknown(custom, className)
   const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(classOptsB, plugin, false)
+    normalizePluginOpts(classOptsB, plugin, getClassOptsFull(className, plugin))
   })
   return { custom, classOpts: classOptsB }
+}
+
+// Usually, `UnknownError` are only instantiated internally with no options
+// passed to its constructor. I.e., if `plugin.set()` is defined, the `options`
+// object can already be considered full.
+const getClassOptsFull = function (className, { set }) {
+  return className === 'UnknownError' && set !== undefined
 }
 
 // UnknownError cannot have a `custom` class:

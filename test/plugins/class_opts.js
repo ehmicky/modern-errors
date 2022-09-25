@@ -5,8 +5,10 @@ import {
   createAnyError,
   defineGlobalOpts,
   defineClassOpts,
+  defineClassesOpts,
   defineDeepCustom,
 } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 test('Cannot pass global "custom"', (t) => {
   t.throws(defineGlobalOpts.bind(undefined, { custom: true }))
@@ -29,10 +31,31 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
     classOpts.prop = false
     t.true(new TestError('test').set.options.prop)
   })
+})
 
-  test(`plugin.normalize() full is false for global and class options | ${title}`, (t) => {
-    t.throws(defineOpts.bind(undefined, { prop: 'partial' }))
-  })
+test('plugin.normalize() full is false for global options', (t) => {
+  t.throws(defineGlobalOpts.bind(undefined, { prop: 'partial' }))
+})
+
+test('plugin.normalize() full is false for class options', (t) => {
+  t.throws(defineClassOpts.bind(undefined, { prop: 'partial' }))
+})
+
+test('plugin.normalize() full is false for UnknownError options with plugin.set undefined', (t) => {
+  t.throws(
+    defineClassesOpts.bind(
+      undefined,
+      { UnknownError: { prop: 'partial' } },
+      {},
+      [{ ...TEST_PLUGIN, set: undefined, unset: undefined }],
+    ),
+  )
+})
+
+test('plugin.normalize() full is true for UnknownError options with plugin.set defined', (t) => {
+  t.notThrows(
+    defineClassesOpts.bind(undefined, { UnknownError: { prop: 'partial' } }),
+  )
 })
 
 each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {
