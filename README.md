@@ -426,19 +426,22 @@ main(null) // InputError: Invalid file path: Cannot read properties of null (rea
 ### Class custom logic
 
 The [`custom`](#custom) option can be used to provide an error `class` with
-additional methods, `constructor` or properties. It must extend from
-[`AnyError`](#anyerror).
+additional methods, `constructor` or properties.
 
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this -->
 
 ```js
 export const InputError = AnyError.subclass('InputError', {
+  // The `class` must extend from `AnyError`
   custom: class extends AnyError {
+    // If a `constructor` is defined, its parameters must be (message, options)
+    // like `AnyError`
     constructor(message, options) {
       // Modifying `message` or `options` should be done before `super()`
       message += message.endsWith('.') ? '' : '.'
 
-      // `super()` should be called with both arguments
+      // All arguments should be forwarded to `super()`, including any
+      // custom `options` or additional `constructor` parameters
       super(message, options)
 
       // `name` is automatically added, so this is not necessary
