@@ -1,12 +1,16 @@
 export const TEST_PLUGIN = {
   name: 'prop',
-  normalize({ options: prop }) {
+  normalize({ options: prop, full }) {
     if (prop === 'invalid') {
       throw new TypeError('Invalid prop')
     }
 
+    if (prop === 'partial' && full === false) {
+      throw new TypeError('Partial')
+    }
+
     // eslint-disable-next-line fp/no-this
-    return { prop, context: this }
+    return { prop, context: this, full }
   },
   unset(utils) {
     const { error } = utils

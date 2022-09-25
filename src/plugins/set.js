@@ -53,7 +53,7 @@ const applyPluginSet = function ({
 
   if (cause instanceof AnyError) {
     plugin.unset.call(undefined, {
-      ...getErrorOpts(cause, errorData, plugin),
+      ...getErrorOpts({ error: cause, errorData, plugin, full: true }),
       error,
       AnyError,
       ErrorClasses: getErrorClasses(ErrorClasses),
@@ -61,7 +61,7 @@ const applyPluginSet = function ({
   }
 
   plugin.set.call(undefined, {
-    ...getErrorOpts(error, errorData, plugin),
+    ...getErrorOpts({ error, errorData, plugin, full: true }),
     error,
     AnyError,
     ErrorClasses: getErrorClasses(ErrorClasses),

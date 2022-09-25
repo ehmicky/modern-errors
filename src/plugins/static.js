@@ -83,7 +83,7 @@ const callStaticMethods = function (
   ...args
 ) {
   validateNonEmpty(ErrorClasses)
-  const options = normalizePluginOpts(globalOpts, plugin)
+  const options = normalizePluginOpts(globalOpts, plugin, true)
   return methodFunc(
     { options, AnyError, ErrorClasses: getErrorClasses(ErrorClasses) },
     ...args,

@@ -29,6 +29,10 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
     classOpts.prop = false
     t.true(new TestError('test').set.options.prop)
   })
+
+  test(`plugin.normalize() full is false for global and class options | ${title}`, (t) => {
+    t.throws(defineOpts.bind(undefined, { prop: 'partial' }))
+  })
 })
 
 each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {

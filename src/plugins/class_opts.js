@@ -34,7 +34,7 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
   }
 
   plugins.forEach((plugin) => {
-    normalizePluginOpts(globalOpts, plugin)
+    normalizePluginOpts(globalOpts, plugin, false)
   })
   return globalOpts
 }
@@ -58,7 +58,7 @@ export const getClassOpts = function ({
   validateCustomUnknown(custom, className)
   const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(classOptsB, plugin)
+    normalizePluginOpts(classOptsB, plugin, false)
   })
   return { custom, classOpts: classOptsB }
 }

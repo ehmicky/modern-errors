@@ -52,7 +52,7 @@ const addInstanceMethod = function ({
     const error = this
     return methodFunc(
       {
-        ...getErrorOpts(error, errorData, plugin),
+        ...getErrorOpts({ error, errorData, plugin, full: true }),
         error,
         AnyError,
         ErrorClasses: getErrorClasses(ErrorClasses),

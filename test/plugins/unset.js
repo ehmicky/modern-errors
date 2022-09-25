@@ -27,6 +27,11 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
+test('plugin.unset() has "full: true" with normalize()', (t) => {
+  const cause = new TestError('causeMessage')
+  t.true(new TestError('test', { cause }).unset.options.full)
+})
+
 test('Passes all plugins options to plugin.unset()', (t) => {
   t.deepEqual(
     new TestError('test', {

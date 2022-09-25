@@ -23,6 +23,10 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
+test('plugin.set() has "full: true" with normalize()', (t) => {
+  t.true(new TestError('test').set.options.full)
+})
+
 test('Passes all plugins options to plugin.set()', (t) => {
   t.deepEqual(new TestError('test', { prop: true }).set.allOptions, {
     prop: true,

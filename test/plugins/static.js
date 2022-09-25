@@ -30,6 +30,10 @@ test('plugin.staticMethods are passed the normalized global options', (t) => {
   t.true(TestAnyError.getProp().options.prop)
 })
 
+test('plugin.staticMethods have "full: true" with normalize()', (t) => {
+  t.true(AnyError.getProp().options.full)
+})
+
 test('plugin.staticMethods cannot be called before AnyError.subclass()', (t) => {
   const TestAnyError = createAnyError()
   t.throws(TestAnyError.getProp)
