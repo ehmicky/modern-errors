@@ -4,33 +4,28 @@ import { each } from 'test-each'
 import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const callStaticMethod = function ({ AnyError: TestAnyError, args }) {
+const callStaticMethod = function ({ AnyError: TestAnyError, args = [] }) {
   return TestAnyError.getProp(...args)
 }
 
-const callInstanceMethod = function ({ TestError, args }) {
+const callInstanceMethod = function ({ TestError, args = [] }) {
   return new TestError('message').getInstance(...args)
 }
 
 each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
-  test(`plugin methods forward argument | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts()
-    t.deepEqual(callMethod({ AnyError, TestError, args: [0, 1] }).args, [0, 1])
-  })
-
   test(`plugin methods are passed AnyError | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts()
-    t.is(callMethod({ AnyError, TestError, args: [0, 1] }).AnyError, AnyError)
+    t.is(callMethod({ AnyError, TestError }).AnyError, AnyError)
   })
 
   test(`plugin methods are passed the normalized global options | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({ prop: true })
-    t.true(callMethod({ AnyError, TestError, args: [] }).options.prop)
+    t.true(callMethod({ AnyError, TestError }).options.prop)
   })
 
   test(`plugin methods have "full: true" with normalize() | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts()
-    t.true(callMethod({ AnyError, TestError, args: [] }).options.full)
+    t.true(callMethod({ AnyError, TestError }).options.full)
   })
 
   test(`plugin methods can pass method options | ${title}`, (t) => {
@@ -66,7 +61,7 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
 
   test(`plugin methods only pass method options if plugin.isOptions() returns true | ${title}`, (t) => {
     const { AnyError, TestError } = defineClassOpts()
-    t.deepEqual(callMethod({ AnyError, TestError, args: [0] }).args, [0])
+    t.deepEqual(callMethod({ AnyError, TestError, args: [1] }).args, [1])
   })
 
   test(`plugin methods can have no arguments | ${title}`, (t) => {
