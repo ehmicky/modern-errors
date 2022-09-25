@@ -58,3 +58,13 @@ each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
     t.true(getValues(ErrorClasses).options.prop)
   })
 })
+
+test('plugin.set get the instance options', (t) => {
+  const error = new TestError('test', { prop: true })
+  t.true(error.set.options.prop)
+})
+
+test('plugin.instanceMethods get the instance options', (t) => {
+  const error = new TestError('test', { prop: true })
+  t.true(error.getInstance().options.prop)
+})
