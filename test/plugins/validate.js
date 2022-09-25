@@ -41,6 +41,7 @@ each(
 
 each(
   [
+    { isOptions: undefined },
     { normalize: undefined },
     { set: undefined, unset: undefined },
     { instanceMethods: undefined },
@@ -57,7 +58,7 @@ each(
   },
 )
 
-each(['normalize', 'set', 'unset'], ({ title }, propName) => {
+each(['isOptions', 'normalize', 'set', 'unset'], ({ title }, propName) => {
   test(`Should validate functions | ${title}`, (t) => {
     t.throws(
       defineGlobalOpts.bind(undefined, {}, [
@@ -75,4 +76,12 @@ each(['set', 'unset'], ({ title }, optName) => {
       ]),
     )
   })
+})
+
+test('Should validate that plugin.isOptions returns a boolean', (t) => {
+  t.throws(
+    defineGlobalOpts.bind(undefined, {}, [
+      { ...TEST_PLUGIN, isOptions: () => '' },
+    ]),
+  )
 })

@@ -1,5 +1,8 @@
 export const TEST_PLUGIN = {
   name: 'prop',
+  isOptions({ options: prop }) {
+    return prop !== 'notOptions'
+  },
   normalize({ options: prop, full }) {
     if (prop === 'invalid') {
       throw new TypeError('Invalid prop')

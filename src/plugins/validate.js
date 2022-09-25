@@ -22,7 +22,8 @@ const normalizePlugin = function (plugin) {
   validateOptionalFuncs(pluginA)
   const pluginB = normalizeMethods(pluginA, 'instanceMethods')
   const pluginC = normalizeMethods(pluginB, 'staticMethods')
-  return pluginC
+  const pluginD = normalizeIsOptions(pluginC)
+  return pluginD
 }
 
 const validateOptionalFuncs = function (plugin) {
@@ -33,7 +34,7 @@ const validateOptionalFuncs = function (plugin) {
   validateSetWithoutUnset(plugin)
 }
 
-const OPTIONAL_FUNCS = ['normalize', 'unset', 'set']
+const OPTIONAL_FUNCS = ['isOptions', 'normalize', 'unset', 'set']
 
 const validateOptionalMethod = function (plugin, funcName) {
   const funcValue = plugin[funcName]
@@ -70,16 +71,37 @@ const normalizeMethods = function (plugin, propName) {
     )
   }
 
-  Object.entries(methods).forEach(
-    validateMethod.bind(undefined, plugin, propName),
-  )
+  Object.entries(methods).forEach(([methodName, methodValue]) => {
+    validateMethod(methodValue, `${propName}.${methodName}`, plugin)
+  })
   return { ...plugin, [propName]: methods }
 }
 
-const validateMethod = function (plugin, propName, [methodName, methodValue]) {
+const validateMethod = function (methodValue, methodName, plugin) {
   if (typeof methodValue !== 'function') {
     throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "${propName}.${methodName}" property must be a function, not: ${plugin[propName]}`,
+      `The plugin "${plugin.fullName}"'s "${methodName}" property must be a function, not: ${methodValue}`,
     )
   }
+}
+
+const normalizeIsOptions = function ({
+  isOptions = defaultIsOptions,
+  ...plugin
+}) {
+  if (typeof isOptions({}) !== 'boolean') {
+    throw new TypeError(
+      `The plugin "${
+        plugin.fullName
+      }"'s "isOptions()" method must return a boolean, not: ${typeof isOptions(
+        {},
+      )}`,
+    )
+  }
+
+  return { ...plugin, isOptions }
+}
+
+const defaultIsOptions = function () {
+  return true
 }
