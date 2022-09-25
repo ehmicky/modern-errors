@@ -11,7 +11,11 @@ const toJSON = function ({ error }) {
 
 const parseError = function ({ ErrorClasses, AnyError }, errorObject) {
   const value = parse(errorObject, { classes: ErrorClasses })
-  return AnyError.normalize(value)
+  return isErrorInstance(value) ? AnyError.normalize(value) : value
+}
+
+const isErrorInstance = function (value) {
+  return Object.prototype.toString.call(value) === '[object Error]'
 }
 
 const SERIALIZE_PLUGIN = {
