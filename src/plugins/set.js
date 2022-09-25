@@ -117,15 +117,14 @@ const getSetUnsetInfo = function ({
   plugin,
   plugins,
 }) {
-  const { pluginsOpts } = errorData.get(target)
-  const pluginsOptsA = mergeClassOpts({
-    pluginsOpts,
-    error,
+  const pluginsOpts = mergeClassOpts({
+    error: target,
+    errorData,
     ErrorClasses,
     plugins,
   })
-  const pluginsOptsB = deepClone(pluginsOptsA)
-  const options = normalizePluginOpts(pluginsOptsB, plugin, true)
+  const pluginsOptsA = deepClone(pluginsOpts)
+  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return { options, error, AnyError, ErrorClasses: ErrorClassesA }
 }
