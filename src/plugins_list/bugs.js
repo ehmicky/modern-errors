@@ -43,6 +43,16 @@ const getUrlError = function (error, bugs) {
 
 const EXAMPLE_ORIGIN = 'https://example.com'
 
+// On any new error, if `cause` has a `bugs`, it is re-appended to the end.
+// `bugs` is set at instantiation time instead of during error handling as:
+//   - This simplifies error handling logic
+//   - This provides with better debugging and more immediate experience
+const setBugs = function ({ error, options: bugs }) {
+  if (bugs !== '') {
+    setErrorMessage(error, `${error.message}\n${bugs}`)
+  }
+}
+
 const unsetBugs = function ({ error }) {
   const newMessage = error.message.split('\n').filter(isNotBugs).join('\n')
   setErrorMessage(error, newMessage)
@@ -56,21 +66,11 @@ const isBugs = function (line) {
   return line.startsWith(BUGS_PREFIX)
 }
 
-// On any new error, if `cause` has a `bugs`, it is re-appended to the end.
-// `bugs` is set at instantiation time instead of during error handling as:
-//   - This simplifies error handling logic
-//   - This provides with better debugging and more immediate experience
-const setBugs = function ({ error, options: bugs }) {
-  if (bugs !== '') {
-    setErrorMessage(error, `${error.message}\n${bugs}`)
-  }
-}
-
 const BUGS_PLUGIN = {
   name: 'bugs',
   normalize: normalizeBugs,
-  unset: unsetBugs,
   set: setBugs,
+  unset: unsetBugs,
 }
 
 // eslint-disable-next-line import/no-default-export

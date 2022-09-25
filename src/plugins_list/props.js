@@ -17,6 +17,11 @@ const normalizeProps = function ({ options: props = {} }) {
 // filter those.
 const OMITTED_PROPS = ['wrap', 'constructorArgs']
 
+// Set `props` option as error properties
+const setProps = function ({ error, options: props }) {
+  setErrorProps(error, props)
+}
+
 // `props` are shallowly merged, so we also shallowly unset them
 // We make sure `props` ignored by `set-error-props` during `plugin.set()`,
 // e.g. core error properties, are also ignored during `plugin.unset()`.
@@ -28,16 +33,11 @@ const unsetProps = function ({ error, options: props }) {
   }
 }
 
-// Set `props` option as error properties
-const setProps = function ({ error, options: props }) {
-  setErrorProps(error, props)
-}
-
 const PROPS_PLUGIN = {
   name: 'props',
   normalize: normalizeProps,
-  unset: unsetProps,
   set: setProps,
+  unset: unsetProps,
 }
 
 // eslint-disable-next-line import/no-default-export
