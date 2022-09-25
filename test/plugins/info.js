@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
+import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineClassOpts()
 
@@ -34,6 +34,33 @@ each(
 
     test(`plugin.set|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
       t.true(getValues().options.full)
+    })
+  },
+)
+
+each(
+  [
+    (ErrorClasses) => new ErrorClasses.TestError('test').set,
+    (ErrorClasses) => new ErrorClasses.TestError('test').getInstance(),
+    (ErrorClasses) => ErrorClasses.AnyError.getProp(),
+  ],
+  ({ title }, getValues) => {
+    test(`plugin.set|instanceMethods|staticMethods get the global options | ${title}`, (t) => {
+      const ErrorClasses = defineGlobalOpts({ prop: true })
+      t.true(getValues(ErrorClasses).options.prop)
+    })
+  },
+)
+
+each(
+  [
+    (ErrorClasses) => new ErrorClasses.TestError('test').set,
+    (ErrorClasses) => new ErrorClasses.TestError('test').getInstance(),
+  ],
+  ({ title }, getValues) => {
+    test(`plugin.set|instanceMethods get the class options | ${title}`, (t) => {
+      const ErrorClasses = defineClassOpts({ prop: true })
+      t.true(getValues(ErrorClasses).options.prop)
     })
   },
 )

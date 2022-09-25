@@ -13,11 +13,6 @@ const callInstanceMethod = function ({ TestError, args = [] }) {
 }
 
 each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
-  test(`plugin methods are passed the normalized global options | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({ prop: true })
-    t.true(callMethod({ AnyError, TestError }).options.prop)
-  })
-
   test(`plugin methods can pass method options | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts({ prop: false })
     t.true(callMethod({ AnyError, TestError, args: [true] }).options.prop)

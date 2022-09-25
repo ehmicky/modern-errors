@@ -15,12 +15,6 @@ test('Passes instance options to plugin.set()', (t) => {
 })
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
-  test(`Passes class and global options to plugin.set() | ${title}`, (t) => {
-    const { TestError: OtherTestError } = defineOpts({ prop: true })
-    const error = new OtherTestError('test')
-    t.true(error.set.options.prop)
-  })
-
   test(`Object instance options are shallowly merged to class and global options | ${title}`, (t) => {
     const { TestError: OtherTestError } = defineOpts({
       prop: { one: false, two: { three: false }, five: false },
