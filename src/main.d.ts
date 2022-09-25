@@ -59,7 +59,7 @@ type ErrorClass<
 > = MaybeIntersect<
   {
     new <InitOptions extends ConstructorParameters<ParentErrorClass>[1] = {}>(
-      message: ConstructorParameters<ParentErrorClass>[0],
+      message: string,
       options?: InitOptions,
     ): NamedError<ErrorInstance, ErrorNameArg>
     prototype: NamedError<ErrorInstance, ErrorNameArg>
