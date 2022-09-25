@@ -10,16 +10,30 @@ test('Passes error to plugin.set()', (t) => {
   t.true(new TestError('test').set.error instanceof Error)
 })
 
-test('Passes new instance options to plugin.set()', (t) => {
-  const cause = new TestError('causeMessage', { prop: false })
-  t.true(new TestError('test', { cause, prop: true }).set.options.prop)
+test('Passes instance options to plugin.set()', (t) => {
+  t.true(new TestError('test', { prop: true }).set.options.prop)
 })
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
-  test(`Passes new class options to plugin.set() | ${title}`, (t) => {
-    const { TestError: OtherTestError } = defineOpts({ prop: false })
-    const cause = new OtherTestError('causeMessage')
-    t.true(new OtherTestError('test', { cause, prop: true }).set.options.prop)
+  test(`Passes class and global options to plugin.set() | ${title}`, (t) => {
+    const { TestError: OtherTestError } = defineOpts({ prop: true })
+    const error = new OtherTestError('test')
+    t.true(error.set.options.prop)
+  })
+
+  test(`Object instance options are shallowly merged to class and global options | ${title}`, (t) => {
+    const { TestError: OtherTestError } = defineOpts({
+      prop: { one: false, two: { three: false }, five: false },
+    })
+    const error = new OtherTestError('test', {
+      prop: { one: true, two: { three: true }, four: true },
+    })
+    t.deepEqual(error.set.options.prop, {
+      one: true,
+      two: { three: true },
+      four: true,
+      five: false,
+    })
   })
 })
 

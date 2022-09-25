@@ -14,15 +14,3 @@ test('undefined instance options are ignored', (t) => {
   const { TestError } = defineClassOpts({ prop: true })
   t.true(new TestError('test', { prop: undefined }).set.options.prop)
 })
-
-test('Object instance options are shallowly merged', (t) => {
-  const { TestError } = defineClassOpts({
-    prop: { one: false, two: { three: false }, five: false },
-  })
-  t.deepEqual(
-    new TestError('test', {
-      prop: { one: true, two: { three: true }, four: true },
-    }).set.options.prop,
-    { one: true, two: { three: true }, four: true, five: false },
-  )
-})
