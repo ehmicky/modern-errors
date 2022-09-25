@@ -25,11 +25,11 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   })
 
   test(`Global and class options are readonly | ${title}`, (t) => {
-    const classOpts = { prop: true }
+    const classOpts = { prop: { one: true } }
     const { TestError } = defineOpts(classOpts)
     // eslint-disable-next-line fp/no-mutation
-    classOpts.prop = false
-    t.true(new TestError('test').set.options.prop)
+    classOpts.prop.one = false
+    t.true(new TestError('test').set.options.prop.one)
   })
 })
 

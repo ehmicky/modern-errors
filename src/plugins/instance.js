@@ -1,3 +1,4 @@
+import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { applyIsOptions } from './method_opts.js'
@@ -86,7 +87,7 @@ const callInstanceMethod = function ({
   const { pluginsOpts } = errorData.get(error)
   const { args: argsA, pluginsOpts: allOptions } = applyIsOptions({
     args,
-    pluginsOpts,
+    pluginsOpts: deepClone(pluginsOpts),
     plugin,
     plugins,
   })

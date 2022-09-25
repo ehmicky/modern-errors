@@ -23,6 +23,16 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
+each(['options', 'allOptions'], ({ title }, propName) => {
+  test(`plugin.set() cannot modify "options" | ${title}`, (t) => {
+    const cause = new TestError('causeMessage', { prop: { one: true } })
+    // eslint-disable-next-line fp/no-mutation
+    cause.set[propName].prop.one = false
+    const { unset } = new TestError('test', { cause, prop: true })
+    t.true(unset[propName].prop.one)
+  })
+})
+
 test('plugin.set() has "full: true" with normalize()', (t) => {
   t.true(new TestError('test').set.options.full)
 })

@@ -74,3 +74,11 @@ test('AnyError merges options on an implicit UnknownError', (t) => {
   })
   t.true(new TestAnyError('test', { cause: 0 }).set.options.prop)
 })
+
+each(['options', 'allOptions'], ({ title }, propName) => {
+  test(`plugin.set() cannot modify "options" passed to instance methods | ${title}`, (t) => {
+    const error = new TestError('test', { prop: { one: true } })
+    error.set[propName].prop.one = false
+    t.true(error.getInstance()[propName].prop.one)
+  })
+})

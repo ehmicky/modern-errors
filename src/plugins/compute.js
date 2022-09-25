@@ -1,3 +1,4 @@
+import { deepClone } from './clone.js'
 import { mergePluginsOpts } from './merge.js'
 
 // We keep track of un-normalized plugins options to re-use them later:
@@ -24,7 +25,8 @@ export const computePluginsOpts = function ({
     errorData,
     plugins,
   })
-  errorData.set(error, { pluginsOpts })
+  const pluginsOptsA = deepClone(pluginsOpts)
+  errorData.set(error, { pluginsOpts: pluginsOptsA })
 }
 
 // `AnyError` merges options instead of overriding them.

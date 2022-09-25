@@ -1,5 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
+import { deepClone } from './clone.js'
 import { mergePluginsOpts } from './merge.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -33,10 +34,11 @@ export const getGlobalOpts = function (plugins, globalOpts = {}) {
     )
   }
 
+  const globalOptsA = deepClone(globalOpts)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(globalOpts, plugin, false)
+    normalizePluginOpts(globalOptsA, plugin, false)
   })
-  return globalOpts
+  return globalOptsA
 }
 
 // Validate and compute class options when `modernErrors()` is called so this
@@ -57,10 +59,11 @@ export const getClassOpts = function ({
   const { custom, ...classOptsA } = classOpts
   validateCustomUnknown(custom, className)
   const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
+  const classOptsC = deepClone(classOptsB)
   plugins.forEach((plugin) => {
-    normalizePluginOpts(classOptsB, plugin, getClassOptsFull(className, plugin))
+    normalizePluginOpts(classOptsC, plugin, getClassOptsFull(className, plugin))
   })
-  return { custom, classOpts: classOptsB }
+  return { custom, classOpts: classOptsC }
 }
 
 // Usually, `UnknownError` are only instantiated internally with no options

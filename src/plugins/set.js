@@ -1,3 +1,4 @@
+import { deepClone } from './clone.js'
 import { getErrorClasses } from './error_classes.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -61,9 +62,10 @@ const applyPluginUnset = function ({
   }
 
   const { pluginsOpts } = errorData.get(cause)
+  const pluginsOptsA = deepClone(pluginsOpts)
   unset({
-    options: normalizePluginOpts(pluginsOpts, plugin, true),
-    allOptions: pluginsOpts,
+    options: normalizePluginOpts(pluginsOptsA, plugin, true),
+    allOptions: pluginsOptsA,
     error,
     AnyError,
     ErrorClasses: getErrorClasses(ErrorClasses),
@@ -83,9 +85,10 @@ const applyPluginSet = function ({
   }
 
   const { pluginsOpts } = errorData.get(error)
+  const pluginsOptsA = deepClone(pluginsOpts)
   set({
-    options: normalizePluginOpts(pluginsOpts, plugin, true),
-    allOptions: pluginsOpts,
+    options: normalizePluginOpts(pluginsOptsA, plugin, true),
+    allOptions: pluginsOptsA,
     error,
     AnyError,
     ErrorClasses: getErrorClasses(ErrorClasses),

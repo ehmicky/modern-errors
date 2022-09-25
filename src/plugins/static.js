@@ -1,6 +1,7 @@
 import { validateNonEmpty } from '../any/subclass.js'
 import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
 
+import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
 import { applyIsOptions } from './method_opts.js'
@@ -76,7 +77,7 @@ const callStaticMethod = function (
   validateNonEmpty(ErrorClasses)
   const { args: argsA, pluginsOpts } = applyIsOptions({
     args,
-    pluginsOpts: globalOpts,
+    pluginsOpts: deepClone(globalOpts),
     plugin,
     plugins,
   })
