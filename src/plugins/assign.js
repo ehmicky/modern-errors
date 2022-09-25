@@ -1,3 +1,4 @@
+import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
@@ -19,7 +20,15 @@ export const assignError = function ({ error, newProps, plugin, methodName }) {
     setErrorMessage(error, message)
   }
 
-  if (Reflect.ownKeys(newPropsA).length !== 0) {
-    setErrorProps(error, newPropsA)
+  if (Reflect.ownKeys(newPropsA).length === 0) {
+    return
   }
+
+  const newPropsB = excludeKeys(newPropsA, OMITTED_PROPS)
+  setErrorProps(error, newPropsB)
 }
+
+// Reserved top-level properties do not throw: they are silently omitted instead
+// since `newProps` might be dynamically generated making it cumbersome for user
+// to filter those.
+const OMITTED_PROPS = ['wrap', 'constructorArgs']
