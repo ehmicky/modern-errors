@@ -520,28 +520,23 @@ const options = {
 }
 ```
 
-### General options
+Those can apply to:
 
-Options passed as a second argument to
-[`modernErrors()`](#modernerrorsplugins-options) apply to any error of any
-classes.
+- Any errors: second argument to
+  [`modernErrors()`](#modernerrorsplugins-options)
 
 ```js
 export const AnyError = modernErrors(plugins, options)
 ```
 
-### Error class options
-
-Options passed as a second argument to
-[`AnyError.subclass()`](#anyerrorsubclassname-options) apply to any error of
-that specific class.
+- Any error of a specific class: second argument to
+  [`AnyError.subclass()`](#anyerrorsubclassname-options)
 
 ```js
 export const InputError = AnyError.subclass('InputError', options)
 ```
 
-`ErrorClass.subclass()` can be used to share options between multiple error
-classes.
+- Any error of multiple classes: using `ErrorClass.subclass()`
 
 ```js
 export const SharedError = AnyError.subclass('SharedError', options)
@@ -550,20 +545,13 @@ export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
 ```
 
-### Error instance options
-
-Options passed as a second argument to an error's constructor apply to that
-specific error.
+- A specific error: second argument to the error's constructor
 
 ```js
 throw new InputError('Could not read the file.', options)
 ```
 
-### Method options
-
-Options passed as the last argument to `AnyError.*(...)` or `error.*(...)` apply
-to that specific function call. Only the options for the specific plugin should
-be passed.
+- A function call: last argument, using only the options for the specific plugin
 
 ```js
 AnyError[methodName](...args, options[pluginName])
