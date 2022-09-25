@@ -170,7 +170,9 @@ type AnyErrorClass = {
  *  export const DatabaseError = AnyError.subclass('DatabaseError')
  * ```
  */
-export default function modernErrors(plugins: Plugin[]): AnyErrorClass
+export default function modernErrors<Plugins extends Plugin[]>(
+  plugins: Plugins,
+): AnyErrorClass
 
 interface Plugin {
   name: string
