@@ -69,16 +69,14 @@ const applyPluginUnset = function ({
     return
   }
 
-  const info = getSetUnsetInfo({
-    target: cause,
-    error,
-    AnyError,
-    ErrorClasses,
+  const pluginsOpts = mergeClassOpts({
+    error: cause,
     errorData,
-    plugin,
+    ErrorClasses,
     plugins,
   })
-  unset(info)
+  const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
+  unset({ ...info, error })
 }
 
 const applyPluginSet = function ({
@@ -94,33 +92,12 @@ const applyPluginSet = function ({
     return
   }
 
-  const info = getSetUnsetInfo({
-    target: error,
-    error,
-    AnyError,
-    ErrorClasses,
-    errorData,
-    plugin,
-    plugins,
-  })
-  set(info)
-}
-
-const getSetUnsetInfo = function ({
-  target,
-  error,
-  AnyError,
-  ErrorClasses,
-  errorData,
-  plugin,
-  plugins,
-}) {
   const pluginsOpts = mergeClassOpts({
-    error: target,
+    error,
     errorData,
     ErrorClasses,
     plugins,
   })
   const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
-  return { ...info, error }
+  set({ ...info, error })
 }
