@@ -4,6 +4,8 @@
 // `plugin.set|unset|instanceMethods.*`
 //  - This is mostly meant for plugins like serialization which need to
 //    re-instantiate or clone errors
+// `options` is `undefined` unless `plugin.normalize()` is defined
+//  - This encourages using `plugin.normalize()`
 // We pass whether the `options` object is partial or not using `full`:
 //  - This allows validation|normalization that requires options to be full,
 //    such as:
@@ -31,8 +33,7 @@ export const normalizePluginOpts = function (
   { name, normalize },
   full,
 ) {
-  const pluginOpts = pluginsOpts[name]
   return normalize === undefined
-    ? pluginOpts
-    : normalize({ options: pluginOpts, full })
+    ? undefined
+    : normalize({ options: pluginsOpts[name], full })
 }

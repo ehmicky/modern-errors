@@ -6,11 +6,11 @@ import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 const { TestError } = defineClassOpts()
 
-test('plugin.normalize() is optional', (t) => {
+test('plugin.normalize() sets options as undefined by default', (t) => {
   const { TestError: OtherTestError } = defineClassOpts({}, {}, [
     { ...TEST_PLUGIN, normalize: undefined },
   ])
-  t.true(new OtherTestError('test', { prop: true }).set.options)
+  t.is(new OtherTestError('test', { prop: true }).set.options, undefined)
 })
 
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
