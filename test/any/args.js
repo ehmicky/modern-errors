@@ -101,3 +101,33 @@ each(
     })
   },
 )
+
+test('error.constructorArgs merges inner non plugin options if outer class is AnyError', (t) => {
+  const cause = new TestError(message, { one: false, two: false })
+  t.deepEqual(
+    new AnyError('', { cause, one: true, three: true }).constructorArgs,
+    [message, { one: true, two: false, three: true }],
+  )
+})
+
+test('error.constructorArgs ignores inner non plugin options if outer class is not AnyError', (t) => {
+  const cause = new TestError(message, { one: false, two: false })
+  t.deepEqual(
+    new TestError('', { cause, one: true, three: true }).constructorArgs,
+    [message, { one: true, three: true }],
+  )
+})
+
+test('error.constructorArgs uses inner arguments if outer class is AnyError', (t) => {
+  const cause = new TestError(message, {}, true)
+  t.deepEqual(new AnyError('', { cause }).constructorArgs, [message, {}, true])
+})
+
+test('error.constructorArgs ignores inner arguments if outer class is not AnyError', (t) => {
+  const cause = new TestError(message, {}, true)
+  t.deepEqual(new TestError('', { cause }, false).constructorArgs, [
+    message,
+    {},
+    false,
+  ])
+})
