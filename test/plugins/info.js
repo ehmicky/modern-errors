@@ -59,12 +59,20 @@ each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
   })
 })
 
-test('plugin.set get the instance options', (t) => {
+test('plugin.set gets the instance options', (t) => {
   const error = new TestError('test', { prop: true })
   t.true(error.set.options.prop)
 })
 
-test('plugin.instanceMethods get the instance options', (t) => {
+test('plugin.instanceMethods gets the instance options', (t) => {
   const error = new TestError('test', { prop: true })
   t.true(error.getInstance().options.prop)
+})
+
+test('plugin.set gets the error', (t) => {
+  t.true(new TestError('test').set.error instanceof Error)
+})
+
+test('plugin.instanceMethods gets the error', (t) => {
+  t.true(new TestError('test').getInstance().error instanceof Error)
 })
