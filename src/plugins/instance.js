@@ -24,28 +24,21 @@ const addInstanceMethods = function ({
   errorData,
   AnyError,
 }) {
-  Object.entries(instanceMethods).forEach(([methodName, methodFunc]) => {
-    addInstanceMethod({
-      methodName,
-      methodFunc,
+  Object.entries(instanceMethods).forEach(
+    addInstanceMethod.bind(undefined, {
       plugin,
       plugins,
       ErrorClasses,
       errorData,
       AnyError,
-    })
-  })
+    }),
+  )
 }
 
-const addInstanceMethod = function ({
-  methodName,
-  methodFunc,
-  plugin,
-  plugins,
-  ErrorClasses,
-  errorData,
-  AnyError,
-}) {
+const addInstanceMethod = function (
+  { plugin, plugins, ErrorClasses, errorData, AnyError },
+  [methodName, methodFunc],
+) {
   validateMethodName(methodName, plugin, plugins)
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(AnyError.prototype, methodName, {
@@ -75,13 +68,9 @@ const validateMethodName = function (methodName, plugin, plugins) {
     )
   }
 
-  validateDuplicatePlugin({
-    methodName,
-    plugin,
-    plugins,
-    propName: 'instanceMethods',
-    prefix: 'error',
-  })
+  const propName = 'instanceMethods'
+  const prefix = 'error'
+  validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
 }
 
 const callInstanceMethod = function ({
@@ -95,20 +84,16 @@ const callInstanceMethod = function ({
   args,
 }) {
   const { pluginsOpts } = errorData.get(error)
-  const { args: argsA, pluginsOpts: pluginsOptsA } = applyIsOptions({
+  const { args: argsA, pluginsOpts: allOptions } = applyIsOptions({
     args,
     pluginsOpts,
     plugin,
     plugins,
   })
+  const options = normalizePluginOpts(allOptions, plugin, true)
+  const ErrorClassesA = getErrorClasses(ErrorClasses)
   return methodFunc(
-    {
-      options: normalizePluginOpts(pluginsOptsA, plugin, true),
-      allOptions: pluginsOptsA,
-      error,
-      AnyError,
-      ErrorClasses: getErrorClasses(ErrorClasses),
-    },
+    { options, allOptions, error, AnyError, ErrorClasses: ErrorClassesA },
     ...argsA,
   )
 }

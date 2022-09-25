@@ -30,28 +30,21 @@ const addStaticMethods = function ({
   ErrorClasses,
   AnyError,
 }) {
-  Object.entries(staticMethods).forEach(([methodName, methodFunc]) => {
-    addStaticMethod({
-      methodName,
-      methodFunc,
+  Object.entries(staticMethods).forEach(
+    addStaticMethod.bind(undefined, {
       plugin,
       plugins,
       globalOpts,
       ErrorClasses,
       AnyError,
-    })
-  })
+    }),
+  )
 }
 
-const addStaticMethod = function ({
-  methodName,
-  methodFunc,
-  plugin,
-  plugins,
-  globalOpts,
-  ErrorClasses,
-  AnyError,
-}) {
+const addStaticMethod = function (
+  { plugin, plugins, globalOpts, ErrorClasses, AnyError },
+  [methodName, methodFunc],
+) {
   validateMethodName(methodName, plugin, plugins)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   AnyError[methodName] = callStaticMethod.bind(undefined, {
@@ -71,13 +64,9 @@ const validateMethodName = function (methodName, plugin, plugins) {
     )
   }
 
-  validateDuplicatePlugin({
-    methodName,
-    plugin,
-    plugins,
-    propName: 'staticMethods',
-    prefix: 'AnyError',
-  })
+  const propName = 'staticMethods'
+  const prefix = 'AnyError'
+  validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
 }
 
 const callStaticMethod = function (
@@ -91,12 +80,10 @@ const callStaticMethod = function (
     plugin,
     plugins,
   })
+  const options = normalizePluginOpts(pluginsOpts, plugin, true)
+  const ErrorClassesA = getErrorClasses(ErrorClasses)
   return methodFunc(
-    {
-      options: normalizePluginOpts(pluginsOpts, plugin, true),
-      AnyError,
-      ErrorClasses: getErrorClasses(ErrorClasses),
-    },
+    { options, AnyError, ErrorClasses: ErrorClassesA },
     ...argsA,
   )
 }
