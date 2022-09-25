@@ -52,7 +52,7 @@
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.0.0",
-    "normalize-exception": "^2.5.1",
+    "normalize-exception": "^2.5.2",
     "set-error-message": "^1.2.0",
     "set-error-props": "^3.1.0"
   },
