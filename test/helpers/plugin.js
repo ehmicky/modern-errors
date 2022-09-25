@@ -1,7 +1,7 @@
 export const TEST_PLUGIN = {
   name: 'prop',
   isOptions({ options: prop }) {
-    return prop !== 'notOptions'
+    return typeof prop === 'boolean'
   },
   normalize({ options: prop, full }) {
     if (prop === 'invalid') {

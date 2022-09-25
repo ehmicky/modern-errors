@@ -49,14 +49,19 @@ const addInstanceMethod = function ({
   validateMethodName(methodName, plugin, plugins)
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(AnyError.prototype, methodName, {
-    value: callInstanceMethod.bind(undefined, {
-      methodFunc,
-      plugin,
-      plugins,
-      ErrorClasses,
-      errorData,
-      AnyError,
-    }),
+    value(...args) {
+      return callInstanceMethod({
+        // eslint-disable-next-line fp/no-this
+        error: this,
+        methodFunc,
+        plugin,
+        plugins,
+        ErrorClasses,
+        errorData,
+        AnyError,
+        args,
+      })
+    },
     enumerable: false,
     writable: true,
     configurable: true,
@@ -79,12 +84,16 @@ const validateMethodName = function (methodName, plugin, plugins) {
   })
 }
 
-const callInstanceMethod = function (
-  { methodFunc, plugin, plugins, ErrorClasses, errorData, AnyError },
-  ...args
-) {
-  // eslint-disable-next-line fp/no-this, no-invalid-this, consistent-this, unicorn/no-this-assignment
-  const error = this
+const callInstanceMethod = function ({
+  error,
+  methodFunc,
+  plugin,
+  plugins,
+  ErrorClasses,
+  errorData,
+  AnyError,
+  args,
+}) {
   const { pluginsOpts } = errorData.get(error)
   const { args: argsA, pluginsOpts: pluginsOptsA } = applyIsOptions({
     args,
