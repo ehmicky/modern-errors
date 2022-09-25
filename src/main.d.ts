@@ -53,6 +53,7 @@ type ErrorClass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
+  Plugins extends readonly Plugin[],
 > = MaybeIntersect<
   {
     new <InitOptions extends ConstructorParameters<ParentErrorClass>[1] = {}>(
@@ -60,9 +61,9 @@ type ErrorClass<
       options?: InitOptions,
     ): NamedError<ErrorInstance, ErrorNameArg>
     prototype: NamedError<ErrorInstance, ErrorNameArg>
-    subclass: CreateSubclass<ParentErrorClass, ErrorInstance>
+    subclass: CreateSubclass<ParentErrorClass, ErrorInstance, Plugins>
   },
-  Omit<ParentErrorClass, keyof AnyErrorClass>
+  Omit<ParentErrorClass, keyof AnyErrorClass<Plugins>>
 >
 
 /**
@@ -71,6 +72,7 @@ type ErrorClass<
 type ClassOptions<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
+  Plugins extends readonly Plugin[],
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -102,15 +104,21 @@ type ClassOptions<
    * console.log(error.isUserInput()) // true
    * ```
    */
-  readonly custom?: ErrorClass<ParentErrorClass, ErrorInstance, ErrorName>
+  readonly custom?: ErrorClass<
+    ParentErrorClass,
+    ErrorInstance,
+    ErrorName,
+    Plugins
+  >
 }
 
 type CreateSubclass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
+  Plugins extends readonly Plugin[],
 > = <
   ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions<ParentErrorClass, ErrorInstance>,
+  OptionsArg extends ClassOptions<ParentErrorClass, ErrorInstance, Plugins>,
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
@@ -121,7 +129,8 @@ type CreateSubclass<
   OptionsArg['custom'] extends ErrorConstructor
     ? InstanceType<OptionsArg['custom']>
     : InstanceType<ParentErrorClass>,
-  ErrorNameArg
+  ErrorNameArg,
+  Plugins
 >
 
 type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
@@ -144,7 +153,7 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
  * }
  * ```
  */
-type AnyErrorClass = {
+type AnyErrorClass<Plugins extends readonly Plugin[]> = {
   new <InitOptions extends AnyErrorOptions = {}>(
     message: string,
     options?: InitOptions,
@@ -165,7 +174,11 @@ type AnyErrorClass = {
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<AnyErrorClass, NamedError<Error, ErrorName>>
+  subclass: CreateSubclass<
+    AnyErrorClass<Plugins>,
+    NamedError<Error, ErrorName>,
+    Plugins
+  >
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
@@ -202,4 +215,4 @@ type AnyErrorClass = {
 export default function modernErrors<Plugins extends readonly Plugin[]>(
   plugins?: Plugins,
   options?: Options<Plugins>,
-): AnyErrorClass
+): AnyErrorClass<Plugins>
