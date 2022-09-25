@@ -235,6 +235,9 @@ throw new InputError('Could not read the file.', {
 `AnyError.parse()` and `error.toJSON()` also require adding the
 `modern-errors-serialize` [plugin](README.md#adding-plugins).
 
+Serialization and parsing now
+[recurse deeply](README.md#deep-serializationparsing) over objects and arrays.
+
 Before:
 
 ```js
