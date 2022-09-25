@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
+import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 
 const { TestError } = defineClassOpts()
 
@@ -57,5 +57,12 @@ each(['other', 'prop'], ({ title }, propName) => {
       message,
       { [propName]: true },
     ])
+  })
+})
+
+each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
+  test(`error.constructorArgs does not contain global nor class options | ${title}`, (t) => {
+    const { TestError: OtherTestError } = defineOpts({ prop: true })
+    t.deepEqual(new OtherTestError(message).constructorArgs, [message, {}])
   })
 })
