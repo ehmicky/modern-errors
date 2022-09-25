@@ -675,65 +675,44 @@ _Plugin_:
 etc.). It is
 [automatically called](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#tojson_behavior)
 by `JSON.stringify()`. All error properties
-[are kept](https://github.com/ehmicky/error-serializer#additional-error-properties),
-including
-[`cause`](https://github.com/ehmicky/error-serializer#errorcause-and-aggregateerror).
-
-The `error` must be from a [_known_ class](#unknown-errors). However, any other
-error (including `Error`, `TypeError`, `RangeError`, etc.) can be converted to
-one by either using [`AnyError.normalize()`](#anyerrornormalizeanyexception) or
-wrapping it [as an `error.cause`](#re-throw-errors).
+[are kept](https://github.com/ehmicky/error-serializer#additional-error-properties).
 
 ```js
-try {
-  await readFile(filePath)
-} catch (cause) {
-  const error = new InputError('Could not read the file.', {
-    cause,
-    props: { filePath },
-  })
-  const errorObject = error.toJSON()
-  // {
-  //   name: 'InputError',
-  //   message: 'Could not read the file',
-  //   stack: '...',
-  //   cause: { name: 'Error', ... },
-  //   filePath: '/path'
-  // }
-  const errorString = JSON.stringify(error)
-  // '{"name":"InputError",...}'
-}
+const error = new InputError('Wrong file.', { props: { filePath } })
+const errorObject = error.toJSON()
+// { name: 'InputError', message: 'Wrong file', stack: '...', filePath: '...' }
+const errorString = JSON.stringify(error)
+// '{"name":"InputError",...}'
 ```
 
 #### Parse
 
 `AnyError.parse(errorObject)` converts those error plain objects back to
-identical error instances.
-
-The original error class is generically preserved. However, it is converted to a
-generic `Error` if it is neither a native class (`TypeError`, `RangeError`,
-etc.) nor a [_known_ class](#unknown-errors).
+identical error instances. The original error class is preserved providing it is
+a [_known_ class](#unknown-errors).
 
 ```js
 const newErrorObject = JSON.parse(errorString)
 const newError = AnyError.parse(newErrorObject)
-// InputError: Could not read the file.
-//   filePath: '/path'
-//   [cause]: Error: ...
+// InputError: Wrong file.
+//     at ...
+//   filePath: '...'
 ```
 
 #### Deep serialization/parsing
 
-Objects and arrays containing custom errors can be deeply serialized to JSON.
-They can then be deeply parsed back using
-[`JSON.parse()`'s reviver](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter).
+Objects and arrays containing custom errors are deeply serialized.
 
 ```js
-const error = new InputError('Could not read the file.')
-const deepObject = [{}, { error }]
-const jsonString = JSON.stringify(deepObject)
-const newDeepObject = JSON.parse(jsonString, (key, value) => parse(value))
-console.log(newDeepObject[1].error) // InputError: Could not read the file.
+const error = new InputError('Wrong file.')
+const deepArray = [{}, { error }]
+
+const jsonString = JSON.stringify(deepArray)
+const newDeepArray = JSON.parse(jsonString)
+
+const newError = AnyError.parse(newDeepArray)[1].error
+// InputError: Wrong file.
+//     at ...
 ```
 
 # Modules
