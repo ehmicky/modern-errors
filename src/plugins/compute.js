@@ -1,5 +1,7 @@
+import { excludeKeys, includeKeys } from 'filter-obj'
+
 import { deepClone } from './clone.js'
-import { mergeClassOpts, mergePluginsOpts } from './merge.js'
+import { mergePluginsOpts, getPluginNames } from './merge.js'
 
 // We keep track of un-normalized plugins options to re-use them later:
 //  - When merging with parent `AnyError`
@@ -12,37 +14,36 @@ export const computePluginsOpts = function ({
   opts,
   cause,
   isAnyError,
-  ErrorClasses,
   errorData,
   plugins,
 }) {
-  const parentOpts = mergeClassOpts({ opts, error, ErrorClasses, plugins })
-  const pluginsOpts = wrapPluginsOpts({
-    parentOpts,
+  const pluginsOpts = includeKeys(opts, getPluginNames(plugins))
+  const optsA = excludeKeys(opts, getPluginNames(plugins))
+
+  const pluginsOptsA = wrapPluginsOpts({
+    pluginsOpts,
     cause,
     isAnyError,
     errorData,
     plugins,
   })
-  const pluginsOptsA = deepClone(pluginsOpts)
-  errorData.set(error, { pluginsOpts: pluginsOptsA })
-  return pluginsOptsA
+
+  const pluginsOptsB = deepClone(pluginsOptsA)
+  errorData.set(error, { pluginsOpts: pluginsOptsB })
+  return { opts: optsA, pluginsOpts: pluginsOptsB }
 }
 
 // `AnyError` merges options instead of overriding them.
 // This uses options before they are normalized, since this is how users who
 // pass those options understand them.
 const wrapPluginsOpts = function ({
-  parentOpts,
+  pluginsOpts,
   cause,
   isAnyError,
   errorData,
   plugins,
 }) {
-  if (!isAnyError) {
-    return parentOpts
-  }
-
-  const { pluginsOpts } = errorData.get(cause)
-  return mergePluginsOpts(pluginsOpts, parentOpts, plugins)
+  return isAnyError
+    ? mergePluginsOpts(errorData.get(cause).pluginsOpts, pluginsOpts, plugins)
+    : pluginsOpts
 }

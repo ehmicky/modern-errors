@@ -1,7 +1,6 @@
 import { excludeKeys } from 'filter-obj'
 
 import { deepClone } from '../plugins/clone.js'
-import { excludePluginsOpts } from '../plugins/merge.js'
 
 // Set `error.constructorArgs` so plugins like `modern-errors-serialize` can
 // clone or serialize the error.
@@ -10,10 +9,9 @@ export const setConstructorArgs = function ({
   error,
   opts,
   pluginsOpts,
-  plugins,
   args,
 }) {
-  const optsA = getOpts(opts, pluginsOpts, plugins)
+  const optsA = getOpts(opts, pluginsOpts)
   const constructorArgs = [error.message, optsA, ...args.map(deepClone)]
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(error, 'constructorArgs', {
@@ -24,10 +22,9 @@ export const setConstructorArgs = function ({
   })
 }
 
-const getOpts = function (opts, pluginsOpts, plugins) {
-  const optsA = excludePluginsOpts(opts, plugins)
-  const optsB = excludeKeys(optsA, OMITTED_PROPS)
-  return { ...optsB, ...pluginsOpts }
+const getOpts = function (opts, pluginsOpts) {
+  const optsA = excludeKeys(opts, OMITTED_PROPS)
+  return { ...optsA, ...pluginsOpts }
 }
 
 // `error.cause|errors` are big in serialized output and already set as

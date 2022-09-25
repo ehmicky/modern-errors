@@ -1,6 +1,7 @@
 import { deepClone } from './clone.js'
 import { validateDuplicatePlugin } from './duplicate.js'
 import { getErrorClasses } from './error_classes.js'
+import { mergeClassOpts } from './merge.js'
 import { applyIsOptions } from './method_opts.js'
 import { normalizePluginOpts } from './normalize.js'
 
@@ -85,13 +86,19 @@ const callInstanceMethod = function ({
   args,
 }) {
   const { pluginsOpts } = errorData.get(error)
-  const { args: argsA, pluginsOpts: pluginsOptsA } = applyIsOptions({
+  const pluginsOptsA = mergeClassOpts({
+    pluginsOpts,
+    error,
+    ErrorClasses,
+    plugins,
+  })
+  const { args: argsA, pluginsOpts: pluginsOptsB } = applyIsOptions({
     args,
-    pluginsOpts: deepClone(pluginsOpts),
+    pluginsOpts: deepClone(pluginsOptsA),
     plugin,
     plugins,
   })
-  const options = normalizePluginOpts(pluginsOptsA, plugin, true)
+  const options = normalizePluginOpts(pluginsOptsB, plugin, true)
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return methodFunc(
     { options, error, AnyError, ErrorClasses: ErrorClassesA },

@@ -57,16 +57,15 @@ export const createAnyError = function ({
       super(message, optsA)
 
       const { error, cause } = mergeCause(this, isAnyError)
-      const pluginsOpts = computePluginsOpts({
+      const { opts: optsB, pluginsOpts } = computePluginsOpts({
         error,
         opts: optsA,
         cause,
         isAnyError,
-        ErrorClasses,
         errorData,
         plugins,
       })
-      setConstructorArgs({ error, opts: optsA, pluginsOpts, plugins, args })
+      setConstructorArgs({ error, opts: optsB, pluginsOpts, args })
       applyPluginsSet({
         error,
         AnyError,

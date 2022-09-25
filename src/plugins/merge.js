@@ -1,17 +1,16 @@
-import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
 // Merge global and class options with instance options.
 // This is done as late as possible to ensure `errorData` only contains instance
 // options, since `constructorArgs` should not have global nor class options.
 export const mergeClassOpts = function ({
-  opts,
+  pluginsOpts,
   error,
   ErrorClasses,
   plugins,
 }) {
   const { classOpts } = ErrorClasses[error.name]
-  return mergePluginsOpts(classOpts, opts, plugins)
+  return mergePluginsOpts(classOpts, pluginsOpts, plugins)
 }
 
 // Merge:
@@ -24,8 +23,7 @@ export const mergeClassOpts = function ({
 // Object options are shallowly merged.
 export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
   return Object.fromEntries(
-    plugins
-      .map(getPluginName)
+    getPluginNames(plugins)
       .map((name) => getPluginOpts(oldOpts, newOpts, name))
       .filter(Boolean),
   )
@@ -48,9 +46,8 @@ const mergeOpt = function (oldOpt, newOpt) {
   return newOpt
 }
 
-// Only keep non-plugin options, such as the ones used by `custom` constructors
-export const excludePluginsOpts = function (opts, plugins) {
-  return excludeKeys(opts, plugins.map(getPluginName))
+export const getPluginNames = function (plugins) {
+  return plugins.map(getPluginName)
 }
 
 const getPluginName = function ({ name }) {
