@@ -6,7 +6,7 @@ import setErrorProps from 'set-error-props'
 // `plugin.set()` and `unset()` return an object of properties to set.
 // `undefined` values delete properties.
 // Those are shallowly merged.
-// Error core properties are ignored except for `message`.
+// Error core properties are ignored except for `message` and `stack`.
 export const assignError = function ({ error, newProps, plugin, methodName }) {
   if (!isPlainObj(newProps)) {
     throw new TypeError(
