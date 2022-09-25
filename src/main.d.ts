@@ -214,7 +214,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
  *  export const DatabaseError = AnyError.subclass('DatabaseError')
  * ```
  */
-export default function modernErrors<PluginsArg extends Plugins>(
+export default function modernErrors<PluginsArg extends Plugins = []>(
   plugins?: PluginsArg,
   options?: PluginsOptions<PluginsArg>,
 ): AnyErrorClass<PluginsArg>
