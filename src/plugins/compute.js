@@ -27,6 +27,7 @@ export const computePluginsOpts = function ({
   })
   const pluginsOptsA = deepClone(pluginsOpts)
   errorData.set(error, { pluginsOpts: pluginsOptsA })
+  return pluginsOptsA
 }
 
 // `AnyError` merges options instead of overriding them.

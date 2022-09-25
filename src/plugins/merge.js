@@ -1,3 +1,4 @@
+import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
 // Merge:
@@ -11,7 +12,8 @@ import isPlainObj from 'is-plain-obj'
 export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
   return Object.fromEntries(
     plugins
-      .map(({ name }) => getPluginOpts(oldOpts, newOpts, name))
+      .map(getPluginName)
+      .map((name) => getPluginOpts(oldOpts, newOpts, name))
       .filter(Boolean),
   )
 }
@@ -31,4 +33,13 @@ const mergeOpt = function (oldOpt, newOpt) {
   }
 
   return newOpt
+}
+
+// Only keep non-plugin options, such as the ones used by `custom` constructors
+export const excludePluginsOpts = function (opts, plugins) {
+  return excludeKeys(opts, plugins.map(getPluginName))
+}
+
+const getPluginName = function ({ name }) {
+  return name
 }
