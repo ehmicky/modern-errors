@@ -24,7 +24,7 @@ const normalizePlugin = function (plugin) {
   validateOptionalFuncs(pluginA)
   const pluginB = normalizeMethods(pluginA, 'instanceMethods')
   const pluginC = normalizeMethods(pluginB, 'staticMethods')
-  const pluginD = normalizeIsOptions(pluginC)
+  const pluginD = normalizeIsOptions({ plugin: pluginC })
   const pluginE = normalizeNormalize(pluginD)
   return pluginE
 }
