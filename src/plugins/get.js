@@ -1,11 +1,13 @@
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
-export const normalizeGetOptions = function (plugin) {
-  return {
-    ...plugin,
-    getOptions:
-      plugin.getOptions ?? defaultGetOptions.bind(undefined, plugin.fullName),
-  }
+export const normalizeGetOptions = function ({
+  plugin,
+  plugin: {
+    fullName,
+    getOptions = defaultGetOptions.bind(undefined, fullName),
+  },
+}) {
+  return { ...plugin, getOptions }
 }
 
 const defaultGetOptions = function (fullName, { options }) {
