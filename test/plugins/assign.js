@@ -25,8 +25,7 @@ each(['message', 'stack'], ({ title }, key) => {
 
 each(['one', Symbol('one')], ({ title }, key) => {
   test(`plugin.set() can set properties | ${title}`, (t) => {
-    const error = new TestError('test', { prop: { toSet: { [key]: true } } })
-    t.true(error[key])
+    t.true(new TestError('test', { prop: { toSet: { [key]: true } } })[key])
   })
 })
 
@@ -34,10 +33,10 @@ each(
   ['wrap', 'constructorArgs', 'name', 'cause', 'errors'],
   ({ title }, key) => {
     test(`plugin.set() cannot set forbidden properties | ${title}`, (t) => {
-      const error = new TestError('test', {
-        prop: { toSet: { [key]: 'true' } },
-      })
-      t.not(error[key], 'true')
+      t.not(
+        new TestError('test', { prop: { toSet: { [key]: 'true' } } })[key],
+        'true',
+      )
     })
   },
 )
@@ -46,7 +45,7 @@ test('plugin.set() shallow merge properties', (t) => {
   const error = new Error('test')
   error.one = false
   error.two = false
-  const { one, two, three } = new TestError('', {
+  const { one, two, three } = new TestError('test', {
     cause: error,
     prop: { toSet: { one: true, three: true } },
   })
