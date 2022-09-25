@@ -5,12 +5,18 @@ import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 const { TestError } = defineClassOpts()
+const { TestError: NoOptsTestError } = defineClassOpts({}, {}, [
+  { ...TEST_PLUGIN, normalize: undefined },
+])
 
-test('plugin.normalize() sets options as undefined by default', (t) => {
-  const { TestError: OtherTestError } = defineClassOpts({}, {}, [
-    { ...TEST_PLUGIN, normalize: undefined },
-  ])
-  t.is(new OtherTestError('test', { prop: true }).set.options, undefined)
+test('plugin.normalize() forbids options by default', (t) => {
+  t.throws(() => new NoOptsTestError('test', { prop: true }))
+})
+
+each([undefined, {}, { prop: undefined }], ({ title }, opts) => {
+  test(`plugin.normalize() allows undefined options by default | ${title}`, (t) => {
+    t.is(new NoOptsTestError('test', opts).set.options, undefined)
+  })
 })
 
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {

@@ -1,14 +1,18 @@
 // `options` is `undefined` unless `plugin.normalize()` is defined
 //  - This encourages using `plugin.normalize()`
-export const normalizeNormalize = function ({
-  normalize = defaultNormalize,
-  ...plugin
-}) {
-  return { ...plugin, normalize }
+export const normalizeNormalize = function (plugin) {
+  return {
+    ...plugin,
+    normalize:
+      plugin.normalize ?? defaultNormalize.bind(undefined, plugin.name),
+  }
 }
 
-// eslint-disable-next-line no-empty-function
-const defaultNormalize = function () {}
+const defaultNormalize = function (name, { options }) {
+  if (options !== undefined) {
+    throw new Error(`The plugin "${name}" does not have any option: ${options}`)
+  }
+}
 
 // Retrieve, validate and normalize all options for a given plugin.
 // Those are passed to `plugin.set|unset|instanceMethods.*`.
