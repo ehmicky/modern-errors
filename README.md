@@ -701,7 +701,7 @@ const newError = AnyError.parse(newErrorObject)
 
 #### Deep serialization/parsing
 
-Objects and arrays containing custom errors are deeply serialized.
+Objects and arrays are deeply serialized and parsed.
 
 ```js
 const error = new InputError('Wrong file.')
