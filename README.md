@@ -524,8 +524,7 @@ const options = {
 
 Those can apply to:
 
-- Any errors: second argument to
-  [`modernErrors()`](#modernerrorsplugins-options)
+- Any error: second argument to [`modernErrors()`](#modernerrorsplugins-options)
 
 ```js
 export const AnyError = modernErrors(plugins, options)
