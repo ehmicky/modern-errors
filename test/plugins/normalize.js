@@ -13,10 +13,6 @@ test('plugin.normalize() is optional', (t) => {
   t.true(new OtherTestError('test', { prop: true }).set.options)
 })
 
-test('plugin.normalize() is called with no context', (t) => {
-  t.is(new TestError('test', { prop: true }).set.options.context, undefined)
-})
-
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   test(`plugin.normalize() exceptions are thrown right away for global and class options | ${title}`, (t) => {
     t.throws(defineOpts.bind(undefined, { prop: 'invalid' }))

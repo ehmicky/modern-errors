@@ -1,9 +1,22 @@
+import isPlainObj from 'is-plain-obj'
+
+const validateContext = function (context) {
+  if (context !== undefined) {
+    throw new Error('Defined context')
+  }
+}
+
 export const TEST_PLUGIN = {
   name: 'prop',
   isOptions({ options: prop }) {
-    return typeof prop === 'boolean'
+    // eslint-disable-next-line fp/no-this
+    validateContext(this)
+    return typeof prop === 'boolean' || isPlainObj(prop)
   },
   normalize({ options: prop, full }) {
+    // eslint-disable-next-line fp/no-this
+    validateContext(this)
+
     if (prop === 'invalid') {
       throw new TypeError('Invalid prop')
     }
@@ -12,29 +25,32 @@ export const TEST_PLUGIN = {
       throw new TypeError('Partial')
     }
 
-    // eslint-disable-next-line fp/no-this
-    return { prop, context: this, full }
+    return { prop, full }
   },
   unset(utils) {
-    const { error } = utils
     // eslint-disable-next-line fp/no-this
-    error.unset = { ...utils, context: this }
+    validateContext(this)
+    const { error } = utils
+    error.unset = { ...utils }
   },
   set(utils) {
-    const { error } = utils
     // eslint-disable-next-line fp/no-this
-    error.set = { ...utils, context: this }
+    validateContext(this)
+    const { error } = utils
+    error.set = { ...utils }
   },
   instanceMethods: {
     getInstance(utils, ...args) {
       // eslint-disable-next-line fp/no-this
-      return { ...utils, args, context: this }
+      validateContext(this)
+      return { ...utils, args }
     },
   },
   staticMethods: {
     getProp(utils, ...args) {
       // eslint-disable-next-line fp/no-this
-      return { ...utils, args, context: this }
+      validateContext(this)
+      return { ...utils, args }
     },
   },
 }

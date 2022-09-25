@@ -41,11 +41,6 @@ test('Passes all plugins options to plugin.unset()', (t) => {
   )
 })
 
-test('plugin.unset() is called with no context', (t) => {
-  const cause = new TestError('causeMessage')
-  t.is(new TestError('test', { cause }).unset.context, undefined)
-})
-
 test('plugin.unset() is not called without a cause', (t) => {
   t.false('unset' in new TestError('test'))
 })

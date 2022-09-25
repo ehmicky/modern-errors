@@ -40,10 +40,6 @@ test('plugin.set() is optional', (t) => {
   t.false('set' in new OtherTestError('test'))
 })
 
-test('plugin.set() is called with no context', (t) => {
-  t.is(new TestError('test').set.context, undefined)
-})
-
 test('plugin.set() is passed AnyError', (t) => {
   t.is(new TestError('test').set.AnyError, AnyError)
 })

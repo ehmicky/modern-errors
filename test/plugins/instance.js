@@ -28,10 +28,6 @@ test('plugin.instanceMethods forward argument', (t) => {
   t.deepEqual(new TestError('message').getInstance(0, 1).args, [0, 1])
 })
 
-test('plugin.instanceMethods have no context', (t) => {
-  t.is(new TestError('message').getInstance().context, undefined)
-})
-
 test('plugin.instanceMethods are passed the error', (t) => {
   const error = new TestError('message')
   t.is(error.getInstance().error, error)

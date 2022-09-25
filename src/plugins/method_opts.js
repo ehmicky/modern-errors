@@ -29,7 +29,7 @@ export const applyIsOptions = function ({
 
   const lastArg = args[args.length - 1]
 
-  if (!isOptions(lastArg)) {
+  if (!isOptions({ options: lastArg })) {
     return { args, pluginsOpts }
   }
 
