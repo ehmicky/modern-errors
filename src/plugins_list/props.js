@@ -17,15 +17,7 @@ const set = function ({ options }) {
   return options
 }
 
-const unset = function ({ options }) {
-  return Object.assign({}, ...Reflect.ownKeys(options).map(getUnsetProp))
-}
-
-const getUnsetProp = function (key) {
-  return { [key]: undefined }
-}
-
-const PROPS_PLUGIN = { name: 'props', getOptions, set, unset }
+const PROPS_PLUGIN = { name: 'props', getOptions, set }
 
 // eslint-disable-next-line import/no-default-export
 export default PROPS_PLUGIN

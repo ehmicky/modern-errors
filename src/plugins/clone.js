@@ -9,7 +9,7 @@ import isPlainObj from 'is-plain-obj'
 //     - This would otherwise be a problem, e.g.:
 //        - `constructorArgs` mutations would mean `AnyError.parse()` would
 //          re-initialize errors with different arguments
-//        - `plugin.unset()` would not revert `plugin.set()`
+//        - `previousValues` would not revert `plugin.set()`
 //  - Most arguments passed to `plugin.*()` methods:
 //     - This prevents mutations by plugins from impacting the logic
 //     - This also allow exposing plugin methods arguments to users

@@ -11,14 +11,6 @@ test('plugin.set() is passed ErrorClasses', (t) => {
   })
 })
 
-test('plugin.unset() is passed ErrorClasses', (t) => {
-  const cause = new TestError('causeMessage')
-  t.deepEqual(new TestError('test', { cause }).unset.ErrorClasses, {
-    TestError,
-    UnknownError,
-  })
-})
-
 test('plugin.instanceMethods are passed ErrorClasses', (t) => {
   t.deepEqual(new TestError('message').getInstance().ErrorClasses, {
     TestError,
@@ -33,13 +25,6 @@ test('plugin.staticMethods is passed ErrorClasses', (t) => {
 test('plugin.set() cannot modify ErrorClasses', (t) => {
   const error = new TestError('test')
   error.set.ErrorClasses.prop = true
-  t.false('prop' in error.getInstance().ErrorClasses)
-})
-
-test('plugin.unset() cannot modify ErrorClasses', (t) => {
-  const cause = new TestError('causeMessage')
-  const error = new TestError('test', { cause })
-  error.unset.ErrorClasses.prop = true
   t.false('prop' in error.getInstance().ErrorClasses)
 })
 

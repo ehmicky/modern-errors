@@ -27,14 +27,6 @@ export const TEST_PLUGIN = {
 
     return { prop, full }
   },
-  unset(utils) {
-    // eslint-disable-next-line fp/no-this
-    validateContext(this)
-    const toUnset = isPlainObj(utils.options?.prop)
-      ? utils.options?.prop.toUnset
-      : {}
-    return { ...toUnset, unset: { ...utils } }
-  },
   set(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)

@@ -1,21 +1,12 @@
 import { excludeKeys } from 'filter-obj'
-import isPlainObj from 'is-plain-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
-// `plugin.set()` and `unset()` return an object of properties to set.
+// `plugin.set()` returns an object of properties to set.
 // `undefined` values delete properties.
 // Those are shallowly merged.
 // Error core properties are ignored except for `message` and `stack`.
-export const assignError = function ({ error, newProps, plugin, methodName }) {
-  if (!isPlainObj(newProps)) {
-    throw new TypeError(
-      `Plugin "${plugin.fullName}" "${methodName}()" must return a plain object: ${newProps}`,
-    )
-  }
-
-  const { message, stack, ...newPropsA } = newProps
-
+export const assignError = function (error, { message, stack, ...newProps }) {
   if (message !== undefined) {
     setErrorMessage(error, message)
   }
@@ -30,10 +21,6 @@ export const assignError = function ({ error, newProps, plugin, methodName }) {
     })
   }
 
-  setProps(error, newPropsA)
-}
-
-const setProps = function (error, newProps) {
   if (Reflect.ownKeys(newProps).length !== 0) {
     setErrorProps(error, excludeKeys(newProps, OMITTED_PROPS))
   }

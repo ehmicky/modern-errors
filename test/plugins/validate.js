@@ -43,7 +43,7 @@ each(
   [
     { isOptions: undefined },
     { getOptions: undefined },
-    { set: undefined, unset: undefined },
+    { set: undefined },
     { instanceMethods: undefined },
     { staticMethods: undefined },
     { instanceMethods: {} },
@@ -58,21 +58,11 @@ each(
   },
 )
 
-each(['isOptions', 'getOptions', 'set', 'unset'], ({ title }, propName) => {
+each(['isOptions', 'getOptions', 'set'], ({ title }, propName) => {
   test(`Should validate functions | ${title}`, (t) => {
     t.throws(
       defineGlobalOpts.bind(undefined, {}, [
         { ...TEST_PLUGIN, [propName]: true },
-      ]),
-    )
-  })
-})
-
-each(['set', 'unset'], ({ title }, optName) => {
-  test(`Should validate unset() without set() | ${title}`, (t) => {
-    t.throws(
-      defineGlobalOpts.bind(undefined, {}, [
-        { ...TEST_PLUGIN, [optName]: undefined },
       ]),
     )
   })

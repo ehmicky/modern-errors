@@ -2,6 +2,7 @@ import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
 import { computePluginsOpts } from '../plugins/compute.js'
+import { restorePreviousValues } from '../plugins/previous.js'
 import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
@@ -102,9 +103,9 @@ const applyInstanceLogic = function ({
   isAnyError,
 }) {
   setAggregateErrors(currentError, opts, AnyError)
+  restorePreviousValues(currentError, errorData, AnyError)
   const { error, cause } = mergeCause(currentError, isAnyError)
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
-    error,
     opts,
     cause,
     isAnyError,
@@ -119,6 +120,13 @@ const applyInstanceLogic = function ({
     pluginsOpts,
     args,
   })
-  applyPluginsSet({ error, AnyError, ErrorClasses, errorData, cause, plugins })
+  const previousValues = applyPluginsSet({
+    error,
+    AnyError,
+    ErrorClasses,
+    plugins,
+    pluginsOpts,
+  })
+  errorData.set(error, { pluginsOpts, previousValues })
   return error
 }

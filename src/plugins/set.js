@@ -1,106 +1,66 @@
+import isPlainObj from 'is-plain-obj'
+
 import { assignError } from './assign.js'
 import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
+import { getPreviousValues, filterPreviousValues } from './previous.js'
 
-// Apply each `plugin.unset()` then `plugin.set()`
+// Apply each `plugin.set()`
 export const applyPluginsSet = function ({
   error,
   AnyError,
   ErrorClasses,
-  errorData,
-  cause,
   plugins,
+  pluginsOpts,
 }) {
-  plugins.forEach((plugin) => {
-    applyPluginUnset({
+  const allNewProps = plugins.filter(pluginHasSet).map((plugin) =>
+    callPluginSet({
       error,
       AnyError,
       ErrorClasses,
-      errorData,
-      cause,
       plugin,
       plugins,
-    })
-    applyPluginSet({
-      error,
-      AnyError,
-      ErrorClasses,
-      errorData,
-      plugin,
-      plugins,
-    })
-  })
+      pluginsOpts,
+    }),
+  )
+  const newProps = Object.assign({}, ...allNewProps)
+  const previousValues = getPreviousValues(newProps, error)
+  assignError(error, newProps)
+  return filterPreviousValues(previousValues, error)
 }
 
-// When an error is wrapped, the parent error overrides the child error's
-// options.
-//  - We do this by calling `plugin.unset()`, which should reverse
-//    `plugin.set()`
-// Calling all plugins `plugin.set()`, even if their options is not specified,
-// also ensures they get refreshed
-//  - E.g. the `bugs` plugin bumps the bugs URL to the bottom of `error.message`
-// `AnyError` does it as well, but first merges the child's options with its
-// own options.
-// Why the outer error overrides inner's options:
-//  - This is consistent with class merging, where the outer class has priority
-//    by default
-//  - This is consistent with the usual pattern where the last operation has
-//    merging priority (e.g. `Object.assign()`, etc.)
-//  - Options are often specific to a class
-//     - Even when set as an instance options
-//        - Also, distinguishing class from instance options is hard since
-//          custom constructors might pass either to `super()`
-//     - Mixing different errors' options could set options to classes where
-//       they do not belong
-//     - Users can use manual logic to reuse the inner's error properties,
-//       after applying `AnyError.normalize()`
-// This also keeps options merging with inner error separate and orthogonal
-// from merging its class, message and stack.
-const applyPluginUnset = function ({
+const pluginHasSet = function ({ set }) {
+  return set !== undefined
+}
+
+const callPluginSet = function ({
   error,
   AnyError,
   ErrorClasses,
-  errorData,
-  cause,
   plugin,
-  plugin: { unset },
+  plugin: { set, fullName },
   plugins,
+  pluginsOpts,
 }) {
-  if (unset === undefined || !(cause instanceof AnyError)) {
-    return
-  }
-
-  const pluginsOpts = mergeClassOpts({
-    error: cause,
-    errorData,
-    ErrorClasses,
-    plugins,
-  })
-  const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
-  const newProps = unset({ ...info, error })
-  assignError({ error, newProps, plugin, methodName: 'unset' })
-}
-
-const applyPluginSet = function ({
-  error,
-  AnyError,
-  ErrorClasses,
-  errorData,
-  plugin,
-  plugin: { set },
-  plugins,
-}) {
-  if (set === undefined) {
-    return
-  }
-
-  const pluginsOpts = mergeClassOpts({
+  const pluginsOptsA = mergeClassOpts({
     error,
-    errorData,
     ErrorClasses,
     plugins,
+    pluginsOpts,
   })
-  const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
+  const info = getPluginInfo({
+    pluginsOpts: pluginsOptsA,
+    plugin,
+    AnyError,
+    ErrorClasses,
+  })
   const newProps = set({ ...info, error })
-  assignError({ error, newProps, plugin, methodName: 'set' })
+
+  if (!isPlainObj(newProps)) {
+    throw new TypeError(
+      `Plugin "${fullName}"'s "set()" must return a plain object: ${newProps}`,
+    )
+  }
+
+  return newProps
 }

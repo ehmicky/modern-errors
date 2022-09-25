@@ -5,11 +5,10 @@ import isPlainObj from 'is-plain-obj'
 // options, since `constructorArgs` should not have global nor class options.
 export const mergeClassOpts = function ({
   error,
-  errorData,
   ErrorClasses,
   plugins,
+  pluginsOpts,
 }) {
-  const { pluginsOpts } = errorData.get(error)
   const { classOpts } = ErrorClasses[error.name]
   return mergePluginsOpts(classOpts, pluginsOpts, plugins)
 }

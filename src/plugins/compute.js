@@ -10,7 +10,6 @@ import { mergePluginsOpts, getPluginNames } from './merge.js'
 //  - Even to plugin authors
 //  - This also ensures this does not change how the error is printed
 export const computePluginsOpts = function ({
-  error,
   opts,
   cause,
   isAnyError,
@@ -29,7 +28,6 @@ export const computePluginsOpts = function ({
   })
 
   const pluginsOptsB = deepClone(pluginsOptsA)
-  errorData.set(error, { pluginsOpts: pluginsOptsB })
   return { opts: optsA, pluginsOpts: pluginsOptsB }
 }
 

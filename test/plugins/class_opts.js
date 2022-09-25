@@ -51,7 +51,7 @@ test('plugin.getOptions() full is false for UnknownError options with plugin.set
       undefined,
       { UnknownError: { prop: 'partial' } },
       {},
-      [{ ...TEST_PLUGIN, set: undefined, unset: undefined }],
+      [{ ...TEST_PLUGIN, set: undefined }],
     ),
   )
 })

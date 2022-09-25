@@ -33,11 +33,9 @@ const validateOptionalFuncs = function (plugin) {
   OPTIONAL_FUNCS.forEach((funcName) => {
     validateOptionalMethod(plugin, funcName)
   })
-  validateUnsetWithoutSet(plugin)
-  validateSetWithoutUnset(plugin)
 }
 
-const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'unset', 'set']
+const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'set']
 
 const validateOptionalMethod = function (plugin, funcName) {
   const funcValue = plugin[funcName]
@@ -45,22 +43,6 @@ const validateOptionalMethod = function (plugin, funcName) {
   if (funcValue !== undefined && typeof funcValue !== 'function') {
     throw new TypeError(
       `The plugin "${plugin.fullName}"'s "${funcName}()" property must be either undefined or a function, not: ${funcValue}`,
-    )
-  }
-}
-
-const validateUnsetWithoutSet = function (plugin) {
-  if (plugin.set === undefined && plugin.unset !== undefined) {
-    throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "set()" function must defined when "unset()" is defined`,
-    )
-  }
-}
-
-const validateSetWithoutUnset = function (plugin) {
-  if (plugin.set !== undefined && plugin.unset === undefined) {
-    throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "unset()" function must defined when "set()" is defined`,
     )
   }
 }
