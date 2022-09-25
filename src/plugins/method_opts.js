@@ -1,11 +1,8 @@
 import { mergePluginsOpts } from './merge.js'
 
-// We return `true` by default to enforce defining `plugin.isOptions()` to be
-// able to use any `static|instanceMethods` with arguments
-export const normalizeIsOptions = function ({
-  isOptions = defaultIsOptions,
-  ...plugin
-}) {
+export const normalizeIsOptions = function (plugin) {
+  const isOptions = getIsOptions(plugin)
+
   if (typeof isOptions({}) !== 'boolean') {
     throw new TypeError(
       `The plugin "${
@@ -19,8 +16,12 @@ export const normalizeIsOptions = function ({
   return { ...plugin, isOptions }
 }
 
-const defaultIsOptions = function () {
-  return true
+// We return `true` by default to enforce defining `plugin.isOptions()` to be
+// able to use any `static|instanceMethods` with arguments
+// However, if there are no options (i.e. `plugin.normalize()` is undefined),
+// we return `false` since `isOptions()` is unnecessary then.
+const getIsOptions = function ({ isOptions, normalize }) {
+  return isOptions === undefined ? () => normalize !== undefined : isOptions
 }
 
 // Options can be passed as the last argument of `static|instanceMethods`.

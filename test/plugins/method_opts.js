@@ -12,6 +12,7 @@ const callInstanceMethod = function ({ TestError, args = [] }) {
   return new TestError('message').getInstance(...args)
 }
 
+// eslint-disable-next-line max-statements
 each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
   test(`plugin methods are passed AnyError | ${title}`, (t) => {
     const { AnyError, TestError } = defineGlobalOpts()
@@ -64,6 +65,16 @@ each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
       { ...TEST_PLUGIN, isOptions: undefined },
     ])
     t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [0])
+  })
+
+  test(`plugin methods do not pass last argument as method options if plugin.isOptions() and normalize() are both undefined | ${title}`, (t) => {
+    const { AnyError, TestError } = defineGlobalOpts({}, [
+      { ...TEST_PLUGIN, isOptions: undefined, normalize: undefined },
+    ])
+    t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [
+      0,
+      true,
+    ])
   })
 
   test(`plugin methods only pass method options if plugin.isOptions() returns true | ${title}`, (t) => {
