@@ -14,6 +14,7 @@ import isPlainObj from 'is-plain-obj'
 //     - Safer against injections
 export const normalizeOpts = function ({
   opts = {},
+  args,
   ErrorClasses: {
     UnknownError: { ErrorClass: UnknownError },
   },
@@ -32,7 +33,17 @@ export const normalizeOpts = function ({
     )
   }
 
+  validateAnyErrorArgs(isAnyError, args)
+
   return normalizeCause({ opts, UnknownError, AnyError, isAnyError })
+}
+
+const validateAnyErrorArgs = function (isAnyError, args) {
+  if (isAnyError && args.length !== 0) {
+    throw new TypeError(
+      `new AnyError(...) cannot have more than two arguments: ${args[0]}`,
+    )
+  }
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it

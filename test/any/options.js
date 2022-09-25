@@ -26,6 +26,11 @@ test('Validate that AnyError has a cause', (t) => {
   t.throws(() => new AnyError('message'))
 })
 
+test('Validate that AnyError has 2 arguments', (t) => {
+  const cause = new TestError('causeMessage')
+  t.throws(() => new AnyError('message', { cause }, true))
+})
+
 test('AnyError with known cause uses its class', (t) => {
   const cause = new TestError('causeMessage')
   const error = new AnyError('message', { cause })
