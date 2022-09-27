@@ -229,11 +229,11 @@ throw new InputError('Could not read the file.', {
 })
 ```
 
-### Parsing
+### Serialization/parsing
 
-`parse()` has been renamed to [`AnyError.parse()`](README.md#parse). This also
-requires adding the `modern-errors-serialize`
-[plugin](README.md#adding-plugins).
+`parse()` has been renamed to [`AnyError.parse()`](README.md#parse).
+`AnyError.parse()` and `error.toJSON()` also require adding the
+`modern-errors-serialize` [plugin](README.md#adding-plugins).
 
 Before:
 
@@ -295,6 +295,15 @@ if (error instanceof InputError) {
 }
 ```
 
+[`AnyError`](README.md#anyerror) can now be used to check for
+[any errors](README.md#check-error-class) from a specific library.
+
+```js
+if (error instanceof AnyError) {
+  // ...
+}
+```
+
 ### Exporting error classes
 
 Error classes should now be exported to be re-used across modules.
@@ -303,17 +312,11 @@ Error classes should now be exported to be re-used across modules.
 
 Most TypeScript types have been removed, except the top-level function.
 
-## Minor features
-
-- [`AnyError`](README.md#anyerror) can now be used to check for
-  [any errors](README.md#check-error-class) from a specific library
-- How `error.cause` is merged has been improved
-
 ## Bug fixes
 
-- Do not wrap an [`UnknownError`](README.md#unknown-errors) into another
+- Prevent [`UnknownError`](README.md#unknown-errors) wrapping another
   `UnknownError`
-- Do not add the [`bugs` option](README.md#bug-reports) if it's already been
+- Prevent adding the [`bugs` option](README.md#bug-reports) if it's already been
   added
 
 # 3.1.1
