@@ -91,14 +91,19 @@ export const AuthError = SharedError.subclass('AuthError', {
 
 ### Improved options
 
-Options can now be applied to
-[all errors of a given class](README.md#error-class-options).
+Options can now be applied to [any error](README.md#configure-options).
+
+```js
+export const AnyError = modernErrors(plugins, options)
+```
+
+Or to any error of a specific class.
 
 ```js
 export const InputError = AnyError.subclass('InputError', options)
 ```
 
-Or to [multiple classes](README.md#error-class-options).
+Or to multiple classes.
 
 ```js
 export const SharedError = AnyError.subclass('SharedError', options)
@@ -107,10 +112,20 @@ export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
 ```
 
-Or to [individual errors](README.md#error-instance-options).
+Or to a specific error.
 
 ```js
 throw new InputError('Could not read the file.', options)
+```
+
+Or to a specific plugin method call, passing only that plugin's options.
+
+```js
+AnyError[methodName](...args, options[pluginName])
+```
+
+```js
+error[methodName](...args, options[pluginName])
 ```
 
 ## Breaking changes
@@ -168,28 +183,6 @@ After:
 const AnyError = modernErrors()
 
 const normalizedError = AnyError.normalize(error)
-```
-
-### Options
-
-Although the first argument and return value of
-[`modernErrors()`](README.md#modernerrorsplugins-options) have changed, the
-second argument can still be used for global [options](README.md#options).
-
-Before:
-
-```js
-export const { InputError, errorHandler } = modernErrors(['InputError'], {
-  bugs: 'https://github.com/my-name/my-project/issues',
-})
-```
-
-After:
-
-```js
-export const AnyError = modernErrors(plugins, {
-  bugs: 'https://github.com/my-name/my-project/issues',
-})
 ```
 
 ### Error properties
