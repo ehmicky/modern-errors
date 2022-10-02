@@ -57,6 +57,10 @@ each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
     const ErrorClasses = defineClassOpts({ prop: true })
     t.true(getValues(ErrorClasses).options.prop)
   })
+
+  test(`plugin.properties|instanceMethods get "unknownDeep" | ${title}`, (t) => {
+    t.false(getValues().unknownDeep)
+  })
 })
 
 test('plugin.properties gets the instance options', (t) => {
