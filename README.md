@@ -683,6 +683,16 @@ _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
 
 `error.exit()` prints `error` on the console then exits the process.
 
+The exit code is `1` for the first error class, `2` for the next one, and so on.
+This follows the order in which error classes were declared: inserting, removing
+or swapping them changes their exit code.
+
+The error stack trace and properties are printed if the error is
+[_unknown_](#unknown-errors).
+
+The process exits gracefully: it waits for any ongoing tasks (callbacks,
+promises, etc.) to complete, up to a default timeout of 5 seconds.
+
 ```js
 import { AnyError } from './errors.js'
 
