@@ -66,9 +66,16 @@ test.serial('Does not modify error', (t) => {
   t.deepEqual(valuesBefore, valuesAfter)
 })
 
-test.serial('Can log unknown errors', (t) => {
+test.serial('Can log unknown errors with shortFormat', (t) => {
   const error = new Error('test')
   const { stack } = AnyError.normalize(error)
   shortLogger.error(error)
   t.is(shortLog, `${defaultLevel}: ${stack}`)
+})
+
+test.serial('Can log unknown errors with fullFormat', (t) => {
+  const error = new Error('test')
+  const { name, message, stack } = AnyError.normalize(error)
+  fullLogger.error(error)
+  t.deepEqual(fullLog, { level: defaultLevel, name, message, stack })
 })
