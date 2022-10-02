@@ -81,3 +81,20 @@ test('plugin.set() values that have noop deletions are not reverted', (t) => {
   const error = new TestError('test', { cause })
   t.false(error.one)
 })
+
+test('plugin.set() change reverts are temporary without AnyError', (t) => {
+  const cause = new TestError('test', { prop: { toSet: { one: true } } })
+  // eslint-disable-next-line no-new
+  new TestError('test', { cause })
+  t.true(cause.one)
+})
+
+test('plugin.set() deletions reverts are temporary without AnyError', (t) => {
+  const deepCause = new TestError('test')
+  // eslint-disable-next-line fp/no-mutation
+  deepCause.one = true
+  const cause = new TestError('test', { prop: { toSet: { one: undefined } } })
+  // eslint-disable-next-line no-new
+  new TestError('test', { cause })
+  t.false('one' in cause)
+})
