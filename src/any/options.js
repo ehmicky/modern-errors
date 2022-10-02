@@ -1,5 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
+import { normalizeCause } from './cause.js'
+
 // Unknown `Error` options are not validated, for compatibility with any
 // potential JavaScript platform, since `error` has many non-standard elements.
 //  - This also ensures compatibility with future JavaScript features or with
@@ -44,51 +46,4 @@ const validateAnyErrorArgs = function (isAnyError, args) {
       `new AnyError(...) cannot have more than two arguments: ${args[0]}`,
     )
   }
-}
-
-// `new AnyError()` does not make sense without a `cause`, so we validate it
-//  - We allow `cause: undefined` since `undefined` exceptions can be thrown
-//  - However, we set to it an empty `UnknownError` then as this ensures:
-//     - `AnyError` class is not kept
-//     - A similar behavior as other error classes with undefined causes,
-//       i.e. the message and stack are not changed
-// If the error is not from a known class or `UnknownError`, we wrap it in
-// `UnknownError` to ensure `AnyError` instance type is a child of `AnyError`.
-const normalizeCause = function ({ opts, UnknownError, AnyError, isAnyError }) {
-  if (!isAnyError) {
-    return opts
-  }
-
-  if (!('cause' in opts)) {
-    throw new Error(
-      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
-    )
-  }
-
-  const cause = getCause(opts.cause, UnknownError, AnyError)
-  return { ...opts, cause }
-}
-
-const getCause = function (cause, UnknownError, AnyError) {
-  if (cause instanceof AnyError) {
-    return cause
-  }
-
-  const message = hasErrorName(cause) ? `${cause.name}:` : ''
-  return new UnknownError(message, { cause })
-}
-
-// `new AnyError()` should wrap the name, as opposed to other error classes
-// which override it. So when it converts to `UnknownError`, the former name
-// is prepended to `error.message` unless it is a generic `Error`.
-const hasErrorName = function (cause) {
-  return (
-    isErrorInstance(cause) &&
-    typeof cause.name === 'string' &&
-    cause.name !== 'Error'
-  )
-}
-
-const isErrorInstance = function (cause) {
-  return Object.prototype.toString.call(cause) === '[object Error]'
 }
