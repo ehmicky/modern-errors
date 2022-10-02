@@ -15,8 +15,8 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
     t.deepEqual(error.set.options.prop, {
       one: true,
       two: { three: true },
-      four: true,
       five: false,
+      four: true,
     })
   })
 })
