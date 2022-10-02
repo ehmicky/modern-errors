@@ -25,12 +25,19 @@ import { deepClone } from './clone.js'
 // This also keeps options merging with inner error separate and orthogonal
 // from merging its class, message and stack.
 export const getPreviousValues = function (newProps, error) {
-  return Reflect.ownKeys(newProps).map((name) => getPreviousValue(name, error))
+  return getPreviousKeys(newProps).map((key) => getPreviousValue(key, error))
 }
 
-const getPreviousValue = function (name, error) {
-  const descriptor = Object.getOwnPropertyDescriptor(error, name)
-  return { name, descriptor }
+const getPreviousKeys = function (newProps) {
+  const previousKeys = Reflect.ownKeys(newProps)
+  return previousKeys.includes('message') && !previousKeys.includes('stack')
+    ? [...previousKeys, 'stack']
+    : previousKeys
+}
+
+const getPreviousValue = function (key, error) {
+  const descriptor = Object.getOwnPropertyDescriptor(error, key)
+  return { key, descriptor }
 }
 
 // Only keep `previousValues` that:
@@ -45,8 +52,8 @@ export const filterPreviousValues = function (previousValues, error) {
   return deepClone(previousValuesA)
 }
 
-const hasChanged = function ({ name, descriptor }, error) {
-  const newDescriptor = Object.getOwnPropertyDescriptor(error, name)
+const hasChanged = function ({ key, descriptor }, error) {
+  const newDescriptor = Object.getOwnPropertyDescriptor(error, key)
 
   if (newDescriptor === undefined) {
     return descriptor !== undefined
@@ -68,12 +75,12 @@ export const restorePreviousValues = function ({ cause }, errorData, AnyError) {
   })
 }
 
-const restorePreviousValue = function (cause, { name, descriptor }) {
+const restorePreviousValue = function (cause, { key, descriptor }) {
   if (descriptor === undefined) {
     // eslint-disable-next-line fp/no-delete, no-param-reassign
-    delete cause[name]
+    delete cause[key]
   } else {
     // eslint-disable-next-line fp/no-mutating-methods
-    Object.defineProperty(cause, name, descriptor)
+    Object.defineProperty(cause, key, descriptor)
   }
 }
