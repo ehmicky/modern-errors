@@ -6,45 +6,39 @@ import { TestError, AnyError } from '../../helpers/winston.js'
 
 const { transform } = AnyError.fullFormat()
 
+const knownError = new TestError('test')
+const unknownError = new AnyError('test', { cause: '' })
+const warnError = new TestError('test', { winston: { level: 'warn' } })
+const noStackError = new TestError('test', { winston: { stack: false } })
+const yesStackError = new TestError('test', { winston: { stack: true } })
+
 test('Sets level to error by default', (t) => {
-  const error = new TestError('test')
-  t.is(transform(error).level, 'error')
+  t.is(transform(knownError).level, 'error')
 })
 
 test('Can set other level', (t) => {
-  const error = new TestError('test', { winston: { level: 'warn' } })
-  t.is(transform(error).level, 'warn')
+  t.is(transform(warnError).level, 'warn')
 })
 
-each(
-  [new TestError('test', { winston: { stack: false } }), new TestError('test')],
-  ({ title }, error) => {
-    test(`Does not use the stack if "stack" is false | ${title}`, (t) => {
-      t.false('stack' in transform(error))
-    })
-  },
-)
+each([noStackError, knownError], ({ title }, error) => {
+  test(`Does not use the stack if "stack" is false | ${title}`, (t) => {
+    t.false('stack' in transform(error))
+  })
+})
 
-each(
-  [
-    new TestError('test', { winston: { stack: true } }),
-    new AnyError('test', { cause: '' }),
-  ],
-  ({ title }, error) => {
-    test(`Use the stack if "stack" is true | ${title}`, (t) => {
-      t.is(transform(error).stack, error.stack)
-    })
-  },
-)
+each([yesStackError, unknownError], ({ title }, error) => {
+  test(`Use the stack if "stack" is true | ${title}`, (t) => {
+    t.is(transform(error).stack, error.stack)
+  })
+})
 
 test('Default value for "stack" is deep', (t) => {
-  const deepInner = new AnyError('deepInner', { cause: '' })
-  const inner = new TestError('inner', { errors: [deepInner] })
+  const inner = new TestError('inner', { errors: [unknownError] })
   const error = new AnyError('test', { cause: '', errors: [inner] })
   const object = transform(error)
   t.is(object.stack, error.stack)
   t.false('stack' in object.errors[0])
-  t.is(object.errors[0].errors[0].stack, deepInner.stack)
+  t.is(object.errors[0].errors[0].stack, error.errors[0].errors[0].stack)
 })
 
 test('Normalizes unknown error', (t) => {
@@ -53,17 +47,15 @@ test('Normalizes unknown error', (t) => {
 })
 
 test('Does not include constructorArgs', (t) => {
-  const error = new TestError('test', { winston: { level: 'warn' } })
-  t.false('constructorArgs' in transform(error))
+  t.false('constructorArgs' in transform(warnError))
 })
 
 test('Serializes error', (t) => {
-  const error = new TestError('test')
-  t.deepEqual(transform(error), {
+  t.deepEqual(transform(knownError), {
     level: 'error',
     [LEVEL]: 'error',
-    name: error.name,
-    message: error.message,
+    name: knownError.name,
+    message: knownError.message,
   })
 })
 
@@ -78,13 +70,11 @@ test('Ignore JSON-unsafe error properties', (t) => {
 })
 
 test('Serializes error properties deeply', (t) => {
-  const prop = new TestError('prop')
-  const error = new TestError('test', { props: { prop } })
-  t.is(transform(error).prop.message, prop.message)
+  const error = new TestError('test', { props: { prop: knownError } })
+  t.is(transform(error).prop.message, knownError.message)
 })
 
 test('Serializes aggregate errors deeply', (t) => {
-  const inner = new TestError('prop')
-  const error = new TestError('test', { errors: [inner] })
-  t.is(transform(error).errors[0].message, inner.message)
+  const error = new TestError('test', { errors: [knownError] })
+  t.is(transform(error).errors[0].message, error.errors[0].message)
 })
