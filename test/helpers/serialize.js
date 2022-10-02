@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import SERIALIZE_PLUGIN from '../../src/plugins_list/serialize.js'
+import SERIALIZE_PLUGIN from '../../src/core_plugins/serialize.js'
 
 import { defineClassOpts } from './main.js'
 

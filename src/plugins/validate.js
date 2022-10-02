@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import PROPS_PLUGIN from '../plugins_list/props.js'
+import PROPS_PLUGIN from '../core_plugins/props.js'
 
 import { normalizeGetOptions } from './get.js'
 import { normalizeIsOptions } from './method_opts.js'

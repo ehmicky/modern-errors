@@ -2,7 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 // eslint-disable-next-line no-restricted-imports
-import BUGS_PLUGIN from '../../src/plugins_list/bugs.js'
+import BUGS_PLUGIN from '../../src/core_plugins/bugs.js'
 import { defineClassOpts } from '../helpers/main.js'
 
 const { TestError, AnyError } = defineClassOpts({}, {}, [BUGS_PLUGIN])
