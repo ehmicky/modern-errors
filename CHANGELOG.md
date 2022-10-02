@@ -143,6 +143,11 @@ CLI errors.
 The [`modern-errors-stack` plugin](README.md#clean-stack-traces) can now be used
 to automatically clean up stack traces.
 
+### HTTP responses
+
+The [`modern-errors-http` plugin](README.md#http-responses) can now be used to
+convert errors to plain objects to use in an HTTP response.
+
 ## Breaking changes
 
 ### Creating error classes
