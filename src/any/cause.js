@@ -1,5 +1,10 @@
 import mergeErrorCause from 'merge-error-cause'
 
+// Retrieve `error.cause` unless it is unknown
+export const getCause = function ({ cause }, AnyError) {
+  return cause instanceof AnyError ? cause : undefined
+}
+
 // `error.cause` is merged as soon as the error is instantiated:
 //  - This is simpler as it avoids the error shape to change over its lifetime
 //    (before|after `AnyError.normalize()`)
@@ -17,6 +22,5 @@ import mergeErrorCause from 'merge-error-cause'
 //       is discouraged
 export const mergeCause = function (error, isAnyError) {
   error.wrap = isAnyError
-  const { cause } = error
-  return { cause, error: mergeErrorCause(error) }
+  return mergeErrorCause(error)
 }

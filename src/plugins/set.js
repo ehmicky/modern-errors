@@ -3,7 +3,7 @@ import isPlainObj from 'is-plain-obj'
 import { assignError } from './assign.js'
 import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
-import { getPreviousValues, filterPreviousValues } from './previous.js'
+import { getPreviousValues, getAllValues } from './previous.js'
 
 // Apply each `plugin.set()`
 export const applyPluginsSet = function ({
@@ -26,7 +26,7 @@ export const applyPluginsSet = function ({
   const newProps = Object.assign({}, ...allNewProps)
   const previousValues = getPreviousValues(newProps, error)
   assignError(error, newProps)
-  return filterPreviousValues(previousValues, error)
+  return getAllValues(previousValues, error)
 }
 
 const pluginHasSet = function ({ set }) {

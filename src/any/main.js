@@ -2,13 +2,13 @@ import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
 import { computePluginsOpts } from '../plugins/compute.js'
-import { restorePreviousValues } from '../plugins/previous.js'
+import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
 import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { setConstructorArgs } from './args.js'
-import { mergeCause } from './cause.js'
+import { getCause, mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
 // eslint-disable-next-line import/max-dependencies
@@ -102,9 +102,10 @@ const applyInstanceLogic = function ({
   AnyError,
   isAnyError,
 }) {
+  const cause = getCause(currentError, AnyError)
   setAggregateErrors(currentError, opts, AnyError)
-  restorePreviousValues(currentError, errorData, AnyError)
-  const { error, cause } = mergeCause(currentError, isAnyError)
+  restorePreviousValues(cause, errorData)
+  const error = mergeCause(currentError, isAnyError)
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     opts,
     cause,
@@ -120,13 +121,14 @@ const applyInstanceLogic = function ({
     pluginsOpts,
     args,
   })
-  const previousValues = applyPluginsSet({
+  const { previousValues, newValues } = applyPluginsSet({
     error,
     AnyError,
     ErrorClasses,
     plugins,
     pluginsOpts,
   })
-  errorData.set(error, { pluginsOpts, previousValues })
+  errorData.set(error, { pluginsOpts, previousValues, newValues })
+  restoreNewValues(cause, errorData, isAnyError)
   return error
 }

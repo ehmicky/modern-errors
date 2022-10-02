@@ -3,9 +3,7 @@ import { each } from 'test-each'
 
 import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineClassOpts()
-
-const { hasOwnProperty: hasOwn } = Object.prototype
+const { TestError } = defineClassOpts()
 
 each(['prop', Symbol('prop')], ({ title }, key) => {
   test(`plugin.set() properties are reverted | ${title}`, (t) => {
@@ -25,23 +23,6 @@ test('plugin.set() deletions are reverted', (t) => {
   t.false('deletedProp' in cause)
   const newError = new TestError('test', { cause })
   t.true(newError.deletedProp)
-})
-
-test('plugin.set() inherited properties are reverted', (t) => {
-  const InheritedError = AnyError.subclass('InheritedError', {
-    custom: class extends AnyError {
-      // eslint-disable-next-line class-methods-use-this
-      inheritedProp() {}
-    },
-  })
-  const cause = new InheritedError('test', {
-    prop: { toSet: { inheritedProp: true } },
-  })
-  t.is(cause.inheritedProp, true)
-  t.true(hasOwn.call(cause, 'inheritedProp'))
-  const error = new InheritedError('test', { cause })
-  t.is(typeof error.inheritedProp, 'function')
-  t.false(hasOwn.call(cause, 'inheritedProp'))
 })
 
 const causeMessage = 'causeMessage'

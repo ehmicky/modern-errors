@@ -25,7 +25,7 @@ import { deepClone } from './clone.js'
 // This also keeps options merging with inner error separate and orthogonal
 // from merging its class, message and stack.
 export const getPreviousValues = function (newProps, error) {
-  return getPreviousKeys(newProps).map((key) => getPreviousValue(key, error))
+  return getValues(getPreviousKeys(newProps), error)
 }
 
 // Setting `message` also updates the `stack`
@@ -36,9 +36,12 @@ const getPreviousKeys = function (newProps) {
     : previousKeys
 }
 
-const getPreviousValue = function (key, error) {
-  const descriptor = Object.getOwnPropertyDescriptor(error, key)
-  return { key, descriptor }
+// Keep track of the `newValues` so that reverting to `previousValues` can
+// itself be reverted
+export const getAllValues = function (previousValues, error) {
+  const previousValuesA = filterPreviousValues(previousValues, error)
+  const newValues = getNewValues(previousValuesA, error)
+  return { previousValues: previousValuesA, newValues }
 }
 
 // Only keep `previousValues` that:
@@ -46,7 +49,7 @@ const getPreviousValue = function (key, error) {
 //  - Were different either:
 //     - Different value (including addition or deletion)
 //     - Initial value was inherited, and is now an own property
-export const filterPreviousValues = function (previousValues, error) {
+const filterPreviousValues = function (previousValues, error) {
   const previousValuesA = previousValues.filter((previousValue) =>
     hasChanged(previousValue, error),
   )
@@ -63,20 +66,46 @@ const hasChanged = function ({ key, descriptor }, error) {
   return descriptor === undefined || descriptor.value !== newDescriptor.value
 }
 
+const getNewValues = function (previousValues, error) {
+  return getValues(previousValues.map(getKey), error)
+}
+
+const getKey = function ({ key }) {
+  return key
+}
+
+const getValues = function (keys, error) {
+  return keys.map((key) => getValue(key, error))
+}
+
+const getValue = function (key, error) {
+  const descriptor = Object.getOwnPropertyDescriptor(error, key)
+  return { key, descriptor }
+}
+
 // When an error is wrapped, undo its `plugin.set()` before merging it to the
 // parent
-export const restorePreviousValues = function ({ cause }, errorData, AnyError) {
-  if (!(cause instanceof AnyError)) {
-    return
+export const restorePreviousValues = function (cause, errorData) {
+  if (cause !== undefined) {
+    restoreValues(cause, errorData.get(cause).previousValues)
   }
+}
 
-  const { previousValues } = errorData.get(cause)
-  previousValues.forEach((previousValue) => {
-    restorePreviousValue(cause, previousValue)
+// Reverse it after the parent has used the cause, so it remains unchanged.
+// Not done if parent is `new AnyError()` since `cause` is then returned.
+export const restoreNewValues = function (cause, errorData, isAnyError) {
+  if (cause !== undefined && !isAnyError) {
+    restoreValues(cause, errorData.get(cause).newValues)
+  }
+}
+
+const restoreValues = function (cause, values) {
+  values.forEach((value) => {
+    restoreValue(cause, value)
   })
 }
 
-const restorePreviousValue = function (cause, { key, descriptor }) {
+const restoreValue = function (cause, { key, descriptor }) {
   if (descriptor === undefined) {
     // eslint-disable-next-line fp/no-delete, no-param-reassign
     delete cause[key]
