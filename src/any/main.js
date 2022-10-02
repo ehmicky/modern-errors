@@ -103,8 +103,8 @@ const applyInstanceLogic = function ({
   isAnyError,
 }) {
   const cause = getCause(currentError, AnyError)
-  setAggregateErrors(currentError, opts, AnyError)
   restorePreviousValues(cause, errorData)
+  setAggregateErrors(currentError, opts, AnyError)
   const error = mergeCause(currentError, isAnyError)
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     opts,
