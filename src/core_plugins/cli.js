@@ -1,7 +1,13 @@
 // eslint-disable-next-line filenames/match-exported
-import handleCliError from 'handle-cli-error'
+import handleCliError, { validateOptions } from 'handle-cli-error'
 
 const getOptions = function (options = {}) {
+  validateOptions(options)
+
+  if (options.classes !== undefined) {
+    throw new TypeError(`"cli.classes" must not be defined: ${options.classes}`)
+  }
+
   return options
 }
 
