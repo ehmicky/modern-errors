@@ -54,7 +54,7 @@
     "handle-cli-error": "^2.4.1",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.0.0",
-    "normalize-exception": "^2.5.2",
+    "normalize-exception": "^2.6.0",
     "set-error-message": "^1.2.0",
     "set-error-props": "^3.1.0"
   },
