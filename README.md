@@ -34,6 +34,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - [`modern-errors-bugs`](#bug-reports): Print where to report bugs
 - [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
 - [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
+- [`modern-errors-http`](#http-responses): Convert errors to HTTP response
+  objects
 - Create your own plugin
 
 # Example
@@ -836,6 +838,65 @@ Error: message
     at exampleFunction (dev/example.js:7:2)
     at main (dev/main.js:2:15)
 ```
+
+### HTTP responses
+
+_Plugin_: [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http)
+
+`error.httpResponse()` converts `errors` to a plain object to use in an HTTP
+response. Its shape follows [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)
+(problem details).
+
+```js
+const object = error.httpResponse()
+// {
+//   type: 'https://example.com/probs/auth',
+//   title: 'AuthError',
+//   detail: 'Could not authenticate.',
+//   instance: '/users/62',
+//   status: 401,
+//   stack: `AuthError: Could not authenticate.
+//     at ...`,
+//   extra: { userId: 62 },
+// }
+```
+
+#### Options
+
+##### type
+
+_Type_: `urlString`\
+_Default_: `undefined`
+
+##### title
+
+_Type_: `string`\
+_Default_: `error.name`
+
+##### detail
+
+_Type_: `string`\
+_Default_: `error.message`
+
+##### instance
+
+_Type_: `urlString`\
+_Default_: `undefined`
+
+##### status
+
+_Type_: `integer`\
+_Default_: `undefined`
+
+##### stack
+
+_Type_: `string`\
+_Default_: `error.stack`
+
+##### extra
+
+_Type_: `object`\
+_Default_: any additional `error` properties
 
 # Modules
 

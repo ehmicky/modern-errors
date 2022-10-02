@@ -70,28 +70,47 @@ const validateObject = function (optValue, optName) {
 }
 
 const VALIDATORS = {
-  title: validateString,
-  details: validateString,
-  status: validateStatus,
   type: validateURI,
+  status: validateStatus,
+  title: validateString,
+  detail: validateString,
   instance: validateURI,
   stack: validateString,
   extra: validateObject,
 }
 
-// Turn `error` into a RFC-7807 problem details object
+// Turn `error` into a RFC 7807 problem details object.
+// Object keys order is significant.
 const toStandard = function ({
   // eslint-disable-next-line no-unused-vars
-  error: { name, message, stack, cause, errors, ...extra },
+  error: { name, message, stack, cause, errors, ...errorProps },
   options,
 }) {
   return safeJsonValue({
-    title: String(name),
-    details: String(message),
-    stack: String(stack),
-    ...(Object.keys(extra).length === 0 ? {} : { extra }),
-    ...options,
+    ...getOptionalProp(options, 'type'),
+    ...getOptionalProp(options, 'status'),
+    ...getDefaultedProp(options, 'title', String(name)),
+    ...getDefaultedProp(options, 'detail', String(message)),
+    ...getOptionalProp(options, 'instance'),
+    ...getDefaultedProp(options, 'stack', String(stack)),
+    ...getExtra(options, errorProps),
   }).value
+}
+
+const getOptionalProp = function (options, optName) {
+  return options[optName] === undefined ? {} : { [optName]: options[optName] }
+}
+
+const getDefaultedProp = function (options, optName, defaultValue) {
+  return { [optName]: options[optName] ?? defaultValue }
+}
+
+const getExtra = function ({ extra }, errorProps) {
+  if (extra !== undefined) {
+    return { extra }
+  }
+
+  return Object.keys(errorProps).length === 0 ? {} : { extra: errorProps }
 }
 
 // eslint-disable-next-line import/no-default-export

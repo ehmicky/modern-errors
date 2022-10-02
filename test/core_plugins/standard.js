@@ -13,7 +13,7 @@ each(
     true,
     { unknown: true },
     { title: true },
-    { details: true },
+    { detail: true },
     { stack: true },
     { status: '200' },
     { status: 600 },
@@ -33,7 +33,7 @@ each(
 each(
   [
     ['title', 'testTitle'],
-    ['details', 'testDetails'],
+    ['detail', 'testDetails'],
     ['stack', 'testStack'],
     // eslint-disable-next-line no-magic-numbers
     ['status', 200],
@@ -60,7 +60,7 @@ each(
   [
     undefined,
     {},
-    ...['title', 'details', 'status', 'type', 'instance', 'stack', 'extra'].map(
+    ...['title', 'detail', 'status', 'type', 'instance', 'stack', 'extra'].map(
       (optName) => ({ [optName]: undefined }),
     ),
   ],
@@ -68,7 +68,7 @@ each(
     test(`Assign default options | ${title}`, (t) => {
       t.deepEqual(testError.toStandard(standard), {
         title: testError.name,
-        details: testError.message,
+        detail: testError.message,
         stack: testError.stack,
       })
     })
@@ -84,4 +84,21 @@ test('Keep extra JSON-safe', (t) => {
   t.deepEqual(testError.toStandard({ extra: { one: true, two: 0n } }).extra, {
     one: true,
   })
+})
+
+test('Keep object keys order', (t) => {
+  t.deepEqual(
+    Object.keys(
+      testError.toStandard({
+        extra: {},
+        stack: '',
+        instance: '',
+        type: '',
+        status: 200,
+        title: '',
+        detail: '',
+      }),
+    ),
+    ['type', 'status', 'title', 'detail', 'instance', 'stack', 'extra'],
+  )
 })
