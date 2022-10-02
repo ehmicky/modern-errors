@@ -16,24 +16,24 @@ import {
 
 const { transform } = AnyError.fullFormat()
 
-test('Sets level to error by default', (t) => {
-  t.is(transform(knownError).level, defaultLevel)
-})
-
-test('Can set other level', (t) => {
-  t.is(transform(warnError).level, testLevel)
-})
-
 each([noStackError, knownError], ({ title }, error) => {
   test(`Does not use the stack if "stack" is false | ${title}`, (t) => {
     t.false('stack' in transform(error))
   })
 })
 
-each([yesStackError, unknownError], ({ title }, error) => {
+each([unknownError, yesStackError], ({ title }, error) => {
   test(`Use the stack if "stack" is true | ${title}`, (t) => {
     t.is(transform(error).stack, error.stack)
   })
+})
+
+test('Can set other level', (t) => {
+  t.is(transform(warnError).level, testLevel)
+})
+
+test('Sets level to error by default', (t) => {
+  t.is(transform(knownError).level, defaultLevel)
 })
 
 test('Default value for "stack" is deep', (t) => {
