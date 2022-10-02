@@ -9,7 +9,6 @@ test('Allows empty options', (t) => {
   t.notThrows(() => new TestError('test'))
 })
 
-// eslint-disable-next-line unicorn/no-null
 each([null, '', { custom: true }], ({ title }, opts) => {
   test(`Validate against invalid options | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks

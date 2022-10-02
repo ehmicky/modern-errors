@@ -42,7 +42,7 @@ test('Parent class is custom class when passed', (t) => {
 })
 
 class NullClass {}
-// eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
+// eslint-disable-next-line fp/no-mutating-methods
 Object.setPrototypeOf(NullClass, null)
 
 test('"custom" option is not modified', (t) => {

@@ -30,7 +30,6 @@ test('AnyError.parse() parses native errors', (t) => {
 })
 
 each(
-  // eslint-disable-next-line unicorn/no-null
   [undefined, null, true, {}, { name: 'Error' }, testError],
   ({ title }, value) => {
     test(`AnyError.parse() does not normalize top-level non-error plain objects | ${title}`, (t) => {

@@ -31,7 +31,7 @@ each([AnyError, TestError], ({ title }, ParentError) => {
 })
 
 class NullClass {}
-// eslint-disable-next-line fp/no-mutating-methods, unicorn/no-null
+// eslint-disable-next-line fp/no-mutating-methods
 Object.setPrototypeOf(NullClass, null)
 
 each(
@@ -57,7 +57,6 @@ each(
   },
 )
 
-// eslint-disable-next-line unicorn/no-null
 each(['', null], ({ title }, invalidPrototype) => {
   test(`Validate against invalid prototypes | ${title}`, (t) => {
     t.throws(
