@@ -646,6 +646,31 @@ try {
 }
 ```
 
+## Plugin methods
+
+Plugins can:
+
+- Set error properties like `error.message`, `error.stack` or
+  `error.exampleProp`
+- Add error methods like `error.toJSON()` or `error.log()`
+- Add `AnyError` static methods like `AnyError.parse()`
+
+Error methods (like `error.exampleMethod()`) are only available on
+[_known_ errors](#unknown-errors), which can be ensured using
+`AnyError.normalize()`.
+
+```js
+try {
+  // ...
+} catch (error) {
+  // This might throw if `error` has an unknown class
+  error.exampleMethod()
+
+  // This is safe
+  AnyError.normalize(error).exampleMethod()
+}
+```
+
 ## List of plugins
 
 - [`modern-errors-cli`](#cli-errors): Handle errors from CLI modules
