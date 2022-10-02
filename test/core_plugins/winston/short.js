@@ -38,7 +38,8 @@ each([yesStackError, unknownError], ({ title }, error) => {
 each(['name', 'message'], ({ title }, propName) => {
   test(`Use the prepended stack if "stack" is true and it misses the name or message | ${title}`, (t) => {
     const error = new TestError('message', { winston: { stack: true } })
-    error.stack = error.stack.replace(error[propName], '')
+    // TODO: use string.replaceAll() after dropping support for Node <15.0.0
+    error.stack = error.stack.replace(new RegExp(error[propName], 'gu'), '')
     t.is(
       transform(error).message,
       `${error.name}: ${error.message}\n${error.stack}`,
