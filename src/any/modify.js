@@ -1,6 +1,6 @@
 import { computePluginsOpts } from '../plugins/compute.js'
 import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
-import { applyPluginsSet } from '../plugins/set.js'
+import { applyPluginsSet } from '../plugins/properties.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
