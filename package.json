@@ -50,6 +50,7 @@
     "error-custom-class": "^8.1.0",
     "error-serializer": "^3.2.0",
     "filter-obj": "^5.1.0",
+    "handle-cli-error": "^2.2.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.0.0",
     "normalize-exception": "^2.5.2",
