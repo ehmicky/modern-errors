@@ -12,7 +12,8 @@
 //  - This allows user to opt-in to the same behavior as actual unknown errors
 //    by using `UnknownError`
 export const getUnknownDeep = function ({
-  cause,
+  currentError,
+  currentError: { cause },
   AnyError,
   ErrorClasses: {
     UnknownError: { ErrorClass: UnknownError },
@@ -20,9 +21,9 @@ export const getUnknownDeep = function ({
   errorData,
 }) {
   return (
-    cause === undefined ||
-    !(cause instanceof AnyError) ||
-    cause instanceof UnknownError ||
-    errorData.get(cause).unknownDeep
+    'cause' in currentError &&
+    (!(cause instanceof AnyError) ||
+      cause instanceof UnknownError ||
+      errorData.get(cause).unknownDeep)
   )
 }

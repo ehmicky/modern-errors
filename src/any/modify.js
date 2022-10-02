@@ -19,6 +19,12 @@ export const modifyError = function ({
   AnyError,
   isAnyError,
 }) {
+  const unknownDeep = getUnknownDeep({
+    currentError,
+    AnyError,
+    ErrorClasses,
+    errorData,
+  })
   const cause = getCause(currentError, AnyError)
   restorePreviousValues(cause, errorData)
   const error = applyErrorLogic({
@@ -27,6 +33,7 @@ export const modifyError = function ({
     opts,
     args,
     ErrorClasses,
+    unknownDeep,
     errorData,
     plugins,
     AnyError,
@@ -42,17 +49,12 @@ const applyErrorLogic = function ({
   opts,
   args,
   ErrorClasses,
+  unknownDeep,
   errorData,
   plugins,
   AnyError,
   isAnyError,
 }) {
-  const unknownDeep = getUnknownDeep({
-    cause,
-    AnyError,
-    ErrorClasses,
-    errorData,
-  })
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     opts,
     cause,
