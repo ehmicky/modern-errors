@@ -23,7 +23,7 @@ Core features:
   [all errors of the same class](#error-class-properties)
 - Separate known and [unknown errors](#unknown-errors)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
-  stack, etc.)
+  `stack`, etc.)
 - Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#re-throw-errors), [`new Error()`](#throw-errors),
   [`error.cause`](#re-throw-errors), [`instanceof`](#check-error-class),
@@ -35,6 +35,7 @@ Core features:
 - Handle errors in [CLI](#cli-errors) modules
 - Indicate where to [report bugs](#bug-reports)
 - [Serialize](#serialize)/[parse](#parse) errors
+- [Clean stack traces](#clean-stack-traces)
 - Create your own plugin
 
 # Example
@@ -674,6 +675,7 @@ try {
 - [`modern-errors-cli`](#cli-errors): Handle errors from CLI modules
 - [`modern-errors-bugs`](#bug-reports): Print where to report bugs
 - [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
+- [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
 
 ### CLI errors
 
@@ -804,6 +806,30 @@ const newDeepArray = JSON.parse(jsonString)
 const newError = AnyError.parse(newDeepArray)[1].error
 // InputError: Wrong file.
 //     at ...
+```
+
+### Clean stack traces
+
+_Plugin_:
+[`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack)
+
+This plugin
+[cleans up stack traces](https://github.com/sindresorhus/clean-stack). It:
+
+- Shortens file paths by making them relative to the current directory
+- Replaces the home directory with `~`
+- Removes unhelpful internal Node.js entries
+
+Before:
+
+```
+
+```
+
+After:
+
+```
+
 ```
 
 # Modules

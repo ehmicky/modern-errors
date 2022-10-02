@@ -138,6 +138,11 @@ multiple errors into one, similarly to `new AggregateError(errors)`.
 The [`modern-errors-cli` plugin](README.md#cli-errors) can now be used to handle
 CLI errors.
 
+### Clean stack traces
+
+The [`modern-errors-stack` plugin](README.md#clean-stack-traces) can now be used
+to automatically clean up stack traces.
+
 ## Breaking changes
 
 ### Creating error classes
