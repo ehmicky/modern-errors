@@ -78,16 +78,15 @@ const callInstanceMethod = function ({
   AnyError,
   args,
 }) {
-  const { pluginsOpts } = errorData.get(error)
-  const pluginsOptsA = mergeClassOpts({
+  const pluginsOpts = mergeClassOpts({
     error,
     ErrorClasses,
     plugins,
-    pluginsOpts,
+    pluginsOpts: errorData.get(error).pluginsOpts,
   })
   const { args: argsA, pluginsOpts: pluginsOptsB } = mergeMethodOpts({
     args,
-    pluginsOpts: pluginsOptsA,
+    pluginsOpts,
     plugin,
     plugins,
   })
