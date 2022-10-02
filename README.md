@@ -36,6 +36,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
 - [`modern-errors-http`](#http-responses): Convert errors to HTTP response
   objects
+- [`modern-errors-winston`](#error-logging-winston): Log errors with Winston
 - Create your [own plugin](docs/plugins.md)
 
 # Example
@@ -915,6 +916,80 @@ _Default_: any additional `error` properties
 Additional information. This is always
 [safe to serialize as JSON](https://github.com/ehmicky/safe-json-value). Can be
 set to an empty object.
+
+### Error logging (Winston)
+
+_Plugin_:
+[`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston)
+
+Errors can be logged with [Winston](https://github.com/winstonjs/winston) using
+[`winston.error(error)`](https://github.com/winstonjs/winston/blob/master/README.md#usage).
+
+The Winston
+[`format`](https://github.com/winstonjs/winston/blob/master/README.md#formats)
+must be `AnyError.fullFormat()`
+[combined](https://github.com/winstonjs/winston#combining-formats) with
+[`format.json()`](https://github.com/winstonjs/logform#json) or
+[`format.prettyPrint()`](https://github.com/winstonjs/logform#prettyprint). This
+logs all error properties, making it useful with
+[transports](https://github.com/winstonjs/winston#transports) like
+[HTTP](https://github.com/winstonjs/winston/blob/master/docs/transports.md#http-transport).
+
+```js
+import { createLogger, transports, format } from 'winston'
+
+const logger = createLogger({
+  format: format.combine(AnyError.fullFormat(), format.json()),
+  transports: [new transports.Http(httpOptions)],
+})
+const error = new InputError('Could not read file.', { props: { filePath } })
+logger.error(error)
+// Sent via HTTP:
+// {
+//   level: 'error',
+//   name: 'InputError',
+//   message: 'Could not read file.',
+//   stack: '...',
+//   filePath: '/...',
+// }
+```
+
+Alternatively, `AnyError.shortFormat()` can be used instead,
+[combined](https://github.com/winstonjs/winston#combining-formats) with
+[`format.simple()`](https://github.com/winstonjs/logform#simple) or
+[`format.cli()`](https://github.com/winstonjs/logform#cli). This logs only the
+error name, message and stack, making it useful with
+[transports](https://github.com/winstonjs/winston#transports) like
+[console](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport).
+
+```js
+const logger = createLogger({
+  format: format.combine(AnyError.shortFormat(), format.cli()),
+  transports: [new transports.Console()],
+})
+const error = new InputError('Could not read file.', { props: { filePath } })
+logger.error(error)
+// error: InputError: Could not read file.
+//   at ...
+```
+
+#### Options
+
+##### level
+
+_Type_: `string`\
+_Default_: `error`
+
+Log [level](https://github.com/winstonjs/winston#logging-levels).
+
+##### stack
+
+_Type_: `boolean`
+
+Whether to log the stack trace.
+
+By default, this is `false` if the [innermost](#re-throw-errors) error is
+[_unknown_](#unknown-errors), and `true` otherwise.
 
 # Modules
 
