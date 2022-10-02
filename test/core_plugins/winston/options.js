@@ -5,7 +5,7 @@ import { each } from 'test-each'
 import WINSTON_PLUGIN from '../../../src/core_plugins/winston/main.js'
 import { defineClassOpts } from '../../helpers/main.js'
 
-const { AnyError } = defineClassOpts({}, {}, [WINSTON_PLUGIN])
+const { TestError, AnyError } = defineClassOpts({}, {}, [WINSTON_PLUGIN])
 
 each(
   [
@@ -21,3 +21,8 @@ each(
     })
   },
 )
+
+test('Cannot pass options to instance methods', (t) => {
+  const error = new TestError('test')
+  t.is(AnyError.shortFormat({ level: 'warn' }).transform(error).level, 'error')
+})

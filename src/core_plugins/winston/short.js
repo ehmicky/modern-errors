@@ -8,9 +8,9 @@
 export const toShortLogObject = function ({
   error,
   unknownDeep,
-  options: { level, stackOpt = unknownDeep },
+  options: { level, stack = unknownDeep },
 }) {
-  const message = getShortMessage(error, stackOpt)
+  const message = getShortMessage(error, stack)
   return { level, message }
 }
 

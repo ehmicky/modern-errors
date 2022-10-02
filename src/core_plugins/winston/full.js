@@ -56,7 +56,7 @@ const serializeRecurse = function (value, AnyError, parents) {
 // We use an instance method to get `unknownDeep` for nested errors
 export const getFullLogOmittedProps = function ({
   unknownDeep,
-  options: { stackOpt = unknownDeep },
+  options: { stack = unknownDeep },
 }) {
-  return stackOpt ? ['constructorArgs', 'stack'] : ['constructorArgs']
+  return stack ? ['constructorArgs', 'stack'] : ['constructorArgs']
 }

@@ -10,6 +10,8 @@ import { isErrorInstance } from './check.js'
 //    format
 // We do not include any logic that is already available in default formats
 // like `json`, `prettyPrint`, `simple` or `cli`.
+// We do not allow passing method options to static methods because they would
+// have higher priority than instance options, which is unexpected.
 const getFormat = function (methodName, { AnyError }) {
   return format(formatFunc.bind(undefined, { AnyError, methodName }))()
 }

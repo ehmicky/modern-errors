@@ -1,12 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 import { configs } from 'triple-beam'
 
-// Instance methods are not documented. Static methods are not called directly
-// by users. So we don't need to allow passing options to either.
-export const isOptions = function () {
-  return false
-}
-
 // We do not allow setting Winston options or transport options, since this is
 // not very useful and can be achieved with level filtering.
 export const getOptions = function (options = {}) {
@@ -14,11 +8,11 @@ export const getOptions = function (options = {}) {
     throw new TypeError(`It must be a plain object: ${options}`)
   }
 
-  const { level = DEFAULT_LEVEL, stack: stackOpt, ...unknownOpts } = options
+  const { level = DEFAULT_LEVEL, stack, ...unknownOpts } = options
   validateUnknownOpts(unknownOpts)
   validateLevel(level)
-  validateStack(stackOpt)
-  return { level, stackOpt }
+  validateStack(stack)
+  return { level, stack }
 }
 
 const validateUnknownOpts = function (unknownOpts) {
@@ -64,8 +58,8 @@ const LEVELS = getAvailableLevels()
 
 // The `stack` boolean option decides whether to log stack traces.
 // It defaults to `unknownDeep`.
-const validateStack = function (stackOpt) {
-  if (stackOpt !== undefined && typeof stackOpt !== 'boolean') {
-    throw new TypeError(`Option "stack" must be a boolean: ${stackOpt}`)
+const validateStack = function (stack) {
+  if (stack !== undefined && typeof stack !== 'boolean') {
+    throw new TypeError(`Option "stack" must be a boolean: ${stack}`)
   }
 }
