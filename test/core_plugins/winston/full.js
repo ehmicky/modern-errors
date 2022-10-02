@@ -1,5 +1,6 @@
 import test from 'ava'
 import { each } from 'test-each'
+import { LEVEL } from 'triple-beam'
 
 // eslint-disable-next-line no-restricted-imports
 import WINSTON_PLUGIN from '../../../src/core_plugins/winston/main.js'
@@ -64,6 +65,7 @@ test('Serializes error', (t) => {
   const error = new TestError('test')
   t.deepEqual(transform(error), {
     level: 'error',
+    [LEVEL]: 'error',
     name: error.name,
     message: error.message,
   })
