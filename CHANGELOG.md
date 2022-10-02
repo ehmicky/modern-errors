@@ -148,6 +148,11 @@ to automatically clean up stack traces.
 The [`modern-errors-http` plugin](README.md#http-responses) can now be used to
 convert errors to plain objects to use in an HTTP response.
 
+### Error logging (Winston)
+
+The [`modern-errors-winston` plugin](README.md#error-logging-winston) can now be
+used to log errors with Winston.
+
 ## Breaking changes
 
 ### Creating error classes
