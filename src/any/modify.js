@@ -74,6 +74,7 @@ const applyErrorLogic = function ({
     error,
     AnyError,
     ErrorClasses,
+    unknownDeep,
     plugins,
     pluginsOpts,
   })

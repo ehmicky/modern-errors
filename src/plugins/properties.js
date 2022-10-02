@@ -10,6 +10,7 @@ export const setPluginsProperties = function ({
   error,
   AnyError,
   ErrorClasses,
+  unknownDeep,
   plugins,
   pluginsOpts,
 }) {
@@ -18,6 +19,7 @@ export const setPluginsProperties = function ({
       error,
       AnyError,
       ErrorClasses,
+      unknownDeep,
       plugin,
       plugins,
       pluginsOpts,
@@ -37,6 +39,7 @@ const getPluginProperties = function ({
   error,
   AnyError,
   ErrorClasses,
+  unknownDeep,
   plugin,
   plugin: { properties, fullName },
   plugins,
@@ -54,7 +57,7 @@ const getPluginProperties = function ({
     AnyError,
     ErrorClasses,
   })
-  const newProps = properties({ ...info, error })
+  const newProps = properties({ ...info, error, unknownDeep })
 
   if (!isPlainObj(newProps)) {
     throw new TypeError(
