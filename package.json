@@ -55,7 +55,7 @@
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.0.0",
     "normalize-exception": "^2.6.0",
-    "safe-json-value": "^1.7.0",
+    "safe-json-value": "^1.8.0",
     "set-error-message": "^1.2.0",
     "set-error-props": "^3.1.0",
     "statuses": "^2.0.1"
