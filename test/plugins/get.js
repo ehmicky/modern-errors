@@ -22,13 +22,13 @@ each([undefined, {}, { prop: undefined }], ({ title }, opts) => {
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   test(`plugin.getOptions() exceptions are thrown right away for global and class options | ${title}`, (t) => {
     t.throws(defineOpts.bind(undefined, { prop: 'invalid' }), {
-      message: 'Invalid "prop" option: Invalid prop',
+      message: 'Invalid "prop" options: Invalid prop',
     })
   })
 })
 
 test('plugin.getOptions() exceptions are not thrown right away for instance options', (t) => {
   t.throws(() => new TestError('test', { prop: 'invalid' }), {
-    message: 'Invalid "prop" option: Invalid prop',
+    message: 'Invalid "prop" options: Invalid prop',
   })
 })

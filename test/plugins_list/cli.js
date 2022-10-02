@@ -9,8 +9,11 @@ const { TestError } = defineClassOpts({}, {}, [CLI_PLUGIN])
 
 const testError = new TestError('test')
 
-each([true, { timeout: 'true' }, { unknown: true }], ({ title }, cli) => {
-  test(`Options are validated | ${title}`, (t) => {
-    t.throws(testError.exit.bind(undefined, cli))
-  })
-})
+each(
+  [true, { timeout: 'true' }, { unknown: true }, { classes: {} }],
+  ({ title }, cli) => {
+    test(`Options are validated | ${title}`, (t) => {
+      t.throws(testError.exit.bind(undefined, cli))
+    })
+  },
+)
