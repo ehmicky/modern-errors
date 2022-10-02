@@ -1,7 +1,7 @@
 import { createAnyError } from './any/main.js'
 import { getGlobalOpts } from './plugins/class_opts.js'
-import { addAllInstanceMethods } from './plugins/instance.js'
-import { addAllStaticMethods } from './plugins/static.js'
+import { addAllInstanceMethods } from './plugins/instance/main.js'
+import { addAllStaticMethods } from './plugins/static/main.js'
 import { normalizePlugins } from './plugins/validate.js'
 
 // Creates error classes.

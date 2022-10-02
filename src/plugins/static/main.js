@@ -1,9 +1,8 @@
-import { validateNonEmpty } from '../any/subclass.js'
-import { ANY_ERROR_STATIC_METHODS } from '../subclass/inherited.js'
-
-import { validateDuplicatePlugin } from './duplicate.js'
-import { getPluginInfo } from './info.js'
-import { mergeMethodOpts } from './method_opts.js'
+import { validateNonEmpty } from '../../any/subclass.js'
+import { ANY_ERROR_STATIC_METHODS } from '../../subclass/inherited.js'
+import { validateDuplicatePlugin } from '../duplicate.js'
+import { getPluginInfo } from '../info.js'
+import { mergeMethodOpts } from '../method_opts.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
 // We privilege `instanceMethods` when one of the arguments is `error`

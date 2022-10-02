@@ -1,7 +1,7 @@
-import { validateDuplicatePlugin } from './duplicate.js'
-import { getPluginInfo } from './info.js'
-import { mergeClassOpts } from './merge.js'
-import { mergeMethodOpts } from './method_opts.js'
+import { validateDuplicatePlugin } from '../duplicate.js'
+import { getPluginInfo } from '../info.js'
+import { mergeClassOpts } from '../merge.js'
+import { mergeMethodOpts } from '../method_opts.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `AnyError.prototype.*`.
