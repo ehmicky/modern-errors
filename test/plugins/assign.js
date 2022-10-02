@@ -23,6 +23,17 @@ each(['message', 'stack'], ({ title }, key) => {
   })
 })
 
+test('plugin.set() can set both message and stack', (t) => {
+  const oldMessage = 'one'
+  const message = 'two'
+  const stackPrefix = 'Stack: '
+  const error = new TestError(oldMessage, {
+    prop: { toSet: { message, stack: `${stackPrefix}${oldMessage}` } },
+  })
+  t.is(error.message, message)
+  t.is(error.stack, `${stackPrefix}${message}`)
+})
+
 each(['one', Symbol('one')], ({ title }, key) => {
   test(`plugin.set() can set properties | ${title}`, (t) => {
     t.true(new TestError('test', { prop: { toSet: { [key]: true } } })[key])

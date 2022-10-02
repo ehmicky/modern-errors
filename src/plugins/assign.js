@@ -7,10 +7,6 @@ import setErrorProps from 'set-error-props'
 // Those are shallowly merged.
 // Error core properties are ignored except for `message` and `stack`.
 export const assignError = function (error, { message, stack, ...newProps }) {
-  if (message !== undefined) {
-    setErrorMessage(error, message)
-  }
-
   if (stack !== undefined) {
     // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(error, 'stack', {
@@ -19,6 +15,10 @@ export const assignError = function (error, { message, stack, ...newProps }) {
       writable: true,
       configurable: true,
     })
+  }
+
+  if (message !== undefined) {
+    setErrorMessage(error, message)
   }
 
   if (Reflect.ownKeys(newProps).length !== 0) {
