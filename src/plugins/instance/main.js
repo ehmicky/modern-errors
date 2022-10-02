@@ -1,7 +1,6 @@
 import { validateDuplicatePlugin } from '../duplicate.js'
-import { getPluginInfo } from '../info.js'
-import { mergeClassOpts } from '../merge.js'
-import { mergeMethodOpts } from '../method_opts.js'
+
+import { callInstanceMethod } from './call.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `AnyError.prototype.*`.
@@ -23,9 +22,14 @@ const addInstanceMethods = function ({
   errorData,
   AnyError,
 }) {
-  const arg = { plugin, plugins, ErrorClasses, errorData, AnyError }
   Object.entries(plugin.instanceMethods).forEach(
-    addInstanceMethod.bind(undefined, arg),
+    addInstanceMethod.bind(undefined, {
+      plugin,
+      plugins,
+      ErrorClasses,
+      errorData,
+      AnyError,
+    }),
   )
 }
 
@@ -66,43 +70,4 @@ const validateMethodName = function (methodName, plugin, plugins) {
   const propName = 'instanceMethods'
   const prefix = 'error'
   validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
-}
-
-const callInstanceMethod = function ({
-  error,
-  methodFunc,
-  methodName,
-  plugin,
-  plugins,
-  ErrorClasses,
-  errorData,
-  AnyError,
-  args,
-}) {
-  if (!(error instanceof AnyError)) {
-    throw new TypeError(
-      `Missing "this" context: "${methodName}()" must be called using "error.${methodName}()"`,
-    )
-  }
-
-  const { pluginsOpts, unknownDeep } = errorData.get(error)
-  const pluginsOptsA = mergeClassOpts({
-    error,
-    ErrorClasses,
-    plugins,
-    pluginsOpts,
-  })
-  const { args: argsA, pluginsOpts: pluginsOptsB } = mergeMethodOpts({
-    args,
-    pluginsOpts: pluginsOptsA,
-    plugin,
-    plugins,
-  })
-  const info = getPluginInfo({
-    pluginsOpts: pluginsOptsB,
-    plugin,
-    AnyError,
-    ErrorClasses,
-  })
-  return methodFunc({ ...info, error, unknownDeep }, ...argsA)
 }

@@ -1,8 +1,7 @@
-import { validateNonEmpty } from '../../any/subclass.js'
 import { ANY_ERROR_STATIC_METHODS } from '../../subclass/inherited.js'
 import { validateDuplicatePlugin } from '../duplicate.js'
-import { getPluginInfo } from '../info.js'
-import { mergeMethodOpts } from '../method_opts.js'
+
+import { callStaticMethod } from './call.js'
 
 // Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
 // We privilege `instanceMethods` when one of the arguments is `error`
@@ -95,19 +94,4 @@ const validateMethodName = function (methodName, plugin, plugins) {
   const propName = 'staticMethods'
   const prefix = 'AnyError'
   validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
-}
-
-const callStaticMethod = function (
-  { methodFunc, plugin, plugins, globalOpts, ErrorClasses, AnyError },
-  ...args
-) {
-  validateNonEmpty(ErrorClasses)
-  const { args: argsA, pluginsOpts } = mergeMethodOpts({
-    args,
-    pluginsOpts: globalOpts,
-    plugin,
-    plugins,
-  })
-  const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
-  return methodFunc(info, ...argsA)
 }
