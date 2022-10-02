@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/match-exported
 import handleCliError, { validateOptions } from 'handle-cli-error'
 
 const getOptions = function (options = {}) {
@@ -30,7 +29,9 @@ const exit = function ({
   handleCliError(error, { ...options, short, exitCode })
 }
 
-const CLI_PLUGIN = { name: 'cli', getOptions, instanceMethods: { exit } }
-
 // eslint-disable-next-line import/no-default-export
-export default CLI_PLUGIN
+export default {
+  name: 'cli',
+  getOptions,
+  instanceMethods: { exit },
+}

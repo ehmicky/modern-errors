@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/match-exported
 import cleanStack from 'clean-stack'
 
 // Clean `error.stack`.
@@ -16,7 +15,8 @@ const properties = function ({ error }) {
   return { stack }
 }
 
-const STACK_PLUGIN = { name: 'stack', properties }
-
 // eslint-disable-next-line import/no-default-export
-export default STACK_PLUGIN
+export default {
+  name: 'stack',
+  properties,
+}

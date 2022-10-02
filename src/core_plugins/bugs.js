@@ -2,7 +2,7 @@
 // unknown error.
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
-// eslint-disable-next-line filenames/match-exported
+
 const getOptions = function (bugs = '') {
   return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
 }
@@ -49,7 +49,9 @@ const properties = function ({ error, options }) {
   return options === '' ? {} : { message: `${error.message}\n${options}` }
 }
 
-const BUGS_PLUGIN = { name: 'bugs', getOptions, properties }
-
 // eslint-disable-next-line import/no-default-export
-export default BUGS_PLUGIN
+export default {
+  name: 'bugs',
+  getOptions,
+  properties,
+}

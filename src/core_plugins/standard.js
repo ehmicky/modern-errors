@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/match-exported
 import isPlainObj from 'is-plain-obj'
 import { codes } from 'statuses'
 
@@ -92,11 +91,9 @@ const toStandard = function ({
   }
 }
 
-const STANDARD_PLUGIN = {
+// eslint-disable-next-line import/no-default-export
+export default {
   name: 'stack',
   getOptions,
   instanceMethods: { toStandard },
 }
-
-// eslint-disable-next-line import/no-default-export
-export default STANDARD_PLUGIN

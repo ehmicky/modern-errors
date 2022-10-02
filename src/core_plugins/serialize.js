@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/match-exported
 import { serialize, parse as parseLib } from 'error-serializer'
 
 const toJSON = function ({ error }) {
@@ -14,11 +13,9 @@ const isErrorInstance = function (value) {
   return Object.prototype.toString.call(value) === '[object Error]'
 }
 
-const SERIALIZE_PLUGIN = {
+// eslint-disable-next-line import/no-default-export
+export default {
   name: 'serialize',
   instanceMethods: { toJSON },
   staticMethods: { parse },
 }
-
-// eslint-disable-next-line import/no-default-export
-export default SERIALIZE_PLUGIN
