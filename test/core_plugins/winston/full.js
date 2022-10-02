@@ -1,3 +1,5 @@
+import { runInNewContext } from 'vm'
+
 import test from 'ava'
 import { each } from 'test-each'
 import { LEVEL } from 'triple-beam'
@@ -45,9 +47,11 @@ test('Default value for "stack" is deep', (t) => {
   t.is(object.errors[0].errors[0].stack, error.errors[0].errors[0].stack)
 })
 
-test('Normalizes unknown error', (t) => {
-  const error = new Error('test')
-  t.is(transform(error).name, 'UnknownError')
+each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
+  test(`Normalizes unknown error | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    t.is(transform(error).name, 'UnknownError')
+  })
 })
 
 test('Does not include constructorArgs', (t) => {

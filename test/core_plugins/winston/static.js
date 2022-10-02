@@ -1,3 +1,5 @@
+import { runInNewContext } from 'vm'
+
 import test from 'ava'
 import { serialize } from 'error-serializer'
 import { each } from 'test-each'
@@ -22,16 +24,18 @@ test.serial('Log known errors with fullFormat', (t) => {
   t.deepEqual(fullLog(error), { level: testLevel, name, message })
 })
 
-test.serial('Log unknown errors with shortFormat', (t) => {
-  const error = new Error('test')
-  const { stack } = AnyError.normalize(error)
-  t.is(shortLog(error), `${defaultLevel}: ${stack}`)
-})
+each([Error, runInNewContext('Error')], ({ title }, ErrorClass) => {
+  test.serial(`Log unknown errors with shortFormat | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    const { stack } = AnyError.normalize(error)
+    t.is(shortLog(error), `${defaultLevel}: ${stack}`)
+  })
 
-test.serial('Log unknown errors with fullFormat', (t) => {
-  const error = new Error('test')
-  const { name, message, stack } = AnyError.normalize(error)
-  t.deepEqual(fullLog(error), { level: defaultLevel, name, message, stack })
+  test.serial(`Log unknown errors with fullFormat | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    const { name, message, stack } = AnyError.normalize(error)
+    t.deepEqual(fullLog(error), { level: defaultLevel, name, message, stack })
+  })
 })
 
 test.serial('Log non-errors with shortFormat', (t) => {
