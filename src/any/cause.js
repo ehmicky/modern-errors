@@ -20,7 +20,7 @@ export const getCause = function ({ cause }, AnyError) {
 //    be needed
 //     - However it usually indicates a catch block that is too wide, which
 //       is discouraged
-export const mergeCause = function (error, isAnyError) {
-  error.wrap = isAnyError
+export const mergeCause = function (error, wrap) {
+  error.wrap = wrap
   return mergeErrorCause(error)
 }
