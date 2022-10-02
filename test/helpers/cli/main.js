@@ -7,7 +7,7 @@ import {
 
 // `modern-errors-cli` use global variables `process.exitCode`, `process.exit()`
 // and `console.error()` so we need to mock them.
-export const handleError = function (error, options) {
+export const errorExit = function (error, options) {
   mockConsole()
   mockProcessExit()
 

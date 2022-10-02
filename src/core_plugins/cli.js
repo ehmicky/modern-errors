@@ -27,7 +27,7 @@ const exit = function ({
     ...options
   },
 }) {
-  handleCliError({ ...options, short, exitCode })
+  handleCliError(error, { ...options, short, exitCode })
 }
 
 const CLI_PLUGIN = { name: 'cli', getOptions, instanceMethods: { exit } }
