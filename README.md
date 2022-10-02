@@ -700,16 +700,17 @@ cliMain()
 ##### exitCode
 
 _Type_: `integer`\
-_Default_: `1`, `2`, `3`, etc. following error classes declaration order
+_Default_: `1`, `2`, `3`, etc. following the declaration order of error classes
 
 Process [exit code](https://en.wikipedia.org/wiki/Exit_status).
 
 ##### short
 
 _Type_: `boolean`\
-_Default_: `false` for [_unknown_ errors](#unknown-errors), `true` otherwise
+_Default_: `false` if the innermost error is [_unknown_](#unknown-errors), `true`
+otherwise
 
-Log the `error` message only, not its stack trace.
+Logs the `error` message only, not its stack trace.
 
 ##### silent
 
