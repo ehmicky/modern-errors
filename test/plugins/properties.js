@@ -12,7 +12,7 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
     const error = new TestError('test', {
       prop: { one: true, two: { three: true }, four: true },
     })
-    t.deepEqual(error.set.options.prop, {
+    t.deepEqual(error.properties.options.prop, {
       one: true,
       two: { three: true },
       five: false,
@@ -21,9 +21,9 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('plugin.set() is optional', (t) => {
+test('plugin.properties() is optional', (t) => {
   const { TestError } = defineClassOpts({}, {}, [
-    { ...TEST_PLUGIN, set: undefined },
+    { ...TEST_PLUGIN, properties: undefined },
   ])
-  t.false('set' in new TestError('test'))
+  t.false('properties' in new TestError('test'))
 })

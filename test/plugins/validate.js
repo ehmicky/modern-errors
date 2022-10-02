@@ -43,7 +43,7 @@ each(
   [
     { isOptions: undefined },
     { getOptions: undefined },
-    { set: undefined },
+    { properties: undefined },
     { instanceMethods: undefined },
     { staticMethods: undefined },
     { instanceMethods: {} },
@@ -58,7 +58,7 @@ each(
   },
 )
 
-each(['isOptions', 'getOptions', 'set'], ({ title }, propName) => {
+each(['isOptions', 'getOptions', 'properties'], ({ title }, propName) => {
   test(`Should validate functions | ${title}`, (t) => {
     t.throws(
       defineGlobalOpts.bind(undefined, {}, [

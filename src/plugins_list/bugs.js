@@ -45,11 +45,11 @@ const EXAMPLE_ORIGIN = 'https://example.com'
 // `bugs` is set at instantiation time instead of during error handling as:
 //   - This simplifies error handling logic
 //   - This provides with better debugging and more immediate experience
-const set = function ({ error, options }) {
+const properties = function ({ error, options }) {
   return options === '' ? {} : { message: `${error.message}\n${options}` }
 }
 
-const BUGS_PLUGIN = { name: 'bugs', getOptions, set }
+const BUGS_PLUGIN = { name: 'bugs', getOptions, properties }
 
 // eslint-disable-next-line import/no-default-export
 export default BUGS_PLUGIN

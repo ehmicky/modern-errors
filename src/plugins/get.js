@@ -19,9 +19,9 @@ const defaultGetOptions = function (fullName, options) {
 }
 
 // Retrieve, validate and normalize all options for a given plugin.
-// Those are passed to `plugin.set|instanceMethods.*`.
+// Those are passed to `plugin.properties|instanceMethods.*`.
 // We also pass all plugins options, before normalization, to
-// `plugin.set|instanceMethods.*`
+// `plugin.properties|instanceMethods.*`
 //  - This is mostly meant for plugins like serialization which need to
 //    re-instantiate or clone errors
 // We pass whether the `options` object is partial or not using `full`:

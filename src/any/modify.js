@@ -1,12 +1,12 @@
 import { computePluginsOpts } from '../plugins/compute.js'
 import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
-import { applyPluginsSet } from '../plugins/properties.js'
+import { setPluginsProperties } from '../plugins/properties.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
 import { getCause, mergeCause } from './cause.js'
 
-// Merge `error.cause` and apply `plugin.set()`.
+// Merge `error.cause` and set `plugin.properties()`.
 // Also compute and keep track of instance options and `constructorArgs`.
 export const modifyError = function ({
   currentError,
@@ -63,7 +63,7 @@ const applyErrorLogic = function ({
   setAggregateErrors(currentError, optsA, AnyError)
   const error = mergeCause(currentError, isAnyError)
   setConstructorArgs(error, constructorArgs)
-  const { previousValues, newValues } = applyPluginsSet({
+  const { previousValues, newValues } = setPluginsProperties({
     error,
     AnyError,
     ErrorClasses,

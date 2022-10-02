@@ -5,16 +5,16 @@ import { getPluginInfo } from './info.js'
 import { mergeClassOpts } from './merge.js'
 import { getPreviousValues, getAllValues } from './previous.js'
 
-// Apply each `plugin.set()`
-export const applyPluginsSet = function ({
+// Set each `plugin.properties()`
+export const setPluginsProperties = function ({
   error,
   AnyError,
   ErrorClasses,
   plugins,
   pluginsOpts,
 }) {
-  const allNewProps = plugins.filter(pluginHasSet).map((plugin) =>
-    callPluginSet({
+  const allNewProps = plugins.filter(pluginHasProperties).map((plugin) =>
+    getPluginProperties({
       error,
       AnyError,
       ErrorClasses,
@@ -29,16 +29,16 @@ export const applyPluginsSet = function ({
   return getAllValues(previousValues, error)
 }
 
-const pluginHasSet = function ({ set }) {
-  return set !== undefined
+const pluginHasProperties = function ({ properties }) {
+  return properties !== undefined
 }
 
-const callPluginSet = function ({
+const getPluginProperties = function ({
   error,
   AnyError,
   ErrorClasses,
   plugin,
-  plugin: { set, fullName },
+  plugin: { properties, fullName },
   plugins,
   pluginsOpts,
 }) {
@@ -54,11 +54,11 @@ const callPluginSet = function ({
     AnyError,
     ErrorClasses,
   })
-  const newProps = set({ ...info, error })
+  const newProps = properties({ ...info, error })
 
   if (!isPlainObj(newProps)) {
     throw new TypeError(
-      `Plugin "${fullName}"'s "set()" must return a plain object: ${newProps}`,
+      `Plugin "${fullName}"'s "properties()" must return a plain object: ${newProps}`,
     )
   }
 

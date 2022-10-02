@@ -2,10 +2,10 @@ import { deepClone } from './clone.js'
 
 // When an error is wrapped, the parent error overrides the child error's
 // options.
-//  - We do this by keeping track of values modified by `plugin.set()`, then
-//    revert them when wrapped
-// Calling all plugins `plugin.set()`, even if their options is not specified,
-// also ensures they get refreshed
+//  - We do this by keeping track of values modified by `plugin.properties()`,
+//    then revert them when wrapped
+// Calling all plugins `plugin.properties()`, even if their options is not
+// specified, also ensures they get refreshed
 //  - E.g. the `bugs` plugin bumps the bugs URL to the bottom of `error.message`
 // `AnyError` does it as well, but first merges the child's options with its
 // own options.
@@ -89,8 +89,8 @@ const getValue = function (key, error) {
   return { key, descriptor }
 }
 
-// When an error is wrapped, undo its `plugin.set()` before merging it to the
-// parent
+// When an error is wrapped, undo its `plugin.properties()` before merging it to
+// the parent
 export const restorePreviousValues = function (cause, errorData) {
   if (cause !== undefined) {
     restoreValues(cause, errorData.get(cause).previousValues)

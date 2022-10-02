@@ -13,11 +13,11 @@ const getOptions = function (props = {}) {
 }
 
 // Set `props` option as error properties
-const set = function ({ options }) {
+const properties = function ({ options }) {
   return options
 }
 
-const PROPS_PLUGIN = { name: 'props', getOptions, set }
+const PROPS_PLUGIN = { name: 'props', getOptions, properties }
 
 // eslint-disable-next-line import/no-default-export
 export default PROPS_PLUGIN

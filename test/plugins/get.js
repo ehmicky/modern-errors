@@ -15,7 +15,7 @@ test('plugin.getOptions() forbids options by default', (t) => {
 
 each([undefined, {}, { prop: undefined }], ({ title }, opts) => {
   test(`plugin.getOptions() allows undefined options by default | ${title}`, (t) => {
-    t.is(new NoOptsTestError('test', opts).set.options, undefined)
+    t.is(new NoOptsTestError('test', opts).properties.options, undefined)
   })
 })
 

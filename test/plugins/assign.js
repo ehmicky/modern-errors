@@ -7,23 +7,23 @@ import { TEST_PLUGIN } from '../helpers/plugin.js'
 const { TestError, AnyError } = defineClassOpts()
 
 each([undefined, true], ({ title }, value) => {
-  test(`plugin.set() must return a plain object | ${title}`, (t) => {
+  test(`plugin.properties() must return a plain object | ${title}`, (t) => {
     const { TestError: OtherTestError } = defineClassOpts({}, {}, [
-      { ...TEST_PLUGIN, set: () => value },
+      { ...TEST_PLUGIN, properties: () => value },
     ])
     t.throws(() => new OtherTestError('test'))
   })
 })
 
 each(['message', 'stack'], ({ title }, key) => {
-  test(`plugin.set() can set some core properties | ${title}`, (t) => {
+  test(`plugin.properties() can set some core properties | ${title}`, (t) => {
     const error = new TestError('test', { prop: { toSet: { [key]: '0' } } })
     t.is(error[key], '0')
     t.false(Object.getOwnPropertyDescriptor(error, key).enumerable)
   })
 })
 
-test('plugin.set() can set both message and stack', (t) => {
+test('plugin.properties() can set both message and stack', (t) => {
   const oldMessage = 'one'
   const message = 'two'
   const stackPrefix = 'Stack: '
@@ -35,7 +35,7 @@ test('plugin.set() can set both message and stack', (t) => {
 })
 
 each(['one', Symbol('one')], ({ title }, key) => {
-  test(`plugin.set() can set properties | ${title}`, (t) => {
+  test(`plugin.properties() can set properties | ${title}`, (t) => {
     t.true(new TestError('test', { prop: { toSet: { [key]: true } } })[key])
   })
 })
@@ -43,7 +43,7 @@ each(['one', Symbol('one')], ({ title }, key) => {
 each(
   ['wrap', 'constructorArgs', 'name', 'cause', 'errors'],
   ({ title }, key) => {
-    test(`plugin.set() cannot set forbidden properties | ${title}`, (t) => {
+    test(`plugin.properties() cannot set forbidden properties | ${title}`, (t) => {
       t.not(
         new TestError('test', { prop: { toSet: { [key]: 'true' } } })[key],
         'true',
@@ -52,7 +52,7 @@ each(
   },
 )
 
-test('plugin.set() shallow merge properties', (t) => {
+test('plugin.properties() shallow merge properties', (t) => {
   const error = new Error('test')
   error.one = false
   error.two = false
@@ -65,7 +65,7 @@ test('plugin.set() shallow merge properties', (t) => {
   t.true(three)
 })
 
-test('plugin.set() non-enumerable properties can be assigned', (t) => {
+test('plugin.properties() non-enumerable properties can be assigned', (t) => {
   const cause = new TestError('test')
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(cause, 'nonEnumProp', {

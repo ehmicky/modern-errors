@@ -35,7 +35,7 @@ const validateOptionalFuncs = function (plugin) {
   })
 }
 
-const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'set']
+const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'properties']
 
 const validateOptionalMethod = function (plugin, funcName) {
   const funcValue = plugin[funcName]

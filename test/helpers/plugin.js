@@ -27,13 +27,13 @@ export const TEST_PLUGIN = {
 
     return { prop, full }
   },
-  set(utils) {
+  properties(utils) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
     const toSet = isPlainObj(utils.options?.prop)
       ? utils.options?.prop.toSet
       : {}
-    return { ...toSet, set: { ...utils } }
+    return { ...toSet, properties: { ...utils } }
   },
   instanceMethods: {
     getInstance(utils, ...args) {

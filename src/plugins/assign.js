@@ -2,7 +2,7 @@ import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
-// `plugin.set()` returns an object of properties to set.
+// `plugin.properties()` returns an object of properties to set.
 // `undefined` values delete properties.
 // Those are shallowly merged.
 // Error core properties are ignored except for `message` and `stack`.
