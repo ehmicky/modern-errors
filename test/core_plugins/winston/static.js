@@ -5,11 +5,7 @@ import through from 'through2'
 import { MESSAGE } from 'triple-beam'
 import { createLogger, transports, format } from 'winston'
 
-// eslint-disable-next-line no-restricted-imports
-import WINSTON_PLUGIN from '../../../src/core_plugins/winston/main.js'
-import { defineClassOpts } from '../../helpers/main.js'
-
-const { TestError, AnyError } = defineClassOpts({}, {}, [WINSTON_PLUGIN])
+import { TestError, AnyError } from '../../helpers/winston.js'
 
 // eslint-disable-next-line fp/no-let
 let shortLog = ''
