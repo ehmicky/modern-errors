@@ -1,4 +1,5 @@
 import { format } from 'logform'
+import { LEVEL, MESSAGE } from 'triple-beam'
 
 import { isErrorInstance } from './check.js'
 
@@ -17,10 +18,24 @@ const getFormat = function (methodName, { AnyError }) {
 }
 
 const formatFunc = function ({ AnyError, methodName }, value) {
-  return isErrorInstance(value)
-    ? AnyError.normalize(value)[methodName]()
-    : value
+  if (!isErrorInstance(value)) {
+    return value
+  }
+
+  deleteWinstonProps(value)
+  const object = AnyError.normalize(value)[methodName]()
+  return { ...object, [LEVEL]: object.level }
 }
+
+// Winston directly mutates `log()` argument, which we remove
+const deleteWinstonProps = function (value) {
+  WINSTON_PROPS.forEach((propName) => {
+    // eslint-disable-next-line fp/no-delete, no-param-reassign
+    delete value[propName]
+  })
+}
+
+const WINSTON_PROPS = ['level', LEVEL, MESSAGE]
 
 export const shortFormat = getFormat.bind(undefined, 'toShortLogObject')
 export const fullFormat = getFormat.bind(undefined, 'toFullLogObject')
