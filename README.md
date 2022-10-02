@@ -36,7 +36,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
 - [`modern-errors-http`](#http-responses): Convert errors to HTTP response
   objects
-- Create your own plugin
+- Create your [own plugin](docs/plugins.md)
 
 # Example
 
@@ -546,7 +546,8 @@ export const AuthError = SharedError.subclass('AuthError', {
 
 ## Adding plugins
 
-Plugins extend `modern-errors` features ([list of available plugins](#plugins)).
+Plugins extend `modern-errors` features. [Several plugins](#plugins) are
+available. You can also [create your own plugin](docs/plugins.md).
 
 They must first be installed.
 
