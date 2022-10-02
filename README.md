@@ -679,30 +679,18 @@ try {
 
 _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
 
-CLI applications can assign a different exit code and log verbosity per error
-class by using
-[`handle-cli-error`](https://github.com/ehmicky/handle-cli-error).
+#### CLI error handler
+
+`error.exit()` prints `error` on the console then exits the process.
 
 ```js
-#!/usr/bin/env node
-import handleCliError from 'handle-cli-error'
-
 import { AnyError } from './errors.js'
-import programmaticMain from './main.js'
 
 const cliMain = function () {
   try {
-    const cliFlags = getCliFlags()
-    programmaticMain(cliFlags)
+    // ...
   } catch (error) {
-    // Print `error` then exit the process
-    handleCliError(AnyError.normalize(error), {
-      classes: {
-        InputError: { exitCode: 1, short: true },
-        DatabaseError: { exitCode: 2, short: true },
-        default: { exitCode: 3 },
-      },
-    })
+    AnyError.normalize(error).exit()
   }
 }
 
