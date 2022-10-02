@@ -1,5 +1,5 @@
 import isPlainObj from 'is-plain-obj'
-import { codes } from 'statuses'
+import statuses from 'statuses'
 
 // Normalize and validate options
 const getOptions = function (options = {}) {
@@ -7,7 +7,9 @@ const getOptions = function (options = {}) {
     throw new TypeError(`It must be a plain object: ${options}`)
   }
 
-  return Object.fromEntries(Object.entries(options).map(normalizeOption))
+  return Object.fromEntries(
+    Object.entries(options).map(normalizeOption).filter(Boolean),
+  )
 }
 
 const normalizeOption = function ([optName, optValue]) {
@@ -20,7 +22,7 @@ Available options: ${availableOpts}`)
   }
 
   if (optValue === undefined) {
-    return []
+    return
   }
 
   validator(optValue, optName)
@@ -37,17 +39,17 @@ const validateStatus = function (optValue, optName) {
   }
 }
 
-const STATUSES = new Set(codes)
+const STATUSES = new Set(statuses.codes)
 
 const validateURI = function (optValue, optName) {
-  validateStatus(optValue, optName)
+  validateString(optValue, optName)
 
   try {
     // eslint-disable-next-line no-new
     new URL(optValue, EXAMPLE_ORIGIN)
   } catch (error) {
     throw new TypeError(
-      `"${optValue}" must not be "${optValue}" but a valid URL: ${error.message}`,
+      `"${optName}" must not be "${optValue}" but a valid URL: ${error.message}`,
     )
   }
 }
@@ -86,14 +88,14 @@ const toStandard = function ({
     title: String(name),
     details: String(message),
     stack: String(stack),
-    extra: String(extra),
+    ...(Object.keys(extra).length === 0 ? {} : { extra }),
     ...options,
   }
 }
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  name: 'stack',
+  name: 'standard',
   getOptions,
   instanceMethods: { toStandard },
 }
