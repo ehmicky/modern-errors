@@ -22,7 +22,7 @@ each(
   },
 )
 
-test('Cannot pass options to instance methods', (t) => {
+test('Cannot pass options to static methods', (t) => {
   const error = new TestError('test')
   t.is(AnyError.shortFormat({ level: 'warn' }).transform(error).level, 'error')
 })

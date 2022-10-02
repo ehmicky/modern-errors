@@ -1,6 +1,7 @@
 import { serialize } from 'error-serializer'
 import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
+import safeJsonValue from 'safe-json-value'
 
 import { isErrorInstance } from './check.js'
 
@@ -19,7 +20,9 @@ export const toFullLogObject = function ({
 const serializeValue = function (value, AnyError, parents) {
   const parentsA = [...parents, value]
   const valueA = serializeError(value, AnyError)
-  return serializeRecurse(valueA, AnyError, parentsA)
+  const valueB = serializeRecurse(valueA, AnyError, parentsA)
+  const valueC = safeJsonValue(valueB, { shallow: true }).value
+  return valueC
 }
 
 const serializeError = function (value, AnyError) {
@@ -58,5 +61,5 @@ export const getFullLogOmittedProps = function ({
   unknownDeep,
   options: { stack = unknownDeep },
 }) {
-  return stack ? ['constructorArgs', 'stack'] : ['constructorArgs']
+  return stack ? ['constructorArgs'] : ['constructorArgs', 'stack']
 }
