@@ -1,8 +1,6 @@
 import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
-import { createSubclass } from '../subclass/main.js'
-
 import { modifyError } from './modify.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
@@ -38,12 +36,7 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createAnyError = function ({
-  ErrorClasses,
-  errorData,
-  plugins,
-  globalOpts,
-}) {
+export const createAnyError = function (ErrorClasses, errorData, plugins) {
   /* eslint-disable fp/no-this */
   class AnyError extends CoreError {
     constructor(message, opts, ...args) {
@@ -71,13 +64,6 @@ export const createAnyError = function ({
       })
     }
     /* c8 ignore stop */
-
-    static subclass = createSubclass.bind(undefined, {
-      parentOpts: globalOpts,
-      ParentError: AnyError,
-      ErrorClasses,
-      plugins,
-    })
 
     static normalize = normalize.bind(undefined, AnyError)
   }

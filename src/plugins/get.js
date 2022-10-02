@@ -54,10 +54,15 @@ const defaultGetOptions = function (fullName, options) {
 //    for name conflict
 //  - This reduces cross-plugin dependencies since they cannot easily reference
 //    each other, keeping them decoupled from each other
-export const getPluginOpts = function (
+export const getPluginOpts = function ({
   pluginsOpts,
-  { name, getOptions },
+  plugin: { name, getOptions },
+  AnyError,
   full,
-) {
-  return getOptions(pluginsOpts[name], full)
+}) {
+  try {
+    return getOptions(pluginsOpts[name], full)
+  } catch (error) {
+    throw AnyError.normalize(error)
+  }
 }

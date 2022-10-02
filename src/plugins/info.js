@@ -9,7 +9,12 @@ export const getPluginInfo = function ({
   ErrorClasses,
 }) {
   const pluginsOptsA = deepClone(pluginsOpts)
-  const options = getPluginOpts(pluginsOptsA, plugin, true)
+  const options = getPluginOpts({
+    pluginsOpts: pluginsOptsA,
+    plugin,
+    AnyError,
+    full: true,
+  })
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return { options, AnyError, ErrorClasses: ErrorClassesA }
 }

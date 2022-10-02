@@ -13,8 +13,24 @@ import { validateClassName } from './name.js'
 //  - Share options and custom logic between error classes
 //  - Bind and override options and custom logic between modules
 //  - Only export parent classes to consumers
-export const createSubclass = function (
-  { parentOpts, ParentError, ErrorClasses, plugins },
+export const addSubclass = function ({
+  AnyError,
+  globalOpts,
+  ErrorClasses,
+  plugins,
+}) {
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
+  AnyError.subclass = createSubclass.bind(undefined, {
+    parentOpts: globalOpts,
+    ParentError: AnyError,
+    AnyError,
+    ErrorClasses,
+    plugins,
+  })
+}
+
+const createSubclass = function (
+  { parentOpts, ParentError, AnyError, ErrorClasses, plugins },
   className,
   classOpts,
 ) {
@@ -24,6 +40,7 @@ export const createSubclass = function (
     parentOpts,
     className,
     classOpts,
+    AnyError,
   })
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
   // eslint-disable-next-line fp/no-mutating-methods
@@ -31,6 +48,7 @@ export const createSubclass = function (
     value: createSubclass.bind(undefined, {
       parentOpts: classOptsA,
       ParentError: ErrorClass,
+      AnyError,
       ErrorClasses,
       plugins,
     }),
