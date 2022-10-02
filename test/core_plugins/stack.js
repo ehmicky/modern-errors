@@ -12,9 +12,14 @@ const testError = new TestError('test')
 const stackError = new StackError('test')
 const cwd = getCwd()
 
+// The first lines sometimes contain a preview
+const isCleanStack = function (stack) {
+  return stack.split('\n').slice(1).join('\n').includes(cwd)
+}
+
 test('stack is cleaned', (t) => {
-  t.true(testError.stack.includes(cwd))
-  t.false(stackError.stack.includes(cwd))
+  t.true(isCleanStack(testError.stack))
+  t.false(isCleanStack(stackError.stack))
 })
 
 test('stack remains non-enumerable', (t) => {
@@ -29,5 +34,5 @@ test.serial('noop in browsers', (t) => {
   const { stack } = new StackError('test')
   // eslint-disable-next-line n/prefer-global/process, fp/no-mutation
   globalThis.process = oldProcess
-  t.true(stack.includes(cwd))
+  t.true(isCleanStack(stack))
 })
