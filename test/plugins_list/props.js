@@ -1,10 +1,8 @@
 import test from 'ava'
 
-// eslint-disable-next-line no-restricted-imports
-import PROPS_PLUGIN from '../../src/plugins_list/props.js'
 import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineClassOpts({}, {}, [PROPS_PLUGIN])
+const { TestError, AnyError } = defineClassOpts()
 
 test('"props" are validated', (t) => {
   t.throws(() => new TestError('message', { props: true }))

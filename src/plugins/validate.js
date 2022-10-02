@@ -1,5 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
+import PROPS_PLUGIN from '../plugins_list/props.js'
+
 import { normalizeGetOptions } from './get.js'
 import { normalizeIsOptions } from './method_opts.js'
 import { validatePluginName } from './name.js'
@@ -10,8 +12,11 @@ export const normalizePlugins = function (plugins = []) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
-  return plugins.map(normalizePlugin)
+  return [...plugins, ...CORE_PLUGINS].map(normalizePlugin)
 }
+
+// Plugins included by default
+const CORE_PLUGINS = [PROPS_PLUGIN]
 
 const normalizePlugin = function (plugin) {
   if (!isPlainObj(plugin)) {
