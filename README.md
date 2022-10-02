@@ -19,6 +19,8 @@ Core features:
 
 - Create [custom error classes](#create-custom-error-classes)
 - Wrap inner errors' [message](#wrap-error-message) or [class](#set-error-class)
+- Set properties on [individual errors](#error-instance-properties) or on
+  [all errors of the same class](#error-class-properties)
 - Separate known and [unknown errors](#unknown-errors)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   stack, etc.)
@@ -31,8 +33,6 @@ Core features:
 [Plugins](#plugins) are also available to:
 
 - Handle errors in [CLI](#cli-errors) modules
-- [Set properties](#error-properties) on individual errors or on all errors of
-  the same class
 - Indicate where to [report bugs](#bug-reports)
 - [Serialize](#serialize)/[parse](#parse) errors
 
@@ -131,6 +131,12 @@ class to [_unknown_ errors](#unknown-errors). This should
 [wrap each main function](#top-level-error-handler).
 
 ## Options
+
+### props
+
+_Type_: `object`
+
+Set [error properties](#error-properties).
 
 ### custom
 
@@ -337,6 +343,27 @@ console.log(aggregateError)
 // }
 console.log(aggregateError.errors)
 // [inputError, authError]
+```
+
+## Error properties
+
+### Error instance properties
+
+```js
+const error = new InputError('Could not read the file.', {
+  props: { isUserError: true },
+})
+console.log(error.isUserError) // true
+```
+
+### Error class properties
+
+```js
+const InputError = AnyError.subclass('InputError', {
+  props: { isUserError: true },
+})
+const error = new InputError('Could not read the file.')
+console.log(error.isUserError) // true
 ```
 
 ## Error class
@@ -546,10 +573,10 @@ the plugin.
 
 ```js
 const options = {
-  // `modern-error-props` options
-  props: { userId: 5 },
   // `modern-error-bugs` options
   bugs: 'https://github.com/my-name/my-project/issues',
+  // `props` are handled like plugin options
+  props: { userId: 5 },
 }
 ```
 
@@ -620,24 +647,9 @@ try {
 
 ## List of plugins
 
-- [`modern-errors-props`](#error-properties): Set error properties
 - [`modern-errors-cli`](#cli-errors): Handle errors from CLI modules
 - [`modern-errors-bugs`](#bug-reports): Print where to report bugs
 - [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
-
-### Error properties
-
-_Plugin_:
-[`modern-errors-props`](https://github.com/ehmicky/modern-errors-props)
-
-Error properties can be set using the `props` option.
-
-```js
-const error = new InputError('Could not read the file.', {
-  props: { isUserError: true },
-})
-console.log(error.isUserError) // true
-```
 
 ### CLI errors
 
