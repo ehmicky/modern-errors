@@ -851,10 +851,10 @@ response. Its shape follows [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)
 const object = error.httpResponse()
 // {
 //   type: 'https://example.com/probs/auth',
+//   status: 401,
 //   title: 'AuthError',
 //   detail: 'Could not authenticate.',
 //   instance: '/users/62',
-//   status: 401,
 //   stack: `AuthError: Could not authenticate.
 //     at ...`,
 //   extra: { userId: 62 },
@@ -868,35 +868,50 @@ const object = error.httpResponse()
 _Type_: `urlString`\
 _Default_: `undefined`
 
-##### title
-
-_Type_: `string`\
-_Default_: `error.name`
-
-##### detail
-
-_Type_: `string`\
-_Default_: `error.message`
-
-##### instance
-
-_Type_: `urlString`\
-_Default_: `undefined`
+URI identifying and documenting the error class. Ideally, each error class
+should [set a different one](#configure-options).
 
 ##### status
 
 _Type_: `integer`\
 _Default_: `undefined`
 
+HTTP status code.
+
+##### title
+
+_Type_: `string`\
+_Default_: `error.name`
+
+Error class name.
+
+##### detail
+
+_Type_: `string`\
+_Default_: `error.message`
+
+Error description.
+
+##### instance
+
+_Type_: `urlString`\
+_Default_: `undefined`
+
+URI identifying the value which errored.
+
 ##### stack
 
 _Type_: `string`\
 _Default_: `error.stack`
 
+Error stack trace. Can be set to an empty string.
+
 ##### extra
 
 _Type_: `object`\
 _Default_: any additional `error` properties
+
+Additional information.
 
 # Modules
 
