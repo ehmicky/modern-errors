@@ -699,7 +699,7 @@ cliMain()
 
 ##### exitCode
 
-_Type_: `integer`\
+_Type_: `integer`
 
 Process [exit code](https://en.wikipedia.org/wiki/Exit_status). By default, each
 error class has its own exit code: `1`, `2`, `3`, etc. following their
@@ -707,11 +707,10 @@ declaration order.
 
 ##### short
 
-_Type_: `boolean`\
-_Default_: `false` if the innermost error is [_unknown_](#unknown-errors), `true`
-otherwise
+_Type_: `boolean`
 
-Logs the `error` message only, not its stack trace.
+Logs the `error` message only, not its stack trace. By default, this is `true`
+unless the innermost error is [_unknown_](#unknown-errors).
 
 ##### silent
 
