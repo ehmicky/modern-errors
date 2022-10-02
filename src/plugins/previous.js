@@ -37,7 +37,13 @@ const getPreviousKeys = function (newProps) {
 }
 
 // Keep track of the `newValues` so that reverting to `previousValues` can
-// itself be reverted
+// itself be reverted.
+// An alternative would be cloning errors, but it is hard to implement since:
+//  - Private variables would not be kept
+//  - Properties that are class instances would not be cloned
+//  - Constructor might throw while cloning due to change in either:
+//     - Global scope
+//     - Class instance passed as argument
 export const getAllValues = function (previousValues, error) {
   const previousValuesA = filterPreviousValues(previousValues, error)
   const newValues = getNewValues(previousValuesA, error)
