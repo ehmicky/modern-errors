@@ -1,17 +1,11 @@
 import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
-import { computePluginsOpts } from '../plugins/compute.js'
-import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
-import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
-import { setAggregateErrors } from './aggregate.js'
-import { getConstructorArgs, setConstructorArgs } from './args.js'
-import { getCause, mergeCause } from './cause.js'
+import { modifyError } from './modify.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
-// eslint-disable-next-line import/max-dependencies
 import { validateSubClass } from './subclass.js'
 
 const CoreError = errorCustomClass('CoreError')
@@ -65,7 +59,7 @@ export const createAnyError = function ({
       super(message, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
-      return setError({
+      return modifyError({
         currentError: this,
         opts: optsA,
         args,
@@ -90,72 +84,4 @@ export const createAnyError = function ({
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
   return AnyError
-}
-
-// Merge `error.cause` and apply `plugin.set()`.
-// Also compute and keep track of instance options and `constructorArgs`.
-const setError = function ({
-  currentError,
-  opts,
-  args,
-  ErrorClasses,
-  errorData,
-  plugins,
-  AnyError,
-  isAnyError,
-}) {
-  const cause = getCause(currentError, AnyError)
-  restorePreviousValues(cause, errorData)
-  const error = applyErrorLogic({
-    currentError,
-    cause,
-    opts,
-    args,
-    ErrorClasses,
-    errorData,
-    plugins,
-    AnyError,
-    isAnyError,
-  })
-  restoreNewValues(cause, errorData, isAnyError)
-  return error
-}
-
-const applyErrorLogic = function ({
-  currentError,
-  cause,
-  opts,
-  args,
-  ErrorClasses,
-  errorData,
-  plugins,
-  AnyError,
-  isAnyError,
-}) {
-  const { opts: optsA, pluginsOpts } = computePluginsOpts({
-    opts,
-    cause,
-    isAnyError,
-    errorData,
-    plugins,
-  })
-  const constructorArgs = getConstructorArgs({
-    opts: optsA,
-    cause,
-    isAnyError,
-    pluginsOpts,
-    args,
-  })
-  setAggregateErrors(currentError, optsA, AnyError)
-  const error = mergeCause(currentError, isAnyError)
-  setConstructorArgs(error, constructorArgs)
-  const { previousValues, newValues } = applyPluginsSet({
-    error,
-    AnyError,
-    ErrorClasses,
-    plugins,
-    pluginsOpts,
-  })
-  errorData.set(error, { pluginsOpts, previousValues, newValues })
-  return error
 }
