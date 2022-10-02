@@ -15,19 +15,23 @@ import { validateClassName } from './name.js'
 //  - Only export parent classes to consumers
 export const addSubclass = function ({
   ErrorClass,
-  ParentError,
   AnyError,
   parentOpts,
   ErrorClasses,
   plugins,
 }) {
-  // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  ErrorClass.subclass = createSubclass.bind(undefined, {
-    parentOpts,
-    ParentError,
-    AnyError,
-    ErrorClasses,
-    plugins,
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(ErrorClass, 'subclass', {
+    value: createSubclass.bind(undefined, {
+      parentOpts,
+      ParentError: ErrorClass,
+      AnyError,
+      ErrorClasses,
+      plugins,
+    }),
+    enumerable: false,
+    writable: true,
+    configurable: true,
   })
 }
 
@@ -45,18 +49,12 @@ const createSubclass = function (
     AnyError,
   })
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(ErrorClass, 'subclass', {
-    value: createSubclass.bind(undefined, {
-      parentOpts: classOptsA,
-      ParentError: ErrorClass,
-      AnyError,
-      ErrorClasses,
-      plugins,
-    }),
-    enumerable: false,
-    writable: true,
-    configurable: true,
+  addSubclass({
+    ErrorClass,
+    AnyError,
+    parentOpts: classOptsA,
+    ErrorClasses,
+    plugins,
   })
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }

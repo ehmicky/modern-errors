@@ -14,7 +14,6 @@ export default function modernErrors(plugins, globalOpts) {
   const globalOptsA = getGlobalOpts(pluginsA, AnyError, globalOpts)
   addSubclass({
     ErrorClass: AnyError,
-    ParentError: AnyError,
     AnyError,
     parentOpts: globalOptsA,
     ErrorClasses,
