@@ -7,7 +7,7 @@ export const validateDuplicatePlugin = function ({
   prefix,
 }) {
   const duplicatePlugin = plugins.find(
-    (pluginA) => plugin !== pluginA && methodName in plugin[propName],
+    (pluginA) => plugin !== pluginA && methodName in pluginA[propName],
   )
 
   if (duplicatePlugin !== undefined) {
