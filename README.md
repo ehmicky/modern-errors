@@ -655,7 +655,7 @@ Plugins can set:
 - [`AnyError`](#anyerror) static methods: `AnyError.exampleMethod()`
 
 Error instance methods are only available on [_known_ errors](#unknown-errors).
-This can be ensured by using `AnyError.normalize()`.
+This can be ensured using `AnyError.normalize()`.
 
 ```js
 try {
