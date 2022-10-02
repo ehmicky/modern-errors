@@ -30,11 +30,12 @@ Core features:
   [`class`](#custom-logic), [`toJSON()`](#serialize)
 - [Custom logic](#custom-logic)
 
-[Plugins](#plugins) are also available to:
+[Plugins](#plugins) are also available:
 
 - Handle errors in [CLI](#cli-errors) modules
 - Indicate where to [report bugs](#bug-reports)
 - [Serialize](#serialize)/[parse](#parse) errors
+- Create your own plugin
 
 # Example
 
@@ -136,7 +137,7 @@ class to [_unknown_ errors](#unknown-errors). This should
 
 _Type_: `object`
 
-Set [error properties](#error-properties).
+[Error properties](#error-properties).
 
 ### custom
 
