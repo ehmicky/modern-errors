@@ -5,6 +5,11 @@ export const getCause = function ({ cause }, AnyError) {
   return cause instanceof AnyError ? cause : undefined
 }
 
+export const mergeSpecificCause = function (error, cause) {
+  error.cause = cause
+  return mergeCause(error, true)
+}
+
 // `error.cause` is merged as soon as the error is instantiated:
 //  - This is simpler as it avoids the error shape to change over its lifetime
 //    (before|after `AnyError.normalize()`)

@@ -1,4 +1,4 @@
-import { mergeCause } from '../any/cause.js'
+import { mergeSpecificCause } from '../any/cause.js'
 
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
@@ -64,8 +64,6 @@ export const getPluginOpts = function ({
   try {
     return getOptions(pluginsOpts[name], full)
   } catch (cause) {
-    const error = new Error(`Invalid "${name}" options:`)
-    error.cause = cause
-    throw mergeCause(error, true)
+    throw mergeSpecificCause(new Error(`Invalid "${name}" options:`), cause)
   }
 }
