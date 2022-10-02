@@ -13,19 +13,19 @@ export const TEST_PLUGIN = {
     validateContext(this)
     return typeof prop === 'boolean' || isPlainObj(prop)
   },
-  getOptions(prop, full) {
+  getOptions({ options, full }) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
 
-    if (prop === 'invalid') {
+    if (options === 'invalid') {
       throw new TypeError('Invalid prop')
     }
 
-    if (prop === 'partial' && full === false) {
+    if (options === 'partial' && full === false) {
       throw new TypeError('Partial')
     }
 
-    return { prop, full }
+    return { prop: options, full }
   },
   properties(utils) {
     // eslint-disable-next-line fp/no-this

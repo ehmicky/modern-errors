@@ -158,7 +158,7 @@ expectError(modernErrors([{}]))
 modernErrors([])
 modernErrors([], {})
 const name = 'test'
-const getOptions = (options: true) => options
+const getOptions = ({ options }: { options: true }) => options
 const noOptsPlugin = { name } as const
 const plugin = { name, getOptions } as const
 modernErrors([plugin])

@@ -14,14 +14,14 @@ import type MergeErrorCause from 'merge-error-cause'
  */
 interface Plugin {
   readonly name: string
-  readonly getOptions?: (input: any) => any
+  readonly getOptions?: (input: { options: any }) => any
 }
 
 type Plugins = readonly Plugin[]
 
 type PluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
-    ? Parameters<PluginArg['getOptions']>[0]
+    ? Parameters<PluginArg['getOptions']>[0]['options']
     : never
 
 type LiteralString<T extends string> = string extends T ? never : T

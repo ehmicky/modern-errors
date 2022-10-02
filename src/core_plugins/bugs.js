@@ -3,36 +3,36 @@
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
 // eslint-disable-next-line filenames/match-exported
-const getOptions = function (bugs = '') {
-  return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
+const getOptions = function ({ options = '' }) {
+  return options === '' ? options : `${BUGS_PREFIX}${ensureBugsUrl(options)}`
 }
 
 const BUGS_PREFIX = 'Please report this bug at: '
 
 // We enforce `bugs` is a valid URL.
 //  - Some terminals add links to URL, which makes it useful
-const ensureBugsUrl = function (bugs) {
-  if (Object.prototype.toString.call(bugs) === '[object URL]') {
-    return bugs
+const ensureBugsUrl = function (options) {
+  if (Object.prototype.toString.call(options) === '[object URL]') {
+    return options
   }
 
-  if (typeof bugs !== 'string') {
-    throw new TypeError(`"bugs" option must be a string or a URL: ${bugs}`)
+  if (typeof options !== 'string') {
+    throw new TypeError(`"bugs" option must be a string or a URL: ${options}`)
   }
 
   try {
-    return new URL(bugs)
+    return new URL(options)
   } catch (error) {
     throw new TypeError(
-      `"bugs" option "${bugs}" must be ${getUrlError(error, bugs)}`,
+      `"bugs" option "${options}" must be ${getUrlError(error, options)}`,
     )
   }
 }
 
-const getUrlError = function (error, bugs) {
+const getUrlError = function (error, options) {
   try {
     // eslint-disable-next-line no-new
-    new URL(bugs, EXAMPLE_ORIGIN)
+    new URL(options, EXAMPLE_ORIGIN)
     return 'an absolute URL.'
   } catch {
     return `a valid URL: ${error.message}.`

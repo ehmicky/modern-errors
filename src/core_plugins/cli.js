@@ -1,7 +1,7 @@
 // eslint-disable-next-line filenames/match-exported
 import handleCliError from 'handle-cli-error'
 
-const getOptions = function (options = {}) {
+const getOptions = function ({ options = {} }) {
   return options
 }
 
