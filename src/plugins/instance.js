@@ -18,14 +18,13 @@ export const addAllInstanceMethods = function ({
 
 const addInstanceMethods = function ({
   plugin,
-  plugin: { instanceMethods },
   plugins,
   ErrorClasses,
   errorData,
   AnyError,
 }) {
   const arg = { plugin, plugins, ErrorClasses, errorData, AnyError }
-  Object.entries(instanceMethods).forEach(
+  Object.entries(plugin.instanceMethods).forEach(
     addInstanceMethod.bind(undefined, arg),
   )
 }
