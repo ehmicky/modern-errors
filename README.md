@@ -16,7 +16,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 # Features
 
 - Create [custom error classes](#create-custom-error-classes)
-- Wrap inner errors' [message](#wrap-error-message) or [class](#set-error-class)
+- Wrap errors' [message](#wrap-error-message) or [class](#set-error-class)
 - Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - Separate known and [unknown errors](#unknown-errors)
@@ -649,7 +649,7 @@ try {
 
 ## Plugin methods
 
-Plugins can set:
+Plugins can add:
 
 - Error properties: `error.message`, `error.stack` or any other `error.*`
 - Error instance methods: `error.exampleMethod()`
@@ -664,7 +664,6 @@ try {
 } catch (error) {
   // This throws if `error` has an unknown class
   error.exampleMethod()
-
   // This is safe
   AnyError.normalize(error).exampleMethod()
 }
