@@ -81,7 +81,7 @@ const VALIDATORS = {
 
 // Turn `error` into a RFC 7807 problem details object.
 // Object keys order is significant.
-const toStandard = function ({
+const httpResponse = function ({
   // eslint-disable-next-line no-unused-vars
   error: { name, message, stack, cause, errors, ...errorProps },
   options,
@@ -115,7 +115,7 @@ const getExtra = function ({ extra }, errorProps) {
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  name: 'standard',
+  name: 'http',
   getOptions,
-  instanceMethods: { toStandard },
+  instanceMethods: { httpResponse },
 }

@@ -2,10 +2,10 @@ import test from 'ava'
 import { each } from 'test-each'
 
 // eslint-disable-next-line no-restricted-imports
-import STANDARD_PLUGIN from '../../src/core_plugins/standard.js'
+import HTTP_PLUGIN from '../../src/core_plugins/http.js'
 import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError } = defineClassOpts({}, {}, [STANDARD_PLUGIN])
+const { TestError } = defineClassOpts({}, {}, [HTTP_PLUGIN])
 const testError = new TestError('test')
 
 each(
@@ -23,9 +23,9 @@ each(
     ]),
     { extra: true },
   ],
-  ({ title }, standard) => {
+  ({ title }, http) => {
     test(`Options are validated | ${title}`, (t) => {
-      t.throws(testError.toStandard.bind(testError, standard))
+      t.throws(testError.httpResponse.bind(testError, http))
     })
   },
 )
@@ -49,7 +49,7 @@ each(
   ({ title }, [propName, propValue]) => {
     test(`Valid options are kept | ${title}`, (t) => {
       t.deepEqual(
-        testError.toStandard({ [propName]: propValue })[propName],
+        testError.httpResponse({ [propName]: propValue })[propName],
         propValue,
       )
     })
@@ -64,9 +64,9 @@ each(
       (optName) => ({ [optName]: undefined }),
     ),
   ],
-  ({ title }, standard) => {
+  ({ title }, http) => {
     test(`Assign default options | ${title}`, (t) => {
-      t.deepEqual(testError.toStandard(standard), {
+      t.deepEqual(testError.httpResponse(http), {
         title: testError.name,
         detail: testError.message,
         stack: testError.stack,
@@ -77,11 +77,11 @@ each(
 
 test('Assign default extra', (t) => {
   const props = { prop: true }
-  t.deepEqual(new TestError('test', { props }).toStandard().extra, props)
+  t.deepEqual(new TestError('test', { props }).httpResponse().extra, props)
 })
 
 test('Keep extra JSON-safe', (t) => {
-  t.deepEqual(testError.toStandard({ extra: { one: true, two: 0n } }).extra, {
+  t.deepEqual(testError.httpResponse({ extra: { one: true, two: 0n } }).extra, {
     one: true,
   })
 })
@@ -89,7 +89,7 @@ test('Keep extra JSON-safe', (t) => {
 test('Keep object keys order', (t) => {
   t.deepEqual(
     Object.keys(
-      testError.toStandard({
+      testError.httpResponse({
         extra: {},
         stack: '',
         instance: '',
