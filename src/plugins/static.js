@@ -45,14 +45,19 @@ const addStaticMethod = function (
   [methodName, methodFunc],
 ) {
   validateMethodName(methodName, plugin, plugins)
-  // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  AnyError[methodName] = callStaticMethod.bind(undefined, {
-    methodFunc,
-    plugin,
-    plugins,
-    globalOpts,
-    ErrorClasses,
-    AnyError,
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(AnyError, methodName, {
+    value: callStaticMethod.bind(undefined, {
+      methodFunc,
+      plugin,
+      plugins,
+      globalOpts,
+      ErrorClasses,
+      AnyError,
+    }),
+    enumerable: false,
+    writable: true,
+    configurable: true,
   })
 }
 

@@ -65,7 +65,9 @@ export const createAnyError = function (ErrorClasses, errorData, plugins) {
     }
     /* c8 ignore stop */
 
-    static normalize = normalize.bind(undefined, AnyError)
+    static normalize(error) {
+      return normalize(error, AnyError)
+    }
   }
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
