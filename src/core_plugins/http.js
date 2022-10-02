@@ -114,8 +114,4 @@ const getExtra = function ({ extra }, errorProps) {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default {
-  name: 'http',
-  getOptions,
-  instanceMethods: { httpResponse },
-}
+export default { name: 'http', getOptions, instanceMethods: { httpResponse } }
