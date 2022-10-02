@@ -65,7 +65,7 @@ export const createAnyError = function ({
       super(message, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
-      return applyInstanceLogic({
+      return setError({
         currentError: this,
         opts: optsA,
         args,
@@ -92,7 +92,9 @@ export const createAnyError = function ({
   return AnyError
 }
 
-const applyInstanceLogic = function ({
+// Merge `error.cause` and apply `plugin.set()`.
+// Also compute and keep track of instance options and `constructorArgs`.
+const setError = function ({
   currentError,
   opts,
   args,
@@ -104,7 +106,7 @@ const applyInstanceLogic = function ({
 }) {
   const cause = getCause(currentError, AnyError)
   restorePreviousValues(cause, errorData)
-  const error = setError({
+  const error = applyErrorLogic({
     currentError,
     cause,
     opts,
@@ -119,7 +121,7 @@ const applyInstanceLogic = function ({
   return error
 }
 
-const setError = function ({
+const applyErrorLogic = function ({
   currentError,
   cause,
   opts,
