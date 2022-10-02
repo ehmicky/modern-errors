@@ -12,9 +12,9 @@ Features can now be extended using [plugins](README.md#plugins).
 import modernErrors from 'modern-errors'
 
 import modernErrorsBugs from 'modern-errors-bugs'
-import modernErrorsProps from 'modern-errors-props'
+import modernErrorsCli from 'modern-errors-cli'
 
-export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
+export const AnyError = modernErrors([modernErrorsBugs, modernErrorsCli])
 ```
 
 ### Custom classes
@@ -193,8 +193,7 @@ const normalizedError = AnyError.normalize(error)
 ### Error properties
 
 Error properties must now be set using the
-[`props` option](README.md#error-properties). This also requires adding the
-`modern-errors-props` [plugin](README.md#adding-plugins).
+[`props` option](README.md#error-properties).
 
 Before:
 
