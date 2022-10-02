@@ -5,6 +5,7 @@ import { setPluginsProperties } from '../plugins/properties.js'
 import { setAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
 import { getCause, mergeCause } from './cause.js'
+import { getUnknownDeep } from './deep.js'
 
 // Merge `error.cause` and set `plugin.properties()`.
 // Also compute and keep track of instance options and `constructorArgs`.
@@ -46,6 +47,12 @@ const applyErrorLogic = function ({
   AnyError,
   isAnyError,
 }) {
+  const unknownDeep = getUnknownDeep({
+    cause,
+    AnyError,
+    ErrorClasses,
+    errorData,
+  })
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     opts,
     cause,
@@ -70,6 +77,6 @@ const applyErrorLogic = function ({
     plugins,
     pluginsOpts,
   })
-  errorData.set(error, { pluginsOpts, previousValues, newValues })
+  errorData.set(error, { unknownDeep, pluginsOpts, previousValues, newValues })
   return error
 }
