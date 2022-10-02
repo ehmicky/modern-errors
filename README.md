@@ -679,7 +679,7 @@ try {
 
 _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
 
-`error.exit()` prints `error` on the console then exits the process.
+`error.exit()` logs `error` on the console then exits the process.
 
 ```js
 import { AnyError } from './errors.js'
@@ -700,9 +700,11 @@ cliMain()
 ##### exitCode
 
 _Type_: `integer`\
-_Default_: `1`, `2`, `3`, etc. following the declaration order of error classes
 
 Process [exit code](https://en.wikipedia.org/wiki/Exit_status).
+
+By default, each error class has its own exit code: `1`, `2`, `3`, etc.
+following their declaration order.
 
 ##### short
 
