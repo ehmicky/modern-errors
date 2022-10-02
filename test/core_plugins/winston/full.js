@@ -55,11 +55,12 @@ test('Does not include constructorArgs', (t) => {
 })
 
 test('Serializes error', (t) => {
+  const { name, message } = knownError
   t.deepEqual(transform(knownError), {
     level: defaultLevel,
     [LEVEL]: defaultLevel,
-    name: knownError.name,
-    message: knownError.message,
+    name,
+    message,
   })
 })
 

@@ -18,11 +18,8 @@ test.serial('Log known errors with shortFormat', (t) => {
 
 test.serial('Log known errors with fullFormat', (t) => {
   const error = new TestError('test', { winston: { level: testLevel } })
-  t.deepEqual(fullLog(error), {
-    level: testLevel,
-    name: error.name,
-    message: error.message,
-  })
+  const { name, message } = error
+  t.deepEqual(fullLog(error), { level: testLevel, name, message })
 })
 
 test.serial('Log unknown errors with shortFormat', (t) => {
