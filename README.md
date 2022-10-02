@@ -1018,11 +1018,6 @@ individually:
   update an error's properties
 - [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error): 💣 Error
   handler for CLI applications 💥
-
-# Related projects
-
-- [`error-cause-polyfill`](https://github.com/ehmicky/error-cause-polyfill):
-  Polyfill `error.cause`
 - [`log-process-errors`](https://github.com/ehmicky/log-process-errors): Show
   some ❤ to Node.js process errors
 
