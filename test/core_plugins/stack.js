@@ -25,14 +25,3 @@ test('stack is cleaned', (t) => {
 test('stack remains non-enumerable', (t) => {
   t.false(Object.getOwnPropertyDescriptor(stackError, 'stack').enumerable)
 })
-
-test.serial('noop in browsers', (t) => {
-  // eslint-disable-next-line n/prefer-global/process
-  const oldProcess = globalThis.process
-  // eslint-disable-next-line n/prefer-global/process, fp/no-mutation
-  globalThis.process = undefined
-  const { stack } = new StackError('test')
-  // eslint-disable-next-line n/prefer-global/process, fp/no-mutation
-  globalThis.process = oldProcess
-  t.true(isCleanStack(stack))
-})
