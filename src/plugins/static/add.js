@@ -33,6 +33,9 @@ import { callStaticMethod } from './call.js'
 //             to static methods
 //              - For consistency
 //              - To ensure method options can be passed
+// We do not provide with `plugin.init()`:
+//  - This would encourage stateful plugins
+//  - Instead, static methods that initialize should be used
 export const addAllStaticMethods = function ({
   plugins,
   globalOpts,
