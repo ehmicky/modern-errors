@@ -61,3 +61,18 @@ test('plugin.set() message are reverted', (t) => {
   // eslint-disable-next-line ava/max-asserts
   t.true(newError.stack.includes(causeMessage))
 })
+
+test('plugin.set() properties reverts cannot be mutated', (t) => {
+  const deepCause = new TestError('deepCauseMessage')
+  const props = { two: true }
+  // eslint-disable-next-line fp/no-mutation
+  deepCause.one = props
+  const cause = new TestError('causeMessage', {
+    cause: deepCause,
+    prop: { toSet: { one: true } },
+  })
+  // eslint-disable-next-line fp/no-mutation
+  props.two = false
+  const error = new TestError('test', { cause })
+  t.true(error.one.two)
+})
