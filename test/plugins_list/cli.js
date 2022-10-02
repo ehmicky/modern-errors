@@ -18,7 +18,7 @@ each(
   [true, { timeout: 'true' }, { unknown: true }, { classes: {} }],
   ({ title }, cli) => {
     test(`Options are validated | ${title}`, (t) => {
-      t.throws(testError.exit.bind(undefined, cli))
+      t.throws(testError.exit.bind(testError, cli))
     })
   },
 )
