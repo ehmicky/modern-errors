@@ -11,8 +11,16 @@ const getOptions = function (options = {}) {
   return options
 }
 
-const exit = function ({ options }) {
-  handleCliError(options)
+// The default value of `exitCode` is 1 for the first declared class, then
+// incrementing from there.
+//  - If some of the classes define their `exitCode`, it does not change the
+//    default `exitCode` of others
+// Stack traces and error properties are displayed by default if the innermost
+// error is unknown.
+const exit = function ({ options, error, unknownDeep, ErrorClasses }) {
+  const exitCode = Object.keys(ErrorClasses).indexOf(error.name) + 1
+  const optionsA = { short: !unknownDeep, exitCode, ...options }
+  handleCliError(optionsA)
 }
 
 const CLI_PLUGIN = { name: 'cli', getOptions, instanceMethods: { exit } }
