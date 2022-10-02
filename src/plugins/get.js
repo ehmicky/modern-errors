@@ -22,10 +22,6 @@ const defaultGetOptions = function (fullName, options) {
 
 // Retrieve, validate and normalize all options for a given plugin.
 // Those are passed to `plugin.properties|instanceMethods.*`.
-// We also pass all plugins options, before normalization, to
-// `plugin.properties|instanceMethods.*`
-//  - This is mostly meant for plugins like serialization which need to
-//    re-instantiate or clone errors
 // We pass whether the `options` object is partial or not using `full`:
 //  - This allows validation|normalization that requires options to be full,
 //    such as:
@@ -44,7 +40,7 @@ const defaultGetOptions = function (fullName, options) {
 //  - `error`, `ErrorClasses` and `unknownDeep` are not available
 //  - Error-specific logic should be inside other plugin methods instead
 // Any validation|normalization specific to a method should be done inside that
-// method, as opposed to inside `plugin.getOptions()`
+// method, as opposed to inside `plugin.getOptions()`.
 // Plugins should avoid:
 //  - Letting options be optionally a function: class constructors can be used
 //    for this, by manipulating `options` and passing it to `super()`

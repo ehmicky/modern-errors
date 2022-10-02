@@ -18,7 +18,7 @@ export const normalizeIsOptions = function ({
 //   - It should only distinguish `option` from methods actual last arguments
 //   - While still ensuring invalid options are passed to `plugin.getOptions()`
 //     instead of considering them not options
-// `plugin.isOptions()` has the following props:
+// `plugin.isOptions()` has the following pros:
 //  - Users can pass `options[pluginName]` instead of `options`
 //  - Plugin methods can have variadic and optional parameters
 //  - It does not rely on brittle `Function.length`

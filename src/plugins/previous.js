@@ -97,7 +97,7 @@ export const restorePreviousValues = function (cause, errorData) {
   }
 }
 
-// Reverse it after the parent has used the cause, so it remains unchanged.
+// Revert it after the parent has used the cause, so it remains unchanged.
 // Not done if parent is `new AnyError()` since `cause` is then returned.
 export const restoreNewValues = function (cause, errorData, isAnyError) {
   if (cause !== undefined && !isAnyError) {
