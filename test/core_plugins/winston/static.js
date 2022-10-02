@@ -5,12 +5,11 @@ import { each } from 'test-each'
 import {
   TestError,
   AnyError,
+  defaultLevel,
+  testLevel,
   shortLog,
   fullLog,
 } from '../../helpers/winston.js'
-
-const testLevel = 'warn'
-const defaultLevel = 'error'
 
 test.serial('Log known errors with shortFormat', (t) => {
   const error = new TestError('test', { winston: { level: testLevel } })

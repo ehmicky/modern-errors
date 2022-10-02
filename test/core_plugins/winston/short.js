@@ -4,6 +4,8 @@ import { each } from 'test-each'
 import {
   TestError,
   AnyError,
+  defaultLevel,
+  testLevel,
   knownError,
   unknownError,
   warnError,
@@ -14,11 +16,11 @@ import {
 const { transform } = AnyError.shortFormat()
 
 test('Sets level to error by default', (t) => {
-  t.is(transform(knownError).level, 'error')
+  t.is(transform(knownError).level, defaultLevel)
 })
 
 test('Can set other level', (t) => {
-  t.is(transform(warnError).level, 'warn')
+  t.is(transform(warnError).level, testLevel)
 })
 
 each([noStackError, knownError], ({ title }, error) => {

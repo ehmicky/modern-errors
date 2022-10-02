@@ -5,6 +5,8 @@ import { LEVEL } from 'triple-beam'
 import {
   TestError,
   AnyError,
+  defaultLevel,
+  testLevel,
   knownError,
   unknownError,
   warnError,
@@ -15,11 +17,11 @@ import {
 const { transform } = AnyError.fullFormat()
 
 test('Sets level to error by default', (t) => {
-  t.is(transform(knownError).level, 'error')
+  t.is(transform(knownError).level, defaultLevel)
 })
 
 test('Can set other level', (t) => {
-  t.is(transform(warnError).level, 'warn')
+  t.is(transform(warnError).level, testLevel)
 })
 
 each([noStackError, knownError], ({ title }, error) => {
@@ -54,8 +56,8 @@ test('Does not include constructorArgs', (t) => {
 
 test('Serializes error', (t) => {
   t.deepEqual(transform(knownError), {
-    level: 'error',
-    [LEVEL]: 'error',
+    level: defaultLevel,
+    [LEVEL]: defaultLevel,
     name: knownError.name,
     message: knownError.message,
   })

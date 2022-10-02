@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { TestError, AnyError } from '../../helpers/winston.js'
+import { TestError, AnyError, defaultLevel } from '../../helpers/winston.js'
 
 each(
   [
@@ -20,5 +20,8 @@ each(
 
 test('Cannot pass options to static methods', (t) => {
   const error = new TestError('test')
-  t.is(AnyError.shortFormat({ level: 'warn' }).transform(error).level, 'error')
+  t.is(
+    AnyError.shortFormat({ level: 'warn' }).transform(error).level,
+    defaultLevel,
+  )
 })
