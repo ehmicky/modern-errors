@@ -28,6 +28,7 @@ export const getPreviousValues = function (newProps, error) {
   return getPreviousKeys(newProps).map((key) => getPreviousValue(key, error))
 }
 
+// Setting `message` also updates the `stack`
 const getPreviousKeys = function (newProps) {
   const previousKeys = Reflect.ownKeys(newProps)
   return previousKeys.includes('message') && !previousKeys.includes('stack')
