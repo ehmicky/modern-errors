@@ -76,3 +76,17 @@ test('plugin.set() properties reverts cannot be mutated', (t) => {
   const error = new TestError('test', { cause })
   t.true(error.one.two)
 })
+
+test('plugin.set() values that have not changed are not reverted', (t) => {
+  const deepCause = new TestError('deepCauseMessage')
+  // eslint-disable-next-line fp/no-mutation
+  deepCause.one = true
+  const cause = new TestError('causeMessage', {
+    cause: deepCause,
+    prop: { toSet: { one: true } },
+  })
+  // eslint-disable-next-line fp/no-mutation
+  cause.one = false
+  const error = new TestError('test', { cause })
+  t.false(error.one)
+})
