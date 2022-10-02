@@ -1,15 +1,17 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { TestError, AnyError } from '../../helpers/winston.js'
+import {
+  TestError,
+  AnyError,
+  knownError,
+  unknownError,
+  warnError,
+  noStackError,
+  yesStackError,
+} from '../../helpers/winston.js'
 
 const { transform } = AnyError.shortFormat()
-
-const knownError = new TestError('test')
-const unknownError = new AnyError('test', { cause: '' })
-const warnError = new TestError('test', { winston: { level: 'warn' } })
-const noStackError = new TestError('test', { winston: { stack: false } })
-const yesStackError = new TestError('test', { winston: { stack: true } })
 
 test('Sets level to error by default', (t) => {
   t.is(transform(knownError).level, 'error')
