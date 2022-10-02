@@ -38,13 +38,13 @@ const fullLogger = createLogger({
 const testLevel = 'warn'
 const defaultLevel = 'error'
 
-test.serial('Can use shortFormat', (t) => {
+test.serial('Log known errors with shortFormat', (t) => {
   const error = new TestError('test', { winston: { level: testLevel } })
   shortLogger.error(error)
   t.is(shortLog, `${testLevel}: ${error.name}: ${error.message}`)
 })
 
-test.serial('Can use fullFormat', (t) => {
+test.serial('Log known errors with fullFormat', (t) => {
   const error = new TestError('test', { winston: { level: testLevel } })
   fullLogger.error(error)
   t.deepEqual(fullLog, {
@@ -54,14 +54,14 @@ test.serial('Can use fullFormat', (t) => {
   })
 })
 
-test.serial('Can log unknown errors with shortFormat', (t) => {
+test.serial('Log unknown errors with shortFormat', (t) => {
   const error = new Error('test')
   const { stack } = AnyError.normalize(error)
   shortLogger.error(error)
   t.is(shortLog, `${defaultLevel}: ${stack}`)
 })
 
-test.serial('Can log unknown errors with fullFormat', (t) => {
+test.serial('Log unknown errors with fullFormat', (t) => {
   const error = new Error('test')
   const { name, message, stack } = AnyError.normalize(error)
   fullLogger.error(error)
