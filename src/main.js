@@ -13,8 +13,10 @@ export default function modernErrors(plugins, globalOpts) {
   const AnyError = createAnyError(ErrorClasses, errorData, pluginsA)
   const globalOptsA = getGlobalOpts(pluginsA, AnyError, globalOpts)
   addSubclass({
+    ErrorClass: AnyError,
+    ParentError: AnyError,
     AnyError,
-    globalOpts: globalOptsA,
+    parentOpts: globalOptsA,
     ErrorClasses,
     plugins: pluginsA,
   })

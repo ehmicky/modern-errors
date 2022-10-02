@@ -14,15 +14,17 @@ import { validateClassName } from './name.js'
 //  - Bind and override options and custom logic between modules
 //  - Only export parent classes to consumers
 export const addSubclass = function ({
+  ErrorClass,
+  ParentError,
   AnyError,
-  globalOpts,
+  parentOpts,
   ErrorClasses,
   plugins,
 }) {
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  AnyError.subclass = createSubclass.bind(undefined, {
-    parentOpts: globalOpts,
-    ParentError: AnyError,
+  ErrorClass.subclass = createSubclass.bind(undefined, {
+    parentOpts,
+    ParentError,
     AnyError,
     ErrorClasses,
     plugins,
