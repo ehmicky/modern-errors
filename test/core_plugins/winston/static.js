@@ -1,5 +1,6 @@
 import test from 'ava'
 import { serialize } from 'error-serializer'
+import { each } from 'test-each'
 import through from 'through2'
 import { MESSAGE } from 'triple-beam'
 import { createLogger, transports, format } from 'winston'
@@ -53,19 +54,6 @@ test.serial('Can use fullFormat', (t) => {
   })
 })
 
-test.serial('Does not modify error', (t) => {
-  const error = new TestError('test', { winston: { level: testLevel } })
-  const keysBefore = Reflect.ownKeys(error)
-  const valuesBefore = serialize(error)
-
-  fullLogger.error(error)
-
-  const keysAfter = Reflect.ownKeys(error)
-  const valuesAfter = serialize(error)
-  t.deepEqual(keysBefore, keysAfter)
-  t.deepEqual(valuesBefore, valuesAfter)
-})
-
 test.serial('Can log unknown errors with shortFormat', (t) => {
   const error = new Error('test')
   const { stack } = AnyError.normalize(error)
@@ -78,4 +66,19 @@ test.serial('Can log unknown errors with fullFormat', (t) => {
   const { name, message, stack } = AnyError.normalize(error)
   fullLogger.error(error)
   t.deepEqual(fullLog, { level: defaultLevel, name, message, stack })
+})
+
+each([shortLogger, fullLogger], ({ title }, logger) => {
+  test.serial(`Does not modify error | ${title}`, (t) => {
+    const error = new TestError('test', { winston: { level: testLevel } })
+    const keysBefore = Reflect.ownKeys(error)
+    const valuesBefore = serialize(error)
+
+    logger.error(error)
+
+    const keysAfter = Reflect.ownKeys(error)
+    const valuesAfter = serialize(error)
+    t.deepEqual(keysBefore, keysAfter)
+    t.deepEqual(valuesBefore, valuesAfter)
+  })
 })
