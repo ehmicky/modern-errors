@@ -679,19 +679,7 @@ try {
 
 _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
 
-#### CLI error handler
-
 `error.exit()` prints `error` on the console then exits the process.
-
-The exit code is `1` for the first error class, `2` for the next one, and so on.
-This follows the order in which error classes were declared: inserting, removing
-or swapping them changes their exit code.
-
-The error stack trace and properties are printed if the error is
-[_unknown_](#unknown-errors).
-
-The process exits gracefully: it waits for any ongoing tasks (callbacks,
-promises, etc.) to complete, up to a default timeout of 5 seconds.
 
 ```js
 import { AnyError } from './errors.js'
@@ -706,6 +694,43 @@ const cliMain = function () {
 
 cliMain()
 ```
+
+#### Options
+
+##### exitCode
+
+_Type_: `integer`\
+_Default_: `1`, `2`, `3`, etc. following error classes declaration order
+
+Process [exit code](https://en.wikipedia.org/wiki/Exit_status).
+
+##### short
+
+_Type_: `boolean`\
+_Default_: `false` for [_unknown_ errors](#unknown-errors), `true` otherwise
+
+Log the `error` message only, not its stack trace.
+
+##### silent
+
+_Type_: `boolean`\
+_Default_: `false`
+
+Exits the process without logging anything on the console.
+
+##### timeout
+
+_Type_: `integer` (in milliseconds)\
+_Default_: `5000` (5 seconds)
+
+The process exits gracefully: it waits for any ongoing tasks (callbacks,
+promises, etc.) to complete, up to a specific `timeout`.
+
+Special values:
+
+- `0`: Exits right away, without waiting for ongoing tasks
+- `Number.POSITIVE_INFINITY`: Waits for ongoing tasks forever, without timing
+  out
 
 ### Bug reports
 
