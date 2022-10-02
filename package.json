@@ -46,6 +46,7 @@
     "test": "test"
   },
   "dependencies": {
+    "clean-stack": "^5.0.0",
     "error-class-utils": "^2.1.0",
     "error-custom-class": "^8.1.0",
     "error-serializer": "^3.2.0",
