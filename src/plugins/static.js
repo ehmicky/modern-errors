@@ -10,6 +10,31 @@ import { mergeMethodOpts } from './method_opts.js'
 //  - We do not pass `error` to static methods to encourage this
 //  - We also do not pass class `options`, but we do pass global ones, to allow
 //    plugins to configure static methods
+// State in plugins:
+//  - `modern-errors` does not have mutable state
+//     - This allows declaring error classes in the top-level state, instead of
+//       passing them around as variables
+// - Plugins can keep error-specific state using a WeakMap in the top-level
+//   scope
+// - For other state:
+//    - Such as network connection, class instance, etc.
+//    - If this is fast enough, the state can be created and deleted inside a
+//      single plugin method
+//    - Otherwise:
+//       - Users should create the state object, pass it to plugin methods, and
+//         potentially destroy it
+//       - Plugins can provide with methods to simplify creating those state
+//         objects
+//          - But those must be returned as local variables, not stored as
+//            global state
+//       - reasons:
+//          - This keeps the API simple, shifting consumer-specific or
+//            tool-specific logic to consumers
+//          - This is concurrent-safe
+//          - This ensures instance methods are used instead of passing errors
+//            to static methods
+//             - For consistency
+//             - To ensure method options can be passed
 export const addAllStaticMethods = function ({
   plugins,
   globalOpts,
