@@ -1,4 +1,5 @@
 import isPlainObj from 'is-plain-obj'
+import safeJsonValue from 'safe-json-value'
 import statuses from 'statuses'
 
 // Normalize and validate options
@@ -84,13 +85,13 @@ const toStandard = function ({
   error: { name, message, stack, cause, errors, ...extra },
   options,
 }) {
-  return {
+  return safeJsonValue({
     title: String(name),
     details: String(message),
     stack: String(stack),
     ...(Object.keys(extra).length === 0 ? {} : { extra }),
     ...options,
-  }
+  }).value
 }
 
 // eslint-disable-next-line import/no-default-export

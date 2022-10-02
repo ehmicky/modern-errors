@@ -74,3 +74,14 @@ each(
     })
   },
 )
+
+test('Assign default extra', (t) => {
+  const props = { prop: true }
+  t.deepEqual(new TestError('test', { props }).toStandard().extra, props)
+})
+
+test('Keep extra JSON-safe', (t) => {
+  t.deepEqual(testError.toStandard({ extra: { one: true, two: 0n } }).extra, {
+    one: true,
+  })
+})
