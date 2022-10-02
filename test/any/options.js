@@ -1,3 +1,5 @@
+import { runInNewContext } from 'vm'
+
 import test from 'ava'
 import { each } from 'test-each'
 
@@ -47,6 +49,27 @@ test('AnyError with unknown cause uses UnknownError', (t) => {
   t.is(Object.getPrototypeOf(error), UnknownError.prototype)
   t.is(error.name, 'UnknownError')
 })
+
+each([TypeError, runInNewContext('TypeError')], ({ title }, ErrorClass) => {
+  test(`AnyError with unknown cause keeps error name if present | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
+    t.is(new AnyError('', { cause }).message, `TypeError: causeMessage`)
+  })
+})
+
+each(
+  [
+    'causeMessage',
+    // eslint-disable-next-line fp/no-mutating-assign
+    Object.assign(new TypeError('causeMessage'), { name: true }),
+    new Error('causeMessage'),
+  ],
+  ({ title }, cause) => {
+    test(`AnyError with unknown cause does not keep error name if absent | ${title}`, (t) => {
+      t.is(new AnyError('', { cause }).message, 'causeMessage')
+    })
+  },
+)
 
 test('AnyError with known cause uses its instance', (t) => {
   const cause = new TestError('causeMessage')

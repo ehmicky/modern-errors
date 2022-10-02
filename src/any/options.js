@@ -70,5 +70,25 @@ const normalizeCause = function ({ opts, UnknownError, AnyError, isAnyError }) {
 }
 
 const getCause = function (cause, UnknownError, AnyError) {
-  return cause instanceof AnyError ? cause : new UnknownError('', { cause })
+  if (cause instanceof AnyError) {
+    return cause
+  }
+
+  const message = hasErrorName(cause) ? `${cause.name}:` : ''
+  return new UnknownError(message, { cause })
+}
+
+// `new AnyError()` should wrap the name, as opposed to other error classes
+// which override it. So when it converts to `UnknownError`, the former name
+// is prepended to `error.message` unless it is a generic `Error`.
+const hasErrorName = function (cause) {
+  return (
+    isErrorInstance(cause) &&
+    typeof cause.name === 'string' &&
+    cause.name !== 'Error'
+  )
+}
+
+const isErrorInstance = function (cause) {
+  return Object.prototype.toString.call(cause) === '[object Error]'
 }
