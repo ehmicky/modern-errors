@@ -64,7 +64,8 @@ export const getPluginOpts = function ({
   try {
     return getOptions(pluginsOpts[name], full)
   } catch (cause) {
-    const error = new Error(`Invalid "${name}" options:`, { cause })
+    const error = new Error(`Invalid "${name}" options:`)
+    error.cause = cause
     throw mergeCause(error, true)
   }
 }
