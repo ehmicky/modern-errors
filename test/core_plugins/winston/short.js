@@ -4,18 +4,15 @@ import { each } from 'test-each'
 import { TestError, AnyError } from '../../helpers/winston.js'
 
 const { transform } = AnyError.shortFormat()
-const { transform: fullTransform } = AnyError.fullFormat()
 
-each([transform, fullTransform], ({ title }, transformFunc) => {
-  test(`Sets level to error by default | ${title}`, (t) => {
-    const error = new TestError('test')
-    t.is(transformFunc(error).level, 'error')
-  })
+test('Sets level to error by default', (t) => {
+  const error = new TestError('test')
+  t.is(transform(error).level, 'error')
+})
 
-  test(`Can set other level | ${title}`, (t) => {
-    const error = new TestError('test', { winston: { level: 'warn' } })
-    t.is(transformFunc(error).level, 'warn')
-  })
+test('Can set other level', (t) => {
+  const error = new TestError('test', { winston: { level: 'warn' } })
+  t.is(transform(error).level, 'warn')
 })
 
 each(

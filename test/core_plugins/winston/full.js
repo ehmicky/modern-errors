@@ -6,6 +6,16 @@ import { TestError, AnyError } from '../../helpers/winston.js'
 
 const { transform } = AnyError.fullFormat()
 
+test('Sets level to error by default', (t) => {
+  const error = new TestError('test')
+  t.is(transform(error).level, 'error')
+})
+
+test('Can set other level', (t) => {
+  const error = new TestError('test', { winston: { level: 'warn' } })
+  t.is(transform(error).level, 'warn')
+})
+
 each(
   [new TestError('test', { winston: { stack: false } }), new TestError('test')],
   ({ title }, error) => {
