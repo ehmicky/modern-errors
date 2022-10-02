@@ -701,10 +701,9 @@ cliMain()
 
 _Type_: `integer`\
 
-Process [exit code](https://en.wikipedia.org/wiki/Exit_status).
-
-By default, each error class has its own exit code: `1`, `2`, `3`, etc.
-following their declaration order.
+Process [exit code](https://en.wikipedia.org/wiki/Exit_status). By default, each
+error class has its own exit code: `1`, `2`, `3`, etc. following their
+declaration order.
 
 ##### short
 
