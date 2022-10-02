@@ -1,4 +1,5 @@
 import test from 'ava'
+import { serialize } from 'error-serializer'
 import through from 'through2'
 import { MESSAGE } from 'triple-beam'
 import { createLogger, transports, format } from 'winston'
@@ -43,4 +44,17 @@ test.serial('Can use fullFormat', (t) => {
   const error = new TestError('test', { winston: { level } })
   fullLogger.error(error)
   t.deepEqual(fullLog, { level, name: error.name, message: error.message })
+})
+
+test.serial('Does not modify error', (t) => {
+  const error = new TestError('test', { winston: { level } })
+  const keysBefore = Reflect.ownKeys(error)
+  const valuesBefore = serialize(error)
+
+  fullLogger.error(error)
+
+  const keysAfter = Reflect.ownKeys(error)
+  const valuesAfter = serialize(error)
+  t.deepEqual(keysBefore, keysAfter)
+  t.deepEqual(valuesBefore, valuesAfter)
 })
