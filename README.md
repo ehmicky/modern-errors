@@ -678,6 +678,7 @@ try {
 ### CLI errors
 
 _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
+(Node.js only)
 
 `error.exit()` logs `error` on the console then exits the process.
 
@@ -921,6 +922,7 @@ set to an empty object.
 
 _Plugin_:
 [`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston)
+(Node.js only)
 
 Errors can be logged with [Winston](https://github.com/winstonjs/winston) using
 [`winston.error(error)`](https://github.com/winstonjs/winston/blob/master/README.md#creating-your-own-logger).
