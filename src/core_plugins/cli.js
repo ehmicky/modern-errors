@@ -5,7 +5,7 @@ const getOptions = function (options = {}) {
   validateOptions(options)
 
   if (options.classes !== undefined) {
-    throw new TypeError(`"cli.classes" must not be defined: ${options.classes}`)
+    throw new TypeError(`"classes" must not be defined: ${options.classes}`)
   }
 
   return options

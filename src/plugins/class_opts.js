@@ -22,7 +22,7 @@ import { validatePluginsOptsNames } from './name.js'
 //      - To ensure:
 //         - A consistent, single way of configuring plugins
 //         - Options can be specified at different levels
-export const getGlobalOpts = function (plugins, AnyError, globalOpts = {}) {
+export const getGlobalOpts = function (plugins, globalOpts = {}) {
   if (!isPlainObj(globalOpts)) {
     throw new TypeError(
       `The second argument must be a plain object: ${globalOpts}`,
@@ -38,7 +38,7 @@ export const getGlobalOpts = function (plugins, AnyError, globalOpts = {}) {
   const globalOptsA = deepClone(globalOpts)
   validatePluginsOptsNames(globalOptsA, plugins)
   plugins.forEach((plugin) => {
-    getPluginOpts({ pluginsOpts: globalOptsA, plugin, AnyError, full: false })
+    getPluginOpts({ pluginsOpts: globalOptsA, plugin, full: false })
   })
   return globalOptsA
 }
@@ -51,7 +51,6 @@ export const getClassOpts = function ({
   parentOpts,
   className,
   classOpts = {},
-  AnyError,
 }) {
   if (!isPlainObj(classOpts)) {
     throw new TypeError(
@@ -68,7 +67,6 @@ export const getClassOpts = function ({
     getPluginOpts({
       pluginsOpts: classOptsC,
       plugin,
-      AnyError,
       full: getClassOptsFull(className, plugin),
     })
   })

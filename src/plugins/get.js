@@ -1,3 +1,5 @@
+import { mergeCause } from '../any/cause.js'
+
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
 export const normalizeGetOptions = function ({
@@ -57,12 +59,12 @@ const defaultGetOptions = function (fullName, options) {
 export const getPluginOpts = function ({
   pluginsOpts,
   plugin: { name, getOptions },
-  AnyError,
   full,
 }) {
   try {
     return getOptions(pluginsOpts[name], full)
-  } catch (error) {
-    throw AnyError.normalize(error)
+  } catch (cause) {
+    const error = new Error(`Invalid "${name}" option:`, { cause })
+    throw mergeCause(error, true)
   }
 }

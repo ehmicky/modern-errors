@@ -17,14 +17,14 @@ const ensureBugsUrl = function (bugs) {
   }
 
   if (typeof bugs !== 'string') {
-    throw new TypeError(`"bugs" option must be a string or a URL: ${bugs}`)
+    throw new TypeError(`It must be a string or a URL: ${bugs}`)
   }
 
   try {
     return new URL(bugs)
   } catch (error) {
     throw new TypeError(
-      `"bugs" option "${bugs}" must be ${getUrlError(error, bugs)}`,
+      `It must not be "${bugs}" but ${getUrlError(error, bugs)}`,
     )
   }
 }

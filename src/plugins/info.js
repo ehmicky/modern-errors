@@ -12,7 +12,6 @@ export const getPluginInfo = function ({
   const options = getPluginOpts({
     pluginsOpts: pluginsOptsA,
     plugin,
-    AnyError,
     full: true,
   })
   const ErrorClassesA = getErrorClasses(ErrorClasses)
