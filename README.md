@@ -843,9 +843,9 @@ Error: message
 
 _Plugin_: [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http)
 
-`error.httpResponse()` converts `errors` to a plain object to use in an HTTP
+`error.httpResponse()` converts `error` to a plain object to use in an HTTP
 response. Its shape follows [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)
-(problem details).
+("problem details").
 
 ```js
 const object = error.httpResponse()
@@ -869,7 +869,7 @@ _Type_: `urlString`\
 _Default_: `undefined`
 
 URI identifying and documenting the error class. Ideally, each error class
-should [set a different one](#configure-options).
+[should set one](#configure-options).
 
 ##### status
 
@@ -911,7 +911,9 @@ Error stack trace. Can be set to an empty string.
 _Type_: `object`\
 _Default_: any additional `error` properties
 
-Additional information.
+Additional information. This is always
+[safe to serialize as JSON](https://github.com/ehmicky/safe-json-value). Can be
+set to an empty object.
 
 # Modules
 
