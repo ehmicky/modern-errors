@@ -7,48 +7,45 @@ import { defineClassOpts } from '../../helpers/main.js'
 
 const { TestError, AnyError } = defineClassOpts({}, {}, [WINSTON_PLUGIN])
 
+const { transform } = AnyError.shortFormat()
+
 test('Sets level to error by default', (t) => {
   const error = new TestError('test')
-  t.is(AnyError.shortFormat().transform(error).level, 'error')
+  t.is(transform(error).level, 'error')
 })
 
 test('Can set other level', (t) => {
   const error = new TestError('test', { winston: { level: 'warn' } })
-  t.is(AnyError.shortFormat().transform(error).level, 'warn')
+  t.is(transform(error).level, 'warn')
 })
 
-test('Does not use the stack if "stack" is false', (t) => {
-  const error = new TestError('test', { winston: { stack: false } })
-  t.is(
-    AnyError.shortFormat().transform(error).message,
-    `${error.name}: ${error.message}`,
-  )
-})
+each(
+  [new TestError('test', { winston: { stack: false } }), new TestError('test')],
+  ({ title }, error) => {
+    test(`Does not use the stack if "stack" is false | ${title}`, (t) => {
+      t.is(transform(error).message, `${error.name}: ${error.message}`)
+    })
+  },
+)
 
-test('Does not use the stack if the error is not deeply unknown', (t) => {
-  const error = new TestError('test')
-  t.is(
-    AnyError.shortFormat().transform(error).message,
-    `${error.name}: ${error.message}`,
-  )
-})
-
-test('Use the stack if "stack" is true', (t) => {
-  const error = new TestError('test', { winston: { stack: true } })
-  t.is(AnyError.shortFormat().transform(error).message, error.stack)
-})
-
-test('Use the stack if the error is deeply unknown', (t) => {
-  const error = new AnyError('test', { cause: '' })
-  t.is(AnyError.shortFormat().transform(error).message, error.stack)
-})
+each(
+  [
+    new TestError('test', { winston: { stack: true } }),
+    new AnyError('test', { cause: '' }),
+  ],
+  ({ title }, error) => {
+    test(`Use the stack if "stack" is true | ${title}`, (t) => {
+      t.is(transform(error).message, error.stack)
+    })
+  },
+)
 
 each(['name', 'message'], ({ title }, propName) => {
   test(`Use the prepended stack if "stack" is true and it misses the name or message | ${title}`, (t) => {
     const error = new TestError('message', { winston: { stack: true } })
     error.stack = error.stack.replace(error[propName], '')
     t.is(
-      AnyError.shortFormat().transform(error).message,
+      transform(error).message,
       `${error.name}: ${error.message}\n${error.stack}`,
     )
   })
