@@ -17,10 +17,17 @@ const getOptions = function (options = {}) {
 //    default `exitCode` of others
 // Stack traces and error properties are displayed by default if the innermost
 // error is unknown.
-const exit = function ({ options, error, unknownDeep, ErrorClasses }) {
-  const exitCode = Object.keys(ErrorClasses).indexOf(error.name) + 1
-  const optionsA = { short: !unknownDeep, exitCode, ...options }
-  handleCliError(optionsA)
+const exit = function ({
+  unknownDeep,
+  ErrorClasses,
+  error,
+  options: {
+    short = !unknownDeep,
+    exitCode = Object.keys(ErrorClasses).indexOf(error.name) + 1,
+    ...options
+  },
+}) {
+  handleCliError({ ...options, short, exitCode })
 }
 
 const CLI_PLUGIN = { name: 'cli', getOptions, instanceMethods: { exit } }
