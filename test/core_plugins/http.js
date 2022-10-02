@@ -48,10 +48,8 @@ each(
   ],
   ({ title }, [propName, propValue]) => {
     test(`Valid options are kept | ${title}`, (t) => {
-      t.deepEqual(
-        testError.httpResponse({ [propName]: propValue })[propName],
-        propValue,
-      )
+      const httpResponse = testError.httpResponse({ [propName]: propValue })
+      t.deepEqual(httpResponse[propName], propValue)
     })
   },
 )
@@ -66,11 +64,9 @@ each(
   ],
   ({ title }, http) => {
     test(`Assign default options | ${title}`, (t) => {
-      t.deepEqual(testError.httpResponse(http), {
-        title: testError.name,
-        detail: testError.message,
-        stack: testError.stack,
-      })
+      const { name, message, stack } = testError
+      const httpResponse = testError.httpResponse(http)
+      t.deepEqual(httpResponse, { title: name, detail: message, stack })
     })
   },
 )
