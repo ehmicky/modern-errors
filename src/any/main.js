@@ -7,7 +7,7 @@ import { applyPluginsSet } from '../plugins/set.js'
 import { createSubclass } from '../subclass/main.js'
 
 import { setAggregateErrors } from './aggregate.js'
-import { setConstructorArgs } from './args.js'
+import { getConstructorArgs, setConstructorArgs } from './args.js'
 import { getCause, mergeCause } from './cause.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
@@ -104,8 +104,32 @@ const applyInstanceLogic = function ({
 }) {
   const cause = getCause(currentError, AnyError)
   restorePreviousValues(cause, errorData)
-  setAggregateErrors(currentError, opts, AnyError)
-  const error = mergeCause(currentError, isAnyError)
+  const error = setError({
+    currentError,
+    cause,
+    opts,
+    args,
+    ErrorClasses,
+    errorData,
+    plugins,
+    AnyError,
+    isAnyError,
+  })
+  restoreNewValues(cause, errorData, isAnyError)
+  return error
+}
+
+const setError = function ({
+  currentError,
+  cause,
+  opts,
+  args,
+  ErrorClasses,
+  errorData,
+  plugins,
+  AnyError,
+  isAnyError,
+}) {
   const { opts: optsA, pluginsOpts } = computePluginsOpts({
     opts,
     cause,
@@ -113,14 +137,16 @@ const applyInstanceLogic = function ({
     errorData,
     plugins,
   })
-  setConstructorArgs({
-    error,
+  const constructorArgs = getConstructorArgs({
     opts: optsA,
     cause,
     isAnyError,
     pluginsOpts,
     args,
   })
+  setAggregateErrors(currentError, optsA, AnyError)
+  const error = mergeCause(currentError, isAnyError)
+  setConstructorArgs(error, constructorArgs)
   const { previousValues, newValues } = applyPluginsSet({
     error,
     AnyError,
@@ -129,6 +155,5 @@ const applyInstanceLogic = function ({
     pluginsOpts,
   })
   errorData.set(error, { pluginsOpts, previousValues, newValues })
-  restoreNewValues(cause, errorData, isAnyError)
   return error
 }

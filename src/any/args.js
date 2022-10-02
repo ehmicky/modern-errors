@@ -6,8 +6,7 @@ import { deepClone } from '../plugins/clone.js'
 // Set `error.constructorArgs` so plugins like `modern-errors-serialize` can
 // clone or serialize the error.
 // This is non-enumerable and not documented.
-export const setConstructorArgs = function ({
-  error,
+export const getConstructorArgs = function ({
   opts,
   cause,
   isAnyError,
@@ -21,14 +20,7 @@ export const setConstructorArgs = function ({
     cause,
     isAnyError,
   })
-  const constructorArgs = [error.message, optsB, ...argsA.map(deepClone)]
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(error, 'constructorArgs', {
-    value: constructorArgs,
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  return [optsB, ...argsA.map(deepClone)]
 }
 
 const getOpts = function (opts, pluginsOpts) {
@@ -49,4 +41,14 @@ const mergeConstructorArgs = function ({ opts, args, cause, isAnyError }) {
         args: cause.constructorArgs.slice(2),
       }
     : { opts, args }
+}
+
+export const setConstructorArgs = function (error, constructorArgs) {
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(error, 'constructorArgs', {
+    value: [error.message, ...constructorArgs],
+    enumerable: false,
+    writable: true,
+    configurable: true,
+  })
 }
