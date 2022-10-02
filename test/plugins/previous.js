@@ -77,9 +77,9 @@ test('plugin.set() values that have noop deletions are not reverted', (t) => {
     prop: { toSet: { one: undefined } },
   })
   // eslint-disable-next-line fp/no-mutation
-  cause.one = false
+  cause.one = true
   const error = new TestError('test', { cause })
-  t.false(error.one)
+  t.true(error.one)
 })
 
 test('plugin.set() change reverts are temporary without AnyError', (t) => {
