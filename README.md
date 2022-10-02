@@ -950,7 +950,8 @@ logger.error(error)
 //   level: 'error',
 //   name: 'InputError',
 //   message: 'Could not read file.',
-//   stack: '...',
+//   stack: `InputError: Could not read file.
+//     at ...`,
 //   filePath: '/...',
 // }
 ```
@@ -971,8 +972,8 @@ const logger = createLogger({
 
 const error = new InputError('Could not read file.', { props: { filePath } })
 logger.error(error)
-// error: InputError: Could not read file.
-//   at ...
+// error:   InputError: Could not read file.
+//     at ...
 ```
 
 #### Options
