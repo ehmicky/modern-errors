@@ -9,6 +9,7 @@ import {
   errorObject,
   nativeError,
   nativeErrorObject,
+  crossRealmError,
 } from '../../helpers/serialize.js'
 
 test('AnyError.parse() parses error plain objects', (t) => {
@@ -38,10 +39,12 @@ each(
   },
 )
 
-test('AnyError.parse() normalize top-level native errors', (t) => {
-  t.true(AnyError.parse(nativeError) instanceof UnknownError)
-})
+each([nativeError, crossRealmError], ({ title }, error) => {
+  test(`AnyError.parse() normalize top-level native errors | ${title}`, (t) => {
+    t.true(AnyError.parse(error) instanceof UnknownError)
+  })
 
-test('AnyError.parse() does not normalize deep native errors', (t) => {
-  t.false(AnyError.parse([nativeError])[0] instanceof UnknownError)
+  test(`AnyError.parse() does not normalize deep native errors | ${title}`, (t) => {
+    t.false(AnyError.parse([error])[0] instanceof UnknownError)
+  })
 })
