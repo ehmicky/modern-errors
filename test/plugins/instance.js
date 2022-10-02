@@ -24,6 +24,12 @@ test('plugin.instanceMethods are not enumerable', (t) => {
   )
 })
 
+test('plugin.instanceMethods must have the right context', (t) => {
+  const error = new TestError('message')
+  t.notThrows(error.getInstance.bind(error))
+  t.throws(error.getInstance)
+})
+
 test('plugin.instanceMethods are passed the error', (t) => {
   const error = new TestError('message')
   t.is(error.getInstance().error, error)

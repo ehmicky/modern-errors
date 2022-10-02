@@ -41,6 +41,7 @@ const addInstanceMethod = function (
         // eslint-disable-next-line fp/no-this
         error: this,
         methodFunc,
+        methodName,
         plugin,
         plugins,
         ErrorClasses,
@@ -70,6 +71,7 @@ const validateMethodName = function (methodName, plugin, plugins) {
 const callInstanceMethod = function ({
   error,
   methodFunc,
+  methodName,
   plugin,
   plugins,
   ErrorClasses,
@@ -77,6 +79,12 @@ const callInstanceMethod = function ({
   AnyError,
   args,
 }) {
+  if (!(error instanceof AnyError)) {
+    throw new TypeError(
+      `Missing "this" context: "${methodName}()" must be called using "error.${methodName}()"`,
+    )
+  }
+
   const { pluginsOpts, unknownDeep } = errorData.get(error)
   const pluginsOptsA = mergeClassOpts({
     error,
