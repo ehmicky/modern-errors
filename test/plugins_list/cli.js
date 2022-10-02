@@ -9,9 +9,8 @@ const { TestError } = defineClassOpts({}, {}, [CLI_PLUGIN])
 
 const testError = new TestError('test')
 
-each([true], ({ title }, cli) => {
+each([true, { timeout: 'true' }, { unknown: true }], ({ title }, cli) => {
   test(`Options are validated | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
-    t.notThrows(() => testError.exit(cli))
+    t.throws(testError.exit.bind(undefined, cli))
   })
 })
