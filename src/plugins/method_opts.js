@@ -47,8 +47,6 @@ export const mergeMethodOpts = function ({
   return { args: args.slice(0, -1), pluginsOpts: pluginsOptsA }
 }
 
-// We pass positional arguments to `plugin.isOptions()` as opposed to the object
-// passed to other methods since this method are simpler and more functional.
 const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
   const isOptionsResult = isOptions(lastArg)
 

@@ -2,14 +2,14 @@
 import isPlainObj from 'is-plain-obj'
 
 // Error properties can be set using the `props` option
-const getOptions = function ({ options = {} }) {
-  if (!isPlainObj(options)) {
-    throw new TypeError(`"props" option must be a plain object: ${options}`)
+const getOptions = function (props = {}) {
+  if (!isPlainObj(props)) {
+    throw new TypeError(`"props" option must be a plain object: ${props}`)
   }
 
   // eslint-disable-next-line no-unused-vars
-  const { message, ...optionsA } = options
-  return optionsA
+  const { message, ...propsA } = props
+  return propsA
 }
 
 // Set `props` option as error properties
