@@ -712,8 +712,8 @@ _Type_: `boolean`
 
 Logs the `error` message only, not its stack trace.
 
-By default, this is `true` unless the innermost error is
-[_unknown_](#unknown-errors).
+By default, this is `false` if the innermost error is
+[_unknown_](#unknown-errors), and `true` otherwise.
 
 ##### silent
 
