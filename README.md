@@ -712,7 +712,7 @@ _Type_: `boolean`
 
 Logs the `error` message only, not its stack trace.
 
-By default, this is `false` if the innermost error is
+By default, this is `false` if the [innermost](#re-throw-errors) error is
 [_unknown_](#unknown-errors), and `true` otherwise.
 
 ##### silent
