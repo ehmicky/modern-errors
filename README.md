@@ -661,7 +661,7 @@ This can be ensured by using `AnyError.normalize()`.
 try {
   // ...
 } catch (error) {
-  // This might throw if `error` has an unknown class
+  // This throws if `error` has an unknown class
   error.exampleMethod()
 
   // This is safe
