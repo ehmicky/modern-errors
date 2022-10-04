@@ -703,8 +703,8 @@ _Type_: `integer`
 
 Process [exit code](https://en.wikipedia.org/wiki/Exit_status).
 
-By default, each error class has its own exit code: `1`, `2`, `3`, etc.
-following their declaration order.
+By default, each error class has its own exit code: `1` for the first one
+declared, `2` for the next one, and so on.
 
 ##### short
 
