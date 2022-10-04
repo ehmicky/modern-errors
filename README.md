@@ -648,11 +648,11 @@ try {
 
 ## Plugin methods
 
-Plugins can:
+Plugins can set:
 
-- Set error properties: `error.message`, `error.stack` or any other `error.*`
-- Add error instance methods: `error.exampleMethod()`
-- Add [`AnyError`](#anyerror) static methods: `AnyError.exampleMethod()`
+- Error properties: `error.message`, `error.stack` or any other `error.*`
+- Error instance methods: `error.exampleMethod()`
+- [`AnyError`](#anyerror) static methods: `AnyError.exampleMethod()`
 
 Error instance methods are only available on [_known_ errors](#unknown-errors),
 which can be ensured using `AnyError.normalize()`.
