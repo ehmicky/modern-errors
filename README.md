@@ -728,8 +728,9 @@ _Type_: `integer` (in milliseconds)\
 _Default_: `5000` (5 seconds)
 
 The process exits gracefully: it waits for any ongoing tasks (callbacks,
-promises, etc.) to complete, up to a specific `timeout`. This option can also
-be:
+promises, etc.) to complete, up to a specific `timeout`.
+
+Special values:
 
 - `0`: Exits right away, without waiting for ongoing tasks
 - `Number.POSITIVE_INFINITY`: Waits for ongoing tasks forever, without timing
