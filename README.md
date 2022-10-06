@@ -670,6 +670,8 @@ try {
 }
 ```
 
+## Available plugins
+
 ### CLI errors
 
 _Plugin_: [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
