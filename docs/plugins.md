@@ -273,6 +273,17 @@ Reference to [`AnyError`](../README.md#anyerror). This can be used to call
 [`AnyError.normalize()`](../README.md#anyerrornormalizeanyexception) or
 [`error instanceof AnyError`](../README.md#check-error-class).
 
+```js
+export default {
+  name: 'example',
+  instanceMethods: {
+    addErrors({ error, AnyError }, errors = []) {
+      error.errors = errors.map(AnyError.normalize)
+    },
+  },
+}
+```
+
 ### ErrorClasses
 
 _Type_: `object`
