@@ -212,17 +212,17 @@ and [static methods](#staticmethodsmethodname). `info.error` and
 Its members are readonly and cannot be mutated, except for `error` inside
 instance methods (not inside `properties()`).
 
-### options
-
-_Type_: `any`
-
-Plugin's options, as returned by [`getOptions()`](#getoptions).
-
 ### error
 
 _Type_: [_known_](../README.md#unknown-errors) `Error`
 
 Error instance.
+
+### options
+
+_Type_: `any`
+
+Plugin's options, as returned by [`getOptions()`](#getoptions).
 
 ### unknownDeep
 
@@ -231,6 +231,20 @@ _Type_: `boolean`
 `true` if the [innermost](../README.md#re-throw-errors) error is
 [_unknown_](#unknown-errors), and `false` otherwise. This hints whether the
 original error might be internal or come from an external library.
+
+### AnyError
+
+_Type_: `typeof AnyError`
+
+Reference to [`AnyError`](../README.md#anyerror). This can be used to call
+[`AnyError.normalize()`](../README.md#anyerrornormalizeanyexception) or
+[`error instanceof AnyError`](../README.md#check-error-class).
+
+### ErrorClasses
+
+_Type_: `object`
+
+Object with all [_known_](../README.md#unknown-errors) error classes.
 
 ## Publishing
 
