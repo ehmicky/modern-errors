@@ -813,12 +813,12 @@ const newError = AnyError.parse(newDeepArray)[1].error
 _Plugin_:
 [`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack)
 
-This plugin uses [`clean-stack`](https://github.com/sindresorhus/clean-stack)
-to:
+This plugin
+[cleans up stack traces](https://github.com/sindresorhus/clean-stack) by:
 
-- Shorten file paths by making them relative to the current directory
-- Replace the home directory with `~`
-- Remove unhelpful internal Node.js entries
+- Shortening file paths, making them relative to the current directory
+- Replacing the home directory with `~`
+- Removing unhelpful internal Node.js entries
 
 Before:
 
