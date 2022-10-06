@@ -15,8 +15,6 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-Core features:
-
 - Create [custom error classes](#create-custom-error-classes)
 - Wrap inner errors' [message](#wrap-error-message) or [class](#set-error-class)
 - Set properties on [individual errors](#error-instance-properties) or on
@@ -30,12 +28,12 @@ Core features:
   [`class`](#custom-logic), [`toJSON()`](#serialize)
 - [Custom logic](#custom-logic)
 
-[Plugins](#plugins) are also available:
+# Plugins
 
-- Handle errors in [CLI](#cli-errors) modules
-- Indicate where to [report bugs](#bug-reports)
-- [Serialize](#serialize)/[parse](#parse) errors
-- [Clean stack traces](#clean-stack-traces)
+- [`modern-errors-cli`](#cli-errors): Handle errors in CLI modules
+- [`modern-errors-bugs`](#bug-reports): Print where to report bugs
+- [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
+- [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
 - Create your own plugin
 
 # Example
@@ -89,7 +87,7 @@ export const main = async function (filePath) {
 npm install modern-errors
 ```
 
-If any [plugin](#plugins) is used, it must also be installed.
+If any [plugin](#plugins-1) is used, it must also be installed.
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -103,7 +101,7 @@ not `require()`.
 
 ## modernErrors(plugins?, options?)
 
-`plugins`: [`Plugin[]?`](#plugins)\
+`plugins`: [`Plugin[]?`](#plugins-1)\
 `options`: [`Options?`](#plugin-options-1)
 
 Creates and returns [`AnyError`](#anyerror).
@@ -546,7 +544,9 @@ export const AuthError = SharedError.subclass('AuthError', {
 
 ## Adding plugins
 
-Plugins extend `modern-errors` features. They must first be installed.
+Plugins extend `modern-errors` features ([list of available plugins](#plugins)).
+
+They must first be installed.
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -669,13 +669,6 @@ try {
   AnyError.normalize(error).exampleMethod()
 }
 ```
-
-## List of plugins
-
-- [`modern-errors-cli`](#cli-errors): Handle errors from CLI modules
-- [`modern-errors-bugs`](#bug-reports): Print where to report bugs
-- [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
-- [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
 
 ### CLI errors
 
