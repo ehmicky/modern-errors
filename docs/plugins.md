@@ -290,6 +290,17 @@ _Type_: `object`
 
 Object with all [_known_](../README.md#unknown-errors) error classes.
 
+```js
+export default {
+  name: 'example',
+  staticMethods: {
+    isKnownErrorClass({ ErrorClasses }, value) {
+      return Object.values(ErrorClasses).includes(value)
+    },
+  },
+}
+```
+
 ## Publishing
 
 Plugins can either be kept private or be published on npm. When public, we
