@@ -824,7 +824,8 @@ Before:
 
 ```
 Error: message
-    at Object.<anonymous> (/Users/ehmicky/repo/dev/main.js:2:15)
+    at exampleFunction (/home/ehmicky/repo/dev/example.js:7:2)
+    at main (/home/ehmicky/repo/dev/main.js:2:15)
     at Module._compile (module.js:409:26)
     at Object.Module._extensions..js (module.js:416:10)
     at Module.load (module.js:343:32)
@@ -837,7 +838,8 @@ After:
 
 ```
 Error: message
-    at Object.<anonymous> (dev/main.js:2:15)
+    at exampleFunction (dev/example.js:7:2)
+    at main (dev/main.js:2:15)
 ```
 
 # Modules
