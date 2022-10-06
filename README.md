@@ -823,13 +823,21 @@ This plugin
 Before:
 
 ```
-
+Error: message
+    at Object.<anonymous> (/Users/ehmicky/repo/dev/main.js:2:15)
+    at Module._compile (module.js:409:26)
+    at Object.Module._extensions..js (module.js:416:10)
+    at Module.load (module.js:343:32)
+    at Function.Module._load (module.js:300:12)
+    at Function.Module.runMain (module.js:441:10)
+    at startup (node.js:139:18)
 ```
 
 After:
 
 ```
-
+Error: message
+    at Object.<anonymous> (dev/main.js:2:15)
 ```
 
 # Modules
