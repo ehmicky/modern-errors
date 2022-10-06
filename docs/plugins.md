@@ -218,11 +218,33 @@ _Type_: [_known_](../README.md#unknown-errors) `Error`
 
 Error instance.
 
+```js
+export default {
+  name: 'example',
+  properties({ error }) {
+    return { isTypeError: error.name === 'TypeError' }
+  },
+}
+```
+
 ### options
 
 _Type_: `any`
 
 Plugin's options, as returned by [`getOptions()`](#getoptions).
+
+```js
+export default {
+  name: 'example',
+  getOptions(options) {
+    return options
+  },
+  // `new ErrorClass('message', { example: value })` sets `error.example: value`
+  properties({ options }) {
+    return { example: options }
+  },
+}
+```
 
 ### unknownDeep
 
@@ -231,6 +253,17 @@ _Type_: `boolean`
 `true` if the [innermost](../README.md#re-throw-errors) error is
 [_unknown_](#unknown-errors), and `false` otherwise. This hints whether the
 original error might be internal or come from an external library.
+
+```js
+export default {
+  name: 'example',
+  instanceMethods: {
+    log({ error, unknownDeep }) {
+      console.log(unknownDeep ? error.message : error.stack)
+    },
+  },
+}
+```
 
 ### AnyError
 
