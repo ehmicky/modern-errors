@@ -816,9 +816,9 @@ _Plugin_:
 This plugin uses [`clean-stack`](https://github.com/sindresorhus/clean-stack)
 to:
 
-- Shortens file paths by making them relative to the current directory
-- Replaces the home directory with `~`
-- Removes unhelpful internal Node.js entries
+- Shorten file paths by making them relative to the current directory
+- Replace the home directory with `~`
+- Remove unhelpful internal Node.js entries
 
 Before:
 
