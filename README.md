@@ -811,7 +811,8 @@ const newError = AnyError.parse(newDeepArray)[1].error
 ### Clean stack traces
 
 _Plugin_:
-[`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack)
+[`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack) (Node.js
+only)
 
 This plugin
 [cleans up stack traces](https://github.com/sindresorhus/clean-stack) by:
