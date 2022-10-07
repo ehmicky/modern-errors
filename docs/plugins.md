@@ -134,8 +134,7 @@ export default {
 
 _Type_: `(options, full) => options`
 
-Normalize and return the plugin's `options`. Required to use the plugin's
-`options`.
+Normalize and return the plugin's `options`. Required to use them.
 
 If `options` is invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`.
@@ -145,12 +144,6 @@ The plugin's `options` can have any type.
 <!-- eslint-disable unicorn/prefer-type-error -->
 
 ```js
-// `error.exampleMethod('one', true)` results in:
-//   options: true
-//   args: ['one']
-// `error.exampleMethod('one', 'two')` results in:
-//   options: undefined
-//   args: ['one', 'two']
 export default {
   name: 'example',
   getOptions(options = true) {
