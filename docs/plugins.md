@@ -160,16 +160,17 @@ export default {
 
 #### full
 
-`getOptions()` is called during:
+`getOptions()` is called when:
 
-- [`modernErrors()`](../README.md#modernerrorsplugins-options)
-- [`AnyError.subclass()`](../README.md#anyerrorsubclassname-options)
-- [`new ErrorClass()`](../README.md#simple-errors)
-- [instance methods](#instancemethodsmethodname)
-- [static methods](#staticmethodsmethodname)
+- Error classes are defined:
+  [`modernErrors()`](../README.md#modernerrorsplugins-options) and
+  [`AnyError.subclass()`](../README.md#anyerrorsubclassname-options)
+- New errors are created: [`new ErrorClass()`](../README.md#simple-errors)
+- [Instance methods](#instancemethodsmethodname) or
+  [static methods](#staticmethodsmethodname) are called
 
 The `full` parameter is a boolean indicating whether the `options` are partial.
-It is `false` in the first two cases above, since `new ErrorClass()` might set
+It is `false` in the first case above, since `new ErrorClass()` might set
 additional options.
 
 When `full` is `false`, any logic validating required properties should be
