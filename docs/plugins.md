@@ -234,17 +234,21 @@ export default {
 
 `info` is a plain object passed as the first argument to
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
-and [static methods](#staticmethodsmethodname). `info.error` and
-`info.unknownDeep` are not passed to static methods.
+and [static methods](#staticmethodsmethodname).
 
-Its members are readonly and cannot be mutated, except for `error` inside
-instance methods (not inside `properties()`).
+[`info.error`](#error) and [`info.unknownDeep`](#unknowndeep) are not passed to
+static methods.
+
+Its members are readonly and cannot be mutated, except for
+[`info.error`](#error) inside instance methods (not inside `properties()`).
 
 ### error
 
-_Type_: [_known_](../README.md#unknown-errors) `Error`
+_Type_: `Error`
 
-Error instance.
+Error instance. It is guaranteed to have a
+[_known_](../README.md#unknown-errors) class and be
+[normalized](https://github.com/ehmicky/normalize-exception).
 
 ```js
 export default {
