@@ -70,8 +70,8 @@ export default {
 
 _Type_: `(info) => object`
 
-Set properties on `error.*`. The properties to set must be returned as an
-object. The `message` or `stack` can be returned as well.
+Set properties on `error.*` (including `message` or `stack`). The properties to
+set must be returned as an object.
 
 ```js
 export default {
