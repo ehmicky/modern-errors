@@ -21,9 +21,8 @@ Plugins can add:
 
 ## API
 
-Plugins are plain objects. We recommend exporting them using a
-[default export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
-for consistency with other plugins.
+Plugins are plain objects with a
+[default export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export).
 
 ```js
 export default {
@@ -312,3 +311,5 @@ recommend the following convention to help users find plugins:
 - The repository name should match the npm package name
 - The `package.json` `keywords` should include `modern-errors` and
   `modern-errors-plugin`
+- Please feel free to create an issue on the `modern-errors` repository so we
+  can add the plugin to the [list of available ones](../README.md#plugins)! 🎉
