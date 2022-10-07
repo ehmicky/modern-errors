@@ -162,14 +162,16 @@ export default {
 
 Users can pass additional `options`
 [at multiple stages](../README.md#configure-options). Each stage calls
-`getOptions()`:
+`getOptions()`.
 
 - When error classes are defined:
-  [`modernErrors()`](../README.md#modernerrorsplugins-options) and
-  [`AnyError.subclass()`](../README.md#anyerrorsubclassname-options)
-- When new errors are created: [`new ErrorClass()`](../README.md#simple-errors)
-- When [instance methods](#instancemethodsmethodname) or
-  [static methods](#staticmethodsmethodname) are called
+  [`modernErrors(plugins, options)`](../README.md#modernerrorsplugins-options)
+  and
+  [`AnyError.subclass('ErrorClass', options)`](../README.md#anyerrorsubclassname-options)
+- When new errors are created:
+  [`new ErrorClass('message', options)`](../README.md#simple-errors)
+- As a last argument to [instance methods](#instancemethodsmethodname) or
+  [static methods](#staticmethodsmethodname)
 
 `full` is a boolean parameter indicating whether the `options` might still be
 partial. It is `false` in the first stage above, `true` in the others.
