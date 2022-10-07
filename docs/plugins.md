@@ -160,6 +160,9 @@ export default {
 
 #### full
 
+The `full` parameter is a boolean indicating whether the `options` are partial,
+i.e. whether the user might pass additional `options` later.
+
 `getOptions()` is called when:
 
 - Error classes are defined:
@@ -169,9 +172,7 @@ export default {
 - [Instance methods](#instancemethodsmethodname) or
   [static methods](#staticmethodsmethodname) are called
 
-The `full` parameter is a boolean indicating whether the `options` are partial.
-It is `false` in the first case above, since `new ErrorClass()` might set
-additional options.
+`full` is `false` in the first case, `true` in the others.
 
 When `full` is `false`, any logic validating required properties should be
 skipped. The same applies to properties depending on each other.
