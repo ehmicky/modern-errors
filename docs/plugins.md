@@ -336,11 +336,11 @@ export default {
 ## Publishing
 
 Plugins can either be kept private or be published on npm. When public, we
-recommend the following convention to help users find plugins:
+recommend the following conventions to help users find plugins:
 
 - The npm package name should be `[@scope/]modern-errors-${plugin.name}`
 - The repository name should match the npm package name
 - The `package.json` `keywords` should include `modern-errors` and
   `modern-errors-plugin`
-- Please feel free to create an issue on the `modern-errors` repository so we
-  can add the plugin to the [list of available ones](../README.md#plugins)! 🎉
+- Please create an issue on the `modern-errors` repository so we can add the
+  plugin to the [list of available ones](../README.md#plugins)! 🎉
