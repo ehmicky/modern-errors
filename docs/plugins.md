@@ -23,9 +23,11 @@ Plugins can add:
 
 Plugins are plain objects with a
 [default export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export).
+All members are optional except for [`name`](#name).
 
 ```js
 export default {
+  // Name used to configure the plugin
   name: 'example',
 
   // Set error properties
