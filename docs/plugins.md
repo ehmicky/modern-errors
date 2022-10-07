@@ -357,8 +357,8 @@ recommend the following conventions to help users find plugins:
 
 #### Serializable options
 
-Options types should be JSON-serializable, when possible. This allows preserving
-them when errors are
+Options types should ideally be JSON-serializable. This allows preserving them
+when errors are
 [serialized and parsed](https://github.com/ehmicky/modern-errors-serialize). In
 particular, functions and class instances should be avoided in plugin options,
 when possible.
