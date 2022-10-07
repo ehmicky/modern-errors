@@ -134,8 +134,10 @@ export default {
 
 _Type_: `(options, full) => options`
 
-Validate and normalize the plugin's `options`. If `options` is invalid, an
-`Error` should be thrown. The normalized `options` should be returned.
+Normalize and return the plugin' `options`.
+
+If `options` is invalid, an `Error` should be thrown. The error message is
+automatically prepended with `Invalid "${plugin.name}" options:`.
 
 The plugin's `options` can be anything. Unless `getOptions()` is defined, no
 plugin's `options` are allowed.
