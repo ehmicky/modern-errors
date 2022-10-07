@@ -209,9 +209,9 @@ _Type_: `(options) => boolean`
 `options` as a last optional argument to any plugin method (instance or static).
 This should be defined if the plugin has any method with arguments.
 
-If `options` is invalid but can be determined not to be the last argument of any
-plugin's method, `isOptions()` should still return `true`. This allows
-`getOptions()` to validate them instead.
+If `options` are invalid but can be determined not to be the last argument of
+any plugin's method, `isOptions()` should still return `true`. This allows
+`getOptions()` to validate them and throw proper error messages.
 
 ```js
 // `error.exampleMethod('one', true)` results in:
