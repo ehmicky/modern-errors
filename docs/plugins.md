@@ -371,8 +371,7 @@ avoid alternatives like:
 
 - Functions taking options as input and returning the plugin:
   `(options) => plugin`
-- Setting options using the properties or methods of the plugin or of another
-  object
+- Setting options using the properties/methods of the plugin or another object
 
 ### State
 
