@@ -53,8 +53,8 @@ export default {
 
 _Type_: `string`
 
-Plugin name. Only lowercase letters must be used (as opposed to `_-.` nor
-uppercase letters).
+Plugin's name. Only lowercase letters must be used (as opposed to `_`, `-`, `.`
+or uppercase letters).
 
 This is the name used to [configure](../README.md#configure-options) the
 plugin's options.
