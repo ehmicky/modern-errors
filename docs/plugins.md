@@ -382,7 +382,8 @@ as `Error.prepareStackTrace()`) should be avoided.
 
 #### Error-specific state
 
-`WeakMap`s can be used to keep error-specific state in instance methods.
+`WeakMap`s should be used to keep error-specific state in instance methods, as
+opposed to setting error properties.
 
 ```js
 const state = new WeakMap()
