@@ -134,13 +134,13 @@ export default {
 
 _Type_: `(options, full) => options`
 
-Normalize and return the plugin' `options`.
+Normalize and return the plugin's `options`.
 
 If `options` is invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`.
 
-The plugin's `options` can be anything. Unless `getOptions()` is defined, no
-plugin's `options` are allowed.
+The plugin's `options` can have any type. Unless `getOptions()` is defined, the
+plugin does not allow any `options`.
 
 <!-- eslint-disable unicorn/prefer-type-error -->
 
