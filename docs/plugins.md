@@ -382,8 +382,8 @@ as `Error.prepareStackTrace()`) should be avoided.
 
 #### Error-specific state
 
-`WeakMap`s should be used to keep error-specific internal state in instance
-methods, as opposed to using error properties (even with `symbol` keys).
+`WeakMap`s should be used to keep error-specific internal state, as opposed to
+using error properties (even with `symbol` keys).
 
 ```js
 const state = new WeakMap()
@@ -401,7 +401,8 @@ export default {
 #### State objects
 
 Other state objects, such as class instances or network connections, should not
-be kept in the global state. Instead, plugins should either:
+be kept in the global state. This ensures plugins are concurrency-safe, i.e. can
+be safely used in parallel `async` logic. Instead, plugins should either:
 
 - Provide with methods returning such objects
 - Let users create those objects and pass them as arguments to plugin methods
