@@ -161,7 +161,7 @@ export default {
 #### full
 
 Users can pass `options` [at multiple stages](../README.md#configure-options).
-`getOptions()` is called at each stage:
+Each stage merges those additional options then calls `getOptions()`:
 
 - When error classes are defined:
   [`modernErrors()`](../README.md#modernerrorsplugins-options) and
