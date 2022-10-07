@@ -160,11 +160,8 @@ export default {
 
 #### full
 
-`full` is a boolean parameter indicating whether the `options` are partial, i.e.
-whether the user might pass additional `options` later.
-
-Users can pass `options` [at multiple stages](../README.md#configure-options),
-when:
+Users can pass `options` [at multiple stages](../README.md#configure-options).
+`getOptions()` is called at each of them, when:
 
 - Error classes are defined:
   [`modernErrors()`](../README.md#modernerrorsplugins-options) and
@@ -173,8 +170,8 @@ when:
 - [Instance methods](#instancemethodsmethodname) or
   [static methods](#staticmethodsmethodname) are called
 
-`getOptions()` is called at each stage. `full` is `false` in the first case,
-`true` in the others.
+`full` is a boolean parameter indicating whether the `options` might still be
+partial. It is `false` in the first case above, `true` in the others.
 
 When `full` is `false`, any logic validating required properties should be
 skipped. The same applies to properties depending on each other.
