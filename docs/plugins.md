@@ -87,10 +87,14 @@ export default {
 
 _Type_: `(info, ...args) => any`
 
-Add error instance methods like `error.methodName(...args)`. If the logic
-involves an `error` instance or error-specific `options`, instance methods
-should be preferred over [static methods](#staticmethodsmethodname). Otherwise,
-[static methods](#staticmethodsmethodname) should be used.
+Add error instance methods like `error.methodName(...args)`.
+
+The first argument `info` is provided by `modern-errors`. The other `...args`
+are forwarded from the method's call.
+
+If the logic involves an `error` instance or error-specific `options`, instance
+methods should be preferred over [static methods](#staticmethodsmethodname).
+Otherwise, [static methods](#staticmethodsmethodname) should be used.
 
 ```js
 export default {
@@ -110,6 +114,9 @@ _Type_: `(info, ...args) => any`
 
 Add [`AnyError`](../README.md#anyerror) static methods like
 `AnyError.methodName(...args)`.
+
+The first argument `info` is provided by `modern-errors`. The other `...args`
+are forwarded from the method's call.
 
 ```js
 export default {
