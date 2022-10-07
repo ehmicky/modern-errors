@@ -203,9 +203,9 @@ export default {
 _Type_: `(options) => boolean`
 
 `isOptions()` determines whether the last argument of a plugin method are
-`options` or not. Users [can optionally pass](../README.md#configure-options)
-the plugin's `options` as a last argument to any plugin method (instance or
-static). This should be defined if the plugin has any method with arguments.
+`options` or not. Users [can pass](../README.md#configure-options) the plugin's
+`options` as a last optional argument to any plugin method (instance or static).
+This should be defined if the plugin has any method with arguments.
 
 ```js
 // `error.exampleMethod('one', true)` results in:
