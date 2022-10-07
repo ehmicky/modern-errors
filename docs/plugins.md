@@ -53,11 +53,11 @@ export default {
 
 _Type_: `string`
 
-Plugin's name. Only lowercase letters must be used (as opposed to `_`, `-`, `.`
-or uppercase letters).
-
-This is the name used to [configure](../README.md#configure-options) the
+Plugin's name. It is used to [configure](../README.md#configure-options) the
 plugin's options.
+
+Only lowercase letters must be used (as opposed to `_` `-` `.` or uppercase
+letters).
 
 ```js
 // Users configure this plugin using `modernErrors([plugin], { example: ... })`
