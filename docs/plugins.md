@@ -138,7 +138,7 @@ Normalize and return the plugin's `options`. Required to use them.
 
 If `options` is invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`. Regular
-[`Error`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)s
 should be thrown, as opposed to using `modern-errors` itself.
 
 The plugin's `options` can have any type.
@@ -150,7 +150,7 @@ export default {
   name: 'example',
   getOptions(options = true) {
     if (typeof options !== 'boolean') {
-      throw new Error('It must be true or false')
+      throw new Error('It must be true or false.')
     }
 
     return options
@@ -174,6 +174,25 @@ additional options.
 
 When `full` is `false`, any logic validating required properties should be
 skipped. The same applies to properties depending on each other.
+
+<!-- eslint-disable unicorn/prefer-type-error, complexity -->
+
+```js
+export default {
+  name: 'example',
+  getOptions(options, full) {
+    if (typeof options !== 'object' || options === null) {
+      throw new Error('It must be a plain object.')
+    }
+
+    if (full && options.apiKey === undefined) {
+      throw new Error('"apiKey" is required.')
+    }
+
+    return options
+  },
+}
+```
 
 ### isOptions
 
