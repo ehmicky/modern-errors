@@ -91,8 +91,8 @@ _Type_: `(info, ...args) => any`
 
 Add error instance methods like `error.methodName(...args)`.
 
-The first argument `info` is provided by `modern-errors`. The other `...args`
-are forwarded from the method's call.
+The first argument [`info`](#info) is provided by `modern-errors`. The other
+`...args` are forwarded from the method's call.
 
 If the logic involves an `error` instance or error-specific `options`, instance
 methods should be preferred over [static methods](#staticmethodsmethodname).
@@ -117,8 +117,8 @@ _Type_: `(info, ...args) => any`
 Add [`AnyError`](../README.md#anyerror) static methods like
 `AnyError.methodName(...args)`.
 
-The first argument `info` is provided by `modern-errors`. The other `...args`
-are forwarded from the method's call.
+The first argument [`info`](#info) is provided by `modern-errors`. The other
+`...args` are forwarded from the method's call.
 
 ```js
 export default {
@@ -136,9 +136,9 @@ export default {
 
 _Type_: `(options, full) => options`
 
-Normalize and return the plugin's `options`. Required to use them.
+Normalize and return the plugin's `options`. Required to use plugin `options`.
 
-If `options` is invalid, an `Error` should be thrown. The error message is
+If `options` are invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`. Regular
 [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)s
 should be thrown, as opposed to using `modern-errors` itself.
@@ -245,7 +245,7 @@ and [static methods](#staticmethodsmethodname).
 [`info.error`](#error) and [`info.unknownDeep`](#unknowndeep) are not passed to
 static methods.
 
-Its members are readonly and cannot be mutated, except for
+Its members are readonly and should not be mutated, except for
 [`info.error`](#error) inside instance methods (not inside `properties()`).
 
 ### error
@@ -359,7 +359,7 @@ recommend the following conventions to help users find plugins:
 
 Options types should ideally be JSON-serializable. This allows preserving them
 when errors are
-[serialized and parsed](https://github.com/ehmicky/modern-errors-serialize). In
+[serialized/parsed](https://github.com/ehmicky/modern-errors-serialize). In
 particular, functions and class instances should be avoided in plugin options,
 when possible.
 
