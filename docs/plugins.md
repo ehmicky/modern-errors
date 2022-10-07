@@ -365,10 +365,12 @@ when possible.
 
 #### Separate options
 
-`modern-errors` provides a [consistent pattern](../README.md#configure-options)
-for options. Plugins should prefer it over alternatives such as:
+`modern-errors` provides with a
+[consistent pattern](../README.md#configure-options) for options. Plugins should
+avoid alternatives like:
 
-- Functions taking options as input: `(options) => plugin`
+- Functions taking options as input and returning the plugin:
+  `(options) => plugin`
 - Setting options using the properties or methods of the plugin or of another
   object
 
