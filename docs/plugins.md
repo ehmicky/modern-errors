@@ -139,7 +139,7 @@ Normalize and return the plugin's `options`.
 If `options` is invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`.
 
-The plugin's `options` can have any type. Unless `getOptions()` is defined, the
+The plugin's `options` can have any type. If `getOptions()` is not defined, the
 plugin does not allow any `options`.
 
 <!-- eslint-disable unicorn/prefer-type-error -->
