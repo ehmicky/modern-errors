@@ -350,3 +350,55 @@ recommend the following conventions to help users find plugins:
   `modern-errors-plugin`
 - Please create an issue on the `modern-errors` repository so we can add the
   plugin to the [list of available ones](../README.md#plugins)! 🎉
+
+## Best practices
+
+### Options
+
+#### Serializable options
+
+Options types should be JSON-serializable, when possible. This allows them to be
+kept when errors are
+[serialized and parsed](https://github.com/ehmicky/modern-errors-serialize). In
+particular, functions should be avoided in plugin options, when possible.
+
+#### Separate options
+
+`modern-errors` provides a [consistent pattern](../README.md#configure-options)
+for options. Plugins should prefer it over alternatives such as:
+
+- Functions taking options as input: `(options) => plugin`
+- Setting options using the properties or methods of the plugin or of another
+  object
+
+### State
+
+#### Global state
+
+Plugins should be usable by libraries. Therefore, modifying global objects (such
+as `Error.prepareStackTrace()`) should be avoided.
+
+#### Error-specific state
+
+`WeakMap`s can be used to keep error-specific state in instance methods.
+
+```js
+const state = new WeakMap()
+
+export default {
+  name: 'example',
+  instanceMethods: {
+    exampleMethod({ error }) {
+      state.set(error, { example: true })
+    },
+  },
+}
+```
+
+#### State objects
+
+Other state objects, such as class instances or network connections, should not
+be kept in the global state. Instead, plugins should either:
+
+- Provide with methods returning such objects
+- Let users create those objects and pass them as arguments to plugin methods
