@@ -137,7 +137,9 @@ _Type_: `(options, full) => options`
 Normalize and return the plugin's `options`. Required to use them.
 
 If `options` is invalid, an `Error` should be thrown. The error message is
-automatically prepended with `Invalid "${plugin.name}" options:`.
+automatically prepended with `Invalid "${plugin.name}" options:`. Regular
+[`Error`s](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+should be thrown, as opposed to using `modern-errors` itself.
 
 The plugin's `options` can have any type.
 
