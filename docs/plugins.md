@@ -161,13 +161,13 @@ export default {
 #### full
 
 Users can pass `options` [at multiple stages](../README.md#configure-options).
-`getOptions()` is called at each stage, when:
+`getOptions()` is called at each stage:
 
-- Error classes are defined:
+- When error classes are defined:
   [`modernErrors()`](../README.md#modernerrorsplugins-options) and
   [`AnyError.subclass()`](../README.md#anyerrorsubclassname-options)
-- New errors are created: [`new ErrorClass()`](../README.md#simple-errors)
-- [Instance methods](#instancemethodsmethodname) or
+- When new errors are created: [`new ErrorClass()`](../README.md#simple-errors)
+- When [instance methods](#instancemethodsmethodname) or
   [static methods](#staticmethodsmethodname) are called
 
 `full` is a boolean parameter indicating whether the `options` might still be
