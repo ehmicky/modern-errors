@@ -1,17 +1,19 @@
 # Creating a plugin
 
-This document explains how to create a plugin for `modern-errors`. The main
-documentation explains how to [install](../README.md#adding-plugins),
-[use](../README.md#adding-plugins) and
-[configure](../README.md#configure-options) plugins.
+This document explains how to create a plugin for `modern-errors`. To learn how
+to [install](../README.md#adding-plugins), [use](../README.md#adding-plugins)
+and [configure](../README.md#configure-options) plugins, please refer to the
+[main documentation instead](../README.md#plugins-1).
 
 ## Features
 
 Plugins can add:
 
-- Error properties: `error.message`, `error.stack` or any other `error.*`
-- Error instance methods: `error.exampleMethod()`
-- [`AnyError`](../README.md#anyerror) static methods: `AnyError.exampleMethod()`
+- Error [properties](#properties): `error.message`, `error.stack` or any other
+  `error.*`
+- Error [instance methods](#instancemethodsmethodname): `error.exampleMethod()`
+- [`AnyError`](../README.md#anyerror)
+  [static methods](#staticmethodsmethodname): `AnyError.exampleMethod()`
 
 ## Examples
 
