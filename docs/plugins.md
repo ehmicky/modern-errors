@@ -3,7 +3,7 @@
 This document explains how to create a plugin for `modern-errors`. To learn how
 to [install](../README.md#adding-plugins), [use](../README.md#adding-plugins)
 and [configure](../README.md#configure-options) plugins, please refer to the
-[main documentation instead](../README.md#plugins-1).
+[main documentation](../README.md#plugins-1) instead.
 
 ## Features
 
