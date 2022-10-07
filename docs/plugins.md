@@ -31,12 +31,12 @@ export default {
   // Set error properties
   properties() {},
 
-  // Set error instance methods like `error.exampleMethod()`
+  // Add error instance methods like `error.exampleMethod()`
   instanceMethods: {
     exampleMethod() {},
   },
 
-  // Set `AnyError` static methods like `AnyError.staticMethod()`
+  // Add `AnyError` static methods like `AnyError.staticMethod()`
   staticMethods: {
     staticMethod() {},
   },
@@ -87,7 +87,7 @@ export default {
 
 _Type_: `(info, ...args) => any`
 
-Set error instance methods like `error.methodName(...args)`. If the logic
+Add error instance methods like `error.methodName(...args)`. If the logic
 involves an `error` instance or error-specific `options`, instance methods
 should be preferred over [static methods](#staticmethodsmethodname). Otherwise,
 [static methods](#staticmethodsmethodname) should be used.
@@ -108,7 +108,7 @@ export default {
 
 _Type_: `(info, ...args) => any`
 
-Set [`AnyError`](../README.md#anyerror) static methods like
+Add [`AnyError`](../README.md#anyerror) static methods like
 `AnyError.methodName(...args)`.
 
 ```js
