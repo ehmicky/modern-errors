@@ -10,21 +10,21 @@ export const setPluginsProperties = function ({
   error,
   AnyError,
   ErrorClasses,
-  unknownDeep,
   errorData,
   plugins,
 }) {
-  const allNewProps = plugins.filter(pluginHasProperties).map((plugin) =>
-    getPluginProperties({
-      error,
-      AnyError,
-      ErrorClasses,
-      unknownDeep,
-      errorData,
-      plugin,
-      plugins,
-    }),
-  )
+  const allNewProps = plugins
+    .filter(pluginHasProperties)
+    .map((plugin) =>
+      getPluginProperties({
+        error,
+        AnyError,
+        ErrorClasses,
+        errorData,
+        plugin,
+        plugins,
+      }),
+    )
   const newProps = Object.assign({}, ...allNewProps)
   const previousValues = getPreviousValues(newProps, error)
   assignError(error, newProps)
@@ -39,13 +39,12 @@ const getPluginProperties = function ({
   error,
   AnyError,
   ErrorClasses,
-  unknownDeep,
   errorData,
   plugin,
   plugin: { properties, fullName },
   plugins,
 }) {
-  const { pluginsOpts } = errorData.get(error)
+  const { pluginsOpts, unknownDeep } = errorData.get(error)
   const pluginsOptsA = mergeClassOpts({
     error,
     ErrorClasses,
