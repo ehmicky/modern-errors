@@ -49,8 +49,9 @@ each(
   [...getNativeErrors(), ...getUnknownErrors()],
   ({ title }, ErrorClass, getError) => {
     test(`unknownDeep is true when wrapping unknown errors | ${title}`, (t) => {
-      const cause = getError()
-      t.true(new ErrorClass('test', { cause }).properties.unknownDeep)
+      t.true(
+        new ErrorClass('test', { cause: getError() }).properties.unknownDeep,
+      )
     })
   },
 )
