@@ -1,19 +1,5 @@
-import { deepClone } from './clone.js'
-import { getPluginOpts } from './get.js'
-
 // Retrieve `info` passed to all `plugin.*`
-export const getPluginInfo = function ({
-  pluginsOpts,
-  plugin,
-  AnyError,
-  ErrorClasses,
-}) {
-  const pluginsOptsA = deepClone(pluginsOpts)
-  const options = getPluginOpts({
-    pluginsOpts: pluginsOptsA,
-    plugin,
-    full: true,
-  })
+export const getPluginInfo = function (options, AnyError, ErrorClasses) {
   const ErrorClassesA = getErrorClasses(ErrorClasses)
   return { options, AnyError, ErrorClasses: ErrorClassesA }
 }

@@ -1,6 +1,6 @@
+import { createErrorInfo } from '../error_info.js'
 import { getPluginInfo } from '../info.js'
-import { mergeClassOpts } from '../merge.js'
-import { getMethodOpts, mergeMethodOpts } from '../method_opts.js'
+import { getMethodOpts } from '../method_opts.js'
 
 // Called on `error.{methodName}(...args)`
 export const callInstanceMethod = function ({
@@ -21,21 +21,14 @@ export const callInstanceMethod = function ({
   }
 
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-
-  const { pluginsOpts, unknownDeep } = errorData.get(error)
-  const pluginsOptsA = mergeClassOpts({
-    error,
+  const errorInfo = createErrorInfo({
+    errorData,
     ErrorClasses,
     plugins,
-    pluginsOpts,
-  })
-  const pluginsOptsB = mergeMethodOpts(pluginsOptsA, methodOpts, plugins)
-
-  const info = getPluginInfo({
-    pluginsOpts: pluginsOptsB,
     plugin,
-    AnyError,
-    ErrorClasses,
+    methodOpts,
   })
+  const { pluginsOpts, unknownDeep } = errorInfo(error)
+  const info = getPluginInfo(pluginsOpts, AnyError, ErrorClasses)
   return methodFunc({ ...info, error, unknownDeep }, ...argsA)
 }

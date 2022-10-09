@@ -1,5 +1,8 @@
 import { mergeSpecificCause } from '../any/merge.js'
 
+import { deepClone } from './clone.js'
+import { mergeMethodOpts } from './method_opts.js'
+
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
 export const normalizeGetOptions = function ({
@@ -52,6 +55,22 @@ const defaultGetOptions = function (fullName, options) {
 //    for name conflict
 //  - This reduces cross-plugin dependencies since they cannot easily reference
 //    each other, keeping them decoupled from each other
+export const finalizePluginsOpts = function ({
+  pluginsOpts,
+  methodOpts,
+  plugins,
+  plugin,
+}) {
+  const pluginsOptsA = mergeMethodOpts(pluginsOpts, methodOpts, plugins)
+  const pluginsOptsB = deepClone(pluginsOptsA)
+  const pluginsOptsC = getPluginOpts({
+    pluginsOpts: pluginsOptsB,
+    plugin,
+    full: true,
+  })
+  return pluginsOptsC
+}
+
 export const getPluginOpts = function ({
   pluginsOpts,
   plugin: { name, getOptions },
