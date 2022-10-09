@@ -6,6 +6,7 @@ import { each } from 'test-each'
 import { defineClassOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineClassOpts()
+const ChildUnknownError = UnknownError.subclass('ChildUnknownError')
 
 test('Validate that AnyError has a cause', (t) => {
   t.throws(() => new AnyError('message'))
@@ -30,7 +31,7 @@ test('AnyError with unknown cause uses UnknownError', (t) => {
 })
 
 each(
-  [AnyError, UnknownError],
+  [AnyError, UnknownError, ChildUnknownError],
   [TypeError, runInNewContext('TypeError')],
   ({ title }, ParentErrorClass, ErrorClass) => {
     test(`AnyError and UnknownError with unknown cause keeps error name if present | ${title}`, (t) => {
@@ -45,7 +46,7 @@ each(
 )
 
 each(
-  [AnyError, UnknownError],
+  [AnyError, UnknownError, ChildUnknownError],
   [
     () => 'causeMessage',
     // eslint-disable-next-line fp/no-mutating-assign
@@ -63,10 +64,12 @@ each(
   },
 )
 
-test('UnknownError with known cause keeps error name', (t) => {
-  const message = 'causeMessage'
-  const cause = new TestError(message)
-  t.is(new UnknownError('', { cause }).message, `TestError: ${message}`)
+each([UnknownError, ChildUnknownError], ({ title }, ErrorClass) => {
+  test(`UnknownError with known cause keeps error name | ${title}`, (t) => {
+    const message = 'causeMessage'
+    const cause = new TestError(message)
+    t.is(new ErrorClass('', { cause }).message, `TestError: ${message}`)
+  })
 })
 
 test('Known errors with known cause do not keep error name', (t) => {
@@ -75,17 +78,21 @@ test('Known errors with known cause do not keep error name', (t) => {
   t.is(new TestError('', { cause }).message, message)
 })
 
-each([TypeError, TestError], ({ title }, ErrorClass) => {
-  test(`UnknownError does not keeps error name if non-empty message | ${title}`, (t) => {
-    const message = 'causeMessage'
-    const parentMessage = 'message'
-    const cause = new ErrorClass(message)
-    t.is(
-      new UnknownError(parentMessage, { cause }).message,
-      `${message}\n${parentMessage}`,
-    )
-  })
-})
+each(
+  [TypeError, TestError],
+  [UnknownError, ChildUnknownError],
+  ({ title }, ErrorClass, ParentErrorClass) => {
+    test(`UnknownError does not keeps error name if non-empty message | ${title}`, (t) => {
+      const message = 'causeMessage'
+      const parentMessage = 'message'
+      const cause = new ErrorClass(message)
+      t.is(
+        new ParentErrorClass(parentMessage, { cause }).message,
+        `${message}\n${parentMessage}`,
+      )
+    })
+  },
+)
 
 test('AnyError with known cause uses its instance', (t) => {
   const cause = new TestError('causeMessage')

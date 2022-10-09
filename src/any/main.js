@@ -50,8 +50,7 @@ export const createAnyError = function ({
     constructor(message, opts, ...args) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      // TODO: replace with instanceof
-      const isUnknownError = new.target === ErrorClasses.UnknownError.ErrorClass
+      const isUnknownError = getIsUnknownError(new.target, ErrorClasses)
       const { message: messageA, opts: optsA } = normalizeOpts({
         message,
         opts,
@@ -97,4 +96,14 @@ export const createAnyError = function ({
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
   return AnyError
+}
+
+const getIsUnknownError = function (
+  NewTarget,
+  { UnknownError: { ErrorClass: UnknownError } },
+) {
+  return (
+    NewTarget === UnknownError ||
+    Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)
+  )
 }
