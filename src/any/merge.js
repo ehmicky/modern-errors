@@ -1,6 +1,6 @@
 import mergeErrorCause from 'merge-error-cause'
 
-// Retrieve `error.cause` unless it is unknown
+// Retrieve `error.cause` unless it is not normalized
 export const getCause = function ({ cause }, AnyError) {
   return cause instanceof AnyError ? cause : undefined
 }
@@ -16,8 +16,8 @@ export const getCause = function ({ cause }, AnyError) {
 //  - This ensures the instance class is the same as the constructor being used,
 //    which is expected
 //     - `AnyError` class does not change, but only to a child class
-//  - Setting a class only if `error.cause`'s class is unknown can sometimes
-//    be needed
+//  - Setting a class only if `error.cause` is not `instanceof AnyError` can
+//    sometimes be needed
 //     - However it usually indicates a catch block that is too wide, which
 //       is discouraged
 export const mergeCause = function (error, wrap) {

@@ -12,8 +12,7 @@
 //    `ErrorClasses`, which we discourage
 // Also, there is no reason for `ErrorClass.normalize()` to behave differently
 // from `AnyError.normalize()`
-//  - As opposed to normalizing unknown errors to `ErrorClass` instead of
-//    `UnknownError`
+//  - As opposed to normalizing errors to `ErrorClass` instead of `UnknownError`
 //  - Because:
 //     - Custom constructors might throw
 //     - It should not be needed:

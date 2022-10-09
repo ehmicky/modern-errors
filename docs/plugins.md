@@ -255,15 +255,13 @@ Its members are readonly and should not be mutated, except for
 
 _Type_: `Error`
 
-Error instance. It is guaranteed to have a
-[_known_](../README.md#unknown-errors) class and be
-[normalized](https://github.com/ehmicky/normalize-exception).
+[Normalized](../README.md#normalize-errors) error instance.
 
 ```js
 export default {
   name: 'example',
   properties({ error }) {
-    return { isTypeError: error.name === 'TypeError' }
+    return { isInputError: error.name === 'InputError' }
   },
 }
 ```
@@ -338,7 +336,9 @@ export default {
 
 _Type_: `object`
 
-Object with all [_known_](../README.md#unknown-errors) error classes.
+Object with all error classes created with
+[`AnyError.subclass()`](../README.md#anyerrorsubclassname-options) or
+`ErrorClass.subclass()`.
 
 ```js
 export default {

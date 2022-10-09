@@ -73,9 +73,9 @@ export const getClassOpts = function ({
   return { custom, classOpts: classOptsC }
 }
 
-// Usually, `UnknownError` are only instantiated internally with no options
-// passed to its constructor. I.e., if `plugin.properties()` is defined, the
-// `options` object can already be considered full.
+// `UnknownError` are only instantiated internally with no options passed to its
+// constructor. I.e., if `plugin.properties()` is defined, the `options` object
+// can already be considered `full`.
 const getClassOptsFull = function (className, { properties }) {
   return className === 'UnknownError' && properties !== undefined
 }

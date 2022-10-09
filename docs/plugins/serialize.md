@@ -24,9 +24,7 @@ const errorString = JSON.stringify(error)
 ## Parse
 
 `AnyError.parse(errorObject)` converts those error plain objects back to
-identical error instances. The original error class is preserved providing it is
-a
-[_known_ class](https://github.com/ehmicky/modern-errors/README.md#unknown-errors).
+identical error instances. The original error class is preserved.
 
 ```js
 const newErrorObject = JSON.parse(errorString)

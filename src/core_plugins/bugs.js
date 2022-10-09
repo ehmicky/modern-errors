@@ -1,8 +1,6 @@
-// If defined, the `bugs` option prints a line recommending to report any
-// unknown error.
+// If defined, the `bugs` option prints a line recommending to report the error.
 // The option value can be the `bugs.url` field of `package.json`, which is
 // easier to retrieve with JSON imports (Node >=16.14.0)
-
 const getOptions = function (bugs = '') {
   return bugs === '' ? bugs : `${BUGS_PREFIX}${ensureBugsUrl(bugs)}`
 }
