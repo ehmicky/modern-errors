@@ -54,7 +54,7 @@
     "handle-cli-error": "^3.0.0",
     "is-error-instance": "^1.1.0",
     "is-plain-obj": "^4.1.0",
-    "log-process-errors": "^10.1.0",
+    "log-process-errors": "^10.1.1",
     "logform": "^2.4.2",
     "merge-error-cause": "^3.1.1",
     "normalize-exception": "^2.8.1",
