@@ -186,14 +186,6 @@ Any error's [message](#wrap-error-message), [class](#set-error-class) and
 [options](#modify-options) can be wrapped using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 
-```js
-try {
-  // ...
-} catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
-}
-```
-
 Inner errors (`cause`) are
 [merged](https://github.com/ehmicky/merge-error-cause) to outer errors,
 including their
@@ -202,6 +194,14 @@ including their
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 and any [additional property](#error-properties).
+
+```js
+try {
+  // ...
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
+}
+```
 
 ### Invalid errors
 
