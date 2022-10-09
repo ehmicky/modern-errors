@@ -16,7 +16,7 @@ export const getErrorInfo = function (
   const errorA = AnyError.normalize(error)
   const { pluginsOpts, unknownDeep } = errorData.get(errorA)
   const pluginsOptsA = mergeClassOpts({
-    error,
+    error: errorA,
     ErrorClasses,
     plugins,
     pluginsOpts,
