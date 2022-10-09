@@ -26,8 +26,6 @@ It adds the following features:
 It returns a function to restore Node.js default behavior.
 
 ```js
-import { AnyError } from './errors.js'
-
 const restore = AnyError.logProcess()
 restore()
 ```
