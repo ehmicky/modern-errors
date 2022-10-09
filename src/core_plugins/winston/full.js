@@ -25,7 +25,7 @@ export const toFullLogObject = function ({
 
 const serializeValue = function ({ value, AnyError, parents, errorInfo }) {
   const parentsA = [...parents, value]
-  const valueA = serializeError(value, AnyError)
+  const valueA = serializeError(value, AnyError, errorInfo)
   const valueB = serializeRecurse({
     value: valueA,
     AnyError,
@@ -36,14 +36,22 @@ const serializeValue = function ({ value, AnyError, parents, errorInfo }) {
   return valueC
 }
 
-const serializeError = function (value, AnyError) {
+const serializeError = function (value, AnyError, errorInfo) {
   if (!isErrorInstance(value)) {
     return value
   }
 
-  const omittedProps = AnyError.normalize(value).getFullLogOmittedProps()
+  const omittedProps = getOmittedProps(value, errorInfo)
   const object = serialize(value, { shallow: true })
   return excludeKeys(object, omittedProps)
+}
+
+const getOmittedProps = function (value, errorInfo) {
+  const {
+    unknownDeep,
+    options: { stack = unknownDeep },
+  } = errorInfo(value)
+  return stack ? ['constructorArgs'] : ['constructorArgs', 'stack']
 }
 
 const serializeRecurse = function ({ value, AnyError, parents, errorInfo }) {
@@ -72,12 +80,4 @@ const serializeRecurse = function ({ value, AnyError, parents, errorInfo }) {
   }
 
   return value
-}
-
-// We use an instance method to get `unknownDeep` for nested errors
-export const getFullLogOmittedProps = function ({
-  unknownDeep,
-  options: { stack = unknownDeep },
-}) {
-  return stack ? ['constructorArgs'] : ['constructorArgs', 'stack']
 }

@@ -1,4 +1,4 @@
-import { toFullLogObject, getFullLogOmittedProps } from './full.js'
+import { toFullLogObject } from './full.js'
 import { getOptions } from './options.js'
 import { toShortLogObject } from './short.js'
 import { shortFormat, fullFormat } from './static.js'
@@ -7,10 +7,6 @@ import { shortFormat, fullFormat } from './static.js'
 export default {
   name: 'winston',
   getOptions,
-  instanceMethods: {
-    toShortLogObject,
-    toFullLogObject,
-    getFullLogOmittedProps,
-  },
+  instanceMethods: { toShortLogObject, toFullLogObject },
   staticMethods: { shortFormat, fullFormat },
 }
