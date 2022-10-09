@@ -27,3 +27,26 @@ test('plugin.properties() is optional', (t) => {
   ])
   t.false('properties' in new TestError('test'))
 })
+
+each(
+  [({ AnyError }) => AnyError, ({ ErrorClasses }) => ErrorClasses.TestError],
+  ({ title }, getClass) => {
+    test(`plugin.properties() can wrap error itself | ${title}`, (t) => {
+      const prefix = 'prefix: '
+      const message = 'test'
+      const { TestError } = defineClassOpts({}, {}, [
+        {
+          ...TEST_PLUGIN,
+          properties({ error, ...info }) {
+            const ErrorClass = getClass(info)
+            const wrappedError = error.message.startsWith(prefix)
+              ? error
+              : new ErrorClass(prefix, { cause: error })
+            return { wrappedError }
+          },
+        },
+      ])
+      t.is(new TestError(message).wrappedError.message, `${prefix}${message}`)
+    })
+  },
+)
