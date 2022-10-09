@@ -4,8 +4,8 @@ import { setPluginsProperties } from '../plugins/properties.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
-import { getCause, mergeCause } from './cause.js'
 import { getUnknownDeep } from './deep.js'
+import { getCause, mergeCause } from './merge.js'
 
 // Merge `error.cause` and set `plugin.properties()`.
 // Also compute and keep track of instance options and `constructorArgs`.

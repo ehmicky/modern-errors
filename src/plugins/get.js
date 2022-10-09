@@ -1,4 +1,4 @@
-import { mergeSpecificCause } from '../any/cause.js'
+import { mergeSpecificCause } from '../any/merge.js'
 
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
