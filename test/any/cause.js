@@ -38,10 +38,6 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-test('Validate that AnyError has a cause', (t) => {
-  t.throws(() => new AnyError('message'))
-})
-
 each(getKnownErrors(), ({ title }, cause) => {
   test(`AnyError with known cause uses child class | ${title}`, (t) => {
     const error = new AnyError('message', { cause })
