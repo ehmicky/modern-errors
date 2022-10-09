@@ -4,6 +4,7 @@ import { each } from 'test-each'
 import {
   TestError,
   AnyError,
+  getKnownErrors,
   KnownErrorClasses,
   UnknownErrorClasses,
   getNativeErrors,
@@ -17,17 +18,21 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(UnknownErrorClasses, ({ title }, ErrorClass) => {
-  test(`unknownDeep is true with registered unknown errors | ${title}`, (t) => {
+  test(`unknownDeep is false with registered unknown errors | ${title}`, (t) => {
     t.false(new ErrorClass('test').properties.unknownDeep)
   })
 })
 
-each([AnyError, ...KnownErrorClasses], ({ title }, ErrorClass) => {
-  test(`unknownDeep is false when wrapping known errors | ${title}`, (t) => {
-    const cause = new TestError('causeMessage')
-    t.false(new ErrorClass('test', { cause }).properties.unknownDeep)
-  })
-})
+each(
+  [AnyError, ...KnownErrorClasses],
+  getKnownErrors(),
+  ({ title }, ErrorClass, getError) => {
+    test(`unknownDeep is false when wrapping known errors | ${title}`, (t) => {
+      const cause = getError()
+      t.false(new ErrorClass('test', { cause }).properties.unknownDeep)
+    })
+  },
+)
 
 each(
   KnownErrorClasses,
