@@ -63,7 +63,7 @@
     "triple-beam": "^1.3.0"
   },
   "devDependencies": {
-    "@ehmicky/dev-tasks": "^1.0.92",
+    "@ehmicky/dev-tasks": "^1.0.93",
     "test-each": "^5.4.0",
     "through2": "^4.0.2",
     "winston": "^3.8.2"
