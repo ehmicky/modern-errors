@@ -14,19 +14,19 @@ const getOptions = function (options = {}) {
 // incrementing from there.
 //  - If some of the classes define their `exitCode`, it does not change the
 //    default `exitCode` of others
-// Stack traces and error properties are displayed by default if the innermost
-// error is unknown.
+// Stack traces and error properties are displayed by default if `showStack`
+// is `true`.
 const exit = function ({
   showStack,
   ErrorClasses,
   error,
   options: {
-    short = !showStack,
+    stack = showStack,
     exitCode = Object.keys(ErrorClasses).indexOf(error.name) + 1,
     ...options
   },
 }) {
-  handleCliError(error, { ...options, short, exitCode })
+  handleCliError(error, { ...options, stack, exitCode })
 }
 
 // eslint-disable-next-line import/no-default-export

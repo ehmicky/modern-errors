@@ -54,14 +54,14 @@ test.serial('Can pass "silent"', (t) => {
   t.is(errorExit(testError, { silent: true }).consoleArg, undefined)
 })
 
-test.serial('Can pass "short"', (t) => {
-  t.is(errorExit(testError, { short: false }).consoleArg, testError)
+test.serial('Can pass "stack"', (t) => {
+  t.true(errorExit(testError, { stack: true }).consoleArg.includes('at '))
 })
 
-test.serial('"short" defaults to true', (t) => {
-  t.is(errorExit(testError).consoleArg, message)
+test.serial('"stack" defaults to false', (t) => {
+  t.false(errorExit(testError).consoleArg.includes('at '))
 })
 
-test.serial('"short" is false with unknown errors', (t) => {
-  t.true(errorExit(new AnyError('', { cause: '' })).consoleArg instanceof Error)
+test.serial('"stack" is true with unknown errors', (t) => {
+  t.true(errorExit(new AnyError('', { cause: '' })).consoleArg.includes('at '))
 })
