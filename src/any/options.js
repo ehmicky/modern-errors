@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { keepCauseMessage, normalizeCause } from './cause.js'
+import { applyConvertError } from './cause.js'
 
 // Unknown `Error` options are not validated, for compatibility with any
 // potential JavaScript platform, since `error` has many non-standard elements.
@@ -23,7 +23,7 @@ export const normalizeOpts = function ({
   },
   AnyError,
   isAnyError,
-  isConvertError,
+  isUnknownError,
 }) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
@@ -38,10 +38,13 @@ export const normalizeOpts = function ({
   }
 
   validateAnyErrorArgs(isAnyError, args, opts)
-
-  const messageA = keepCauseMessage(message, isConvertError, opts)
-  const optsA = normalizeCause({ opts, UnknownError, AnyError, isConvertError })
-  return { message: messageA, opts: optsA }
+  return applyConvertError({
+    message,
+    opts,
+    UnknownError,
+    AnyError,
+    isUnknownError,
+  })
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it.

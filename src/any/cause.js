@@ -1,10 +1,22 @@
+export const applyConvertError = function ({
+  message,
+  opts,
+  UnknownError,
+  AnyError,
+  isUnknownError,
+}) {
+  return isUnknownError && message === ''
+    ? { message: keepCauseMessage(message, opts), opts }
+    : { message, opts: normalizeCause(opts, UnknownError, AnyError) }
+}
+
 // `new UnknownError('', { cause })` keeps the underlying error name in the
 // message so it is not lost.
 //  - This also applies when using `new AnyError()`
 //  - This does not apply when the name is a generic error class or
 //    `UnknownError` itself
-export const keepCauseMessage = function (message, isConvertError, { cause }) {
-  return isConvertError && hasErrorName(cause) ? `${cause.name}:` : message
+const keepCauseMessage = function (message, { cause }) {
+  return hasErrorName(cause) ? `${cause.name}:` : message
 }
 
 const hasErrorName = function (cause) {
@@ -36,33 +48,8 @@ const GENERIC_NAMES = new Set([
 //  - This keeps the `cause` error name (unless it is generic)
 //  - This ensures `AnyError` instance type is a child of `AnyError`
 //  - We allow `cause: undefined` since `undefined` exceptions can be thrown
-export const normalizeCause = function ({
-  opts,
-  UnknownError,
-  AnyError,
-  isConvertError,
-}) {
-  return hasUnknownCause(opts, AnyError, isConvertError)
-    ? { ...opts, cause: createConvertError(UnknownError, opts) }
+const normalizeCause = function (opts, UnknownError, AnyError) {
+  return 'cause' in opts && !(opts.cause instanceof AnyError)
+    ? { ...opts, cause: new UnknownError('', { cause: opts.cause }) }
     : opts
-}
-
-const hasUnknownCause = function (opts, AnyError, isConvertError) {
-  return 'cause' in opts && !(opts.cause instanceof AnyError) && !isConvertError
-}
-
-const createConvertError = function (UnknownError, { cause }) {
-  return new UnknownError('', { cause })
-}
-
-export const getIsConvertError = function (
-  NewTarget,
-  { UnknownError: { ErrorClass: UnknownError } },
-  message,
-) {
-  return (
-    (NewTarget === UnknownError ||
-      Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)) &&
-    message === ''
-  )
 }
