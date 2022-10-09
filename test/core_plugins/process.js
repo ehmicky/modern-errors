@@ -12,7 +12,7 @@ import { defineClassOpts } from '../helpers/main.js'
 // TODO: use `timers/promises` after dropping support for Node <15
 const pSetInterval = promisify(setInterval)
 
-const { AnyError } = defineClassOpts({}, {}, [PROCESS_PLUGIN])
+const { UnknownError, AnyError } = defineClassOpts({}, {}, [PROCESS_PLUGIN])
 
 each(
   [true, { unknown: true }, { exit: 'true' }, { onError: true }],
@@ -27,7 +27,7 @@ each(
 test.serial('Handles process errors', async (t) => {
   const onError = sinon.stub()
   const stopLogging = AnyError.logProcess({ onError })
-  const error = new Error('test')
+  const error = new UnknownError('test')
   emitWarning(error)
   await pSetInterval()
   t.deepEqual(onError.args, [[error, 'warning']])
