@@ -2,7 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { assignError } from './assign.js'
 import { createErrorInfo } from './error_info.js'
-import { getPluginInfo } from './plugin_info.js'
+import { getErrorPluginInfo } from './plugin_info.js'
 import { getPreviousValues, getAllValues } from './previous.js'
 
 // Set each `plugin.properties()`
@@ -48,9 +48,8 @@ const getPluginProperties = function ({
     plugins,
     plugin,
   })
-  const { options, unknownDeep } = errorInfo(error)
-  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
-  const newProps = properties({ ...info, error, unknownDeep })
+  const info = getErrorPluginInfo({ error, AnyError, ErrorClasses, errorInfo })
+  const newProps = properties(info)
 
   if (!isPlainObj(newProps)) {
     throw new TypeError(

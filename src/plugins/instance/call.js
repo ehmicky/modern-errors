@@ -1,6 +1,6 @@
 import { createErrorInfo } from '../error_info.js'
 import { getMethodOpts } from '../method_opts.js'
-import { getPluginInfo } from '../plugin_info.js'
+import { getErrorPluginInfo } from '../plugin_info.js'
 
 // Called on `error.{methodName}(...args)`
 export const callInstanceMethod = function ({
@@ -28,7 +28,6 @@ export const callInstanceMethod = function ({
     plugin,
     methodOpts,
   })
-  const { options, unknownDeep } = errorInfo(error)
-  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
-  return methodFunc({ ...info, error, unknownDeep }, ...argsA)
+  const info = getErrorPluginInfo({ error, AnyError, ErrorClasses, errorInfo })
+  return methodFunc(info, ...argsA)
 }

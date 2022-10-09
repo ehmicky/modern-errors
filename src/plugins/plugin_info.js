@@ -1,4 +1,17 @@
-// Retrieve `info` passed to all `plugin.*`
+// Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
+// `staticMethods` since it does not have access to an error.
+export const getErrorPluginInfo = function ({
+  error,
+  AnyError,
+  ErrorClasses,
+  errorInfo,
+}) {
+  const { options, unknownDeep } = errorInfo(error)
+  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
+  return { ...info, error, unknownDeep }
+}
+
+// Retrieve `info` passed to `plugin.properties|instanceMethods|staticMethods`
 export const getPluginInfo = function ({
   options,
   AnyError,
