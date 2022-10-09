@@ -4,8 +4,8 @@ import { each } from 'test-each'
 import {
   TestError,
   AnyError,
-  UnknownError,
   getNativeErrors,
+  getUnknownErrors,
 } from '../helpers/known.js'
 
 test('unknownDeep is false with known errors', (t) => {
@@ -19,19 +19,16 @@ each([TestError, AnyError], ({ title }, ErrorClass) => {
   })
 })
 
-each(
-  [...getNativeErrors(), () => new UnknownError('test')],
-  ({ title }, getError) => {
-    test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
-      const cause = getError()
-      t.true(new TestError('test', { cause }).properties.unknownDeep)
-    })
-  },
-)
+each([...getNativeErrors(), ...getUnknownErrors()], ({ title }, getError) => {
+  test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
+    const cause = getError()
+    t.true(new TestError('test', { cause }).properties.unknownDeep)
+  })
+})
 
 each(
   [TestError, AnyError],
-  [...getNativeErrors(), () => new UnknownError('test')],
+  [...getNativeErrors(), ...getUnknownErrors()],
   ({ title }, ErrorClass, getError) => {
     test(`unknownDeep is true when wrapping unknown errors | ${title}`, (t) => {
       const cause = getError()
