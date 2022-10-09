@@ -9,6 +9,7 @@ import {
   UnknownErrorClasses,
   getKnownErrors,
   getUnknownErrors,
+  getNativeErrors,
   getNativeErrorInstances,
 } from '../helpers/known.js'
 
@@ -23,7 +24,7 @@ const getExpectedMessage = function (cause) {
 each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   [
-    ...getNativeErrorInstances(),
+    ...getNativeErrors(),
     () => new UnknownError('message'),
     // eslint-disable-next-line fp/no-mutating-assign
     () => Object.assign(new TestError('message'), { name: true }),
@@ -32,8 +33,8 @@ each(
     test(`Cause name is ignored if absent | ${title}`, (t) => {
       const cause = getCause()
       t.is(
-        new ParentErrorClass('', { cause }).message,
         getExpectedMessage(cause),
+        new ParentErrorClass('', { cause }).message,
       )
     })
   },
