@@ -2,13 +2,14 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
+  createAnyError,
   defineClassOpts,
   defineSimpleCustom,
   defineDeepCustom,
   defineClassesOpts,
 } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineClassOpts()
+const { TestError, UnknownError, AnyError } = defineClassOpts()
 const { SimpleCustomError, AnyError: CustomAnyError } = defineSimpleCustom()
 const { TestError: DeepCustomError, SimpleCustomError: DeepCustomParentError } =
   defineDeepCustom()
@@ -60,4 +61,22 @@ test('"custom" option can be shared', (t) => {
     return { OneError: { custom: Parent }, TwoError: { custom: Parent } }
   })
   t.is(Object.getPrototypeOf(TwoError).name, 'Parent')
+})
+
+test('Cannot use "custom" with UnknownError', (t) => {
+  const TestAnyError = createAnyError()
+  t.throws(() =>
+    TestAnyError.subclass('UnknownError', {
+      custom: class extends TestAnyError {},
+    }),
+  )
+})
+
+test('Can use "custom" with UnknownError children', (t) => {
+  const ChildUnknownError = UnknownError.subclass('ChildUnknownError', {
+    custom: class extends UnknownError {
+      static prop = true
+    },
+  })
+  t.true(ChildUnknownError.prop)
 })

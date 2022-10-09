@@ -93,7 +93,14 @@ const getClassOptsFull = function (className, { properties }) {
 const validateCustomUnknown = function (custom, className) {
   if (custom !== undefined && className === 'UnknownError') {
     throw new TypeError(
-      'Error option "custom" is not available with "UnknownError".',
+      `Error option "custom" cannot be used with "UnknownError".
+However, it can be used with its subclasses.
+
+  export const ChildUnknownError = UnknownError.subclass("ChildUnknownError", {
+    custom: class extends UnknownError {
+      // ...
+    }
+  })`,
     )
   }
 }

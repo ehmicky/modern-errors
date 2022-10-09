@@ -2,7 +2,6 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  createAnyError,
   defineGlobalOpts,
   defineClassOpts,
   defineClassesOpts,
@@ -90,13 +89,4 @@ each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {
       five: false,
     })
   })
-})
-
-test('Cannot use "custom" with UnknownError', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(() =>
-    TestAnyError.subclass('UnknownError', {
-      custom: class extends TestAnyError {},
-    }),
-  )
 })
