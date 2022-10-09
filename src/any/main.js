@@ -3,6 +3,7 @@ import errorCustomClass from 'error-custom-class'
 
 import { createSubclass } from '../subclass/main.js'
 
+import { getIsSimpleUnknownError } from './cause.js'
 import { modifyError } from './modify.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
@@ -50,7 +51,11 @@ export const createAnyError = function ({
     constructor(message, opts, ...args) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      const isUnknownError = getIsUnknownError(new.target, ErrorClasses)
+      const isSimpleUnknownError = getIsSimpleUnknownError(
+        new.target,
+        ErrorClasses,
+        message,
+      )
       const { message: messageA, opts: optsA } = normalizeOpts({
         message,
         opts,
@@ -58,7 +63,7 @@ export const createAnyError = function ({
         ErrorClasses,
         AnyError,
         isAnyError,
-        isUnknownError,
+        isSimpleUnknownError,
       })
       super(messageA, optsA)
       /* c8 ignore start */
@@ -96,14 +101,4 @@ export const createAnyError = function ({
   /* eslint-enable fp/no-this */
   setErrorName(AnyError, 'AnyError')
   return AnyError
-}
-
-const getIsUnknownError = function (
-  NewTarget,
-  { UnknownError: { ErrorClass: UnknownError } },
-) {
-  return (
-    NewTarget === UnknownError ||
-    Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)
-  )
 }

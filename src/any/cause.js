@@ -1,12 +1,14 @@
 // `new UnknownError('', { cause })` keeps the underlying error name in the
 // message so it is not lost.
 //  - This also applies when using `new AnyError()`
-//  - This does not apply when either:
-//     - The message is not empty, since it might either be prepended or
-//       appended then, making concatenation more complex
-//     - The name is a generic error class, or `UnknownError` itself
-export const keepCauseMessage = function (message, isUnknownError, { cause }) {
-  return isUnknownError && message === '' && hasErrorName(cause)
+//  - This does not apply when the name is a generic error class or
+//    `UnknownError` itself
+export const keepCauseMessage = function (
+  message,
+  isSimpleUnknownError,
+  { cause },
+) {
+  return isSimpleUnknownError && hasErrorName(cause)
     ? `${cause.name}:`
     : message
 }
@@ -36,34 +38,52 @@ const GENERIC_NAMES = new Set([
   'UnknownError',
 ])
 
-// `new AnyError()` does not make sense without a `cause`, so we validate it
+// If cause is not an `AnyError` instance, we wrap it in `UnknownError`:
+//  - This keeps the `cause` error name (unless it is generic)
+//  - This ensures `AnyError` instance type is a child of `AnyError`
 //  - We allow `cause: undefined` since `undefined` exceptions can be thrown
-//  - However, we set to it an empty `UnknownError` then as this ensures:
-//     - `AnyError` class is not kept
-//     - A similar behavior as other error classes with undefined causes,
-//       i.e. the message and stack are not changed
-// If the error is not from a known class or `UnknownError`, we wrap it in
-// `UnknownError` to ensure `AnyError` instance type is a child of `AnyError`.
 export const normalizeCause = function ({
   opts,
   UnknownError,
   AnyError,
   isAnyError,
+  isSimpleUnknownError,
 }) {
-  if (!isAnyError) {
-    return opts
-  }
+  validateAnyErrorCause(opts, isAnyError)
+  return hasUnknownCause(opts, AnyError, isSimpleUnknownError)
+    ? { ...opts, cause: createSimpleUnknownError(UnknownError, opts) }
+    : opts
+}
 
-  if (!('cause' in opts)) {
+// `new AnyError()` does not make sense without a `cause`, so we validate it.
+const validateAnyErrorCause = function (opts, isAnyError) {
+  if (!('cause' in opts) && isAnyError) {
     throw new Error(
       '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
     )
   }
-
-  const cause = getCauseOpt(opts.cause, UnknownError, AnyError)
-  return { ...opts, cause }
 }
 
-const getCauseOpt = function (cause, UnknownError, AnyError) {
-  return cause instanceof AnyError ? cause : new UnknownError('', { cause })
+const hasUnknownCause = function (opts, AnyError, isSimpleUnknownError) {
+  return (
+    'cause' in opts &&
+    !(opts.cause instanceof AnyError) &&
+    !isSimpleUnknownError
+  )
+}
+
+const createSimpleUnknownError = function (UnknownError, { cause }) {
+  return new UnknownError('', { cause })
+}
+
+export const getIsSimpleUnknownError = function (
+  NewTarget,
+  { UnknownError: { ErrorClass: UnknownError } },
+  message,
+) {
+  return (
+    (NewTarget === UnknownError ||
+      Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)) &&
+    message === ''
+  )
 }
