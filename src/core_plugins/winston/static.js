@@ -2,6 +2,8 @@ import { format } from 'logform'
 import { LEVEL, MESSAGE } from 'triple-beam'
 
 import { isErrorInstance } from './check.js'
+import { toFullLogObject } from './full.js'
+import { toShortLogObject } from './short.js'
 
 // Retrieve the Winston formats.
 // Those are exposed as static methods, as opposed to using a `log()` instance
@@ -13,17 +15,18 @@ import { isErrorInstance } from './check.js'
 // like `json`, `prettyPrint`, `simple` or `cli`.
 // We do not allow passing method options to static methods because they would
 // have higher priority than instance options, which is unexpected.
-const getFormat = function (methodName, { AnyError }) {
-  return format(formatFunc.bind(undefined, { AnyError, methodName }))()
+const getFormat = function (method, { errorInfo, AnyError }) {
+  return format(formatFunc.bind(undefined, { method, errorInfo, AnyError }))()
 }
 
-const formatFunc = function ({ AnyError, methodName }, value) {
+const formatFunc = function ({ method, errorInfo, AnyError }, value) {
   if (!isErrorInstance(value)) {
     return value
   }
 
   deleteWinstonProps(value)
-  const object = AnyError.normalize(value)[methodName]()
+  const { error, options, unknownDeep } = errorInfo(value)
+  const object = method({ error, options, unknownDeep, errorInfo, AnyError })
   return { ...object, [LEVEL]: object.level }
 }
 
@@ -37,5 +40,5 @@ const deleteWinstonProps = function (value) {
 
 const WINSTON_PROPS = ['level', LEVEL, MESSAGE]
 
-export const shortFormat = getFormat.bind(undefined, 'toShortLogObject')
-export const fullFormat = getFormat.bind(undefined, 'toFullLogObject')
+export const shortFormat = getFormat.bind(undefined, toShortLogObject)
+export const fullFormat = getFormat.bind(undefined, toFullLogObject)
