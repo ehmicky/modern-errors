@@ -1,3 +1,11 @@
+// If cause is not an `AnyError` instance, we convert it using
+// `new UnknownError('', { cause })` to:
+//  - Keep its error `name` in the error `message`
+//  - Ensure `new AnyError()` return value's class is a child of `AnyError`
+//  - Keep track of `unknownDeep`
+// This applies regardless of parent class:
+//  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
+//  - With an empty message or not
 export const applyConvertError = function ({
   message,
   opts,
@@ -10,11 +18,6 @@ export const applyConvertError = function ({
     : { message, opts: normalizeCause(opts, UnknownError, AnyError) }
 }
 
-// `new UnknownError('', { cause })` keeps the underlying error name in the
-// message so it is not lost.
-//  - This also applies when using `new AnyError()`
-//  - This does not apply when the name is a generic error class or
-//    `UnknownError` itself
 const keepCauseMessage = function (message, { cause }) {
   return hasErrorName(cause) ? `${cause.name}:` : message
 }
@@ -32,6 +35,7 @@ const isErrorInstance = function (cause) {
   return Object.prototype.toString.call(cause) === '[object Error]'
 }
 
+// The error name is not kept if generic or `UnknownError` itself
 const GENERIC_NAMES = new Set([
   'Error',
   'ReferenceError',
@@ -44,10 +48,7 @@ const GENERIC_NAMES = new Set([
   'UnknownError',
 ])
 
-// If cause is not an `AnyError` instance, we wrap it in `UnknownError`:
-//  - This keeps the `cause` error name (unless it is generic)
-//  - This ensures `AnyError` instance type is a child of `AnyError`
-//  - We allow `cause: undefined` since `undefined` exceptions can be thrown
+// We allow `cause: undefined` since `undefined` exceptions can be thrown.
 const normalizeCause = function (opts, UnknownError, AnyError) {
   return 'cause' in opts && !(opts.cause instanceof AnyError)
     ? { ...opts, cause: new UnknownError('', { cause: opts.cause }) }
