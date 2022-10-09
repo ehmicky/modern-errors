@@ -50,10 +50,6 @@ test.serial('"exitCode" defaults to incrementing number', (t) => {
   t.is(errorExit(new ThreeError('')).exitCode, 4)
 })
 
-test.serial('Can pass "silent"', (t) => {
-  t.is(errorExit(testError, { silent: true }).consoleArg, undefined)
-})
-
 test.serial('Can pass "stack"', (t) => {
   t.true(errorExit(testError, { stack: true }).consoleArg.includes('at '))
 })
@@ -64,4 +60,8 @@ test.serial('"stack" defaults to false', (t) => {
 
 test.serial('"stack" is true with unknown errors', (t) => {
   t.true(errorExit(new AnyError('', { cause: '' })).consoleArg.includes('at '))
+})
+
+test.serial('Can pass any options', (t) => {
+  t.is(errorExit(testError, { silent: true }).consoleArg, undefined)
 })
