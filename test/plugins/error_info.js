@@ -8,20 +8,22 @@ const { TestError, UnknownError, AnyError } = defineClassOpts()
 
 const getSetArgs = function ({
   ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+  instanceOpts,
 }) {
-  return new TestErrorClass('test').properties
+  return new TestErrorClass('test', instanceOpts).properties
 }
 
 const getInstanceArgs = function ({
-  methodOpts,
   ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+  instanceOpts,
+  methodOpts,
 }) {
-  return new TestErrorClass('test').getInstance(methodOpts)
+  return new TestErrorClass('test', instanceOpts).getInstance(methodOpts)
 }
 
 const getStaticArgs = function ({
-  methodOpts,
   ErrorClasses: { AnyError: AnyErrorClass = AnyError } = {},
+  methodOpts,
 }) {
   return AnyErrorClass.getProp(methodOpts)
 }
@@ -37,15 +39,20 @@ each(
 )
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
-  const { errorInfo } = getValues({})
-
   test(`errorInfo returns unknownDeep | ${title}`, (t) => {
+    const { errorInfo } = getValues({})
     t.true(errorInfo(new UnknownError('test')).unknownDeep)
     t.false(errorInfo(new TestError('test')).unknownDeep)
   })
 
   test(`errorInfo returns instance options | ${title}`, (t) => {
+    const { errorInfo } = getValues({})
     t.true(errorInfo(new TestError('test', { prop: true })).options.prop)
+  })
+
+  test(`errorInfo ignores parent instance options | ${title}`, (t) => {
+    const { errorInfo } = getValues({ instanceOpts: { prop: true } })
+    t.is(errorInfo(new TestError('test')).options.prop, undefined)
   })
 })
 
