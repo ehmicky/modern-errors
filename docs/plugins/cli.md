@@ -12,7 +12,8 @@ const cliMain = function () {
   try {
     // ...
   } catch (error) {
-    AnyError.normalize(error).exit()
+    const normalizedError = AnyError.normalize(error)
+    normalizedError.exit()
   }
 }
 

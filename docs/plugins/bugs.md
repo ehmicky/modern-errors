@@ -2,8 +2,9 @@
 
 _Plugin_: [`modern-errors-bugs`](https://github.com/ehmicky/modern-errors-bugs)
 
-The `bugs` option includes a bug reports URL in error messages. Although any
-error class can use it, it is especially useful with
+The `bugs` option appends a bug reports URL to error messages.
+
+Although any error class can use it, it is especially useful with
 [`UnknownError`](#unknown-errors).
 
 ```js
