@@ -2,7 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { assignError } from './assign.js'
 import { createErrorInfo } from './error_info.js'
-import { getPluginInfo } from './info.js'
+import { getPluginInfo } from './plugin_info.js'
 import { getPreviousValues, getAllValues } from './previous.js'
 
 // Set each `plugin.properties()`

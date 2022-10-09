@@ -1,7 +1,7 @@
 import { validateNonEmpty } from '../../any/subclass.js'
 import { finalizePluginsOpts } from '../get.js'
-import { getPluginInfo } from '../info.js'
 import { getMethodOpts } from '../method_opts.js'
+import { getPluginInfo } from '../plugin_info.js'
 
 // Called on `AnyError.{methodName}(...args)`
 export const callStaticMethod = function (
