@@ -314,7 +314,7 @@ throw new InputError(`Could not read ${filePath}:\n`, { cause })
 // File does not exist.
 ```
 
-Empty messages can be used to wrap an error without changing its message.
+Empty messages wrap an error without changing its message.
 
 ```js
 throw new InputError('', { cause })
@@ -323,8 +323,7 @@ throw new InputError('', { cause })
 
 ### Aggregate errors
 
-The `errors` option can be used to aggregate multiple errors into one. This is
-like
+The `errors` option aggregates multiple errors into one. This is like
 [`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
 except that it works with any error class.
 
@@ -535,13 +534,7 @@ const SharedError = AnyError.subclass('SharedError', {
 })
 
 export const InputError = SharedError.subclass('InputError')
-export const AuthError = SharedError.subclass('AuthError', {
-  custom: class extends SharedError {
-    isAuth() {
-      return this.message.includes('auth')
-    }
-  },
-})
+export const AuthError = SharedError.subclass('AuthError')
 ```
 
 # Plugins

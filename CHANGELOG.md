@@ -19,35 +19,33 @@ export const AnyError = modernErrors([modernErrorsBugs, modernErrorsCli])
 
 ### CLI plugin
 
-The [`modern-errors-cli` plugin](README.md#cli-errors) can now be used to handle
-CLI errors.
+The [`modern-errors-cli` plugin](README.md#cli-errors) handles CLI errors.
 
 ### Process errors
 
-The [`modern-errors-process` plugin](README.md#process-errors) can now be used
-to handle process errors.
+The [`modern-errors-process` plugin](README.md#process-errors) handles process
+errors.
 
 ### Clean stack traces
 
-The [`modern-errors-stack` plugin](README.md#clean-stack-traces) can now be used
-to automatically clean up stack traces.
+The [`modern-errors-stack` plugin](README.md#clean-stack-traces) automatically
+cleans up stack traces.
 
 ### HTTP responses
 
-The [`modern-errors-http` plugin](README.md#http-responses) can now be used to
-convert errors to plain objects to use in an HTTP response.
+The [`modern-errors-http` plugin](README.md#http-responses) converts errors to
+plain objects to use in an HTTP response.
 
 ### Error logging (Winston)
 
-The [`modern-errors-winston` plugin](README.md#error-logging-winston) can now be
-used to log errors with Winston.
+The [`modern-errors-winston` plugin](README.md#error-logging-winston) logs
+errors with Winston.
 
 ### Custom classes
 
 Error classes can now be fully customized using the
-[`custom` option](README.md#custom): constructors, methods, etc.
-
-This replaces the previous `onCreate` option.
+[`custom` option](README.md#custom): constructors, methods, etc. This replaces
+the previous `onCreate` option.
 
 Before:
 
@@ -105,13 +103,7 @@ const SharedError = AnyError.subclass('SharedError', {
 })
 
 export const InputError = SharedError.subclass('InputError')
-export const AuthError = SharedError.subclass('AuthError', {
-  custom: class extends SharedError {
-    isAuth() {
-      return this.message.includes('auth')
-    }
-  },
-})
+export const AuthError = SharedError.subclass('AuthError')
 ```
 
 ### Improved options
@@ -217,8 +209,8 @@ const normalizedError = AnyError.normalize(error)
 
 ### Error properties
 
-Error properties must now be set using the
-[`props` option](README.md#error-properties).
+Error properties must now be set using
+[`props.{propName}`](README.md#error-properties) instead of `{propName}`.
 
 Before:
 
@@ -239,8 +231,10 @@ throw new InputError('Could not read the file.', {
 ### Bug reports
 
 The `bugsUrl` option has been renamed to [`bugs`](README.md#bug-reports). It
-cannot be a function anymore. This also requires adding the `modern-errors-bugs`
+cannot be a function anymore. It also requires adding the `modern-errors-bugs`
 [plugin](README.md#adding-plugins).
+
+A few bug fixes related to using the `bugs` option twice have also been fixed.
 
 Before:
 
@@ -343,13 +337,6 @@ Error classes should now be exported to be re-used across modules.
 ### TypeScript types
 
 Most TypeScript types have been removed, except the top-level function.
-
-## Bug fixes
-
-- Prevent [`UnknownError`](README.md#unknown-errors) wrapping another
-  `UnknownError`
-- Prevent adding the [`bugs` option](README.md#bug-reports) if it's already been
-  added
 
 # 3.1.1
 
