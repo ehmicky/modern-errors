@@ -5,11 +5,14 @@ import { each } from 'test-each'
 import PROCESS_PLUGIN from '../../src/core_plugins/process.js'
 import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError } = defineClassOpts({}, {}, [PROCESS_PLUGIN])
+const { AnyError } = defineClassOpts({}, {}, [PROCESS_PLUGIN])
 
-each([true, 'test', '//'], ({ title }, bugs) => {
-  test.skip(`bugs is validated | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => new TestError('test', { bugs }))
-  })
-})
+each(
+  [true, { unknown: true }, { exit: 'true' }, { onError: true }],
+  ({ title }, options) => {
+    test(`Options are validated | ${title}`, (t) => {
+      // eslint-disable-next-line max-nested-callbacks
+      t.throws(() => AnyError.logProcess(options))
+    })
+  },
+)

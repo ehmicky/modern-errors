@@ -1,27 +1,14 @@
 import isPlainObj from 'is-plain-obj'
 import logProcessErrors from 'log-process-errors'
 
-const logProcess = function ({
-  options,
-  AnyError,
-  ErrorClasses: { UnknownError },
-}) {
-  return logProcessErrors(getOptions(options, AnyError, UnknownError))
-}
-
-const getOptions = function (options, AnyError, UnknownError) {
+const getOptions = function (options = {}) {
   if (!isPlainObj(options)) {
     throw new TypeError('It must be a plain object.')
   }
 
   const { exit, onError = defaultOnError, ...unknownOpts } = options
-  validateOpts(onError, unknownOpts)
-  const onErrorA = customOnError.bind(undefined, {
-    onError,
-    AnyError,
-    UnknownError,
-  })
-  return { exit, onError: onErrorA }
+  validateOpts({ exit, onError, unknownOpts })
+  return { exit, onError }
 }
 
 const defaultOnError = function (error) {
@@ -29,16 +16,37 @@ const defaultOnError = function (error) {
   console.error(error)
 }
 
-const validateOpts = function (onError, unknownOpts) {
+const validateOpts = function ({ exit, onError, unknownOpts }) {
+  validateExit(exit)
+
+  if (typeof onError !== 'function') {
+    throw new TypeError(`Option "onError" must be a function: ${onError}.`)
+  }
+
   const [unknownOpt] = Object.keys(unknownOpts)
 
   if (unknownOpt !== undefined) {
     throw new TypeError(`Unknown option "${unknownOpt}".`)
   }
+}
 
-  if (typeof onError !== 'function') {
-    throw new TypeError(`Option "onError" must be a function: ${onError}.`)
+const validateExit = function (exit) {
+  if (exit !== undefined && typeof exit !== 'boolean') {
+    throw new TypeError(`Option "exit" must be a boolean: ${exit}.`)
   }
+}
+
+const logProcess = function ({
+  options,
+  AnyError,
+  ErrorClasses: { UnknownError },
+}) {
+  const onError = customOnError.bind(undefined, {
+    onError: options.onError,
+    AnyError,
+    UnknownError,
+  })
+  return logProcessErrors({ ...options, onError })
 }
 
 // Process errors always indicate unknown behavior. Therefore, we wrap them
@@ -61,5 +69,6 @@ const normalizeError = function (error, AnyError, UnknownError) {
 // eslint-disable-next-line import/no-default-export
 export default {
   name: 'process',
+  getOptions,
   staticMethods: { logProcess },
 }
