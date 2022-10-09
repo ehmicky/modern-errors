@@ -25,11 +25,24 @@ each(
 )
 
 test.serial('Handles process errors', async (t) => {
-  const onError = sinon.stub()
+  const onError = sinon.spy()
   const stopLogging = AnyError.logProcess({ onError })
   const error = new UnknownError('test')
   emitWarning(error)
   await pSetInterval()
   t.deepEqual(onError.args, [[error, 'warning']])
   stopLogging()
+})
+
+// eslint-disable-next-line no-restricted-globals
+const stub = sinon.stub(console, 'error')
+
+test.serial('Prints on the console by default', async (t) => {
+  const stopLogging = AnyError.logProcess()
+  const error = new UnknownError('test')
+  emitWarning(error)
+  await pSetInterval()
+  t.is(stub.args[0][0], error)
+  stopLogging()
+  stub.restore()
 })
