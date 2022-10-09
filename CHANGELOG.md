@@ -41,50 +41,6 @@ plain objects to use in an HTTP response.
 The [`modern-errors-winston` plugin](README.md#error-logging-winston) logs
 errors with Winston.
 
-### Custom classes
-
-Error classes can now be fully customized using the
-[`custom` option](README.md#custom): constructors, methods, etc. This replaces
-the previous `onCreate` option.
-
-Before:
-
-```js
-modernErrors({
-  onCreate(error, options) {
-    const { filePath } = options
-
-    if (typeof filePath !== 'string') {
-      throw new TypeError('filePath must be a string.')
-    }
-
-    error.filePath = filePath
-  },
-})
-```
-
-After:
-
-<!-- eslint-disable fp/no-this, fp/no-mutation -->
-
-```js
-export const InputError = AnyError.subclass('InputError', {
-  custom: class extends AnyError {
-    constructor(message, options = {}) {
-      super(message, options)
-
-      const { filePath } = options
-
-      if (typeof filePath !== 'string') {
-        throw new TypeError('filePath must be a string.')
-      }
-
-      this.filePath = filePath
-    }
-  },
-})
-```
-
 ### Subclasses
 
 Error subclasses can now be created using
@@ -205,6 +161,50 @@ After:
 const AnyError = modernErrors()
 
 const normalizedError = AnyError.normalize(error)
+```
+
+### Custom classes
+
+Error classes can now be fully customized using the
+[`custom` option](README.md#custom): constructors, methods, etc. This replaces
+the previous `onCreate` option.
+
+Before:
+
+```js
+modernErrors({
+  onCreate(error, options) {
+    const { filePath } = options
+
+    if (typeof filePath !== 'string') {
+      throw new TypeError('filePath must be a string.')
+    }
+
+    error.filePath = filePath
+  },
+})
+```
+
+After:
+
+<!-- eslint-disable fp/no-this, fp/no-mutation -->
+
+```js
+export const InputError = AnyError.subclass('InputError', {
+  custom: class extends AnyError {
+    constructor(message, options = {}) {
+      super(message, options)
+
+      const { filePath } = options
+
+      if (typeof filePath !== 'string') {
+        throw new TypeError('filePath must be a string.')
+      }
+
+      this.filePath = filePath
+    }
+  },
+})
 ```
 
 ### Error properties
