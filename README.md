@@ -23,8 +23,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   `stack`, etc.)
 - Based on standard JavaScript: [`throw`](#throw-errors),
-  [`try/catch`](#re-throw-errors), [`new Error()`](#throw-errors),
-  [`error.cause`](#re-throw-errors), [`instanceof`](#check-error-class),
+  [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
+  [`error.cause`](#wrap-errors), [`instanceof`](#check-error-class),
   [`class`](#custom-logic), [`toJSON()`](docs/plugins/serialize.md)
 - [Custom logic](#custom-logic)
 
@@ -45,7 +45,6 @@ Error handling framework that is pluggable, minimalist yet featureful.
 Create custom error classes.
 
 ```js
-// `errors.js`
 import modernErrors from 'modern-errors'
 
 // Base error class
@@ -57,31 +56,19 @@ export const AuthError = AnyError.subclass('AuthError')
 export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
-Throw/re-throw errors.
+Throw errors.
 
 ```js
-import { InputError } from './errors.js'
-
-const readContents = async function (filePath) {
-  try {
-    return await readFile(filePath)
-  } catch (cause) {
-    throw new InputError(`Could not read ${filePath}`, { cause })
-  }
-}
+throw new InputError('Missing file path.')
 ```
 
-Wrap the main functions to normalize any errors.
+Wrap errors.
 
 ```js
-import { AnyError } from './errors.js'
-
-export const main = async function (filePath) {
-  try {
-    return await readContents(filePath)
-  } catch (error) {
-    throw AnyError.normalize(error)
-  }
+try {
+  // ...
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
 }
 ```
 
@@ -176,11 +163,9 @@ Each main function should be wrapped with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception).
 
 ```js
-import { AnyError } from './errors.js'
-
-export const main = async function (filePath) {
+export const main = function () {
   try {
-    return await readContents(filePath)
+    // ...
   } catch (error) {
     throw AnyError.normalize(error)
   }
@@ -192,16 +177,10 @@ export const main = async function (filePath) {
 ### Simple errors
 
 ```js
-import { InputError } from './errors.js'
-
-const validateFilePath = function (filePath) {
-  if (filePath === '') {
-    throw new InputError('Missing file path.')
-  }
-}
+throw new InputError('Missing file path.')
 ```
 
-### Re-throw errors
+### Wrap errors
 
 Errors are re-thrown using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
@@ -209,14 +188,10 @@ This allows wrapping the error [message](#wrap-error-message),
 [class](#set-error-class), or [options](#modify-options).
 
 ```js
-import { InputError } from './errors.js'
-
-const readContents = async function (filePath) {
-  try {
-    return await readFile(filePath)
-  } catch (cause) {
-    throw new InputError(`Could not read ${filePath}`, { cause })
-  }
+try {
+  // ...
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
 }
 ```
 
@@ -258,8 +233,6 @@ try {
 <!-- eslint-disable no-throw-literal -->
 
 ```js
-import { AnyError } from './errors.js'
-
 try {
   throw 'Missing file path.'
 } catch (error) {
@@ -291,26 +264,26 @@ The outer error message is appended.
 
 ```js
 try {
-  await readFile(filePath)
+  // ...
 } catch (cause) {
-  throw new InputError(`Could not read ${filePath}`, { cause })
+  throw new InputError('Could not read the file.', { cause })
   // InputError: File does not exist.
-  // Could not read /example/path
+  // Could not read the file.
 }
 ```
 
 If the outer error message ends with `:`, it is prepended instead.
 
 ```js
-throw new InputError(`Could not read ${filePath}:`, { cause })
-// InputError: Could not read /example/path: File does not exist.
+throw new InputError(`Could not read the file:`, { cause })
+// InputError: Could not read the file: File does not exist.
 ```
 
 `:` can optionally be followed a newline.
 
 ```js
-throw new InputError(`Could not read ${filePath}:\n`, { cause })
-// InputError: Could not read /example/path:
+throw new InputError(`Could not read the file:\n`, { cause })
+// InputError: Could not read the file:
 // File does not exist.
 ```
 
@@ -328,24 +301,21 @@ The `errors` option aggregates multiple errors into one. This is like
 except that it works with any error class.
 
 ```js
-const inputError = new InputError('Could not read file.')
-const authError = new AuthError('Invalid username.')
-const aggregateError = new InputError('Wrong file.', {
-  errors: [inputError, authError],
+const databaseError = new DatabaseError('...')
+const authError = new AuthError('...')
+const aggregateError = new InputError('...', {
+  errors: [databaseError, authError],
 })
 
 console.log(aggregateError)
-// InputError: Wrong file.
-//     at ...
+// InputError: ... {
 //   [errors]: [
-//     InputError: Could not read file.
-//         at ...
-//     AuthError: Invalid username.
-//         at ...
+//     DatabaseError: ...
+//     AuthError: ...
 //   ]
 // }
 console.log(aggregateError.errors)
-// [inputError, authError]
+// [databaseError, authError]
 ```
 
 ## Error properties
@@ -353,9 +323,7 @@ console.log(aggregateError.errors)
 ### Error instance properties
 
 ```js
-const error = new InputError('Could not read the file.', {
-  props: { isUserError: true },
-})
+const error = new InputError('...', { props: { isUserError: true } })
 console.log(error.isUserError) // true
 ```
 
@@ -365,7 +333,7 @@ console.log(error.isUserError) // true
 const InputError = AnyError.subclass('InputError', {
   props: { isUserError: true },
 })
-const error = new InputError('Could not read the file.')
+const error = new InputError('...')
 console.log(error.isUserError) // true
 ```
 
@@ -409,14 +377,14 @@ try {
 
 ### Set error class
 
-When [re-throwing errors](#re-throw-errors), the outer error class replaces the
+When [re-throwing errors](#wrap-errors), the outer error class replaces the
 inner one's.
 
 ```js
 try {
-  throw new AuthError('Could not authenticate.')
+  throw new AuthError('...')
 } catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
+  throw new InputError('...', { cause })
   // Now an InputError
 }
 ```
@@ -425,9 +393,9 @@ The inner error's class can be kept by using [`AnyError`](#anyerror) instead.
 
 ```js
 try {
-  throw new AuthError('Could not authenticate.')
+  throw new AuthError('...')
 } catch (cause) {
-  throw new AnyError('Could not read the file.', { cause })
+  throw new AnyError('...', { cause })
   // Still an AuthError
 }
 ```
@@ -438,8 +406,6 @@ Each main function should be wrapped with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception).
 
 ```js
-import { AnyError } from './errors.js'
-
 export const main = async function (filePath) {
   try {
     console.log(filePath.trim())
@@ -486,7 +452,8 @@ main(null) // InputError: Invalid file path: Cannot read properties of null (rea
 The [`custom`](#custom) option can be used to provide an error `class` with
 additional methods, `constructor` or properties.
 
-<!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this -->
+<!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this,
+     class-methods-use-this -->
 
 ```js
 export const InputError = AnyError.subclass('InputError', {
@@ -507,14 +474,14 @@ export const InputError = AnyError.subclass('InputError', {
     }
 
     isUserInput() {
-      return this.message.includes('user')
+      // ...
     }
   },
 })
 
 const error = new InputError('Wrong user name')
 console.log(error.message) // 'Wrong user name.'
-console.log(error.isUserInput()) // true
+console.log(error.isUserInput())
 ```
 
 ### Shared custom logic
@@ -522,13 +489,13 @@ console.log(error.isUserInput()) // true
 [`ErrorClass.subclass()`](#anyerrorsubclassname-options) can be used to share
 logic between error classes.
 
-<!-- eslint-disable fp/no-this -->
+<!-- eslint-disable fp/no-this, class-methods-use-this -->
 
 ```js
 const SharedError = AnyError.subclass('SharedError', {
   custom: class extends AnyError {
     isUserInput() {
-      return this.message.includes('user')
+      // ...
     }
   },
 })
@@ -607,7 +574,7 @@ export const InputError = AnyError.subclass('InputError', options)
 - A specific error: second argument to the error's constructor
 
 ```js
-throw new InputError('Could not read the file.', options)
+throw new InputError('...', options)
 ```
 
 - A plugin method call: last argument, passing only that plugin's options
@@ -622,15 +589,15 @@ error[methodName](...args, options[pluginName])
 
 ### Modify options
 
-When [re-throwing errors](#re-throw-errors), the outer error's options replace
-the inner ones.
+When [re-throwing errors](#wrap-errors), the outer error's options replace the
+inner ones.
 
 ```js
 try {
-  throw new AuthError('Could not authenticate.', innerOptions)
+  throw new AuthError('...', innerOptions)
 } catch (cause) {
   // Options are now `outerOptions`. `innerOptions` are ignored.
-  throw new InputError('Could not read file.', { cause, ...outerOptions })
+  throw new InputError('...', { cause, ...outerOptions })
 }
 ```
 
@@ -638,10 +605,10 @@ The inner error's options can be kept by using [`AnyError`](#anyerror) instead.
 
 ```js
 try {
-  throw new AuthError('Could not authenticate.', innerOptions)
+  throw new AuthError('...', innerOptions)
 } catch (cause) {
   // `outerOptions` are merged with `innerOptions`
-  throw new AnyError('Could not read file.', { cause, ...outerOptions })
+  throw new AnyError('...', { cause, ...outerOptions })
 }
 ```
 

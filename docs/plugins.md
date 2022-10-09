@@ -290,7 +290,7 @@ _Type_: `boolean`
 
 Hints whether `error.stack` should be printed or not.
 
-This is `true` if the error (or one of its [inner](../README.md#re-throw-errors)
+This is `true` if the error (or one of its [inner](../README.md#wrap-errors)
 errors) is [_unknown_](#unknown-errors), and `false` otherwise.
 
 If a plugin prints `error.stack` optionally, `showStack` can be used as the
