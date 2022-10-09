@@ -32,13 +32,13 @@ each([getPropertiesInfo, getInstanceInfo], ({ title }, getValues) => {
 })
 
 each([getInstanceInfo, getStaticInfo], ({ title }, getValues) => {
+  const { errorInfo } = getValues({ ErrorClasses, methodOpts: true })
+
   test(`errorInfo returns method options | ${title}`, (t) => {
-    const { errorInfo } = getValues({ ErrorClasses, methodOpts: true })
     t.true(errorInfo(new TestError('test')).options.prop)
   })
 
   test(`errorInfo method options have more priority than instance options | ${title}`, (t) => {
-    const { errorInfo } = getValues({ ErrorClasses, methodOpts: true })
     t.true(errorInfo(new TestError('test', { prop: false })).options.prop)
   })
 })
