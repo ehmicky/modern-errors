@@ -5,65 +5,73 @@ import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
 
 const { TestError, AnyError, UnknownError } = defineClassOpts()
 
-const getSetArgs = function ({ TestError: TestErrorClass = TestError } = {}) {
-  return new TestErrorClass('test').properties
+const getSetArgs = function ({
+  ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+  instanceOpts,
+}) {
+  return new TestErrorClass('test', instanceOpts).properties
 }
 
 const getInstanceArgs = function ({
-  TestError: TestErrorClass = TestError,
-} = {}) {
-  return new TestErrorClass('test').getInstance()
+  ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+  instanceOpts,
+  methodOpts,
+}) {
+  return new TestErrorClass('test', instanceOpts).getInstance(methodOpts)
 }
 
-const getStaticArgs = function ({ AnyError: AnyErrorClass = AnyError } = {}) {
-  return AnyErrorClass.getProp()
+const getStaticArgs = function ({
+  ErrorClasses: { AnyError: AnyErrorClass = AnyError } = {},
+  methodOpts,
+}) {
+  return AnyErrorClass.getProp(methodOpts)
 }
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   test(`plugin.properties|instanceMethods|staticMethods is passed AnyError | ${title}`, (t) => {
-    t.is(getValues().AnyError, AnyError)
+    t.is(getValues({}).AnyError, AnyError)
   })
 
   test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-    t.deepEqual(getValues().ErrorClasses, { TestError, UnknownError })
+    t.deepEqual(getValues({}).ErrorClasses, { TestError, UnknownError })
   })
 
   test(`plugin.properties|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign
-    getValues().ErrorClasses.prop = true
+    getValues({}).ErrorClasses.prop = true
     t.false('prop' in AnyError.getProp().ErrorClasses)
   })
 
   test(`plugin.properties|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign
-    getValues().options.prop = false
+    getValues({}).options.prop = false
     t.is(AnyError.getProp().options.prop, undefined)
   })
 
   test(`plugin.properties|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
-    t.true(getValues().options.full)
+    t.true(getValues({}).options.full)
   })
 
   test(`plugin.properties|instanceMethods|staticMethods is passed errorInfo | ${title}`, (t) => {
-    t.is(typeof getValues().errorInfo, 'function')
+    t.is(typeof getValues({}).errorInfo, 'function')
   })
 })
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   test(`plugin.properties|instanceMethods|staticMethods get the global options | ${title}`, (t) => {
     const ErrorClasses = defineGlobalOpts({ prop: true })
-    t.true(getValues(ErrorClasses).options.prop)
+    t.true(getValues({ ErrorClasses }).options.prop)
   })
 })
 
 each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
   test(`plugin.properties|instanceMethods get the class options | ${title}`, (t) => {
     const ErrorClasses = defineClassOpts({ prop: true })
-    t.true(getValues(ErrorClasses).options.prop)
+    t.true(getValues({ ErrorClasses }).options.prop)
   })
 
   test(`plugin.properties|instanceMethods get "unknownDeep" | ${title}`, (t) => {
-    t.false(getValues().unknownDeep)
+    t.false(getValues({}).unknownDeep)
   })
 })
 
