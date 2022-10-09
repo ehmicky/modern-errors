@@ -62,6 +62,31 @@ export const InputError = AnyError.subclass('InputError', {
 })
 ```
 
+### CLI plugin
+
+The [`modern-errors-cli` plugin](README.md#cli-errors) can now be used to handle
+CLI errors.
+
+### Process errors
+
+The [`modern-errors-process` plugin](README.md#process-errors) can now be used
+to handle process errors.
+
+### Clean stack traces
+
+The [`modern-errors-stack` plugin](README.md#clean-stack-traces) can now be used
+to automatically clean up stack traces.
+
+### HTTP responses
+
+The [`modern-errors-http` plugin](README.md#http-responses) can now be used to
+convert errors to plain objects to use in an HTTP response.
+
+### Error logging (Winston)
+
+The [`modern-errors-winston` plugin](README.md#error-logging-winston) can now be
+used to log errors with Winston.
+
 ### Subclasses
 
 Error subclasses can now be created using
@@ -132,26 +157,6 @@ error[methodName](...args, options[pluginName])
 
 The [`errors` option](README.md#aggregate-errors) can now be used to aggregate
 multiple errors into one, similarly to `new AggregateError(errors)`.
-
-### CLI plugin
-
-The [`modern-errors-cli` plugin](README.md#cli-errors) can now be used to handle
-CLI errors.
-
-### Clean stack traces
-
-The [`modern-errors-stack` plugin](README.md#clean-stack-traces) can now be used
-to automatically clean up stack traces.
-
-### HTTP responses
-
-The [`modern-errors-http` plugin](README.md#http-responses) can now be used to
-convert errors to plain objects to use in an HTTP response.
-
-### Error logging (Winston)
-
-The [`modern-errors-winston` plugin](README.md#error-logging-winston) can now be
-used to log errors with Winston.
 
 ## Breaking changes
 
