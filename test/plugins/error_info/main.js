@@ -5,9 +5,9 @@ import {
   getPropertiesInfo,
   getInstanceInfo,
   getStaticInfo,
-} from '../helpers/info.js'
-import { getNativeErrors } from '../helpers/known.js'
-import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
+} from '../../helpers/info.js'
+import { getNativeErrors } from '../../helpers/known.js'
+import { defineGlobalOpts, defineClassOpts } from '../../helpers/main.js'
 
 const ErrorClasses = defineClassOpts()
 const { TestError, UnknownError } = ErrorClasses
