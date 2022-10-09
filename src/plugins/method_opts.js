@@ -22,6 +22,14 @@ export const normalizeIsOptions = function ({
 //  - Users can pass `options[pluginName]` instead of `options`
 //  - Plugin methods can have variadic and optional parameters
 //  - It does not rely on brittle `Function.length`
+// Instance method options have priority over error instance options:
+//  - The instance method's caller is usually unaware of instance options,
+//    making it surprising if some of the options passed to the method are not
+//    taken into account due to being overridden
+//  - Instance methods are more specific since they can be called multiple times
+//    per error instance with different options
+// Static method options also have priority over error instance options, for
+// consistency with instance methods.
 export const mergeMethodOpts = function ({
   args,
   pluginsOpts,
