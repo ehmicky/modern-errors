@@ -9,7 +9,9 @@ export const callStaticMethod = function (
 ) {
   validateNonEmpty(ErrorClasses)
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
+
   const pluginsOpts = mergeMethodOpts(globalOpts, methodOpts, plugins)
+
   const info = getPluginInfo({ pluginsOpts, plugin, AnyError, ErrorClasses })
   return methodFunc(info, ...argsA)
 }
