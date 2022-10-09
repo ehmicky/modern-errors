@@ -65,13 +65,19 @@ const applyErrorLogic = function ({
   const error = mergeCause(currentError, isAnyError)
   const unknownDeep = getUnknownDeep({ error, cause, errorData, ErrorClasses })
   setConstructorArgs(error, constructorArgs)
+  errorData.set(error, {
+    unknownDeep,
+    pluginsOpts,
+    previousValues: [],
+    newValues: [],
+  })
   const { previousValues, newValues } = setPluginsProperties({
     error,
     AnyError,
     ErrorClasses,
     unknownDeep,
+    errorData,
     plugins,
-    pluginsOpts,
   })
   errorData.set(error, { unknownDeep, pluginsOpts, previousValues, newValues })
   return error
