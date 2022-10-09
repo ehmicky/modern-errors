@@ -15,6 +15,7 @@ const pSetInterval = promisify(setInterval)
 const { TestError, UnknownError, AnyError } = defineClassOpts({}, {}, [
   PROCESS_PLUGIN,
 ])
+const ChildUnknownError = UnknownError.subclass('ChildUnknownError')
 
 each(
   [true, { unknown: true }, { exit: 'true' }, { onError: true }],
@@ -62,6 +63,7 @@ each(
       message: 'NamedError: test',
     },
     { error: new UnknownError('test'), message: 'test' },
+    { error: new ChildUnknownError('test'), message: 'test' },
     { error: new TestError('test'), message: 'TestError: test' },
   ],
   ({ title }, { error, message }) => {
