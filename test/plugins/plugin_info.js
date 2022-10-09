@@ -43,6 +43,10 @@ each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   test(`plugin.properties|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
     t.true(getValues().options.full)
   })
+
+  test(`plugin.properties|instanceMethods|staticMethods is passed errorInfo | ${title}`, (t) => {
+    t.is(typeof getValues().errorInfo, 'function')
+  })
 })
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
