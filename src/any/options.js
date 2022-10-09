@@ -23,7 +23,7 @@ export const normalizeOpts = function ({
   },
   AnyError,
   isAnyError,
-  isSimpleUnknownError,
+  isConvertError,
 }) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
@@ -39,13 +39,13 @@ export const normalizeOpts = function ({
 
   validateAnyErrorArgs(isAnyError, args)
 
-  const messageA = keepCauseMessage(message, isSimpleUnknownError, opts)
+  const messageA = keepCauseMessage(message, isConvertError, opts)
   const optsA = normalizeCause({
     opts,
     UnknownError,
     AnyError,
     isAnyError,
-    isSimpleUnknownError,
+    isConvertError,
   })
   return { message: messageA, opts: optsA }
 }

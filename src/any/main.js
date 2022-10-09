@@ -3,7 +3,7 @@ import errorCustomClass from 'error-custom-class'
 
 import { createSubclass } from '../subclass/main.js'
 
-import { getIsSimpleUnknownError } from './cause.js'
+import { getIsConvertError } from './cause.js'
 import { modifyError } from './modify.js'
 import { normalize } from './normalize.js'
 import { normalizeOpts } from './options.js'
@@ -51,7 +51,7 @@ export const createAnyError = function ({
     constructor(message, opts, ...args) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      const isSimpleUnknownError = getIsSimpleUnknownError(
+      const isConvertError = getIsConvertError(
         new.target,
         ErrorClasses,
         message,
@@ -63,7 +63,7 @@ export const createAnyError = function ({
         ErrorClasses,
         AnyError,
         isAnyError,
-        isSimpleUnknownError,
+        isConvertError,
       })
       super(messageA, optsA)
       /* c8 ignore start */

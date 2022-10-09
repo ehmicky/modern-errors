@@ -3,14 +3,8 @@
 //  - This also applies when using `new AnyError()`
 //  - This does not apply when the name is a generic error class or
 //    `UnknownError` itself
-export const keepCauseMessage = function (
-  message,
-  isSimpleUnknownError,
-  { cause },
-) {
-  return isSimpleUnknownError && hasErrorName(cause)
-    ? `${cause.name}:`
-    : message
+export const keepCauseMessage = function (message, isConvertError, { cause }) {
+  return isConvertError && hasErrorName(cause) ? `${cause.name}:` : message
 }
 
 const hasErrorName = function (cause) {
@@ -47,11 +41,11 @@ export const normalizeCause = function ({
   UnknownError,
   AnyError,
   isAnyError,
-  isSimpleUnknownError,
+  isConvertError,
 }) {
   validateAnyErrorCause(opts, isAnyError)
-  return hasUnknownCause(opts, AnyError, isSimpleUnknownError)
-    ? { ...opts, cause: createSimpleUnknownError(UnknownError, opts) }
+  return hasUnknownCause(opts, AnyError, isConvertError)
+    ? { ...opts, cause: createConvertError(UnknownError, opts) }
     : opts
 }
 
@@ -64,19 +58,15 @@ const validateAnyErrorCause = function (opts, isAnyError) {
   }
 }
 
-const hasUnknownCause = function (opts, AnyError, isSimpleUnknownError) {
-  return (
-    'cause' in opts &&
-    !(opts.cause instanceof AnyError) &&
-    !isSimpleUnknownError
-  )
+const hasUnknownCause = function (opts, AnyError, isConvertError) {
+  return 'cause' in opts && !(opts.cause instanceof AnyError) && !isConvertError
 }
 
-const createSimpleUnknownError = function (UnknownError, { cause }) {
+const createConvertError = function (UnknownError, { cause }) {
   return new UnknownError('', { cause })
 }
 
-export const getIsSimpleUnknownError = function (
+export const getIsConvertError = function (
   NewTarget,
   { UnknownError: { ErrorClass: UnknownError } },
   message,
