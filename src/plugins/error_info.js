@@ -5,10 +5,11 @@ import { mergeClassOpts } from './merge.js'
 // `options` and `unknownDeep`.
 // This is meant to be used by plugins.
 export const getErrorInfo = function (
-  { errorData, ErrorClasses, methodOpts, plugins, plugin },
+  { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
   error,
 ) {
-  const { pluginsOpts, unknownDeep } = errorData.get(error)
+  const errorA = AnyError.normalize(error)
+  const { pluginsOpts, unknownDeep } = errorData.get(errorA)
   const pluginsOptsA = mergeClassOpts({
     error,
     ErrorClasses,

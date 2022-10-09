@@ -12,7 +12,7 @@ export const getErrorPluginInfo = function ({
   plugin,
 }) {
   const { options, unknownDeep } = getErrorInfo(
-    { errorData, ErrorClasses, methodOpts, plugins, plugin },
+    { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
     error,
   )
   const info = getPluginInfo({
@@ -39,6 +39,7 @@ export const getPluginInfo = function ({
 }) {
   const errorInfo = getErrorInfo.bind(undefined, {
     errorData,
+    AnyError,
     ErrorClasses,
     methodOpts,
     plugins,
