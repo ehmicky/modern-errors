@@ -12,21 +12,29 @@ import {
   getNativeErrorInstances,
 } from '../helpers/known.js'
 
+const getExpectedMessage = function (cause) {
+  if (Object.prototype.toString.call(cause) === '[object Error]') {
+    return cause.message
+  }
+
+  return cause === undefined ? '' : String(cause)
+}
+
 each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   [
-    () => 'message',
-    // eslint-disable-next-line fp/no-mutating-assign
-    () => Object.assign(new TypeError('message'), { name: true }),
+    ...getNativeErrorInstances(),
+    () => new UnknownError('message'),
     // eslint-disable-next-line fp/no-mutating-assign
     () => Object.assign(new TestError('message'), { name: true }),
-    () => new Error('message'),
-    () => new TypeError('message'),
-    () => new UnknownError('message'),
   ],
   ({ title }, ParentErrorClass, getCause) => {
     test(`Cause name is ignored if absent | ${title}`, (t) => {
-      t.is(new ParentErrorClass('', { cause: getCause() }).message, 'message')
+      const cause = getCause()
+      t.is(
+        new ParentErrorClass('', { cause }).message,
+        getExpectedMessage(cause),
+      )
     })
   },
 )
