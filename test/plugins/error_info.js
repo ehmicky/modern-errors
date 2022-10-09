@@ -50,7 +50,9 @@ each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
     const { errorInfo } = getValues({})
     t.true(errorInfo(new TestError('test', { prop: true })).options.prop)
   })
+})
 
+each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
   test(`errorInfo ignores parent instance options | ${title}`, (t) => {
     const { errorInfo } = getValues({ instanceOpts: { prop: true } })
     t.is(errorInfo(new TestError('test')).options.prop, undefined)
