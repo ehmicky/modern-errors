@@ -29,26 +29,63 @@ test('AnyError with unknown cause uses UnknownError', (t) => {
   t.is(error.name, 'UnknownError')
 })
 
-each([TypeError, runInNewContext('TypeError')], ({ title }, ErrorClass) => {
-  test(`AnyError with unknown cause keeps error name if present | ${title}`, (t) => {
-    const cause = new ErrorClass('causeMessage')
-    t.is(new AnyError('', { cause }).message, `TypeError: causeMessage`)
-  })
-})
-
 each(
-  [
-    'causeMessage',
-    // eslint-disable-next-line fp/no-mutating-assign
-    Object.assign(new TypeError('causeMessage'), { name: true }),
-    new Error('causeMessage'),
-  ],
-  ({ title }, cause) => {
-    test(`AnyError with unknown cause does not keep error name if absent | ${title}`, (t) => {
-      t.is(new AnyError('', { cause }).message, 'causeMessage')
+  [AnyError, UnknownError],
+  [TypeError, runInNewContext('TypeError')],
+  ({ title }, ParentErrorClass, ErrorClass) => {
+    test(`AnyError and UnknownError with unknown cause keeps error name if present | ${title}`, (t) => {
+      const message = 'causeMessage'
+      const cause = new ErrorClass(message)
+      t.is(
+        new ParentErrorClass('', { cause }).message,
+        `${ErrorClass.name}: ${message}`,
+      )
     })
   },
 )
+
+each(
+  [AnyError, UnknownError],
+  [
+    () => 'causeMessage',
+    // eslint-disable-next-line fp/no-mutating-assign
+    () => Object.assign(new TypeError('causeMessage'), { name: true }),
+    () => new Error('causeMessage'),
+    () => new UnknownError('causeMessage'),
+  ],
+  ({ title }, ParentErrorClass, getCause) => {
+    test(`AnyError and UnknownError with unknown cause does not keep error name if absent | ${title}`, (t) => {
+      t.is(
+        new ParentErrorClass('', { cause: getCause() }).message,
+        'causeMessage',
+      )
+    })
+  },
+)
+
+test('UnknownError with known cause keeps error name', (t) => {
+  const message = 'causeMessage'
+  const cause = new TestError(message)
+  t.is(new UnknownError('', { cause }).message, `TestError: ${message}`)
+})
+
+test('Known errors with known cause do not keep error name', (t) => {
+  const message = 'causeMessage'
+  const cause = new TestError(message)
+  t.is(new TestError('', { cause }).message, message)
+})
+
+each([TypeError, TestError], ({ title }, ErrorClass) => {
+  test(`UnknownError does not keeps error name if non-empty message | ${title}`, (t) => {
+    const message = 'causeMessage'
+    const parentMessage = 'message'
+    const cause = new ErrorClass(message)
+    t.is(
+      new UnknownError(parentMessage, { cause }).message,
+      `${message}\n${parentMessage}`,
+    )
+  })
+})
 
 test('AnyError with known cause uses its instance', (t) => {
   const cause = new TestError('causeMessage')

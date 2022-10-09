@@ -1,5 +1,33 @@
 import mergeErrorCause from 'merge-error-cause'
 
+// `new UnknownError('', { cause })` keeps the underlying error name in the
+// message so it is not lost.
+//  - This also applies when using `new AnyError()`
+//  - This does not apply when either:
+//     - The message is not empty, since it might either be prepended or
+//       appended then, making concatenation more complex
+//     - The name is a generic `Error`, or `UnknownError` itself
+export const keepCauseMessage = function (message, isUnknownError, { cause }) {
+  return isUnknownError && message === '' && hasErrorName(cause)
+    ? `${cause.name}:`
+    : message
+}
+
+const hasErrorName = function (cause) {
+  return (
+    cause !== undefined &&
+    isErrorInstance(cause) &&
+    typeof cause.name === 'string' &&
+    !GENERIC_NAMES.has(cause.name)
+  )
+}
+
+const isErrorInstance = function (cause) {
+  return Object.prototype.toString.call(cause) === '[object Error]'
+}
+
+const GENERIC_NAMES = new Set(['Error', 'UnknownError'])
+
 // `new AnyError()` does not make sense without a `cause`, so we validate it
 //  - We allow `cause: undefined` since `undefined` exceptions can be thrown
 //  - However, we set to it an empty `UnknownError` then as this ensures:
@@ -29,27 +57,7 @@ export const normalizeCause = function ({
 }
 
 const getCauseOpt = function (cause, UnknownError, AnyError) {
-  if (cause instanceof AnyError) {
-    return cause
-  }
-
-  const message = hasErrorName(cause) ? `${cause.name}:` : ''
-  return new UnknownError(message, { cause })
-}
-
-// `new AnyError()` should wrap the name, as opposed to other error classes
-// which override it. So when it converts to `UnknownError`, the former name
-// is prepended to `error.message` unless it is a generic `Error`.
-const hasErrorName = function (cause) {
-  return (
-    isErrorInstance(cause) &&
-    typeof cause.name === 'string' &&
-    cause.name !== 'Error'
-  )
-}
-
-const isErrorInstance = function (cause) {
-  return Object.prototype.toString.call(cause) === '[object Error]'
+  return cause instanceof AnyError ? cause : new UnknownError('', { cause })
 }
 
 // Retrieve `error.cause` unless it is unknown

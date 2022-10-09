@@ -38,6 +38,7 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
+// eslint-disable-next-line max-lines-per-function
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
@@ -49,14 +50,18 @@ export const createAnyError = function ({
     constructor(message, opts, ...args) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      const optsA = normalizeOpts({
+      // TODO: replace with instanceof
+      const isUnknownError = new.target === ErrorClasses.UnknownError.ErrorClass
+      const { message: messageA, opts: optsA } = normalizeOpts({
+        message,
         opts,
         args,
         ErrorClasses,
         AnyError,
         isAnyError,
+        isUnknownError,
       })
-      super(message, optsA)
+      super(messageA, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
       return modifyError({
