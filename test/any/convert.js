@@ -85,30 +85,26 @@ each(
 each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   getUnknownErrorInstances(),
-  ({ title }, ParentErrorClass, error) => {
-    test(`Unknown cause with an error name keeps it with an empty message | ${title}`, (t) => {
+  ['', 'test: '],
+  // eslint-disable-next-line max-params
+  ({ title }, ParentErrorClass, error, message) => {
+    test(`Unknown cause name is kept | ${title}`, (t) => {
       error.name = 'NamedError'
-      t.is(
-        new ParentErrorClass('', { cause: error }).message,
-        `${error.name}: ${error.message}`,
-      )
-    })
-
-    test(`Unknown cause with an error name keeps it with a non-empty message | ${title}`, (t) => {
-      error.name = 'NamedError'
-      const message = 'test'
       t.is(
         new ParentErrorClass(message, { cause: error }).message,
-        `${error.name}: ${error.message}\n${message}`,
+        `${message}${error.name}: ${error.message}`,
       )
     })
   },
 )
 
 each(UnknownErrorClasses, ({ title }, ErrorClass) => {
-  test(`Known cause with an error name keeps it with UnknownError and empty message | ${title}`, (t) => {
+  test(`Known cause name is kept with UnknownError and empty message | ${title}`, (t) => {
     const cause = new TestError('message')
-    t.is(new ErrorClass('', { cause }).message, `TestError: ${cause.message}`)
+    t.is(
+      new ErrorClass('', { cause }).message,
+      `${cause.name}: ${cause.message}`,
+    )
   })
 })
 
@@ -116,7 +112,7 @@ each(
   UnknownErrorClasses,
   getKnownErrors(),
   ({ title }, ParentErrorClass, cause) => {
-    test(`Known cause with an error name ignores it with UnknownError and non-empty message | ${title}`, (t) => {
+    test(`Known cause name is ignored with UnknownError and non-empty message | ${title}`, (t) => {
       const parentMessage = 'parentMessage'
       t.is(
         new ParentErrorClass(parentMessage, { cause }).message,
@@ -127,7 +123,7 @@ each(
 )
 
 each([AnyError, ...KnownErrorClasses], ({ title }, ErrorClass) => {
-  test(`Known cause with an error name ignores it without UnknownError | ${title}`, (t) => {
+  test(`Known cause name is ignored without UnknownError | ${title}`, (t) => {
     const cause = new TestError('message')
     t.is(new ErrorClass('', { cause }).message, cause.message)
   })
