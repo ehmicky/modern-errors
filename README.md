@@ -185,7 +185,8 @@ throw new InputError('Missing file path.')
 Any error's [message](#wrap-error-message), [class](#set-error-class) and
 [options](#modify-options) can be wrapped using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
-The inner error (`cause`) is
+
+Instead of being set as a `cause` property, the inner error is directly
 [merged](https://github.com/ehmicky/merge-error-cause) to the outer error,
 including its
 [`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
