@@ -108,20 +108,19 @@ each(
   },
 )
 
-each(UnknownErrorClasses, ({ title }, ErrorClass) => {
-  test(`Known cause name is kept with UnknownError and empty message | ${title}`, (t) => {
-    const cause = new TestError('message')
-    t.is(
-      new ErrorClass('', { cause }).message,
-      `${cause.name}: ${cause.message}`,
-    )
-  })
-})
-
 each(
   UnknownErrorClasses,
   getKnownErrors(),
   ({ title }, ParentErrorClass, cause) => {
+    test(`Known cause name is kept with UnknownError and empty message | ${title}`, (t) => {
+      t.is(
+        new ParentErrorClass('', { cause }).message,
+        cause.name === 'UnknownError'
+          ? cause.message
+          : `${cause.name}: ${cause.message}`,
+      )
+    })
+
     test(`Known cause name is ignored with UnknownError and non-empty message | ${title}`, (t) => {
       const parentMessage = 'parentMessage'
       t.is(
