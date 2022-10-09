@@ -1,6 +1,6 @@
 import { getPluginInfo } from '../info.js'
 import { mergeClassOpts } from '../merge.js'
-import { mergeMethodOpts } from '../method_opts.js'
+import { getMethodOpts, mergeMethodOpts } from '../method_opts.js'
 
 // Called on `error.{methodName}(...args)`
 export const callInstanceMethod = function ({
@@ -27,12 +27,8 @@ export const callInstanceMethod = function ({
     plugins,
     pluginsOpts,
   })
-  const { args: argsA, pluginsOpts: pluginsOptsB } = mergeMethodOpts({
-    args,
-    pluginsOpts: pluginsOptsA,
-    plugin,
-    plugins,
-  })
+  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
+  const pluginsOptsB = mergeMethodOpts(pluginsOptsA, methodOpts, plugins)
   const info = getPluginInfo({
     pluginsOpts: pluginsOptsB,
     plugin,

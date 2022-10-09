@@ -30,7 +30,7 @@ export const normalizeIsOptions = function ({
 //    per error instance with different options
 // Static method options also have priority over error instance options, for
 // consistency with instance methods.
-const getMethodOpts = function (args, plugin) {
+export const getMethodOpts = function (args, plugin) {
   if (args.length === 0) {
     return { args }
   }
@@ -53,18 +53,8 @@ const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
   return isOptionsResult
 }
 
-export const mergeMethodOpts = function ({
-  args,
-  pluginsOpts,
-  plugin,
-  plugins,
-}) {
-  const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-
-  if (methodOpts === undefined) {
-    return { args: argsA, pluginsOpts }
-  }
-
-  const pluginsOptsA = mergePluginsOpts(pluginsOpts, methodOpts, plugins)
-  return { args: argsA, pluginsOpts: pluginsOptsA }
+export const mergeMethodOpts = function (pluginsOpts, methodOpts, plugins) {
+  return methodOpts === undefined
+    ? pluginsOpts
+    : mergePluginsOpts(pluginsOpts, methodOpts, plugins)
 }
