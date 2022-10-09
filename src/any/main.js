@@ -38,7 +38,7 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-// eslint-disable-next-line max-lines-per-function
+
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
@@ -55,7 +55,6 @@ export const createAnyError = function ({
         message,
         opts,
         args,
-        ErrorClasses,
         AnyError,
         isAnyError,
         isUnknownError,
@@ -90,7 +89,7 @@ export const createAnyError = function ({
     }
 
     static normalize(error) {
-      return normalize(error, AnyError)
+      return normalize(error, AnyError, ErrorClasses)
     }
   }
   /* eslint-enable fp/no-this */

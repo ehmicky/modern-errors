@@ -1,7 +1,7 @@
 import isErrorInstance from 'is-error-instance'
 
-// If cause is not an `AnyError` instance, we convert it using
-// `new UnknownError('', { cause })` to:
+// If `cause` is not an `AnyError` instance, we convert it using
+// `AnyError.normalize()` to:
 //  - Keep its error `name` in the error `message`
 //  - Ensure `new AnyError()` return value's class is a child of `AnyError`
 //  - Keep track of `showStack`
@@ -11,13 +11,12 @@ import isErrorInstance from 'is-error-instance'
 export const applyConvertError = function ({
   message,
   opts,
-  UnknownError,
   AnyError,
   isUnknownError,
 }) {
   return isUnknownError && message === ''
     ? { message: keepCauseMessage(message, opts), opts }
-    : { message, opts: normalizeCause(opts, UnknownError, AnyError) }
+    : { message, opts: normalizeCause(opts, AnyError) }
 }
 
 const keepCauseMessage = function (message, { cause }) {
@@ -47,8 +46,8 @@ const GENERIC_NAMES = new Set([
 ])
 
 // We allow `cause: undefined` since `undefined` exceptions can be thrown.
-const normalizeCause = function (opts, UnknownError, AnyError) {
-  return 'cause' in opts && !(opts.cause instanceof AnyError)
-    ? { ...opts, cause: new UnknownError('', { cause: opts.cause }) }
+const normalizeCause = function (opts, AnyError) {
+  return 'cause' in opts
+    ? { ...opts, cause: AnyError.normalize(opts.cause) }
     : opts
 }

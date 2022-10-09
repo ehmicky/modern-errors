@@ -18,9 +18,6 @@ export const normalizeOpts = function ({
   message,
   opts = {},
   args,
-  ErrorClasses: {
-    UnknownError: { ErrorClass: UnknownError },
-  },
   AnyError,
   isAnyError,
   isUnknownError,
@@ -38,13 +35,7 @@ export const normalizeOpts = function ({
   }
 
   validateAnyErrorArgs(isAnyError, args, opts)
-  return applyConvertError({
-    message,
-    opts,
-    UnknownError,
-    AnyError,
-    isUnknownError,
-  })
+  return applyConvertError({ message, opts, AnyError, isUnknownError })
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it.
