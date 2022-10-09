@@ -1,7 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
 import { assignError } from './assign.js'
-import { createErrorInfo } from './error_info.js'
 import { getErrorPluginInfo } from './plugin_info.js'
 import { getPreviousValues, getAllValues } from './previous.js'
 
@@ -42,13 +41,14 @@ const getPluginProperties = function ({
   plugin: { properties, fullName },
   plugins,
 }) {
-  const errorInfo = createErrorInfo({
+  const info = getErrorPluginInfo({
+    error,
     errorData,
+    AnyError,
     ErrorClasses,
     plugins,
     plugin,
   })
-  const info = getErrorPluginInfo({ error, AnyError, ErrorClasses, errorInfo })
   const newProps = properties(info)
 
   if (!isPlainObj(newProps)) {

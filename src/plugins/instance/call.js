@@ -1,4 +1,3 @@
-import { createErrorInfo } from '../error_info.js'
 import { getMethodOpts } from '../method_opts.js'
 import { getErrorPluginInfo } from '../plugin_info.js'
 
@@ -21,13 +20,14 @@ export const callInstanceMethod = function ({
   }
 
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-  const errorInfo = createErrorInfo({
+  const info = getErrorPluginInfo({
+    error,
     errorData,
+    AnyError,
     ErrorClasses,
+    methodOpts,
     plugins,
     plugin,
-    methodOpts,
   })
-  const info = getErrorPluginInfo({ error, AnyError, ErrorClasses, errorInfo })
   return methodFunc(info, ...argsA)
 }

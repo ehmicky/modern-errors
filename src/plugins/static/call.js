@@ -1,5 +1,4 @@
 import { validateNonEmpty } from '../../any/subclass.js'
-import { createErrorInfo } from '../error_info.js'
 import { finalizePluginsOpts } from '../get.js'
 import { getMethodOpts } from '../method_opts.js'
 import { getPluginInfo } from '../plugin_info.js'
@@ -19,19 +18,20 @@ export const callStaticMethod = function (
 ) {
   validateNonEmpty(ErrorClasses)
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-  const errorInfo = createErrorInfo({
-    errorData,
-    ErrorClasses,
-    plugins,
-    plugin,
-    methodOpts,
-  })
   const options = finalizePluginsOpts({
     pluginsOpts: globalOpts,
     methodOpts,
     plugins,
     plugin,
   })
-  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
+  const info = getPluginInfo({
+    options,
+    errorData,
+    AnyError,
+    ErrorClasses,
+    methodOpts,
+    plugins,
+    plugin,
+  })
   return methodFunc(info, ...argsA)
 }
