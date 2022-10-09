@@ -7,9 +7,9 @@ import type MergeErrorCause from 'merge-error-cause'
  * @example
  * ```js
  * import modernErrorsBugs from 'modern-errors-bugs'
- * import modernErrorsProps from 'modern-errors-props'
+ * import modernErrorsSerialize from 'modern-errors-serialize'
  *
- * export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
+ * export const AnyError = modernErrors([modernErrorsBugs, modernErrorsSerialize])
  * ```
  */
 interface Plugin {
@@ -99,14 +99,14 @@ type ClassOptions<
    *     }
    *
    *     isUserInput() {
-   *       return this.message.includes('user')
+   *       // ...
    *     }
    *   },
    * })
    *
    * const error = new InputError('Wrong user name')
    * console.log(error.message) // 'Wrong user name.'
-   * console.log(error.isUserInput()) // true
+   * console.log(error.isUserInput())
    * ```
    */
   readonly custom?: ErrorClass<
@@ -151,10 +151,10 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
  * @example
  * ```js
  * try {
- *   throw new AuthError('Could not authenticate.')
+ *   throw new AuthError('...')
  * } catch (cause) {
- *   throw new AnyError('Could not read the file.', { cause })
  *   // Still an AuthError
+ *   throw new AnyError('...', { cause })
  * }
  * ```
  */
@@ -171,7 +171,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
 
   /**
    * Creates and returns an error subclass.
-   * One of them must be named `UnknownError`.
+   * The first one must be named `UnknownError`.
    * Subclasses can also call `ErrorClass.subclass()` themselves.
    *
    * @example
@@ -191,9 +191,9 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
    *
    * @example
    * ```js
-   * export const main = async function (filePath) {
+   * export const main = function () {
    *   try {
-   *     return await readContents(filePath)
+   *     // ...
    *   } catch (error) {
    *     throw AnyError.normalize(error)
    *   }
@@ -211,6 +211,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
  *  // Base error class
  *  export const AnyError = modernErrors()
  *
+ *  // The first error class must be named "UnknownError"
  *  export const UnknownError = AnyError.subclass('UnknownError')
  *  export const InputError = AnyError.subclass('InputError')
  *  export const AuthError = AnyError.subclass('AuthError')
