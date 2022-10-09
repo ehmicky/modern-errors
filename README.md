@@ -182,10 +182,9 @@ throw new InputError('Missing file path.')
 
 ### Wrap errors
 
-Errors are re-thrown using the
+Any error's [message](#wrap-error-message), [class](#set-error-class) and
+[options](#modify-options) can be wrapped using the
 [standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
-This allows wrapping the error [message](#wrap-error-message),
-[class](#set-error-class), or [options](#modify-options).
 
 ```js
 try {
@@ -195,19 +194,14 @@ try {
 }
 ```
 
-Inner errors are [merged](https://github.com/ehmicky/merge-error-cause) to outer
-errors, including their
+Inner errors (`cause`) are
+[merged](https://github.com/ehmicky/merge-error-cause) to outer errors,
+including their
 [`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
 [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any [additional property](#error-properties). This ensures:
-
-- `error.cause` does not need to be
-  [traversed](https://github.com/ehmicky/merge-error-cause#traversing-errorcause)
-- The stack trace is neither
-  [verbose nor redundant](https://github.com/ehmicky/merge-error-cause#verbose-stack-trace),
-  while still keeping all information
+and any [additional property](#error-properties).
 
 ### Invalid errors
 
