@@ -340,6 +340,29 @@ export default {
 }
 ```
 
+### errorInfo
+
+_Type_: `(Error) => info`
+
+Returns the [`info`](#info) object from a specific `Error`. Only
+[`info.options`](#options) and [`info.unknownDeep`](#unknowndeep) are returned.
+
+```js
+export default {
+  name: 'example',
+  staticMethods: {
+    getLogErrors({ errorInfo }) {
+      return function logErrors(errors) {
+        errors.forEach((error) => {
+          const { unknownDeep } = errorInfo(error)
+          console.log(unknownDeep ? error.message : error.stack)
+        })
+      }
+    },
+  },
+}
+```
+
 ## Publishing
 
 Plugins can either be kept private or be published on npm. When public, we
