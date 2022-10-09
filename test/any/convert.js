@@ -1,36 +1,16 @@
-import { runInNewContext } from 'vm'
-
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
-
-const { TestError, UnknownError, AnyError } = defineClassOpts()
-const ChildTestError = TestError.subclass('ChildTestError')
-const ChildUnknownError = UnknownError.subclass('ChildUnknownError')
-const KnownErrorClasses = [TestError, ChildTestError]
-const UnknownErrorClasses = [UnknownError, ChildUnknownError]
-
-const getKnownErrors = function () {
-  return [...KnownErrorClasses, ...UnknownErrorClasses].map(getKnownError)
-}
-
-const getKnownError = function (ErrorClass) {
-  return new ErrorClass('message')
-}
-
-const getUnknownErrors = function () {
-  return [...getUnknownErrorInstances(), 'message', undefined]
-}
-
-const getUnknownErrorInstances = function () {
-  const OtherError = runInNewContext('Error')
-  return [
-    new TypeError('message'),
-    new Error('message'),
-    new OtherError('message'),
-  ]
-}
+import {
+  TestError,
+  UnknownError,
+  AnyError,
+  KnownErrorClasses,
+  UnknownErrorClasses,
+  getKnownErrors,
+  getUnknownErrors,
+  getUnknownErrorInstances,
+} from '../helpers/known.js'
 
 const assertInstanceOf = function (t, error, ErrorClass) {
   t.true(error instanceof ErrorClass)
