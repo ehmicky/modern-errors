@@ -9,6 +9,7 @@ import {
   UnknownErrorClasses,
   getKnownErrors,
   getUnknownErrors,
+  getNativeErrors,
 } from '../helpers/known.js'
 
 const assertInstanceOf = function (t, error, ErrorClass) {
@@ -17,15 +18,17 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-each(getKnownErrors(), ({ title }, cause) => {
+each([...getKnownErrors(), ...getUnknownErrors()], ({ title }, getError) => {
   test(`AnyError with known cause uses child class | ${title}`, (t) => {
+    const cause = getError()
     const error = new AnyError('message', { cause })
     assertInstanceOf(t, error, cause.constructor)
   })
 })
 
-each(getUnknownErrors(), ({ title }, cause) => {
+each(getNativeErrors(), ({ title }, getError) => {
   test(`AnyError with unknown cause uses UnknownError | ${title}`, (t) => {
+    const cause = getError()
     const error = new AnyError('message', { cause })
     assertInstanceOf(t, error, UnknownError)
   })
@@ -33,9 +36,10 @@ each(getUnknownErrors(), ({ title }, cause) => {
 
 each(
   [...KnownErrorClasses, ...UnknownErrorClasses],
-  [...getKnownErrors(), ...getUnknownErrors()],
-  ({ title }, ErrorClass, cause) => {
+  [...getKnownErrors(), ...getUnknownErrors(), ...getNativeErrors()],
+  ({ title }, ErrorClass, getError) => {
     test(`Known class with known or unknown cause uses parent class | ${title}`, (t) => {
+      const cause = getError()
       const error = new ErrorClass('message', { cause })
       assertInstanceOf(t, error, ErrorClass)
     })

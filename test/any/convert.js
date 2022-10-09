@@ -8,7 +8,8 @@ import {
   KnownErrorClasses,
   UnknownErrorClasses,
   getKnownErrors,
-  getUnknownErrorInstances,
+  getUnknownErrors,
+  getNativeErrorInstances,
 } from '../helpers/known.js'
 
 each(
@@ -32,11 +33,12 @@ each(
 
 each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
-  getUnknownErrorInstances(),
+  getNativeErrorInstances(),
   ['', 'test: '],
   // eslint-disable-next-line max-params
-  ({ title }, ParentErrorClass, error, message) => {
+  ({ title }, ParentErrorClass, getError, message) => {
     test(`Unknown cause name is kept | ${title}`, (t) => {
+      const error = getError()
       error.name = 'NamedError'
       t.is(
         new ParentErrorClass(message, { cause: error }).message,
@@ -48,9 +50,10 @@ each(
 
 each(
   [AnyError, ...KnownErrorClasses],
-  getKnownErrors(),
-  ({ title }, ErrorClass, cause) => {
+  [...getKnownErrors(), ...getUnknownErrors()],
+  ({ title }, ErrorClass, getError) => {
     test(`Known cause name is ignored without UnknownError | ${title}`, (t) => {
+      const cause = getError()
       t.is(new ErrorClass('', { cause }).message, cause.message)
     })
   },
@@ -58,9 +61,10 @@ each(
 
 each(
   UnknownErrorClasses,
-  getKnownErrors(),
-  ({ title }, ParentErrorClass, cause) => {
+  [...getKnownErrors(), ...getUnknownErrors()],
+  ({ title }, ParentErrorClass, getError) => {
     test(`Known cause name is kept with UnknownError and empty message | ${title}`, (t) => {
+      const cause = getError()
       t.is(
         new ParentErrorClass('', { cause }).message,
         cause.name === 'UnknownError'
@@ -70,6 +74,7 @@ each(
     })
 
     test(`Known cause name is ignored with UnknownError and non-empty message | ${title}`, (t) => {
+      const cause = getError()
       const parentMessage = 'parentMessage'
       t.is(
         new ParentErrorClass(parentMessage, { cause }).message,
