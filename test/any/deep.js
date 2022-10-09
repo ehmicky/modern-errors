@@ -4,30 +4,44 @@ import { each } from 'test-each'
 import {
   TestError,
   AnyError,
+  KnownErrorClasses,
+  UnknownErrorClasses,
   getNativeErrors,
   getUnknownErrors,
 } from '../helpers/known.js'
 
-test('unknownDeep is false with known errors', (t) => {
-  t.false(new TestError('test').properties.unknownDeep)
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`unknownDeep is false with known errors | ${title}`, (t) => {
+    t.false(new ErrorClass('test').properties.unknownDeep)
+  })
 })
 
-each([TestError, AnyError], ({ title }, ErrorClass) => {
+each(UnknownErrorClasses, ({ title }, ErrorClass) => {
+  test(`unknownDeep is true with registered unknown errors | ${title}`, (t) => {
+    t.false(new ErrorClass('test').properties.unknownDeep)
+  })
+})
+
+each([AnyError, ...KnownErrorClasses], ({ title }, ErrorClass) => {
   test(`unknownDeep is false when wrapping known errors | ${title}`, (t) => {
     const cause = new TestError('causeMessage')
     t.false(new ErrorClass('test', { cause }).properties.unknownDeep)
   })
 })
 
-each([...getNativeErrors(), ...getUnknownErrors()], ({ title }, getError) => {
-  test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
-    const cause = getError()
-    t.true(new TestError('test', { cause }).properties.unknownDeep)
-  })
-})
+each(
+  KnownErrorClasses,
+  [...getNativeErrors(), ...getUnknownErrors()],
+  ({ title }, ErrorClass, getError) => {
+    test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
+      const cause = getError()
+      t.true(new ErrorClass('test', { cause }).properties.unknownDeep)
+    })
+  },
+)
 
 each(
-  [TestError, AnyError],
+  [AnyError, ...KnownErrorClasses],
   [...getNativeErrors(), ...getUnknownErrors()],
   ({ title }, ErrorClass, getError) => {
     test(`unknownDeep is true when wrapping unknown errors | ${title}`, (t) => {
