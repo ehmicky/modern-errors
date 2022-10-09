@@ -344,7 +344,7 @@ export default {
 
 _Type_: `(Error) => info`
 
-Returns the [`info`](#info) object from a specific `Error`, except for
+Returns the [`info`](#info) object from a specific `Error`, except from
 [`info.AnyError`](#anyerror) and [`info.ErrorClasses`](#errorclasses).
 
 ```js
