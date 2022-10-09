@@ -6,34 +6,38 @@ import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineClassOpts()
 
-const getSetArgs = function ({ TestError: TestErrorClass = TestError } = {}) {
+const getSetArgs = function ({
+  ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+}) {
   return new TestErrorClass('test').properties
 }
 
 const getInstanceArgs = function ({
-  TestError: TestErrorClass = TestError,
-} = {}) {
-  return new TestErrorClass('test').getInstance()
+  methodOpts,
+  ErrorClasses: { TestError: TestErrorClass = TestError } = {},
+}) {
+  return new TestErrorClass('test').getInstance(methodOpts)
 }
 
-const getStaticArgs = function ({ AnyError: AnyErrorClass = AnyError } = {}) {
-  return AnyErrorClass.getProp()
+const getStaticArgs = function ({
+  methodOpts,
+  ErrorClasses: { AnyError: AnyErrorClass = AnyError } = {},
+}) {
+  return AnyErrorClass.getProp(methodOpts)
 }
 
 each(
   [getSetArgs, getInstanceArgs, getStaticArgs],
   getNativeErrors(),
   ({ title }, getValues, getError) => {
-    const { errorInfo } = getValues()
-
     test(`errorInfo normalizes errors | ${title}`, (t) => {
-      t.true(errorInfo(getError).unknownDeep)
+      t.true(getValues({}).errorInfo(getError).unknownDeep)
     })
   },
 )
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
-  const { errorInfo } = getValues()
+  const { errorInfo } = getValues({})
 
   test(`errorInfo returns unknownDeep | ${title}`, (t) => {
     t.true(errorInfo(new UnknownError('test')).unknownDeep)
@@ -45,23 +49,47 @@ each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   })
 })
 
+each([getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
+  test(`errorInfo returns method options | ${title}`, (t) => {
+    const { errorInfo } = getValues({ methodOpts: true })
+    t.true(errorInfo(new TestError('test')).options.prop)
+  })
+
+  test(`errorInfo method options have more priority than instance options | ${title}`, (t) => {
+    const { errorInfo } = getValues({ methodOpts: true })
+    t.true(errorInfo(new TestError('test', { prop: false })).options.prop)
+  })
+})
+
 each(
   [getSetArgs, getInstanceArgs, getStaticArgs],
   [defineGlobalOpts, defineClassOpts],
   ({ title }, getValues, defineOpts) => {
     test(`errorInfo returns global and class options | ${title}`, (t) => {
       const ErrorClasses = defineOpts({ prop: true })
-      const { errorInfo } = getValues(ErrorClasses)
+      const { errorInfo } = getValues({ ErrorClasses })
       t.true(errorInfo(new ErrorClasses.TestError('test')).options.prop)
     })
 
     test(`errorInfo global and class options have less priority than instance options | ${title}`, (t) => {
       const ErrorClasses = defineOpts({ prop: false })
-      const { errorInfo } = getValues(ErrorClasses)
+      const { errorInfo } = getValues({ ErrorClasses })
       t.true(
         errorInfo(new ErrorClasses.TestError('test', { prop: true })).options
           .prop,
       )
+    })
+  },
+)
+
+each(
+  [getInstanceArgs, getStaticArgs],
+  [defineGlobalOpts, defineClassOpts],
+  ({ title }, getValues, defineOpts) => {
+    test(`errorInfo global and class options have less priority than method options | ${title}`, (t) => {
+      const ErrorClasses = defineOpts({ prop: false })
+      const { errorInfo } = getValues({ methodOpts: true, ErrorClasses })
+      t.true(errorInfo(new ErrorClasses.TestError('test')).options.prop)
     })
   },
 )
