@@ -38,15 +38,10 @@ export const normalizeOpts = function ({
   }
 
   validateAnyErrorArgs(isAnyError, args)
+  validateAnyErrorCause(opts, isAnyError)
 
   const messageA = keepCauseMessage(message, isConvertError, opts)
-  const optsA = normalizeCause({
-    opts,
-    UnknownError,
-    AnyError,
-    isAnyError,
-    isConvertError,
-  })
+  const optsA = normalizeCause({ opts, UnknownError, AnyError, isConvertError })
   return { message: messageA, opts: optsA }
 }
 
@@ -54,6 +49,15 @@ const validateAnyErrorArgs = function (isAnyError, args) {
   if (isAnyError && args.length !== 0) {
     throw new TypeError(
       `new AnyError(...) cannot have more than two arguments: ${args[0]}`,
+    )
+  }
+}
+
+// `new AnyError()` does not make sense without a `cause`, so we validate it.
+const validateAnyErrorCause = function (opts, isAnyError) {
+  if (!('cause' in opts) && isAnyError) {
+    throw new Error(
+      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
     )
   }
 }

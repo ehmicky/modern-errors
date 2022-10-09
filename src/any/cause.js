@@ -40,22 +40,11 @@ export const normalizeCause = function ({
   opts,
   UnknownError,
   AnyError,
-  isAnyError,
   isConvertError,
 }) {
-  validateAnyErrorCause(opts, isAnyError)
   return hasUnknownCause(opts, AnyError, isConvertError)
     ? { ...opts, cause: createConvertError(UnknownError, opts) }
     : opts
-}
-
-// `new AnyError()` does not make sense without a `cause`, so we validate it.
-const validateAnyErrorCause = function (opts, isAnyError) {
-  if (!('cause' in opts) && isAnyError) {
-    throw new Error(
-      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
-    )
-  }
 }
 
 const hasUnknownCause = function (opts, AnyError, isConvertError) {
