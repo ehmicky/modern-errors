@@ -59,6 +59,19 @@ each([getSetArgs, getInstanceArgs], ({ title }, getValues) => {
   })
 })
 
+each(
+  [(error) => error.properties, (error) => error.getInstance()],
+  ({ title }, getSpecifics) => {
+    test(`errorInfo can be applied on error itself | ${title}`, (t) => {
+      const error = new TestError('test', { prop: true })
+      const { errorInfo } = getSpecifics(error)
+      const { options, unknownDeep } = errorInfo(error)
+      t.true(options.prop)
+      t.false(unknownDeep)
+    })
+  },
+)
+
 each([getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   test(`errorInfo returns method options | ${title}`, (t) => {
     const { errorInfo } = getValues({ methodOpts: true })
