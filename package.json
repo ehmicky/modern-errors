@@ -49,7 +49,7 @@
     "clean-stack": "^5.0.0",
     "error-class-utils": "^2.1.0",
     "error-custom-class": "^8.1.0",
-    "error-serializer": "^3.3.0",
+    "error-serializer": "^3.4.0",
     "filter-obj": "^5.1.0",
     "handle-cli-error": "^2.4.2",
     "is-plain-obj": "^4.1.0",
