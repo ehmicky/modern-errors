@@ -28,7 +28,7 @@ _Type_: `urlString`\
 _Default_: `undefined`
 
 URI identifying and documenting the error class. Ideally, each error class
-[should set one](https://github.com/ehmicky/modern-errors/README.md#configure-options).
+[should set one](https://github.com/ehmicky/modern-errors/README.md#plugin-options).
 
 ### status
 

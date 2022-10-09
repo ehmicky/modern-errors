@@ -15,7 +15,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-- Create [custom error classes](#create-custom-error-classes)
+- Create [error classes](#create-error-classes)
 - Wrap errors' [message](#wrap-error-message) or [class](#set-error-class)
 - Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
@@ -24,7 +24,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
   `stack`, etc.)
 - Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
-  [`error.cause`](#wrap-errors), [`instanceof`](#check-error-class),
+  [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
   [`class`](#custom-logic), [`toJSON()`](docs/plugins/serialize.md)
 - [Custom logic](#custom-logic)
 
@@ -38,11 +38,11 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - [`modern-errors-http`](docs/plugins/http.md): Convert errors to HTTP response
   objects
 - [`modern-errors-winston`](docs/plugins/winston.md): Log errors with Winston
-- Create your [own plugin](docs/plugins.md)
+- Create your [own plugin](#custom-plugins)
 
 # Example
 
-Create custom error classes.
+Create [error classes](#create-error-classes).
 
 ```js
 import modernErrors from 'modern-errors'
@@ -56,13 +56,13 @@ export const AuthError = AnyError.subclass('AuthError')
 export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
-Throw errors.
+[Throw](#throw-errors) errors.
 
 ```js
 throw new InputError('Missing file path.')
 ```
 
-Wrap errors.
+[Wrap](#wrap-errors) errors.
 
 ```js
 try {
@@ -70,6 +70,36 @@ try {
 } catch (cause) {
   throw new InputError('Could not read the file.', { cause })
 }
+```
+
+[Normalize](#normalize-errors) errors.
+
+<!-- eslint-disable no-throw-literal -->
+
+```js
+try {
+  throw 'Missing file path.'
+} catch (error) {
+  // Normalize error string to an error instance
+  throw AnyError.normalize(error)
+}
+```
+
+Use [plugins](#plugins-1).
+
+```js
+import modernErrors from 'modern-errors'
+import modernErrorsSerialize from 'modern-errors-serialize'
+
+// Use a plugin to serialize errors as JSON
+export const AnyError = modernErrors([modernErrorsSerialize])
+```
+
+```js
+// Serialize error as JSON, then back to identical error instance
+const error = new InputError('Missing file path.')
+const errorString = JSON.stringify(error)
+const identicalError = AnyError.parse(JSON.parse(errorString))
 ```
 
 # Install
@@ -127,7 +157,7 @@ class to [_unknown_ errors](#unknown-errors). This should
 
 _Type_: `object`
 
-[Error properties](#error-properties).
+[Error properties](#error-instance-properties).
 
 ### custom
 
@@ -142,9 +172,9 @@ Any [plugin options](#plugin-options-1) can also be specified.
 
 # Usage
 
-## Setup
+## Error classes
 
-### Create custom error classes
+### Create error classes
 
 ```js
 // Base error class
@@ -157,187 +187,11 @@ export const AuthError = AnyError.subclass('AuthError')
 export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
-### Top-level error handler
-
-Each main function should be wrapped with
-[`AnyError.normalize()`](#anyerrornormalizeanyexception).
-
-```js
-export const main = function () {
-  try {
-    // ...
-  } catch (error) {
-    throw AnyError.normalize(error)
-  }
-}
-```
-
-## Throw errors
-
-### Simple errors
-
-```js
-throw new InputError('Missing file path.')
-```
-
-### Wrap errors
-
-Any error's [message](#wrap-error-message), [class](#set-error-class) and
-[options](#modify-options) can be wrapped using the
-[standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
-
-Instead of being set as a `cause` property, the inner error is directly
-[merged](https://github.com/ehmicky/merge-error-cause) to the outer error,
-including its
-[`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
-[`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
-[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
-[`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any [additional property](#error-properties).
-
-```js
-try {
-  // ...
-} catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
-}
-```
-
-### Invalid errors
-
-Some exceptions might not be
-[`Error` instances](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
-or might have
-[invalid properties](https://github.com/ehmicky/normalize-exception#features).
-
-<!-- eslint-disable no-throw-literal -->
-
-```js
-try {
-  throw 'Missing file path.'
-} catch (error) {
-  console.log(error.message.trim()) // Error: `error.message` is `undefined`
-  throw error
-}
-```
-
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) converts them to valid
-`Error` instances.
-
-<!-- eslint-disable no-throw-literal -->
-
-```js
-try {
-  throw 'Missing file path.'
-} catch (error) {
-  const normalizedError = AnyError.normalize(error)
-  console.log(normalizedError) // UnknownError: Missing file path.
-  console.log(normalizedError.message.trim()) // 'Missing file path.'
-  throw normalizedError
-}
-```
-
-Any exception can also be safely used as `error.cause` without using
-`AnyError.normalize()`.
-
-<!-- eslint-disable no-throw-literal -->
-
-```js
-try {
-  throw 'Missing file path.'
-} catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
-  // InputError: Missing file path.
-  // Could not read the file.
-}
-```
-
-### Wrap error message
-
-The outer error message is appended.
-
-```js
-try {
-  // ...
-} catch (cause) {
-  throw new InputError('Could not read the file.', { cause })
-  // InputError: File does not exist.
-  // Could not read the file.
-}
-```
-
-If the outer error message ends with `:`, it is prepended instead.
-
-```js
-throw new InputError(`Could not read the file:`, { cause })
-// InputError: Could not read the file: File does not exist.
-```
-
-`:` can optionally be followed a newline.
-
-```js
-throw new InputError(`Could not read the file:\n`, { cause })
-// InputError: Could not read the file:
-// File does not exist.
-```
-
-Empty messages wrap an error without changing its message.
-
-```js
-throw new InputError('', { cause })
-// InputError: File does not exist.
-```
-
-### Aggregate errors
-
-The `errors` option aggregates multiple errors into one. This is like
-[`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
-except that it works with any error class.
-
-```js
-const databaseError = new DatabaseError('...')
-const authError = new AuthError('...')
-const aggregateError = new InputError('...', {
-  errors: [databaseError, authError],
-})
-
-console.log(aggregateError)
-// InputError: ... {
-//   [errors]: [
-//     DatabaseError: ...
-//     AuthError: ...
-//   ]
-// }
-console.log(aggregateError.errors)
-// [databaseError, authError]
-```
-
-## Error properties
-
-### Error instance properties
-
-```js
-const error = new InputError('...', { props: { isUserError: true } })
-console.log(error.isUserError) // true
-```
-
-### Error class properties
-
-```js
-const InputError = AnyError.subclass('InputError', {
-  props: { isUserError: true },
-})
-const error = new InputError('...')
-console.log(error.isUserError) // true
-```
-
-## Error class
-
-### Check error class
+### Check error classes
 
 Error classes (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) should be exported so they can be checked. It
-also enables re-using them across multiple modules.
+[`UnknownError`](#unknown-errors)) should be exported so they can be checked, or
+re-used across multiple modules.
 
 <!-- eslint-disable max-depth -->
 
@@ -369,74 +223,243 @@ try {
 }
 ```
 
-### Set error class
+## Throw errors
 
-When [re-throwing errors](#wrap-errors), the outer error class replaces the
-inner one's.
+### Simple errors
+
+```js
+throw new InputError('Missing file path.')
+```
+
+### Error instance properties
+
+```js
+const error = new InputError('...', { props: { isUserError: true } })
+console.log(error.isUserError) // true
+```
+
+### Error class properties
+
+```js
+const InputError = AnyError.subclass('InputError', {
+  props: { isUserError: true },
+})
+const error = new InputError('...')
+console.log(error.isUserError) // true
+```
+
+### Aggregate errors
+
+The `errors` option aggregates multiple errors into one. This is like
+[`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
+except that it works with any error class.
+
+```js
+const databaseError = new DatabaseError('...')
+const authError = new AuthError('...')
+throw new InputError('...', { errors: [databaseError, authError] })
+// InputError: ... {
+//   [errors]: [
+//     DatabaseError: ...
+//     AuthError: ...
+//   ]
+// }
+```
+
+## Wrap errors
+
+### Wrap inner error
+
+Any error's [message](#wrap-error-message), [class](#wrap-error-class) and
+[options](#wrap-error-options) can be wrapped using the
+[standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
+
+Instead of being set as a `cause` property, the inner error is directly
+[merged](https://github.com/ehmicky/merge-error-cause) to the outer error,
+including its
+[`message`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/message),
+[`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
+[`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
+[`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
+and any [additional property](#error-instance-properties).
+
+```js
+try {
+  // ...
+} catch (cause) {
+  throw new InputError('Could not read the file.', { cause })
+}
+```
+
+### Wrap error message
+
+The outer error message is appended, unless it is empty. If the outer error
+message ends with `:` or `:\n`, it is prepended instead.
+
+<!-- eslint-disable no-unreachable -->
+
+```js
+const cause = new InputError('File does not exist.')
+
+// InputError: File does not exist.
+throw new InputError('', { cause })
+
+// InputError: File does not exist.
+// Could not read the file.
+throw new InputError('Could not read the file.', { cause })
+
+// InputError: Could not read the file: File does not exist.
+throw new InputError(`Could not read the file:`, { cause })
+
+// InputError: Could not read the file:
+// File does not exist.
+throw new InputError(`Could not read the file:\n`, { cause })
+```
+
+### Wrap error class
+
+The outer error's class replaces the inner one's, unless the outer error's class
+is [`AnyError`](#anyerror).
+
+<!-- eslint-disable no-unreachable -->
 
 ```js
 try {
   throw new AuthError('...')
 } catch (cause) {
-  throw new InputError('...', { cause })
   // Now an InputError
+  throw new InputError('...', { cause })
 }
-```
 
-The inner error's class can be kept by using [`AnyError`](#anyerror) instead.
-
-```js
 try {
   throw new AuthError('...')
 } catch (cause) {
-  throw new AnyError('...', { cause })
   // Still an AuthError
+  throw new AnyError('...', { cause })
 }
 ```
 
-### Unknown errors
+### Wrap error options
+
+The outer error's options ([`props`](#props) and
+[plugin options](#plugin-options-1)) replace the inner one's, unless the outer
+error's class is [`AnyError`](#anyerror), in which case they are merged instead.
+
+<!-- eslint-disable no-unreachable -->
+
+```js
+try {
+  throw new AuthError('...', innerOptions)
+} catch (cause) {
+  // Options are now `outerOptions`. `innerOptions` are ignored.
+  throw new InputError('...', { cause, ...outerOptions })
+}
+
+try {
+  throw new AuthError('...', innerOptions)
+} catch (cause) {
+  // `outerOptions` are merged with `innerOptions`
+  throw new AnyError('...', { cause, ...outerOptions })
+}
+```
+
+## Normalize errors
+
+### Top-level error handler
 
 Each main function should be wrapped with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception).
 
 ```js
-export const main = async function (filePath) {
+export const main = function () {
   try {
-    console.log(filePath.trim())
-    return await readContents(filePath)
+    // ...
   } catch (error) {
     throw AnyError.normalize(error)
   }
 }
 ```
 
-This assigns the `UnknownError` class to any error without a _known_ class: the
-ones created by [`AnyError.subclass()`](#anyerrorsubclassname-options). Those
-indicate unexpected exceptions and bugs.
+### Invalid errors
 
-<!-- eslint-disable unicorn/no-null -->
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) fixes exceptions that
+are not
+[`Error` instances](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+or that have
+[invalid properties](https://github.com/ehmicky/normalize-exception#features).
 
-```js
-main(null) // UnknownError: Cannot read properties of null (reading 'trim')
-```
-
-_Unknown_ errors should be handled in a `try {} catch {}` block and
-[wrapped](#set-error-class) with a _known_ class instead. That block should only
-cover the statement that might throw in order to prevent catching other
-unrelated _unknown_ errors.
+<!-- eslint-disable no-throw-literal -->
 
 ```js
 try {
-  console.log(filePath.trim())
-} catch (cause) {
-  throw new InputError('Invalid file path:', { cause })
+  throw 'Missing file path.'
+} catch (invalidError) {
+  // This fails: `error.message` is `undefined`
+  console.log(invalidError.message.trim())
+}
+
+try {
+  throw 'Missing file path.'
+} catch (invalidError) {
+  // UnknownError: Missing file path.
+  const normalizedError = AnyError.normalize(invalidError)
+  // This works: 'Missing file path.'
+  console.log(normalizedError.message.trim())
 }
 ```
 
-<!-- eslint-disable unicorn/no-null, max-len -->
+### Unknown errors
+
+#### Normalizing unknown errors
+
+An error is _unknown_ if its class was not created by
+[`AnyError.subclass()`](#anyerrorsubclassname-options). This indicates an
+unexpected exception, usually a bug.
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) assigns the
+[`UnknownError` class](#create-error-classes) to any _unknown_ error.
+
+<!-- eslint-skip -->
 
 ```js
-main(null) // InputError: Invalid file path: Cannot read properties of null (reading 'trim')
+try {
+  return regExp.test(value)
+} catch (unknownError) {
+  // UnknownError: ...
+  console.log(AnyError.normalize(unknownError))
+}
+```
+
+#### Handling unknown errors
+
+_Unknown_ errors should be handled in a `try {} catch {}` block and
+[wrapped](#wrap-error-class) with a [_known_ class](#create-error-classes)
+instead. That block should only cover the statement that might throw in order to
+prevent catching other unrelated _unknown_ errors.
+
+<!-- eslint-skip -->
+
+```js
+try {
+  return regExp.test(value)
+} catch (unknownError) {
+  // InputError: Invalid regular expression: ...
+  throw new InputError('Invalid regular expression:', { cause: unknownError })
+}
+```
+
+#### Using plugins with unknown errors
+
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) is required for
+[_unknown_ errors](#unknown-errors) to use [plugins](#plugins-1).
+
+```js
+try {
+  // ...
+} catch (unknownError) {
+  unknownError.examplePluginMethod() // This throws
+  const normalizedError = AnyError.normalize(unknownError)
+  normalizedError.examplePluginMethod() // This works
+}
 ```
 
 ## Custom logic
@@ -488,9 +511,7 @@ logic between error classes.
 ```js
 const SharedError = AnyError.subclass('SharedError', {
   custom: class extends AnyError {
-    isUserInput() {
-      // ...
-    }
+    // ...
   },
 })
 
@@ -498,14 +519,15 @@ export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
 ```
 
-# Plugins
+## Plugins
 
-## Adding plugins
+### List of plugins
 
-Plugins extend `modern-errors` features. [Several plugins](#plugins) are
-available. You can also [create your own plugin](docs/plugins.md).
+[Full list](#plugins) of plugins.
 
-They must first be installed.
+### Adding plugins
+
+Plugins extend `modern-errors` features. They must first be installed.
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -520,14 +542,12 @@ They are then passed as a first argument to
 import modernErrors from 'modern-errors'
 
 import modernErrorsBugs from 'modern-errors-bugs'
-import modernErrorsProps from 'modern-errors-props'
+import modernErrorsSerialize from 'modern-errors-serialize'
 
-export const AnyError = modernErrors([modernErrorsProps, modernErrorsBugs])
+export const AnyError = modernErrors([modernErrorsBugs, modernErrorsSerialize])
 ```
 
-## Plugin options
-
-### Configure options
+### Plugin options
 
 Most plugins can be configured with options. The option's name is the same as
 the plugin.
@@ -581,52 +601,10 @@ AnyError[methodName](...args, options[pluginName])
 error[methodName](...args, options[pluginName])
 ```
 
-### Modify options
+### Custom plugins
 
-When [re-throwing errors](#wrap-errors), the outer error's options replace the
-inner ones.
-
-```js
-try {
-  throw new AuthError('...', innerOptions)
-} catch (cause) {
-  // Options are now `outerOptions`. `innerOptions` are ignored.
-  throw new InputError('...', { cause, ...outerOptions })
-}
-```
-
-The inner error's options can be kept by using [`AnyError`](#anyerror) instead.
-
-```js
-try {
-  throw new AuthError('...', innerOptions)
-} catch (cause) {
-  // `outerOptions` are merged with `innerOptions`
-  throw new AnyError('...', { cause, ...outerOptions })
-}
-```
-
-## Plugin methods
-
-Plugins can add:
-
-- Error properties: `error.message`, `error.stack` or any other `error.*`
-- Error instance methods: `error.exampleMethod()`
-- [`AnyError`](#anyerror) static methods: `AnyError.exampleMethod()`
-
-Error instance methods are only available on [_known_ errors](#unknown-errors).
-This can be ensured using `AnyError.normalize()`.
-
-```js
-try {
-  // ...
-} catch (error) {
-  // This throws if `error` has an unknown class
-  error.exampleMethod()
-  // This is safe
-  AnyError.normalize(error).exampleMethod()
-}
-```
+Please see the [following documentation](docs/plugins.md) to create your own
+plugin.
 
 # Modules
 

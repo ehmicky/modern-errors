@@ -2,7 +2,7 @@
 
 This document explains how to create a plugin for `modern-errors`. To learn how
 to [install](../README.md#adding-plugins), [use](../README.md#adding-plugins)
-and [configure](../README.md#configure-options) plugins, please refer to the
+and [configure](../README.md#plugin-options) plugins, please refer to the
 [main documentation](../README.md#plugins-1) instead.
 
 ## Features
@@ -55,7 +55,7 @@ export default {
 
 _Type_: `string`
 
-Plugin's name. It is used to [configure](../README.md#configure-options) the
+Plugin's name. It is used to [configure](../README.md#plugin-options) the
 plugin's options.
 
 Only lowercase letters must be used (as opposed to `_` `-` `.` or uppercase
@@ -163,7 +163,7 @@ export default {
 #### full
 
 Users can pass additional `options`
-[at multiple stages](../README.md#configure-options). Each stage calls
+[at multiple stages](../README.md#plugin-options). Each stage calls
 `getOptions()`.
 
 - When error classes are defined:
@@ -204,10 +204,10 @@ export default {
 
 _Type_: `(options) => boolean`
 
-Users [can pass](../README.md#configure-options) the plugin's `options` as the
-last argument of any plugin method (instance or static). `isOptions()`
-determines whether the last argument of a plugin method are `options` or not.
-This should be defined if the plugin has any method with arguments.
+Users [can pass](../README.md#plugin-options) the plugin's `options` as the last
+argument of any plugin method (instance or static). `isOptions()` determines
+whether the last argument of a plugin method are `options` or not. This should
+be defined if the plugin has any method with arguments.
 
 If `options` are invalid but can be determined not to be the last argument of
 any plugin's method, `isOptions()` should still return `true`. This allows
@@ -318,7 +318,7 @@ _Type_: `typeof AnyError`
 
 Reference to [`AnyError`](../README.md#anyerror). This can be used to call
 [`AnyError.normalize()`](../README.md#anyerrornormalizeanyexception) or
-[`error instanceof AnyError`](../README.md#check-error-class).
+[`error instanceof AnyError`](../README.md#check-error-classes).
 
 ```js
 export default {
@@ -398,7 +398,7 @@ when possible.
 #### Separate options
 
 `modern-errors` provides with a
-[consistent pattern](../README.md#configure-options) for options. Plugins should
+[consistent pattern](../README.md#plugin-options) for options. Plugins should
 avoid alternatives like:
 
 - Functions taking options as input and returning the plugin:
