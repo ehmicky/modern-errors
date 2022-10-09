@@ -10,7 +10,7 @@ import { getNativeErrors } from '../../helpers/known.js'
 import { defineClassOpts } from '../../helpers/main.js'
 
 const ErrorClasses = defineClassOpts()
-const { TestError, UnknownError } = ErrorClasses
+const { TestError, UnknownError, AnyError } = ErrorClasses
 
 each(
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
@@ -18,7 +18,9 @@ each(
   ({ title }, getValues, getError) => {
     test(`errorInfo normalizes errors | ${title}`, (t) => {
       const { errorInfo } = getValues({ ErrorClasses })
-      t.true(errorInfo(getError).unknownDeep)
+      const { error, unknownDeep } = errorInfo(getError())
+      t.true(unknownDeep)
+      t.true(error instanceof AnyError)
     })
   },
 )
@@ -26,6 +28,11 @@ each(
 each(
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
   ({ title }, getValues) => {
+    test(`errorInfo returns error | ${title}`, (t) => {
+      const { errorInfo } = getValues({ ErrorClasses })
+      t.true(errorInfo(new TestError('test')).error instanceof AnyError)
+    })
+
     test(`errorInfo returns unknownDeep | ${title}`, (t) => {
       const { errorInfo } = getValues({ ErrorClasses })
       t.true(errorInfo(new UnknownError('test')).unknownDeep)

@@ -27,5 +27,5 @@ export const getErrorInfo = function (
     plugins,
     plugin,
   })
-  return { options, unknownDeep }
+  return { error: errorA, options, unknownDeep }
 }

@@ -344,8 +344,8 @@ export default {
 
 _Type_: `(Error) => info`
 
-Returns the [`info`](#info) object from a specific `Error`. Only
-[`info.options`](#options) and [`info.unknownDeep`](#unknowndeep) are returned.
+Returns the [`info`](#info) object from a specific `Error`, except for
+[`info.AnyError`](#anyerror) and [`info.ErrorClasses`](#errorclasses).
 
 ```js
 export default {
