@@ -1,7 +1,17 @@
 // Retrieve `info` passed to all `plugin.*`
-export const getPluginInfo = function (options, AnyError, ErrorClasses) {
+export const getPluginInfo = function ({
+  pluginsOpts,
+  AnyError,
+  ErrorClasses,
+  errorInfo,
+}) {
   const ErrorClassesA = getErrorClasses(ErrorClasses)
-  return { options, AnyError, ErrorClasses: ErrorClassesA }
+  return {
+    options: pluginsOpts,
+    AnyError,
+    ErrorClasses: ErrorClassesA,
+    errorInfo,
+  }
 }
 
 // `ErrorClasses` are passed to all plugin methods.

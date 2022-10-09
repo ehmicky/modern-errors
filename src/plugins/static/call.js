@@ -32,6 +32,6 @@ export const callStaticMethod = function (
     plugins,
     plugin,
   })
-  const info = getPluginInfo(pluginsOpts, AnyError, ErrorClasses)
+  const info = getPluginInfo({ pluginsOpts, AnyError, ErrorClasses, errorInfo })
   return methodFunc(info, ...argsA)
 }
