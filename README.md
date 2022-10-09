@@ -31,7 +31,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 # Plugins
 
 - [`modern-errors-cli`](#cli-errors): Handle errors in CLI modules
-- [`modern-errors-process`](): Handle process errors
+- [`modern-errors-process`](#process-errors): Handle process errors
 - [`modern-errors-bugs`](#bug-reports): Print where to report bugs
 - [`modern-errors-serialize`](#serializationparsing): Serialize/parse errors
 - [`modern-errors-stack`](#clean-stack-traces): Clean stack traces
