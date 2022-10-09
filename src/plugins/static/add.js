@@ -40,10 +40,18 @@ export const addAllStaticMethods = function ({
   plugins,
   globalOpts,
   ErrorClasses,
+  errorData,
   AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addStaticMethods({ plugin, plugins, globalOpts, ErrorClasses, AnyError })
+    addStaticMethods({
+      plugin,
+      plugins,
+      globalOpts,
+      ErrorClasses,
+      errorData,
+      AnyError,
+    })
   })
 }
 
@@ -53,6 +61,7 @@ const addStaticMethods = function ({
   plugins,
   globalOpts,
   ErrorClasses,
+  errorData,
   AnyError,
 }) {
   Object.entries(staticMethods).forEach(
@@ -61,13 +70,14 @@ const addStaticMethods = function ({
       plugins,
       globalOpts,
       ErrorClasses,
+      errorData,
       AnyError,
     }),
   )
 }
 
 const addStaticMethod = function (
-  { plugin, plugins, globalOpts, ErrorClasses, AnyError },
+  { plugin, plugins, globalOpts, ErrorClasses, errorData, AnyError },
   [methodName, methodFunc],
 ) {
   validateMethodName(methodName, plugin, plugins)
@@ -79,6 +89,7 @@ const addStaticMethod = function (
       plugins,
       globalOpts,
       ErrorClasses,
+      errorData,
       AnyError,
     }),
     enumerable: false,

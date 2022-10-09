@@ -26,6 +26,7 @@ export default function modernErrors(plugins, globalOpts) {
     plugins: pluginsA,
     globalOpts: globalOptsA,
     ErrorClasses,
+    errorData,
     AnyError,
   })
   return AnyError
