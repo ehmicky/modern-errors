@@ -18,8 +18,8 @@ each(
   ({ title }, getValues, getError) => {
     test(`errorInfo normalizes errors | ${title}`, (t) => {
       const { errorInfo } = getValues({ ErrorClasses })
-      const { error, unknownDeep } = errorInfo(getError())
-      t.true(unknownDeep)
+      const { error, showStack } = errorInfo(getError())
+      t.true(showStack)
       t.true(error instanceof AnyError)
     })
   },
@@ -33,10 +33,10 @@ each(
       t.true(errorInfo(new TestError('test')).error instanceof AnyError)
     })
 
-    test(`errorInfo returns unknownDeep | ${title}`, (t) => {
+    test(`errorInfo returns showStack | ${title}`, (t) => {
       const { errorInfo } = getValues({ ErrorClasses })
-      t.true(errorInfo(new UnknownError('test')).unknownDeep)
-      t.false(errorInfo(new TestError('test')).unknownDeep)
+      t.true(errorInfo(new UnknownError('test')).showStack)
+      t.false(errorInfo(new TestError('test')).showStack)
     })
   },
 )
@@ -47,9 +47,9 @@ each(
     test(`errorInfo can be applied on error itself | ${title}`, (t) => {
       const error = new TestError('test', { prop: true })
       const { errorInfo } = getSpecifics(error)
-      const { options, unknownDeep } = errorInfo(error)
+      const { options, showStack } = errorInfo(error)
       t.true(options.prop)
-      t.false(unknownDeep)
+      t.false(showStack)
     })
   },
 )

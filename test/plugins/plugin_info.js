@@ -63,8 +63,8 @@ each([getPropertiesInfo, getInstanceInfo], ({ title }, getValues) => {
     t.true(getValues({ ErrorClasses: OtherErrorClasses }).options.prop)
   })
 
-  test(`plugin.properties|instanceMethods get "unknownDeep" | ${title}`, (t) => {
-    t.false(getValues({ ErrorClasses }).unknownDeep)
+  test(`plugin.properties|instanceMethods get "showStack" | ${title}`, (t) => {
+    t.false(getValues({ ErrorClasses }).showStack)
   })
 })
 

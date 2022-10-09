@@ -11,14 +11,14 @@ import {
 } from '../helpers/known.js'
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
-  test(`unknownDeep is false with known errors | ${title}`, (t) => {
-    t.false(new ErrorClass('test').properties.unknownDeep)
+  test(`showStack is false with known errors | ${title}`, (t) => {
+    t.false(new ErrorClass('test').properties.showStack)
   })
 })
 
 each(UnknownErrorClasses, ({ title }, ErrorClass) => {
-  test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
-    t.true(new ErrorClass('test').properties.unknownDeep)
+  test(`showStack is true with unknown errors | ${title}`, (t) => {
+    t.true(new ErrorClass('test').properties.showStack)
   })
 })
 
@@ -26,9 +26,9 @@ each(
   [AnyError, ...KnownErrorClasses],
   getKnownErrors(),
   ({ title }, ErrorClass, getError) => {
-    test(`unknownDeep is false when wrapping known errors with known classes | ${title}`, (t) => {
+    test(`showStack is false when wrapping known errors with known classes | ${title}`, (t) => {
       const cause = getError()
-      t.false(new ErrorClass('test', { cause }).properties.unknownDeep)
+      t.false(new ErrorClass('test', { cause }).properties.showStack)
     })
   },
 )
@@ -37,9 +37,9 @@ each(
   UnknownErrorClasses,
   getKnownErrors(),
   ({ title }, ErrorClass, getError) => {
-    test(`unknownDeep is true when wrapping known errors with unknown classes | ${title}`, (t) => {
+    test(`showStack is true when wrapping known errors with unknown classes | ${title}`, (t) => {
       const cause = getError()
-      t.true(new ErrorClass('test', { cause }).properties.unknownDeep)
+      t.true(new ErrorClass('test', { cause }).properties.showStack)
     })
   },
 )
@@ -48,10 +48,8 @@ each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   [...getNativeErrors(), ...getUnknownErrors()],
   ({ title }, ErrorClass, getError) => {
-    test(`unknownDeep is true when wrapping unknown errors | ${title}`, (t) => {
-      t.true(
-        new ErrorClass('test', { cause: getError() }).properties.unknownDeep,
-      )
+    test(`showStack is true when wrapping unknown errors | ${title}`, (t) => {
+      t.true(new ErrorClass('test', { cause: getError() }).properties.showStack)
     })
   },
 )

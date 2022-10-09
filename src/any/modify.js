@@ -4,7 +4,7 @@ import { setPluginsProperties } from '../plugins/properties.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
-import { getUnknownDeep } from './deep.js'
+import { getShowStack } from './deep.js'
 import { getCause, mergeCause } from './merge.js'
 
 // Merge `error.cause` and set `plugin.properties()`.
@@ -63,10 +63,10 @@ const applyErrorLogic = function ({
   })
   setAggregateErrors(currentError, optsA, AnyError)
   const error = mergeCause(currentError, isAnyError)
-  const unknownDeep = getUnknownDeep({ error, cause, errorData, ErrorClasses })
+  const showStack = getShowStack({ error, cause, errorData, ErrorClasses })
   setConstructorArgs(error, constructorArgs)
   errorData.set(error, {
-    unknownDeep,
+    showStack,
     pluginsOpts,
     previousValues: [],
     newValues: [],
@@ -78,6 +78,6 @@ const applyErrorLogic = function ({
     errorData,
     plugins,
   })
-  errorData.set(error, { unknownDeep, pluginsOpts, previousValues, newValues })
+  errorData.set(error, { showStack, pluginsOpts, previousValues, newValues })
   return error
 }

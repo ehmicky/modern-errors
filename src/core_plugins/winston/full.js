@@ -33,8 +33,8 @@ const serializeError = function (value, errorInfo) {
 
 const getOmittedProps = function (value, errorInfo) {
   const {
-    unknownDeep,
-    options: { stack = unknownDeep },
+    showStack,
+    options: { stack = showStack },
   } = errorInfo(value)
   return stack ? ['constructorArgs'] : ['constructorArgs', 'stack']
 }

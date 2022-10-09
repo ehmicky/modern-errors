@@ -11,7 +11,7 @@ export const getErrorPluginInfo = function ({
   plugins,
   plugin,
 }) {
-  const { options, unknownDeep } = getErrorInfo(
+  const { options, showStack } = getErrorInfo(
     { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
     error,
   )
@@ -24,7 +24,7 @@ export const getErrorPluginInfo = function ({
     plugins,
     plugin,
   })
-  return { ...info, error, unknownDeep }
+  return { ...info, error, showStack }
 }
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods|staticMethods`

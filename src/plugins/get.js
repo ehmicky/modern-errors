@@ -40,7 +40,7 @@ const defaultGetOptions = function (fullName, options) {
 //  - This makes it clear that `options` is post-getOptions
 // `getOptions()` is meant for error instance-agnostic logic:
 //  - This is because it is called early when classes are being defined
-//  - `error`, `ErrorClasses` and `unknownDeep` are not available
+//  - `info.*` is not available
 //  - Error-specific logic should be inside other plugin methods instead
 // Any validation|normalization specific to a method should be done inside that
 // method, as opposed to inside `plugin.getOptions()`.

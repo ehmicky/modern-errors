@@ -57,7 +57,7 @@ const getAvailableLevel = function ({ levels }) {
 const LEVELS = getAvailableLevels()
 
 // The `stack` boolean option decides whether to log stack traces.
-// It defaults to `unknownDeep`.
+// It defaults to `showStack`.
 const validateStack = function (stack) {
   if (stack !== undefined && typeof stack !== 'boolean') {
     throw new TypeError(`Option "stack" must be a boolean: ${stack}`)

@@ -242,7 +242,7 @@ export default {
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
 and [static methods](#staticmethodsmethodname).
 
-[`info.error`](#error) and [`info.unknownDeep`](#unknowndeep) are not passed to
+[`info.error`](#error) and [`info.showStack`](#showstack) are not passed to
 static methods.
 
 Its members are readonly and should not be mutated, except for
@@ -284,7 +284,7 @@ export default {
 }
 ```
 
-### unknownDeep
+### showStack
 
 _Type_: `boolean`
 
@@ -297,8 +297,8 @@ errors) is [_unknown_](#unknown-errors), and `false` otherwise.
 export default {
   name: 'example',
   instanceMethods: {
-    log({ error, unknownDeep }) {
-      console.log(unknownDeep ? error.message : error.stack)
+    log({ error, showStack }) {
+      console.log(showStack ? error.stack : error.message)
     },
   },
 }
@@ -354,8 +354,8 @@ export default {
     getLogErrors({ errorInfo }) {
       return function logErrors(errors) {
         errors.forEach((error) => {
-          const { unknownDeep } = errorInfo(error)
-          console.log(unknownDeep ? error.message : error.stack)
+          const { showStack } = errorInfo(error)
+          console.log(showStack ? error.stack : error.message)
         })
       }
     },

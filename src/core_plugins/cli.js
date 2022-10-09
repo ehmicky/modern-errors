@@ -17,11 +17,11 @@ const getOptions = function (options = {}) {
 // Stack traces and error properties are displayed by default if the innermost
 // error is unknown.
 const exit = function ({
-  unknownDeep,
+  showStack,
   ErrorClasses,
   error,
   options: {
-    short = !unknownDeep,
+    short = !showStack,
     exitCode = Object.keys(ErrorClasses).indexOf(error.name) + 1,
     ...options
   },
