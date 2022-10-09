@@ -51,7 +51,7 @@
     "error-custom-class": "^8.2.0",
     "error-serializer": "^3.5.0",
     "filter-obj": "^5.1.0",
-    "handle-cli-error": "^2.4.2",
+    "handle-cli-error": "^2.5.0",
     "is-error-instance": "^1.1.0",
     "is-plain-obj": "^4.1.0",
     "log-process-errors": "^10.1.0",
