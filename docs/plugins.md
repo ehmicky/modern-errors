@@ -288,9 +288,10 @@ export default {
 
 _Type_: `boolean`
 
-`true` if the [innermost](../README.md#re-throw-errors) error is
-[_unknown_](#unknown-errors), and `false` otherwise. This hints whether the
-original error might be internal or come from an external library.
+Hints whether `error.stack` should be printed or not.
+
+This is `true` if the error (or one of its [inner](../README.md#re-throw-errors)
+errors) is [_unknown_](#unknown-errors), and `false` otherwise.
 
 ```js
 export default {

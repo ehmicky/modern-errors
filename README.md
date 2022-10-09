@@ -714,8 +714,9 @@ _Type_: `boolean`
 
 Logs the `error` message only, not its stack trace.
 
-By default, this is `false` if the [innermost](#re-throw-errors) error is
-[_unknown_](#unknown-errors), and `true` otherwise.
+By default, this is `false` if the error (or one of its
+[inner](../README.md#re-throw-errors) errors) is [_unknown_](#unknown-errors),
+and `true` otherwise.
 
 ##### silent
 
@@ -1067,9 +1068,11 @@ Log [level](https://github.com/winstonjs/winston#logging-levels).
 
 _Type_: `boolean`
 
-Whether to log the stack trace. By default, this is `false` if the
-[innermost](#re-throw-errors) error is [_unknown_](#unknown-errors), and `true`
-otherwise.
+Whether to log the stack trace.
+
+By default, this is `true` if the error (or one of its
+[inner](../README.md#re-throw-errors) errors) is [_unknown_](#unknown-errors),
+and `false` otherwise.
 
 # Modules
 
