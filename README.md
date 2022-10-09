@@ -586,19 +586,12 @@ const options = {
 }
 ```
 
-Those can apply to:
+Those can apply to (in priority order):
 
 - Any error: second argument to [`modernErrors()`](#modernerrorsplugins-options)
 
 ```js
 export const AnyError = modernErrors(plugins, options)
-```
-
-- Any error of a specific class: second argument to
-  [`AnyError.subclass()`](#anyerrorsubclassname-options)
-
-```js
-export const InputError = AnyError.subclass('InputError', options)
 ```
 
 - Any error of multiple classes: using `ErrorClass.subclass()`
@@ -608,6 +601,13 @@ export const SharedError = AnyError.subclass('SharedError', options)
 
 export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
+```
+
+- Any error of a specific class: second argument to
+  [`AnyError.subclass()`](#anyerrorsubclassname-options)
+
+```js
+export const InputError = AnyError.subclass('InputError', options)
 ```
 
 - A specific error: second argument to the error's constructor
