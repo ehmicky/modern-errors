@@ -113,9 +113,9 @@ each(UnknownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  getKnownErrors(),
   UnknownErrorClasses,
-  ({ title }, cause, ParentErrorClass) => {
+  getKnownErrors(),
+  ({ title }, ParentErrorClass, cause) => {
     test(`Known cause with an error name ignores it with UnknownError and non-empty message | ${title}`, (t) => {
       const parentMessage = 'parentMessage'
       t.is(
