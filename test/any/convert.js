@@ -8,15 +8,11 @@ import { defineClassOpts } from '../helpers/main.js'
 const { TestError, UnknownError, AnyError } = defineClassOpts()
 const ChildTestError = TestError.subclass('ChildTestError')
 const ChildUnknownError = UnknownError.subclass('ChildUnknownError')
-const KnownErrorClasses = [
-  TestError,
-  ChildTestError,
-  UnknownError,
-  ChildUnknownError,
-]
+const KnownErrorClasses = [TestError, ChildTestError]
+const UnknownErrorClasses = [UnknownError, ChildUnknownError]
 
 const getKnownErrors = function () {
-  return KnownErrorClasses.map(getKnownError)
+  return [...KnownErrorClasses, ...UnknownErrorClasses].map(getKnownError)
 }
 
 const getKnownError = function (ErrorClass) {
@@ -53,7 +49,7 @@ each(getUnknownErrors(), ({ title }, cause) => {
 })
 
 each(
-  KnownErrorClasses,
+  [...KnownErrorClasses, ...UnknownErrorClasses],
   [...getKnownErrors(), ...getUnknownErrors()],
   ({ title }, ErrorClass, cause) => {
     test(`Known class with known or unknown cause uses parent class | ${title}`, (t) => {
@@ -64,7 +60,7 @@ each(
 )
 
 each(
-  [AnyError, ...KnownErrorClasses],
+  [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   [
     () => 'message',
     // eslint-disable-next-line fp/no-mutating-assign
@@ -83,7 +79,7 @@ each(
 )
 
 each(
-  [AnyError, ...KnownErrorClasses],
+  [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
   getUnknownErrorInstances(),
   ({ title }, ParentErrorClass, error) => {
     test(`Unknown cause with an error name keeps it with an empty message | ${title}`, (t) => {
@@ -105,7 +101,7 @@ each(
   },
 )
 
-each([UnknownError, ChildUnknownError], ({ title }, ErrorClass) => {
+each(UnknownErrorClasses, ({ title }, ErrorClass) => {
   test(`Known cause with an error name keeps it with UnknownError and empty message | ${title}`, (t) => {
     const cause = new TestError('message')
     t.is(new ErrorClass('', { cause }).message, `TestError: ${cause.message}`)
@@ -114,7 +110,7 @@ each([UnknownError, ChildUnknownError], ({ title }, ErrorClass) => {
 
 each(
   [TypeError, TestError],
-  [UnknownError, ChildUnknownError],
+  UnknownErrorClasses,
   ({ title }, ErrorClass, ParentErrorClass) => {
     test(`Known cause with an error name ignore it with UnknownError and non-empty message | ${title}`, (t) => {
       const message = 'causeMessage'
