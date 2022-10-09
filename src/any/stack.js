@@ -1,6 +1,6 @@
 // `showStack` is a boolean passed to plugin methods.
-// It is `true` if the error or any its `cause` (deeply) is unknown.
 // This is meant to be used to know whether to print its stack trace.
+// It is `true` if the error or any its `cause` (deeply) is unknown.
 // `UnknownError` instances and actual unknown errors have the same behavior:
 //  - This is consistent with error wrapping and `bugs` URL which treats them
 //    the same

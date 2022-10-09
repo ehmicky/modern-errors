@@ -293,12 +293,20 @@ Hints whether `error.stack` should be printed or not.
 This is `true` if the error (or one of its [inner](../README.md#re-throw-errors)
 errors) is [_unknown_](#unknown-errors), and `false` otherwise.
 
+If a plugin prints `error.stack` optionally, `showStack` can be used as the
+default value of a `stack` boolean option. This allows users to decide whether
+to print `error.stack` or not, while still providing with a good default
+behavior.
+
 ```js
 export default {
   name: 'example',
+  getOptions(options) {
+    // ...
+  },
   instanceMethods: {
-    log({ error, showStack }) {
-      console.log(showStack ? error.stack : error.message)
+    log({ error, showStack, options: { stack = showStack } }) {
+      console.log(stack ? error.stack : error.message)
     },
   },
 }
