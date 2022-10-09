@@ -1,9 +1,12 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
-
-const { TestError, AnyError, UnknownError } = defineClassOpts()
+import {
+  TestError,
+  AnyError,
+  UnknownError,
+  getUnknownErrors,
+} from '../helpers/known.js'
 
 test('unknownDeep is false with known errors', (t) => {
   t.false(new TestError('test').properties.unknownDeep)
@@ -16,12 +19,7 @@ each([TestError, AnyError], ({ title }, ErrorClass) => {
   })
 })
 
-const unknownErrors = [
-  undefined,
-  '',
-  new Error('test'),
-  new UnknownError('test'),
-]
+const unknownErrors = [...getUnknownErrors(), new UnknownError('test')]
 
 each(unknownErrors, ({ title }, cause) => {
   test(`unknownDeep is true with unknown errors | ${title}`, (t) => {
