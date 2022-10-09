@@ -26,14 +26,17 @@ each(
   },
 )
 
-// eslint-disable-next-line no-restricted-globals
-const consoleError = sinon.stub(console, 'error')
-
-test.serial('Prints on the console by default', async (t) => {
-  const stopLogging = AnyError.logProcess()
-  const error = new UnknownError('test')
+const createProcessError = async function (error) {
   emitWarning(error)
   await pSetInterval()
+}
+
+test.serial('Prints on the console by default', async (t) => {
+  // eslint-disable-next-line no-restricted-globals
+  const consoleError = sinon.stub(console, 'error')
+  const stopLogging = AnyError.logProcess()
+  const error = new UnknownError('test')
+  await createProcessError(error)
   t.is(consoleError.args[0][0], error)
   stopLogging()
   consoleError.restore()
@@ -43,8 +46,7 @@ test.serial('Handles process errors', async (t) => {
   const onError = sinon.spy()
   const stopLogging = AnyError.logProcess({ onError })
   const error = new UnknownError('test')
-  emitWarning(error)
-  await pSetInterval()
+  await createProcessError(error)
   t.deepEqual(onError.args, [[error, 'warning']])
   stopLogging()
 })
@@ -68,8 +70,7 @@ each(
       async (t) => {
         const onError = sinon.spy()
         const stopLogging = AnyError.logProcess({ onError })
-        emitWarning(error)
-        await pSetInterval()
+        await createProcessError(error)
         t.true(onError.args[0][0] instanceof UnknownError)
         t.is(onError.args[0][0].message, message)
         stopLogging()
