@@ -53,6 +53,7 @@
     "filter-obj": "^5.1.0",
     "handle-cli-error": "^2.4.2",
     "is-plain-obj": "^4.1.0",
+    "log-process-errors": "^10.0.0",
     "logform": "^2.4.2",
     "merge-error-cause": "^3.0.0",
     "normalize-exception": "^2.6.0",
