@@ -25,7 +25,11 @@ const getUnknownErrors = function () {
 
 const getUnknownErrorInstances = function () {
   const OtherError = runInNewContext('Error')
-  return [new Error('message'), new OtherError('message')]
+  return [
+    new TypeError('message'),
+    new Error('message'),
+    new OtherError('message'),
+  ]
 }
 
 const assertInstanceOf = function (t, error, ErrorClass) {
@@ -109,16 +113,14 @@ each(UnknownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  [TypeError, TestError],
+  getKnownErrors(),
   UnknownErrorClasses,
-  ({ title }, ErrorClass, ParentErrorClass) => {
-    test(`Known cause with an error name ignore it with UnknownError and non-empty message | ${title}`, (t) => {
-      const message = 'causeMessage'
-      const parentMessage = 'message'
-      const cause = new ErrorClass(message)
+  ({ title }, cause, ParentErrorClass) => {
+    test(`Known cause with an error name ignores it with UnknownError and non-empty message | ${title}`, (t) => {
+      const parentMessage = 'parentMessage'
       t.is(
         new ParentErrorClass(parentMessage, { cause }).message,
-        `${message}\n${parentMessage}`,
+        `${cause.message}\n${parentMessage}`,
       )
     })
   },
