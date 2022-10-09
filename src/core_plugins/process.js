@@ -33,6 +33,9 @@ const validateOpts = function (onError, unknownOpts) {
   }
 }
 
+// Process errors always indicate unknown behavior. Therefore, we wrap them
+// as `UnknownError` even if the underlying class is known.
+// This applies whether `onError` is overridden or not.
 const customOnError = async function (
   { onError, UnknownError },
   error,
