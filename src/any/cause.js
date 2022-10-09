@@ -4,7 +4,7 @@
 //  - This does not apply when either:
 //     - The message is not empty, since it might either be prepended or
 //       appended then, making concatenation more complex
-//     - The name is a generic `Error`, or `UnknownError` itself
+//     - The name is a generic error class, or `UnknownError` itself
 export const keepCauseMessage = function (message, isUnknownError, { cause }) {
   return isUnknownError && message === '' && hasErrorName(cause)
     ? `${cause.name}:`
@@ -24,7 +24,17 @@ const isErrorInstance = function (cause) {
   return Object.prototype.toString.call(cause) === '[object Error]'
 }
 
-const GENERIC_NAMES = new Set(['Error', 'UnknownError'])
+const GENERIC_NAMES = new Set([
+  'Error',
+  'ReferenceError',
+  'TypeError',
+  'SyntaxError',
+  'RangeError',
+  'URIError',
+  'EvalError',
+  'AggregateError',
+  'UnknownError',
+])
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it
 //  - We allow `cause: undefined` since `undefined` exceptions can be thrown

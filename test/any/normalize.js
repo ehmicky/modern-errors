@@ -31,10 +31,10 @@ each([TestError, UnknownError], ({ title }, ErrorClass) => {
 })
 
 test('AnyError.normalize() uses UnknownError if unknown', (t) => {
-  const unknownError = new TypeError('test', { cause: '' })
+  const unknownError = new Error('test', { cause: '' })
   const error = AnyError.normalize(unknownError)
   t.true(error instanceof UnknownError)
-  t.is(error.message, `${unknownError.name}: ${unknownError.message}`)
+  t.is(error.message, unknownError.message)
 })
 
 test('AnyError.normalize() prevents naming collisions', (t) => {

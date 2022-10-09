@@ -36,14 +36,15 @@ test('AnyError with undefined cause uses UnknownError', (t) => {
 
 each(
   [AnyError, UnknownError, ChildUnknownError],
-  [TypeError, runInNewContext('TypeError')],
+  [Error, runInNewContext('Error')],
   ({ title }, ParentErrorClass, ErrorClass) => {
     test(`AnyError and UnknownError with unknown cause keeps error name if present | ${title}`, (t) => {
       const message = 'causeMessage'
-      const cause = new ErrorClass(message)
+      const error = new ErrorClass(message)
+      error.name = 'NamedError'
       t.is(
-        new ParentErrorClass('', { cause }).message,
-        `${ErrorClass.name}: ${message}`,
+        new ParentErrorClass('', { cause: error }).message,
+        `${error.name}: ${message}`,
       )
     })
   },
@@ -56,6 +57,7 @@ each(
     // eslint-disable-next-line fp/no-mutating-assign
     () => Object.assign(new TypeError('causeMessage'), { name: true }),
     () => new Error('causeMessage'),
+    () => new TypeError('causeMessage'),
     () => new UnknownError('causeMessage'),
   ],
   ({ title }, ParentErrorClass, getCause) => {
