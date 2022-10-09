@@ -750,7 +750,8 @@ exceptions,
 [unhandled](https://nodejs.org/api/process.html#process_event_unhandledrejection)
 promises, promises
 [handled too late](https://nodejs.org/api/process.html#process_event_rejectionhandled)
-and [warnings](https://nodejs.org/api/process.html#process_event_warning).
+and [warnings](https://nodejs.org/api/process.html#process_event_warning). It
+adds the following features:
 
 - Stack traces for warnings and
   [`rejectionHandled`](https://nodejs.org/api/process.html#process_event_rejectionhandled)
