@@ -1,6 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 import logProcessErrors from 'log-process-errors'
 
+// Options are forwarded to `log-process-errors`
 const getOptions = function (options = {}) {
   if (!isPlainObj(options)) {
     throw new TypeError('It must be a plain object.')
@@ -11,11 +12,13 @@ const getOptions = function (options = {}) {
   return { exit, onError }
 }
 
+// Same default `onError` as `log-process-errors`
 const defaultOnError = function (error) {
   // eslint-disable-next-line no-console, no-restricted-globals
   console.error(error)
 }
 
+// Same validation as `log-process-errors`
 const validateOpts = function ({ exit, onError, unknownOpts }) {
   validateExit(exit)
 
@@ -36,6 +39,7 @@ const validateExit = function (exit) {
   }
 }
 
+// Forwards to `log-process-errors`
 const logProcess = function ({
   options,
   AnyError,
