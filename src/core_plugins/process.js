@@ -7,24 +7,29 @@ const logProcess = function ({ options }) {
 
 const getOptions = function (options) {
   if (!isPlainObj(options)) {
-    throw new Error('It must be a plain object.')
+    throw new TypeError('It must be a plain object.')
   }
 
-  const { exit, onError, ...unknownOpts } = options
+  const { exit, onError = defaultOnError, ...unknownOpts } = options
   validateOpts(onError, unknownOpts)
   const onErrorA = customOnError.bind(undefined, onError)
   return { exit, onError: onErrorA }
+}
+
+const defaultOnError = function (error) {
+  // eslint-disable-next-line no-console, no-restricted-globals
+  console.error(error)
 }
 
 const validateOpts = function (onError, unknownOpts) {
   const [unknownOpt] = Object.keys(unknownOpts)
 
   if (unknownOpt !== undefined) {
-    throw new Error(`Unknown option "${unknownOpt}".`)
+    throw new TypeError(`Unknown option "${unknownOpt}".`)
   }
 
-  if (onError !== undefined && typeof onError !== 'function') {
-    throw new Error(`Option "onError" must be a function: ${onError}.`)
+  if (typeof onError !== 'function') {
+    throw new TypeError(`Option "onError" must be a function: ${onError}.`)
   }
 }
 
