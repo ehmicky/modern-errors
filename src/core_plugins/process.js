@@ -7,8 +7,18 @@ const getOptions = function (options = {}) {
     throw new TypeError('It must be a plain object.')
   }
 
-  const { exit, onError = defaultOnError, ...unknownOpts } = options
-  validateOpts({ exit, onError, unknownOpts })
+  return normalizeOpts(options)
+}
+
+// Same validation as `log-process-errors`
+const normalizeOpts = function ({
+  exit,
+  onError = defaultOnError,
+  ...unknownOpts
+}) {
+  validateExit(exit)
+  validateOnError(onError)
+  validateUnknown(unknownOpts)
   return { exit, onError }
 }
 
@@ -18,24 +28,23 @@ const defaultOnError = function (error) {
   console.error(error)
 }
 
-// Same validation as `log-process-errors`
-const validateOpts = function ({ exit, onError, unknownOpts }) {
-  validateExit(exit)
+const validateExit = function (exit) {
+  if (exit !== undefined && typeof exit !== 'boolean') {
+    throw new TypeError(`Option "exit" must be a boolean: ${exit}.`)
+  }
+}
 
+const validateOnError = function (onError) {
   if (typeof onError !== 'function') {
     throw new TypeError(`Option "onError" must be a function: ${onError}.`)
   }
+}
 
+const validateUnknown = function (unknownOpts) {
   const [unknownOpt] = Object.keys(unknownOpts)
 
   if (unknownOpt !== undefined) {
     throw new TypeError(`Unknown option "${unknownOpt}".`)
-  }
-}
-
-const validateExit = function (exit) {
-  if (exit !== undefined && typeof exit !== 'boolean') {
-    throw new TypeError(`Option "exit" must be a boolean: ${exit}.`)
   }
 }
 
