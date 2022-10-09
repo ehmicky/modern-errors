@@ -126,7 +126,7 @@ each(
   },
 )
 
-each([AnyError, TestError, ChildTestError], ({ title }, ErrorClass) => {
+each([AnyError, ...KnownErrorClasses], ({ title }, ErrorClass) => {
   test(`Known cause with an error name ignores it without UnknownError | ${title}`, (t) => {
     const cause = new TestError('message')
     t.is(new ErrorClass('', { cause }).message, cause.message)
