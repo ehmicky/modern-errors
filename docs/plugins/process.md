@@ -17,7 +17,8 @@ It adds the following features:
 - Stack traces for warnings and
   [`rejectionHandled`](https://nodejs.org/api/process.html#process_event_rejectionhandled)
 - [Single event handler](#onerror) for all process errors
-- Set any process error's class to [`UnknownError`](#unknown-errors)
+- Set any process error's class to
+  [`UnknownError`](https://github.com/ehmicky/modern-errors/README.md#unknown-errors)
 - Ignore [duplicate](#onerror) process errors
 - [Normalize](#error) invalid errors
 - [Process exit](#exit) is graceful and can be prevented
@@ -57,12 +58,14 @@ Function called once per process error. Duplicate process errors are ignored.
 
 #### error
 
-_Type_: [`UnknownError`](#unknown-errors)
+_Type_:
+[`UnknownError`](https://github.com/ehmicky/modern-errors/README.md#unknown-errors)
 
 The process error. This is guaranteed to be a
 [normalized](https://github.com/ehmicky/normalize-exception)
-[`UnknownError`](#unknown-errors) instance. A short description of the
-[event](#event) is also appended to its message.
+[`UnknownError`](https://github.com/ehmicky/modern-errors/README.md#unknown-errors)
+instance. A short description of the [event](#event) is also appended to its
+message.
 
 #### event
 

@@ -38,7 +38,9 @@ _Type_: `boolean`
 Logs the `error` message only, not its stack trace.
 
 By default, this is `false` if the error (or one of its
-[inner](../README.md#re-throw-errors) errors) is [_unknown_](#unknown-errors),
+[inner](https://github.com/ehmicky/modern-errors/README.md#re-throw-errors)
+errors) is
+[_unknown_](https://github.com/ehmicky/modern-errors/README.md#unknown-errors),
 and `true` otherwise.
 
 ### silent

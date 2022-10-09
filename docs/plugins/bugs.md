@@ -5,7 +5,7 @@ _Plugin_: [`modern-errors-bugs`](https://github.com/ehmicky/modern-errors-bugs)
 The `bugs` option appends a bug reports URL to error messages.
 
 Although any error class can use it, it is especially useful with
-[`UnknownError`](#unknown-errors).
+[`UnknownError`](https://github.com/ehmicky/modern-errors/README.md#unknown-errors).
 
 ```js
 export const UnknownError = AnyError.subclass('UnknownError', {

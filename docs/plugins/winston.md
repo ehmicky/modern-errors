@@ -80,5 +80,7 @@ _Type_: `boolean`
 Whether to log the stack trace.
 
 By default, this is `true` if the error (or one of its
-[inner](../README.md#re-throw-errors) errors) is [_unknown_](#unknown-errors),
+[inner](https://github.com/ehmicky/modern-errors/README.md#re-throw-errors)
+errors) is
+[_unknown_](https://github.com/ehmicky/modern-errors/README.md#unknown-errors),
 and `false` otherwise.
