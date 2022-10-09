@@ -1,3 +1,5 @@
+import isErrorInstance from 'is-error-instance'
+
 // If cause is not an `AnyError` instance, we convert it using
 // `new UnknownError('', { cause })` to:
 //  - Keep its error `name` in the error `message`
@@ -29,10 +31,6 @@ const hasErrorName = function (cause) {
     typeof cause.name === 'string' &&
     !GENERIC_NAMES.has(cause.name)
   )
-}
-
-const isErrorInstance = function (cause) {
-  return Object.prototype.toString.call(cause) === '[object Error]'
 }
 
 // The error name is not kept if generic or `UnknownError` itself

@@ -1,4 +1,5 @@
 import { serialize, parse as parseLib } from 'error-serializer'
+import isErrorInstance from 'is-error-instance'
 
 const toJSON = function ({ error }) {
   return serialize(error)
@@ -7,10 +8,6 @@ const toJSON = function ({ error }) {
 const parse = function ({ ErrorClasses, AnyError }, errorObject) {
   const value = parseLib(errorObject, { classes: ErrorClasses })
   return isErrorInstance(value) ? AnyError.normalize(value) : value
-}
-
-const isErrorInstance = function (value) {
-  return Object.prototype.toString.call(value) === '[object Error]'
 }
 
 // eslint-disable-next-line import/no-default-export

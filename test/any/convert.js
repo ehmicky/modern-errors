@@ -1,4 +1,5 @@
 import test from 'ava'
+import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
 import {
@@ -14,7 +15,7 @@ import {
 } from '../helpers/known.js'
 
 const getExpectedMessage = function (cause) {
-  if (Object.prototype.toString.call(cause) === '[object Error]') {
+  if (isErrorInstance(cause)) {
     return cause.message
   }
 

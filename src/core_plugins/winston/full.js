@@ -1,9 +1,8 @@
 import { serialize } from 'error-serializer'
 import { excludeKeys } from 'filter-obj'
+import isErrorInstance from 'is-error-instance'
 import isPlainObj from 'is-plain-obj'
 import safeJsonValue from 'safe-json-value'
-
-import { isErrorInstance } from './check.js'
 
 // The full format sets `level` and all error properties.
 // It recurses on `errors` and additional properties.

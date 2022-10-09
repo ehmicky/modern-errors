@@ -1,7 +1,7 @@
+import isErrorInstance from 'is-error-instance'
 import { format } from 'logform'
 import { LEVEL, MESSAGE } from 'triple-beam'
 
-import { isErrorInstance } from './check.js'
 import { toFullLogObject } from './full.js'
 import { toShortLogObject } from './short.js'
 
