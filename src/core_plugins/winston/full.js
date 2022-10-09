@@ -12,15 +12,26 @@ export const toFullLogObject = function ({
   error,
   options: { level },
   AnyError,
+  errorInfo,
 }) {
-  const object = serializeValue(error, AnyError, [])
+  const object = serializeValue({
+    value: error,
+    AnyError,
+    parents: [],
+    errorInfo,
+  })
   return { ...object, level }
 }
 
-const serializeValue = function (value, AnyError, parents) {
+const serializeValue = function ({ value, AnyError, parents, errorInfo }) {
   const parentsA = [...parents, value]
   const valueA = serializeError(value, AnyError)
-  const valueB = serializeRecurse(valueA, AnyError, parentsA)
+  const valueB = serializeRecurse({
+    value: valueA,
+    AnyError,
+    parents: parentsA,
+    errorInfo,
+  })
   const valueC = safeJsonValue(valueB, { shallow: true }).value
   return valueC
 }
@@ -35,11 +46,13 @@ const serializeError = function (value, AnyError) {
   return excludeKeys(object, omittedProps)
 }
 
-const serializeRecurse = function (value, AnyError, parents) {
+const serializeRecurse = function ({ value, AnyError, parents, errorInfo }) {
   if (Array.isArray(value)) {
     return value
       .filter((child) => !parents.includes(child))
-      .map((child) => serializeValue(child, AnyError, parents))
+      .map((child) =>
+        serializeValue({ value: child, AnyError, parents, errorInfo }),
+      )
   }
 
   if (isPlainObj(value)) {
@@ -48,7 +61,12 @@ const serializeRecurse = function (value, AnyError, parents) {
         .filter((propName) => !parents.includes(value[propName]))
         .map((propName) => [
           propName,
-          serializeValue(value[propName], AnyError, parents),
+          serializeValue({
+            value: value[propName],
+            AnyError,
+            parents,
+            errorInfo,
+          }),
         ]),
     )
   }
