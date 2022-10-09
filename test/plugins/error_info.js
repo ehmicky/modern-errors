@@ -1,6 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
+import { getNativeErrors } from '../helpers/known.js'
 import { defineClassOpts } from '../helpers/main.js'
 
 const { TestError, UnknownError, AnyError } = defineClassOpts()
@@ -18,6 +19,18 @@ const getInstanceArgs = function ({
 const getStaticArgs = function ({ AnyError: AnyErrorClass = AnyError } = {}) {
   return AnyErrorClass.getProp()
 }
+
+each(
+  [getSetArgs, getInstanceArgs, getStaticArgs],
+  getNativeErrors(),
+  ({ title }, getValues, getError) => {
+    const { errorInfo } = getValues()
+
+    test(`errorInfo normalizes errors | ${title}`, (t) => {
+      t.true(errorInfo(getError).unknownDeep)
+    })
+  },
+)
 
 each([getSetArgs, getInstanceArgs, getStaticArgs], ({ title }, getValues) => {
   const { errorInfo } = getValues()
