@@ -14,19 +14,21 @@ const { TestError } = ErrorClasses
 each(
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
   ({ title }, getValues) => {
+    const { errorInfo } = getValues({ ErrorClasses })
+
     test(`errorInfo returns instance options | ${title}`, (t) => {
-      const { errorInfo } = getValues({ ErrorClasses })
       t.true(errorInfo(new TestError('test', { prop: true })).options.prop)
     })
   },
 )
 
 each([getPropertiesInfo, getInstanceInfo], ({ title }, getValues) => {
+  const { errorInfo } = getValues({
+    ErrorClasses,
+    instanceOpts: { prop: true },
+  })
+
   test(`errorInfo ignores parent instance options | ${title}`, (t) => {
-    const { errorInfo } = getValues({
-      ErrorClasses,
-      instanceOpts: { prop: true },
-    })
     t.is(errorInfo(new TestError('test')).options.prop, undefined)
   })
 })
@@ -47,17 +49,16 @@ each(
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
   [defineGlobalOpts, defineClassOpts],
   ({ title }, getValues, defineOpts) => {
+    const OtherErrorClasses = defineOpts({ prop: true })
+    const { errorInfo } = getValues({ ErrorClasses: OtherErrorClasses })
+
     test(`errorInfo returns global and class options | ${title}`, (t) => {
-      const OtherErrorClasses = defineOpts({ prop: true })
-      const { errorInfo } = getValues({ ErrorClasses: OtherErrorClasses })
       t.true(errorInfo(new OtherErrorClasses.TestError('test')).options.prop)
     })
 
     test(`errorInfo global and class options have less priority than instance options | ${title}`, (t) => {
-      const OtherErrorClasses = defineOpts({ prop: false })
-      const { errorInfo } = getValues({ ErrorClasses: OtherErrorClasses })
-      t.true(
-        errorInfo(new OtherErrorClasses.TestError('test', { prop: true }))
+      t.false(
+        errorInfo(new OtherErrorClasses.TestError('test', { prop: false }))
           .options.prop,
       )
     })
@@ -68,12 +69,13 @@ each(
   [getInstanceInfo, getStaticInfo],
   [defineGlobalOpts, defineClassOpts],
   ({ title }, getValues, defineOpts) => {
+    const OtherErrorClasses = defineOpts({ prop: false })
+    const { errorInfo } = getValues({
+      ErrorClasses: OtherErrorClasses,
+      methodOpts: true,
+    })
+
     test(`errorInfo global and class options have less priority than method options | ${title}`, (t) => {
-      const OtherErrorClasses = defineOpts({ prop: false })
-      const { errorInfo } = getValues({
-        methodOpts: true,
-        ErrorClasses: OtherErrorClasses,
-      })
       t.true(errorInfo(new OtherErrorClasses.TestError('test')).options.prop)
     })
   },
