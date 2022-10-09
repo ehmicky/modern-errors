@@ -1,29 +1,25 @@
 // `unknownDeep` is a boolean passed to plugin methods.
-// It is `true` when the innermost `error.cause` is an unknown error.
-// This is useful to distinguish when the innermost error came from an
-// external library or was an unexpected runtime error.
-//  - For example, to known whether the stack trace and error properties should
-//    be printed
-// `UnknownError` instances are considered unknown although they are `AnyError`
-// instances. This is the same behave as error that are not `AnyError`
-// instances. This is because:
+// It is `true` if the error or any its `cause` (deeply) is unknown.
+// This is meant to be used to know whether to print its stack trace.
+// `UnknownError` instances and actual unknown errors have the same behavior:
 //  - This is consistent with error wrapping and `bugs` URL which treats them
 //    the same
 //  - This allows user to opt-in to the same behavior as actual unknown errors
-//    by using `UnknownError`
+//    by using `new UnknownError()`
+// In principle, only the innermost `cause` should be checked. We include any
+// outer error as well to allow users to force showing the error stack by
+// using `new UnknownError()`.
+//  - For example, this is done on process errors by `modern-errors-process`
 export const getUnknownDeep = function ({
-  currentError,
-  currentError: { cause },
-  AnyError,
+  error,
+  cause,
   ErrorClasses: {
     UnknownError: { ErrorClass: UnknownError },
   },
   errorData,
 }) {
   return (
-    'cause' in currentError &&
-    (!(cause instanceof AnyError) ||
-      cause instanceof UnknownError ||
-      errorData.get(cause).unknownDeep)
+    error instanceof UnknownError ||
+    (cause !== undefined && errorData.get(cause).unknownDeep)
   )
 }

@@ -17,12 +17,6 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(UnknownErrorClasses, ({ title }, ErrorClass) => {
-  test(`unknownDeep is false with registered unknown errors | ${title}`, (t) => {
-    t.false(new ErrorClass('test').properties.unknownDeep)
-  })
-})
-
 each(
   [AnyError, ...KnownErrorClasses],
   getKnownErrors(),
@@ -33,6 +27,12 @@ each(
     })
   },
 )
+
+each(UnknownErrorClasses, ({ title }, ErrorClass) => {
+  test(`unknownDeep is true with registered unknown errors | ${title}`, (t) => {
+    t.true(new ErrorClass('test').properties.unknownDeep)
+  })
+})
 
 each(
   KnownErrorClasses,

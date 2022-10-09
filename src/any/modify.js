@@ -19,12 +19,6 @@ export const modifyError = function ({
   AnyError,
   isAnyError,
 }) {
-  const unknownDeep = getUnknownDeep({
-    currentError,
-    AnyError,
-    ErrorClasses,
-    errorData,
-  })
   const cause = getCause(currentError, AnyError)
   restorePreviousValues(cause, errorData)
   const error = applyErrorLogic({
@@ -33,7 +27,6 @@ export const modifyError = function ({
     opts,
     args,
     ErrorClasses,
-    unknownDeep,
     errorData,
     plugins,
     AnyError,
@@ -49,7 +42,6 @@ const applyErrorLogic = function ({
   opts,
   args,
   ErrorClasses,
-  unknownDeep,
   errorData,
   plugins,
   AnyError,
@@ -71,6 +63,7 @@ const applyErrorLogic = function ({
   })
   setAggregateErrors(currentError, optsA, AnyError)
   const error = mergeCause(currentError, isAnyError)
+  const unknownDeep = getUnknownDeep({ error, cause, errorData, ErrorClasses })
   setConstructorArgs(error, constructorArgs)
   const { previousValues, newValues } = setPluginsProperties({
     error,
