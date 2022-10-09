@@ -76,7 +76,7 @@ each(
     () => new UnknownError('message'),
   ],
   ({ title }, ParentErrorClass, getCause) => {
-    test(`Cause without an error name ignores it | ${title}`, (t) => {
+    test(`Cause name is ignored if absent | ${title}`, (t) => {
       t.is(new ParentErrorClass('', { cause: getCause() }).message, 'message')
     })
   },
@@ -94,6 +94,16 @@ each(
         new ParentErrorClass(message, { cause: error }).message,
         `${message}${error.name}: ${error.message}`,
       )
+    })
+  },
+)
+
+each(
+  [AnyError, ...KnownErrorClasses],
+  getKnownErrors(),
+  ({ title }, ErrorClass, cause) => {
+    test(`Known cause name is ignored without UnknownError | ${title}`, (t) => {
+      t.is(new ErrorClass('', { cause }).message, cause.message)
     })
   },
 )
@@ -121,10 +131,3 @@ each(
     })
   },
 )
-
-each([AnyError, ...KnownErrorClasses], ({ title }, ErrorClass) => {
-  test(`Known cause name is ignored without UnknownError | ${title}`, (t) => {
-    const cause = new TestError('message')
-    t.is(new ErrorClass('', { cause }).message, cause.message)
-  })
-})
