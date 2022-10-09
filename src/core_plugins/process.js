@@ -1,18 +1,26 @@
 import isPlainObj from 'is-plain-obj'
 import logProcessErrors from 'log-process-errors'
 
-const logProcess = function ({ options, ErrorClasses: { UnknownError } }) {
-  return logProcessErrors(getOptions(options, UnknownError))
+const logProcess = function ({
+  options,
+  AnyError,
+  ErrorClasses: { UnknownError },
+}) {
+  return logProcessErrors(getOptions(options, AnyError, UnknownError))
 }
 
-const getOptions = function (options, UnknownError) {
+const getOptions = function (options, AnyError, UnknownError) {
   if (!isPlainObj(options)) {
     throw new TypeError('It must be a plain object.')
   }
 
   const { exit, onError = defaultOnError, ...unknownOpts } = options
   validateOpts(onError, unknownOpts)
-  const onErrorA = customOnError.bind(undefined, { onError, UnknownError })
+  const onErrorA = customOnError.bind(undefined, {
+    onError,
+    AnyError,
+    UnknownError,
+  })
   return { exit, onError: onErrorA }
 }
 
@@ -37,12 +45,17 @@ const validateOpts = function (onError, unknownOpts) {
 // as `UnknownError` even if the underlying class is known.
 // This applies whether `onError` is overridden or not.
 const customOnError = async function (
-  { onError, UnknownError },
+  { onError, AnyError, UnknownError },
   error,
   ...args
 ) {
-  const unknownError = new UnknownError('', { cause: error })
+  const unknownError = normalizeError(error, AnyError, UnknownError)
   await onError(unknownError, ...args)
+}
+
+const normalizeError = function (error, AnyError, UnknownError) {
+  const cause = AnyError.normalize(error)
+  return cause instanceof UnknownError ? cause : new UnknownError('', { cause })
 }
 
 // eslint-disable-next-line import/no-default-export
