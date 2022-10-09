@@ -48,8 +48,8 @@ const getPluginProperties = function ({
     plugins,
     plugin,
   })
-  const { pluginsOpts, unknownDeep } = errorInfo(error)
-  const info = getPluginInfo({ pluginsOpts, AnyError, ErrorClasses, errorInfo })
+  const { options, unknownDeep } = errorInfo(error)
+  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
   const newProps = properties({ ...info, error, unknownDeep })
 
   if (!isPlainObj(newProps)) {

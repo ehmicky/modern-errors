@@ -28,7 +28,7 @@ export const callInstanceMethod = function ({
     plugin,
     methodOpts,
   })
-  const { pluginsOpts, unknownDeep } = errorInfo(error)
-  const info = getPluginInfo({ pluginsOpts, AnyError, ErrorClasses, errorInfo })
+  const { options, unknownDeep } = errorInfo(error)
+  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
   return methodFunc({ ...info, error, unknownDeep }, ...argsA)
 }

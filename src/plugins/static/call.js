@@ -26,12 +26,12 @@ export const callStaticMethod = function (
     plugin,
     methodOpts,
   })
-  const pluginsOpts = finalizePluginsOpts({
+  const options = finalizePluginsOpts({
     pluginsOpts: globalOpts,
     methodOpts,
     plugins,
     plugin,
   })
-  const info = getPluginInfo({ pluginsOpts, AnyError, ErrorClasses, errorInfo })
+  const info = getPluginInfo({ options, AnyError, ErrorClasses, errorInfo })
   return methodFunc(info, ...argsA)
 }

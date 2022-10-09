@@ -63,12 +63,12 @@ export const finalizePluginsOpts = function ({
 }) {
   const pluginsOptsA = mergeMethodOpts(pluginsOpts, methodOpts, plugins)
   const pluginsOptsB = deepClone(pluginsOptsA)
-  const pluginsOptsC = getPluginOpts({
+  const options = getPluginOpts({
     pluginsOpts: pluginsOptsB,
     plugin,
     full: true,
   })
-  return pluginsOptsC
+  return options
 }
 
 export const getPluginOpts = function ({

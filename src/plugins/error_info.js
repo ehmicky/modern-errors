@@ -1,6 +1,8 @@
 import { finalizePluginsOpts } from './get.js'
 import { mergeClassOpts } from './merge.js'
 
+// Create `info.errorInfo(error)` which returns error-specific information for
+// plugins: `options` and `unknownDeep`
 export const createErrorInfo = function ({
   errorData,
   ErrorClasses,
@@ -28,11 +30,11 @@ const getErrorInfo = function (
     plugins,
     pluginsOpts,
   })
-  const pluginsOptsB = finalizePluginsOpts({
+  const options = finalizePluginsOpts({
     pluginsOpts: pluginsOptsA,
     methodOpts,
     plugins,
     plugin,
   })
-  return { pluginsOpts: pluginsOptsB, unknownDeep }
+  return { options, unknownDeep }
 }
