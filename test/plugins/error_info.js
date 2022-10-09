@@ -33,7 +33,8 @@ each(
   getNativeErrors(),
   ({ title }, getValues, getError) => {
     test(`errorInfo normalizes errors | ${title}`, (t) => {
-      t.true(getValues({}).errorInfo(getError).unknownDeep)
+      const { errorInfo } = getValues({})
+      t.true(errorInfo(getError).unknownDeep)
     })
   },
 )
