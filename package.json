@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.93",
+    "sinon": "^14.0.1",
     "test-each": "^5.4.0",
     "through2": "^4.0.2",
     "winston": "^3.8.2"
