@@ -8,35 +8,20 @@ import { isErrorInstance } from './check.js'
 // The full format sets `level` and all error properties.
 // It recurses on `errors` and additional properties.
 // It is meant for transports which operates on objects like `http`.
-export const toFullLogObject = function ({
-  error,
-  options: { level },
-  AnyError,
-  errorInfo,
-}) {
-  const object = serializeValue({
-    value: error,
-    AnyError,
-    parents: [],
-    errorInfo,
-  })
+export const toFullLogObject = function ({ error, level, errorInfo }) {
+  const object = serializeValue(error, [], errorInfo)
   return { ...object, level }
 }
 
-const serializeValue = function ({ value, AnyError, parents, errorInfo }) {
+const serializeValue = function (value, parents, errorInfo) {
   const parentsA = [...parents, value]
-  const valueA = serializeError(value, AnyError, errorInfo)
-  const valueB = serializeRecurse({
-    value: valueA,
-    AnyError,
-    parents: parentsA,
-    errorInfo,
-  })
+  const valueA = serializeError(value, errorInfo)
+  const valueB = serializeRecurse(valueA, parentsA, errorInfo)
   const valueC = safeJsonValue(valueB, { shallow: true }).value
   return valueC
 }
 
-const serializeError = function (value, AnyError, errorInfo) {
+const serializeError = function (value, errorInfo) {
   if (!isErrorInstance(value)) {
     return value
   }
@@ -54,13 +39,11 @@ const getOmittedProps = function (value, errorInfo) {
   return stack ? ['constructorArgs'] : ['constructorArgs', 'stack']
 }
 
-const serializeRecurse = function ({ value, AnyError, parents, errorInfo }) {
+const serializeRecurse = function (value, parents, errorInfo) {
   if (Array.isArray(value)) {
     return value
       .filter((child) => !parents.includes(child))
-      .map((child) =>
-        serializeValue({ value: child, AnyError, parents, errorInfo }),
-      )
+      .map((child) => serializeValue(child, parents, errorInfo))
   }
 
   if (isPlainObj(value)) {
@@ -69,12 +52,7 @@ const serializeRecurse = function ({ value, AnyError, parents, errorInfo }) {
         .filter((propName) => !parents.includes(value[propName]))
         .map((propName) => [
           propName,
-          serializeValue({
-            value: value[propName],
-            AnyError,
-            parents,
-            errorInfo,
-          }),
+          serializeValue(value[propName], parents, errorInfo),
         ]),
     )
   }

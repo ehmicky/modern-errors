@@ -15,18 +15,22 @@ import { toShortLogObject } from './short.js'
 // like `json`, `prettyPrint`, `simple` or `cli`.
 // We do not allow passing method options to static methods because they would
 // have higher priority than instance options, which is unexpected.
-const getFormat = function (method, { errorInfo, AnyError }) {
-  return format(formatFunc.bind(undefined, { method, errorInfo, AnyError }))()
+const getFormat = function (method, { errorInfo }) {
+  return format(formatFunc.bind(undefined, method, errorInfo))()
 }
 
-const formatFunc = function ({ method, errorInfo, AnyError }, value) {
+const formatFunc = function (method, errorInfo, value) {
   if (!isErrorInstance(value)) {
     return value
   }
 
   deleteWinstonProps(value)
-  const { error, options, unknownDeep } = errorInfo(value)
-  const object = method({ error, options, unknownDeep, errorInfo, AnyError })
+  const {
+    error,
+    unknownDeep,
+    options: { level, stack = unknownDeep },
+  } = errorInfo(value)
+  const object = method({ error, level, stack, errorInfo })
   return { ...object, [LEVEL]: object.level }
 }
 

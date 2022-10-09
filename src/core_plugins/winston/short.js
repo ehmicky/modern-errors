@@ -5,11 +5,7 @@
 // We make sure to return new objects since `logform` directly mutates.
 // Instance methods are needed to retrieve `error`, `unknownDeep` and `options`,
 // but are undocumented.
-export const toShortLogObject = function ({
-  error,
-  unknownDeep,
-  options: { level, stack = unknownDeep },
-}) {
+export const toShortLogObject = function ({ error, level, stack }) {
   const message = getShortMessage(error, stack)
   return { level, message }
 }
