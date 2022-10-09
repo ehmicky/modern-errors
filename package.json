@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "clean-stack": "^5.0.0",
-    "error-class-utils": "^2.2.0",
+    "error-class-utils": "^2.2.2",
     "error-custom-class": "^8.2.0",
     "error-serializer": "^3.5.0",
     "filter-obj": "^5.1.0",
