@@ -34,7 +34,7 @@
     "plugins",
     "framework"
   ],
-  "license": "Apache-2.0",
+  "license": "MIT",
   "homepage": "https://www.github.com/ehmicky/modern-errors",
   "repository": "ehmicky/modern-errors",
   "bugs": {
