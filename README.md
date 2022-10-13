@@ -1080,6 +1080,8 @@ individually:
   errors to/from plain objects
 - [`normalize-exception`](https://github.com/ehmicky/normalize-exception):
   Normalize exceptions/errors
+- [`is-error-instance`](https://github.com/ehmicky/is-error-instance): Check if
+  a value is an `Error` instance
 - [`merge-error-cause`](https://github.com/ehmicky/merge-error-cause): Merge an
   error with its `cause`
 - [`set-error-class`](https://github.com/ehmicky/set-error-class): Properly
