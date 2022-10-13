@@ -338,6 +338,10 @@ Error classes should now be exported to be re-used across modules.
 
 Most TypeScript types have been removed, except the top-level function.
 
+### License
+
+Switch to MIT license.
+
 # 3.1.1
 
 ## Bug fixes
