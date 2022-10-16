@@ -171,6 +171,11 @@ type MergeProps<
   PropsTwo extends ErrorProps,
 > = PropsOne & PropsTwo
 
+type MergeErrorProps<
+  Props extends ErrorProps,
+  OptionsArg extends object,
+> = MergeProps<Props, GetPropsOption<OptionsArg>>
+
 type GetPropsOption<OptionsArg extends object> = OptionsArg extends {
   props: infer PropsArg extends ErrorProps
 }
