@@ -6,7 +6,21 @@ export interface Info {
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
-  readonly ErrorClasses: object
+  readonly ErrorClasses: {
+    AnyError: never
+    UnknownError: ErrorClass<
+      Plugins,
+      ErrorConstructor<Plugins>,
+      Error,
+      'UnknownError'
+    >
+    [name: ErrorName]: ErrorClass<
+      Plugins,
+      ErrorConstructor<Plugins>,
+      Error,
+      ErrorName
+    >
+  }
 }
 
 /**
