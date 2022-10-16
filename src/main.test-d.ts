@@ -6,6 +6,7 @@ import {
 } from 'tsd'
 
 import modernErrors, {
+  PropertiesInfo,
   InstanceMethodInfo,
   StaticMethodInfo,
   ErrorInfo,
@@ -285,6 +286,14 @@ expectType<InstanceMethodInfo['ErrorClasses']>(smInfo.ErrorClasses)
 expectType<InstanceMethodInfo['errorInfo']>(smInfo.errorInfo)
 expectError(smInfo.error)
 expectError(smInfo.showStack)
+
+const pInfo = {} as PropertiesInfo
+expectType<InstanceMethodInfo['error']>(pInfo.error)
+expectType<InstanceMethodInfo['options']>(pInfo.options)
+expectType<InstanceMethodInfo['showStack']>(pInfo.showStack)
+expectType<InstanceMethodInfo['AnyError']>(pInfo.AnyError)
+expectType<InstanceMethodInfo['ErrorClasses']>(pInfo.ErrorClasses)
+expectType<InstanceMethodInfo['errorInfo']>(pInfo.errorInfo)
 
 const eInfo = imInfo.errorInfo(iUnknownError)
 imInfo.errorInfo('')

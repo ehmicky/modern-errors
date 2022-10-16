@@ -23,6 +23,7 @@ interface Info {
   readonly errorInfo: (error: unknown) => ErrorInfo
 }
 
+export type PropertiesInfo = Info
 export type InstanceMethodInfo = Info
 export type StaticMethodInfo = Omit<Info, 'error' | 'showStack'>
 export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
