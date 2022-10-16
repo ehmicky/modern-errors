@@ -96,7 +96,7 @@ The first argument [`info`](#info) is provided by `modern-errors`. The other
 
 If the logic involves an `error` instance or error-specific `options`, instance
 methods should be preferred over [static methods](#staticmethodsmethodname).
-Otherwise, [static methods](#staticmethodsmethodname) should be used.
+Otherwise, static methods should be used.
 
 ```js
 export default {
@@ -292,7 +292,7 @@ _Type_: `boolean`
 Hints whether `error.stack` should be printed or not.
 
 This is `true` if the error (or one of its [inner](../README.md#wrap-errors)
-errors) is [_unknown_](#unknown-errors), and `false` otherwise.
+errors) is [_unknown_](../README.md#unknown-errors), and `false` otherwise.
 
 If a plugin prints `error.stack` optionally, `showStack` can be used as the
 default value of a `stack` boolean option. This allows users to decide whether
