@@ -22,6 +22,9 @@ import type { ErrorName } from 'error-custom-class'
  *    runtime behavior which cannot be typed:
  *     - `new AnyError()` should require a second argument as an object with a
  *       `cause` property
+ *  - `new ErrorClass('...', { cause })` (as opposed to
+ *    `new AnyError('...', { cause })`) should delete `props` set by `cause`.
+ *    At the moment, those are kept.
  */
 import modernErrors, {
   AnyErrorClass,
