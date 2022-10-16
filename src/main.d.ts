@@ -171,6 +171,11 @@ export type MethodOptions<PluginArg extends Plugin> =
 
 type CustomAttributes = object
 
+type OmitCustomName<CustomAttributesArg extends CustomAttributes> =
+  'name' extends keyof CustomAttributesArg
+    ? Omit<CustomAttributesArg, 'name'>
+    : CustomAttributesArg
+
 type GetCustomAttributes<
   Parent extends CustomAttributes,
   Child extends unknown,
@@ -424,12 +429,11 @@ type CreateSubclass<
     ? ClassOptionsArg['custom']
     : ParentErrorClass,
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? Omit<
+    ? OmitCustomName<
         GetCustomAttributes<
           InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
           InstanceType<ClassOptionsArg['custom']>
-        >,
-        'name'
+        >
       >
     : CustomAttributesArg,
   ErrorNameArg
