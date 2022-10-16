@@ -32,14 +32,15 @@ type PluginsOptions<PluginsArg extends Plugins> = {
   >]?: PluginOptions<PluginArg>
 }
 
-type MergeCause<ErrorArg extends unknown> = ReturnType<
-  typeof MergeErrorCause<ErrorArg>
->
+// TODO: re-enable
+// type MergeCause<ErrorArg extends unknown> = ReturnType<
+//   typeof MergeErrorCause<ErrorArg>
+// >
 
 type NamedError<
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
-> = Omit<MergeCause<ErrorInstance>, 'name'> & { name: ErrorNameArg }
+> = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg }
 
 type ErrorConstructor = new (...args: any[]) => Error
 
