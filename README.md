@@ -130,7 +130,7 @@ Creates and returns [`AnyError`](#anyerror).
 
 Options:
 
-- any [plugin options](#plugin-options-1)
+- any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
 
 ## AnyError
@@ -145,7 +145,7 @@ _Return value_: `Error`
 
 Options:
 
-- any [plugin options](#plugin-options-1)
+- any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
 - `cause`: inner error being [wrapped](#wrap-errors). Required with
   [`AnyError`](#anyerror), optional with its
@@ -166,7 +166,7 @@ themselves.
 
 Options:
 
-- any [plugin options](#plugin-options-1)
+- any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
 - `custom`: [custom class](#custom-logic) to add any methods, `constructor` or
   properties.
@@ -341,9 +341,9 @@ try {
 
 ### Wrap error options
 
-The outer error's options ([`props`](#props) and
-[plugin options](#plugin-options-1)) replace the inner one's. If the outer
-error's class is [`AnyError`](#anyerror), those are merged instead.
+The outer error's options ([`props`](#error-instance-properties) and
+[plugin options](#plugin-options)) replace the inner one's. If the outer error's
+class is [`AnyError`](#anyerror), those are merged instead.
 
 ```js
 try {
@@ -491,8 +491,8 @@ try {
 
 ### Class custom logic
 
-The [`custom`](#custom) option can be used to provide an error `class` with
-additional methods, `constructor` or properties.
+The [`custom`](#anyerrorsubclassname-options) option can be used to provide an
+error `class` with additional methods, `constructor` or properties.
 
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this,
      class-methods-use-this -->
