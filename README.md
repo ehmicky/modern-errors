@@ -147,31 +147,31 @@ Creates and returns an error subclass. The first one must be named
 Subclasses can [also call](#shared-custom-logic) `ErrorClass.subclass()`
 themselves.
 
+#### Options
+
+##### props
+
+_Type_: `object`
+
+[Error properties](#error-instance-properties).
+
+##### Plugin options
+
+Any [plugin options](#plugin-options-1) can be specified.
+
+##### custom
+
+_Type_: `class extends AnyError {}`
+
+[Custom class](#custom-logic) to add any methods, `constructor` or properties.
+It must `extends` from [`AnyError`](#anyerror).
+
 ### AnyError.normalize(anyException)
 
 _Type_: `(anyException) => AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors).
-
-## Options
-
-### props
-
-_Type_: `object`
-
-[Error properties](#error-instance-properties).
-
-### Plugin options
-
-Any [plugin options](#plugin-options-1) can be specified.
-
-### custom
-
-_Type_: `class extends AnyError {}`
-
-[Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extends` from [`AnyError`](#anyerror).
 
 # Usage
 
