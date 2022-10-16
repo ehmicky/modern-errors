@@ -165,6 +165,21 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 export type MethodOptions<PluginArg extends Plugin> =
   ExternalPluginOptions<PluginArg>
 
+type CustomAttributes = object
+
+type GetCustomAttributes<
+  Parent extends CustomAttributes,
+  Child extends unknown,
+> = Child extends Parent
+  ? {
+      [ChildKey in keyof Child as ChildKey extends keyof Parent
+        ? Parent[ChildKey] extends Child[ChildKey]
+          ? never
+          : ChildKey
+        : ChildKey]: Child[ChildKey]
+    }
+  : {}
+
 type ErrorProps = object
 
 type MergeProps<
@@ -206,7 +221,7 @@ type SpecificClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstanceArg extends ErrorInstance<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -245,7 +260,7 @@ type SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    ErrorInstanceArg,
+    CustomAttributesArg,
     ErrorName
   >
 } & PluginsOptions<PluginsArg>
@@ -279,10 +294,11 @@ type AggregateErrors<
 type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ErrorArg extends Error,
+  CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = ErrorArg &
+> = Error &
+  CustomAttributesArg &
   NamedError<ErrorNameArg> &
   AggregateErrors<PluginsArg, InstanceOptionsArg> &
   ErrorPropsArg &
@@ -292,7 +308,7 @@ type BaseError<
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
   ErrorProps,
-  Error,
+  CustomAttributes,
   ErrorName,
   SpecificInstanceOptions<PluginsArg>
 >
@@ -328,7 +344,7 @@ type ErrorSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstanceArg extends ErrorInstance<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
@@ -347,14 +363,14 @@ type ErrorSubclass<
     ): BaseError<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-      ErrorInstanceArg,
+      CustomAttributesArg,
       ErrorNameArg,
       InstanceOptionsArg
     >
     readonly prototype: BaseError<
       PluginsArg,
       ErrorPropsArg,
-      ErrorInstanceArg,
+      CustomAttributesArg,
       ErrorNameArg,
       SpecificInstanceOptions<PluginsArg>
     >
@@ -362,7 +378,7 @@ type ErrorSubclass<
       PluginsArg,
       ErrorPropsArg,
       ParentErrorClass,
-      ErrorInstanceArg
+      CustomAttributesArg
     >
   },
   Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
@@ -380,14 +396,14 @@ type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstanceArg extends ErrorInstance<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
 > = <
   ErrorNameArg extends ErrorName,
   ClassOptionsArg extends SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    ErrorInstanceArg
+    CustomAttributesArg
   >,
 >(
   errorName: ErrorNameArg,
@@ -398,10 +414,15 @@ type CreateSubclass<
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
     ? ClassOptionsArg['custom']
     : ParentErrorClass,
-  InstanceType<NonNullable<ClassOptionsArg['custom']>> extends ErrorInstanceArg
-    ? Omit<InstanceType<NonNullable<ClassOptionsArg['custom']>>, 'name'> &
-        ErrorInstanceArg
-    : ErrorInstanceArg,
+  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+    ? Omit<
+        GetCustomAttributes<
+          InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
+          InstanceType<ClassOptionsArg['custom']>
+        >,
+        'name'
+      >
+    : CustomAttributesArg,
   ErrorNameArg
 >
 
@@ -422,7 +443,7 @@ type AnyErrorInstance<
 > = BaseError<
   PluginsArg,
   MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-  ErrorArg extends Error ? ErrorArg : Error,
+  GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<PluginsArg, ErrorArg>,
   InstanceOptionsArg
 > &
@@ -461,7 +482,7 @@ type SpecificAnyErrorClass<
   readonly prototype: BaseError<
     PluginsArg,
     ErrorPropsArg,
-    Error,
+    {},
     ErrorName,
     SpecificInstanceOptions<PluginsArg>
   >
@@ -480,7 +501,7 @@ type SpecificAnyErrorClass<
     PluginsArg,
     ErrorPropsArg,
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-    InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
+    {}
   >
 
   /**
