@@ -467,6 +467,7 @@ try {
   return regExp.test(value)
 } catch (unknownError) {
   unknownError.examplePluginMethod() // This throws
+
   const normalizedError = AnyError.normalize(unknownError)
   normalizedError.examplePluginMethod() // This works
 }
