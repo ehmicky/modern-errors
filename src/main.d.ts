@@ -250,7 +250,8 @@ type BaseError<
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
-> = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
+> = Error &
+  Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
     unknown extends InstanceOptionsArg['errors']
       ? InstanceOptions<PluginsArg>
       : InstanceOptionsArg,
@@ -376,30 +377,26 @@ type CreateSubclass<
   ErrorNameArg
 >
 
+type NormalizeErrorName<ErrorArg extends unknown> = unknown extends ErrorArg
+  ? ErrorName
+  : ErrorArg extends Error
+  ? ErrorArg['name'] extends ErrorName
+    ? ErrorArg['name']
+    : 'UnknownError'
+  : 'UnknownError'
+
 type NormalizeError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
-> = ErrorArg extends ErrorInstance<PluginsArg>
-  ? ErrorArg
-  : ErrorArg extends Error
-  ? BaseError<
-      PluginsArg,
-      ErrorPropsArg,
-      ErrorArg,
-      'UnknownError',
-      InstanceOptionsArg
-    >
-  : unknown extends ErrorArg
-  ? BaseError<PluginsArg, ErrorPropsArg, Error, ErrorName, InstanceOptionsArg>
-  : BaseError<
-      PluginsArg,
-      ErrorPropsArg,
-      Error,
-      'UnknownError',
-      InstanceOptionsArg
-    >
+> = BaseError<
+  PluginsArg,
+  ErrorPropsArg,
+  ErrorArg extends Error ? ErrorArg : Error,
+  NormalizeErrorName<ErrorArg>,
+  InstanceOptionsArg
+>
 
 /**
  * Base error class.
