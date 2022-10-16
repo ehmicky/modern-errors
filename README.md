@@ -421,8 +421,8 @@ try {
 
 Wrapping a module's main functions with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) ensures every error
-being thrown is [valid](#invalid-errors) and has a [_known_](#unknown-errors)
-class.
+being thrown is [valid](#invalid-errors), has a [_known_](#unknown-errors)
+class, and applies [plugins](#using-plugins-with-unknown-errors)
 
 ```js
 export const main = function () {
