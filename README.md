@@ -354,7 +354,7 @@ try {
   throw new AuthError('...', innerOptions)
 } catch (cause) {
   // Options are now `outerOptions`. `innerOptions` are ignored.
-  throw new InputError('...', { cause, ...outerOptions })
+  throw new InputError('...', { ...outerOptions, cause })
 }
 ```
 
@@ -363,7 +363,7 @@ try {
   throw new AuthError('...', innerOptions)
 } catch (cause) {
   // `outerOptions` are merged with `innerOptions`
-  throw new AnyError('...', { cause, ...outerOptions })
+  throw new AnyError('...', { ...outerOptions, cause })
 }
 ```
 
@@ -398,7 +398,7 @@ or that have
 try {
   throw 'Missing file path.'
 } catch (invalidError) {
-  // This fails: `error.message` is `undefined`
+  // This fails: `invalidError.message` is `undefined`
   console.log(invalidError.message.trim())
 }
 ```
