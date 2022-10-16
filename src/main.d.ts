@@ -304,23 +304,23 @@ type ErrorSubclass<
 > = MaybeIntersect<
   {
     new <
-      InstanceOptions extends ParentInstanceOptions<
+      InstanceOptionsArg extends ParentInstanceOptions<
         PluginsArg,
         ParentErrorClass
       > = ParentInstanceOptions<PluginsArg, ParentErrorClass>,
     >(
       message: string,
       options?: NoAdditionalProps<
-        InstanceOptions,
+        InstanceOptionsArg,
         ParentInstanceOptions<PluginsArg, ParentErrorClass>
       >,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<
       PluginsArg,
-      ErrorPropsArg,
+      ErrorProps,
       ErrorArg,
       ErrorNameArg,
-      InstanceOptions
+      InstanceOptionsArg
     >
     readonly prototype: BaseError<
       PluginsArg,
