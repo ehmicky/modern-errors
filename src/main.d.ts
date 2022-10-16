@@ -67,9 +67,7 @@ type ErrorClass<
   PluginsArg extends Plugins = [],
 > = MaybeIntersect<
   {
-    new <
-      Options extends ConstructorParameters<ParentErrorClass>[1] = ConstructorParameters<ParentErrorClass>[1],
-    >(
+    new <Options extends ConstructorParameters<ParentErrorClass>[1] = {}>(
       message: string,
       options?: Options,
     ): CoreError<ErrorInstance, ErrorNameArg, NonNullable<Options>>
@@ -174,7 +172,7 @@ type NormalizeError<
  * ```
  */
 type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <Options extends InitOptions = InitOptions>(
+  new <Options extends InitOptions = {}>(
     message: string,
     options?: Options,
   ): NormalizeError<Options['cause'], Options>
