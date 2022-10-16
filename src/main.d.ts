@@ -288,12 +288,9 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 
 type NamedError<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
-type AggregateErrors<
-  PluginsArg extends Plugins,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = Pick<
+type AggregateErrors<InstanceOptionsArg extends MainInstanceOptions> = Pick<
   unknown extends InstanceOptionsArg['errors']
-    ? SpecificInstanceOptions<PluginsArg>
+    ? MainInstanceOptions
     : InstanceOptionsArg,
   'errors'
 >
@@ -307,7 +304,7 @@ type BaseError<
 > = Error &
   CustomAttributesArg &
   NamedError<ErrorNameArg> &
-  AggregateErrors<PluginsArg, InstanceOptionsArg> &
+  AggregateErrors<InstanceOptionsArg> &
   ErrorPropsArg &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
