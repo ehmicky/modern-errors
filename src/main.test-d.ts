@@ -226,8 +226,12 @@ const plugin = {
 } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
+const GPAnyError = modernErrors([{} as Plugin])
+const GPSError = GPAnyError.subclass('GPSError')
 const paError = new PAnyError('', { cause: genericError })
 const psError = new PSError('')
+const gpaError = new GPAnyError('', { cause: genericError })
+const gpsError = new GPSError('')
 modernErrors([])
 modernErrors([], {})
 modernErrors([plugin], {})
@@ -238,6 +242,7 @@ PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
 new PSError('', { test: true })
 expectError(modernErrors([], { test: true }))
+expectError(modernErrors([plugin as Plugin], { test: true }))
 expectError(modernErrors([{ ...plugin, name: '' as string }], { test: true }))
 expectError(
   modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
@@ -335,6 +340,8 @@ expectError(paError.instanceMethod(true))
 expectError(psError.instanceMethod(true))
 expectError(paError.unknownMethod())
 expectError(psError.unknownMethod())
+expectError(gpaError.unknownMethod())
+expectError(gpsError.unknownMethod())
 if (exception instanceof PSError) {
   expectType<'arg'>(exception.instanceMethod('arg'))
 }
@@ -347,13 +354,28 @@ expectError(
 expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
 expectError(expectType<'arg'>(PAnyError.staticMethod(true)))
 expectError(PAnyError.unknownMethod())
+expectError(GPAnyError.unknownMethod())
 
 expectType<true>(paError.property)
 expectType<true>(psError.property)
 expectError(paError.unknownProperty)
 expectError(psError.unknownProperty)
+expectError(gpaError.unknownProperty)
+expectError(gpsError.unknownProperty)
 if (exception instanceof PSError) {
   expectType<true>(exception.property)
+}
+
+expectAssignable<Error>(gpsError)
+expectType<'GPSError'>(gpsError.name)
+expectAssignable<InstanceType<typeof GPSError>>(gpsError)
+expectAssignable<InstanceType<typeof GPAnyError>>(gpsError)
+expectAssignable<InstanceType<typeof GPAnyError>>(GPAnyError.normalize(''))
+if (exception instanceof GPAnyError) {
+  expectAssignable<InstanceType<typeof GPAnyError>>(exception)
+}
+if (exception instanceof GPSError) {
+  expectAssignable<InstanceType<typeof GPSError>>(exception)
 }
 
 expectError(AnyError.subclass('TestError', { test: true }))
