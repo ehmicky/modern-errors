@@ -43,6 +43,7 @@ type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
 interface Plugin {
   readonly name: string
   readonly getOptions?: (input: never, full: boolean) => unknown
+  readonly isOptions?: (input: unknown) => boolean
   readonly instanceMethods?: InstanceMethods
 }
 

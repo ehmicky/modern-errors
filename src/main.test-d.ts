@@ -209,10 +209,11 @@ expectNotAssignable<
 >(new Error(''))
 
 const name = 'test'
-const getOptions = (options: true, full: boolean) => options
+const getOptions = (input: true, full: boolean) => input
+const isOptions = (input: unknown) => input === true
 const instanceMethod = (info: InstanceMethodInfo, value: true) => value
 const instanceMethods = { instanceMethod }
-const plugin = { name, getOptions, instanceMethods } as const
+const plugin = { name, getOptions, isOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const paError = new PAnyError('', { cause: genericError })
@@ -235,9 +236,11 @@ expectError(
 )
 expectError(
   modernErrors([
-    { ...plugin, getOptions: (options: true, full: string) => options },
+    { ...plugin, getOptions: (input: true, full: string) => input },
   ]),
 )
+expectError(modernErrors([{ ...plugin, isOptions: (input: true) => true }]))
+expectError(modernErrors([{ ...plugin, isOptions: (input: unknown) => 0 }]))
 modernErrors([{ ...plugin, instanceMethods: {} }])
 expectError(modernErrors([{ ...plugin, instanceMethods: true }]))
 expectError(
