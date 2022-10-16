@@ -178,7 +178,7 @@ type GetCustomAttributes<
           : ChildKey
         : ChildKey]: Child[ChildKey]
     }
-  : CustomAttributes
+  : {}
 
 type ErrorProps = object
 
@@ -190,7 +190,7 @@ type MergeProps<
 type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
   CorePluginsOptionsArg['props'] extends ErrorProps
     ? CorePluginsOptionsArg['props']
-    : ErrorProps
+    : {}
 
 type MergeErrorProps<
   Props extends ErrorProps,
@@ -482,7 +482,7 @@ type SpecificAnyErrorClass<
   readonly prototype: BaseError<
     PluginsArg,
     ErrorPropsArg,
-    CustomAttributes,
+    {},
     ErrorName,
     SpecificInstanceOptions<PluginsArg>
   >
@@ -501,7 +501,7 @@ type SpecificAnyErrorClass<
     PluginsArg,
     ErrorPropsArg,
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-    CustomAttributes
+    {}
   >
 
   /**
