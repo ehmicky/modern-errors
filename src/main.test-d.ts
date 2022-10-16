@@ -220,6 +220,7 @@ const instanceMethod = (
     options: true
     showStack: boolean
     AnyError: typeof AnyError
+    ErrorClasses: {}
   },
   value: true,
 ) => value
@@ -291,6 +292,16 @@ expectError(
     {
       ...plugin,
       instanceMethods: { instanceMethod: (info: { AnyError: true }) => true },
+    },
+  ]),
+)
+expectError(
+  modernErrors([
+    {
+      ...plugin,
+      instanceMethods: {
+        instanceMethod: (info: { ErrorClasses: true }) => true,
+      },
     },
   ]),
 )

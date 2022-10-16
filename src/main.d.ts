@@ -6,6 +6,7 @@ interface Info {
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
+  readonly ErrorClasses: object
 }
 
 /**
