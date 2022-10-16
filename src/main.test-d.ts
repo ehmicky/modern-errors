@@ -454,6 +454,7 @@ if (exception instanceof GPSError) {
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { cause: '', test: true }))
 expectError(new SError('', { test: true }))
+expectError(new SError('', { cause: '', test: true }))
 expectError(modernErrors([plugin], { unknown: true }))
 expectError(PAnyError.subclass('TestError', { unknown: true }))
 expectError(new PAnyError('', { unknown: true }))

@@ -150,6 +150,11 @@ type PluginOptions<PluginArg extends Plugin> =
     ? Parameters<PluginArg['getOptions']>[0]
     : never
 
+type NoAdditionalProps<
+  T extends object,
+  U extends object,
+> = keyof T extends keyof U ? T : never
+
 type LiteralString<T extends string> = string extends T ? never : T
 
 type FixEmptyObject<Object extends object> = keyof Object extends never
@@ -228,7 +233,10 @@ type ErrorSubclass<
       > = ParentOptions<PluginsArg, ParentErrorClass>,
     >(
       message: string,
-      options?: Options,
+      options?: NoAdditionalProps<
+        Options,
+        ParentOptions<PluginsArg, ParentErrorClass>
+      >,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
     prototype: BaseError<
@@ -348,7 +356,7 @@ type NormalizeError<
 export type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <Options extends InitOptions<PluginsArg> = InitOptions<PluginsArg>>(
     message: string,
-    options?: Options,
+    options?: NoAdditionalProps<Options, InitOptions<PluginsArg>>,
     ...extra: any[]
   ): NormalizeError<PluginsArg, Options['cause'], Options>
   prototype: BaseError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
