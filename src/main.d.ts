@@ -179,9 +179,9 @@ type MergeErrorProps<
   : Props
 
 type GetPropsOption<OptionsArg extends object> = OptionsArg extends {
-  props: infer PropsArg extends ErrorProps
+  props: ErrorProps
 }
-  ? PropsArg
+  ? OptionsArg['props']
   : {}
 
 interface CorePluginsOptions {
