@@ -1,6 +1,10 @@
 import type { ErrorName } from 'error-custom-class'
 import type MergeErrorCause from 'merge-error-cause'
 
+interface Info {
+  readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
+}
+
 /**
  * Plugins extend `modern-errors` features.
  *
@@ -16,7 +20,7 @@ interface Plugin {
   readonly name: string
   readonly getOptions?: (input: any, full: boolean) => any
   readonly instanceMethods?: {
-    readonly [MethodName: string]: (...args: any[]) => any
+    readonly [MethodName: string]: (info: Info, ...args: any[]) => any
   }
 }
 
