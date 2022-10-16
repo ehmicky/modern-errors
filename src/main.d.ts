@@ -83,18 +83,21 @@ type SliceFirst<tuple extends unknown[]> = tuple extends [
 
 type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
-  OptionsArg extends unknown,
+  MethodOptionsArg extends unknown,
 > = (
-  ...args: readonly [...SliceFirst<Parameters<InstanceMethodArg>>, OptionsArg?]
+  ...args: readonly [
+    ...SliceFirst<Parameters<InstanceMethodArg>>,
+    MethodOptionsArg?,
+  ]
 ) => ReturnType<InstanceMethodArg>
 
 type ErrorInstanceMethods<
   InstanceMethodsArg extends InstanceMethods,
-  OptionsArg extends unknown,
+  MethodOptionsArg extends unknown,
 > = {
   readonly [MethodName in keyof InstanceMethodsArg]: ErrorInstanceMethod<
     InstanceMethodsArg[MethodName],
-    OptionsArg
+    MethodOptionsArg
   >
 }
 
@@ -155,6 +158,12 @@ type NoAdditionalProps<
   T extends object,
   U extends object,
 > = keyof T extends keyof U ? T : never
+
+type MergePluginsOptions<
+  PluginsArg extends Plugins,
+  OptionsOne extends PluginsOptions<PluginsArg>,
+  OptionsTwo extends PluginsOptions<PluginsArg>,
+> = OptionsOne & OptionsTwo
 
 type LiteralString<T extends string> = string extends T ? never : T
 
@@ -238,12 +247,14 @@ type BaseError<
   PluginsArg extends Plugins,
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
-  Options extends InstanceOptions<PluginsArg>,
+  InstanceOptionsArg extends InstanceOptions<PluginsArg>,
 > = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
-    unknown extends Options['errors'] ? InstanceOptions<PluginsArg> : Options,
+    unknown extends InstanceOptionsArg['errors']
+      ? InstanceOptions<PluginsArg>
+      : InstanceOptionsArg,
     'errors'
   > &
-  Options['props'] &
+  InstanceOptionsArg['props'] &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
 
@@ -343,14 +354,14 @@ type CreateSubclass<
 type NormalizeError<
   PluginsArg extends Plugins,
   ErrorArg extends unknown,
-  Options extends InstanceOptions<PluginsArg>,
-> = ErrorArg extends BaseError<PluginsArg, Error, ErrorName, Options>
+  InstanceOptionsArg extends InstanceOptions<PluginsArg>,
+> = ErrorArg extends BaseError<PluginsArg, Error, ErrorName, InstanceOptionsArg>
   ? ErrorArg
   : ErrorArg extends Error
-  ? BaseError<PluginsArg, ErrorArg, 'UnknownError', Options>
+  ? BaseError<PluginsArg, ErrorArg, 'UnknownError', InstanceOptionsArg>
   : unknown extends ErrorArg
-  ? BaseError<PluginsArg, Error, ErrorName, Options>
-  : BaseError<PluginsArg, Error, 'UnknownError', Options>
+  ? BaseError<PluginsArg, Error, ErrorName, InstanceOptionsArg>
+  : BaseError<PluginsArg, Error, 'UnknownError', InstanceOptionsArg>
 
 /**
  * Base error class.
@@ -370,12 +381,15 @@ export type AnyErrorClass<
   GlobalOptionsArg extends PluginsOptions<PluginsArg> = {},
 > = {
   new <
-    Options extends InstanceOptions<PluginsArg> = InstanceOptions<PluginsArg>,
+    InstanceOptionsArg extends InstanceOptions<PluginsArg> = InstanceOptions<PluginsArg>,
   >(
     message: string,
-    options?: NoAdditionalProps<Options, InstanceOptions<PluginsArg>>,
+    options?: NoAdditionalProps<
+      InstanceOptionsArg,
+      InstanceOptions<PluginsArg>
+    >,
     ...extra: any[]
-  ): NormalizeError<PluginsArg, Options['cause'], Options>
+  ): NormalizeError<PluginsArg, InstanceOptionsArg['cause'], InstanceOptionsArg>
   readonly prototype: BaseError<
     PluginsArg,
     Error,
