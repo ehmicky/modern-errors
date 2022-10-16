@@ -154,15 +154,11 @@ type NormalizeError<
   Options extends InitOptions,
 > = ErrorInstance extends CoreError<Error, ErrorName, Options>
   ? ErrorInstance
-  : CoreError<
-      ErrorInstance extends Error ? ErrorInstance : Error,
-      'UnknownError',
-      Options
-    >
-
-type AnyReturn<Options extends InitOptions> = unknown extends Options['cause']
+  : ErrorInstance extends Error
+  ? CoreError<ErrorInstance, 'UnknownError', Options>
+  : unknown extends ErrorInstance
   ? CoreError<Error, ErrorName, Options>
-  : NormalizeError<Options['cause'], Options>
+  : CoreError<Error, 'UnknownError', Options>
 
 /**
  * Base error class.
@@ -181,7 +177,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <Options extends InitOptions = InitOptions>(
     message: string,
     options?: Options,
-  ): AnyReturn<NonNullable<Options>>
+  ): NormalizeError<Options['cause'], Options>
   prototype: CoreError<Error, ErrorName, InitOptions>
 
   /**

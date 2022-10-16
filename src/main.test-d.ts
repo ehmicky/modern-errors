@@ -2,6 +2,8 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 
 import modernErrors from './main.js'
 
+type ErrorName = `${string}Error`
+
 const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
 const deepGenericError = {} as Error & { cause: Error & { genericProp: true } }
@@ -10,7 +12,7 @@ const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 const wideError = {} as any as AnyInstance
 expectAssignable<Error>(wideError)
-expectType<`${string}Error`>(wideError.name)
+expectType<ErrorName>(wideError.name)
 
 const unknownError = new AnyError('', { cause: genericError })
 const deepUnknownError = new AnyError('', { cause: deepGenericError })
@@ -28,6 +30,7 @@ expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
 expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
 expectType<UnknownInstance>(AnyError.normalize(''))
 expectType<UnknownInstance>(AnyError.normalize(undefined))
+expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
 if (unknownError instanceof AnyError) {
   expectAssignable<UnknownInstance>(unknownError)
 }
