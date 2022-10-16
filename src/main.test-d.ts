@@ -213,7 +213,7 @@ expectNotAssignable<
 >(new Error(''))
 
 const name = 'test'
-const getOptions = (options: true) => options
+const getOptions = (options: true, full: boolean) => options
 const plugin = { name, getOptions } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
@@ -227,13 +227,14 @@ PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
 new PSError('', { test: true })
 expectError(modernErrors([], { test: true }))
-expectError(
-  modernErrors([plugin as Omit<typeof plugin, 'name'> & { name: string }], {
-    test: true,
-  }),
-)
+expectError(modernErrors([{ ...plugin, name: '' as string }], { test: true }))
 expectError(
   modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
+)
+expectError(
+  modernErrors([
+    { ...plugin, getOptions: (options: true, full: string) => options },
+  ]),
 )
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
