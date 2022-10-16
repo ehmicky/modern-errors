@@ -5,7 +5,11 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { InstanceMethodInfo, ErrorInfo } from './main.js'
+import modernErrors, {
+  InstanceMethodInfo,
+  StaticMethodInfo,
+  ErrorInfo,
+} from './main.js'
 
 type ErrorName = `${string}Error`
 
@@ -213,7 +217,15 @@ const getOptions = (input: true, full: boolean) => input
 const isOptions = (input: unknown) => input === true
 const instanceMethod = (info: InstanceMethodInfo, arg: 'arg') => arg
 const instanceMethods = { instanceMethod }
-const plugin = { name, getOptions, isOptions, instanceMethods } as const
+const staticMethod = (info: StaticMethodInfo, arg: 'arg') => arg
+const staticMethods = { staticMethod }
+const plugin = {
+  name,
+  getOptions,
+  isOptions,
+  instanceMethods,
+  staticMethods,
+} as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const paError = new PAnyError('', { cause: genericError })
@@ -246,6 +258,11 @@ expectError(modernErrors([{ ...plugin, instanceMethods: true }]))
 expectError(
   modernErrors([{ ...plugin, instanceMethods: { instanceMethod: true } }]),
 )
+modernErrors([{ ...plugin, staticMethods: {} }])
+expectError(modernErrors([{ ...plugin, staticMethods: true }]))
+expectError(
+  modernErrors([{ ...plugin, staticMethods: { staticMethod: true } }]),
+)
 
 const imInfo = {} as InstanceMethodInfo
 expectError(imInfo.unknown)
@@ -260,6 +277,14 @@ const iUnknownError = new imInfo.ErrorClasses.UnknownError('')
 expectAssignable<UnknownInstance>(iUnknownError)
 expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
 expectAssignable<typeof imInfo.ErrorClasses.TestError>(SError)
+
+const smInfo = {} as StaticMethodInfo
+expectType<InstanceMethodInfo['options']>(smInfo.options)
+expectType<InstanceMethodInfo['AnyError']>(smInfo.AnyError)
+expectType<InstanceMethodInfo['ErrorClasses']>(smInfo.ErrorClasses)
+expectType<InstanceMethodInfo['errorInfo']>(smInfo.errorInfo)
+expectError(smInfo.error)
+expectError(smInfo.showStack)
 
 const eInfo = imInfo.errorInfo(iUnknownError)
 imInfo.errorInfo('')

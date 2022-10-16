@@ -24,10 +24,13 @@ interface Info {
 }
 
 export type InstanceMethodInfo = Info
+export type StaticMethodInfo = Omit<Info, 'error' | 'showStack'>
 export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 
 type InstanceMethod = (info: InstanceMethodInfo, ...args: never[]) => unknown
 type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
+type StaticMethod = (info: StaticMethodInfo, ...args: never[]) => unknown
+type StaticMethods = { readonly [MethodName: string]: StaticMethod }
 
 /**
  * Plugins extend `modern-errors` features.
@@ -45,6 +48,7 @@ interface Plugin {
   readonly getOptions?: (input: never, full: boolean) => unknown
   readonly isOptions?: (input: unknown) => boolean
   readonly instanceMethods?: InstanceMethods
+  readonly staticMethods?: StaticMethods
 }
 
 type Plugins = readonly Plugin[]
