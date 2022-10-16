@@ -4,6 +4,7 @@ import modernErrors from './main.js'
 
 const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
+const deepGenericError = {} as Error & { cause: Error & { genericProp: true } }
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
@@ -12,6 +13,7 @@ expectAssignable<Error>(wideError)
 expectType<`${string}Error`>(wideError.name)
 
 const unknownError = new AnyError('', { cause: genericError })
+const deepUnknownError = new AnyError('', { cause: deepGenericError })
 const bareUnknownError = new AnyError('', { cause: '' })
 type UnknownInstance = typeof bareUnknownError
 
@@ -19,6 +21,7 @@ expectAssignable<AnyInstance>(unknownError)
 expectAssignable<Error>(unknownError)
 expectType<'UnknownError'>(unknownError.name)
 expectType<true>(unknownError.genericProp)
+expectType<true>(deepUnknownError.genericProp)
 expectAssignable<UnknownInstance>(unknownError)
 expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
 expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
