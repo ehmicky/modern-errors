@@ -20,7 +20,7 @@ interface Info {
       ErrorName
     >
   }
-  readonly errorInfo: (error: Error) => ErrorInfo
+  readonly errorInfo: (error: unknown) => ErrorInfo
 }
 
 export type InstanceMethodInfo = Info
