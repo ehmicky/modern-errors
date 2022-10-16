@@ -55,7 +55,7 @@ type ErrorClass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
-  PluginsArg extends Plugins,
+  PluginsArg extends Plugins = [],
 > = MaybeIntersect<
   {
     new <InitOptions extends ConstructorParameters<ParentErrorClass>[1] = {}>(
@@ -74,7 +74,7 @@ type ErrorClass<
 type ClassOptions<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
-  PluginsArg extends Plugins,
+  PluginsArg extends Plugins = [],
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -120,7 +120,7 @@ type ClassOptions<
 type CreateSubclass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
-  PluginsArg extends Plugins,
+  PluginsArg extends Plugins = [],
 > = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ParentErrorClass, ErrorInstance, PluginsArg>,
@@ -158,7 +158,7 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
  * }
  * ```
  */
-type AnyErrorClass<PluginsArg extends Plugins> = {
+type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <InitOptions extends AnyErrorOptions = {}>(
     message: string,
     options?: InitOptions,
