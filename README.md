@@ -192,12 +192,9 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 
 ### Export error classes
 
-Exporting and documenting error classes 
-(including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) allows
-consumers to check them. This also
-enables sharing error classes between 
-modules.
+Exporting and documenting error classes (including [`AnyError`](#anyerror) and
+[`UnknownError`](#unknown-errors)) allows consumers to check them. This also
+enables sharing error classes between modules.
 
 ### Check error classes
 
