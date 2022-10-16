@@ -455,8 +455,7 @@ type AnyErrorInstance<
   GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<PluginsArg, ErrorArg>,
   MainInstanceOptionsArg
-> &
-  ErrorInstance
+>
 
 /**
  * Base error class.
