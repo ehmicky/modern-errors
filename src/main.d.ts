@@ -26,24 +26,25 @@ type PluginOptions<PluginArg extends Plugin> =
 
 type LiteralString<T extends string> = string extends T ? never : T
 
-type PluginsOptions<PluginsArg extends Plugins> = {
+type FixEmptyObject<Object extends object> = keyof Object extends never
+  ? { _?: never }
+  : Object
+
+type PluginsOptions<PluginsArg extends Plugins> = FixEmptyObject<{
   readonly [PluginArg in PluginsArg[number] as LiteralString<
     PluginArg['name']
   >]?: PluginOptions<PluginArg>
-}
+}>
 
 // TODO: re-enable
 // type MergeCause<ErrorInstance extends unknown> = ReturnType<
 //   typeof MergeErrorCause<ErrorInstance>
 // >
 
-type InitOptions<PluginsArg extends Plugins> = MaybeIntersect<
-  {
-    cause?: unknown
-    errors?: unknown[]
-  },
-  PluginsOptions<PluginsArg>
->
+type InitOptions<PluginsArg extends Plugins> = {
+  cause?: unknown
+  errors?: unknown[]
+} & PluginsOptions<PluginsArg>
 
 type CoreError<
   PluginsArg extends Plugins,
@@ -116,50 +117,47 @@ type ClassOptions<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   ErrorInstance extends Error,
-> = MaybeIntersect<
-  {
-    /**
-     * Custom class to add any methods, `constructor` or properties.
-     *
-     * @example
-     * ```js
-     * export const InputError = AnyError.subclass('InputError', {
-     *   // The `class` must extend from `AnyError`
-     *   custom: class extends AnyError {
-     *     // If a `constructor` is defined, its parameters must be (message, options)
-     *     // like `AnyError`
-     *     constructor(message, options) {
-     *       // Modifying `message` or `options` should be done before `super()`
-     *       message += message.endsWith('.') ? '' : '.'
-     *
-     *       // All arguments should be forwarded to `super()`, including any
-     *       // custom `options` or additional `constructor` parameters
-     *       super(message, options)
-     *
-     *       // `name` is automatically added, so this is not necessary
-     *       // this.name = 'InputError'
-     *     }
-     *
-     *     isUserInput() {
-     *       // ...
-     *     }
-     *   },
-     * })
-     *
-     * const error = new InputError('Wrong user name')
-     * console.log(error.message) // 'Wrong user name.'
-     * console.log(error.isUserInput())
-     * ```
-     */
-    readonly custom?: ErrorClass<
-      PluginsArg,
-      ParentErrorClass,
-      ErrorInstance,
-      ErrorName
-    >
-  },
-  PluginsOptions<PluginsArg>
->
+> = {
+  /**
+   * Custom class to add any methods, `constructor` or properties.
+   *
+   * @example
+   * ```js
+   * export const InputError = AnyError.subclass('InputError', {
+   *   // The `class` must extend from `AnyError`
+   *   custom: class extends AnyError {
+   *     // If a `constructor` is defined, its parameters must be (message, options)
+   *     // like `AnyError`
+   *     constructor(message, options) {
+   *       // Modifying `message` or `options` should be done before `super()`
+   *       message += message.endsWith('.') ? '' : '.'
+   *
+   *       // All arguments should be forwarded to `super()`, including any
+   *       // custom `options` or additional `constructor` parameters
+   *       super(message, options)
+   *
+   *       // `name` is automatically added, so this is not necessary
+   *       // this.name = 'InputError'
+   *     }
+   *
+   *     isUserInput() {
+   *       // ...
+   *     }
+   *   },
+   * })
+   *
+   * const error = new InputError('Wrong user name')
+   * console.log(error.message) // 'Wrong user name.'
+   * console.log(error.isUserInput())
+   * ```
+   */
+  readonly custom?: ErrorClass<
+    PluginsArg,
+    ParentErrorClass,
+    ErrorInstance,
+    ErrorName
+  >
+} & PluginsOptions<PluginsArg>
 
 type CreateSubclass<
   PluginsArg extends Plugins,
