@@ -42,6 +42,10 @@ type NamedError<
   ErrorNameArg extends ErrorName,
 > = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg }
 
+type InitOptions = {
+  cause?: unknown
+}
+
 type ErrorConstructor = new (...args: any[]) => Error
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
@@ -146,10 +150,6 @@ type AnyReturn<Cause extends unknown> = unknown extends Cause
   ? NamedError<Error, ErrorName>
   : NormalizeError<Cause>
 
-type AnyErrorOptions = {
-  cause?: unknown
-}
-
 /**
  * Base error class.
  *
@@ -164,7 +164,7 @@ type AnyErrorOptions = {
  * ```
  */
 type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <Options extends AnyErrorOptions = AnyErrorOptions>(
+  new <Options extends InitOptions = InitOptions>(
     message: string,
     options?: Options,
   ): AnyReturn<Options['cause']>
