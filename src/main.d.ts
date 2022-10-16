@@ -277,7 +277,7 @@ type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
 
-type ParentOptions<
+type ParentInstanceOptions<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = ConstructorParameters<ParentErrorClass>[1] & InstanceOptions<PluginsArg>
@@ -301,18 +301,18 @@ type ErrorSubclass<
 > = MaybeIntersect<
   {
     new <
-      Options extends ParentOptions<
+      InstanceOptions extends ParentInstanceOptions<
         PluginsArg,
         ParentErrorClass
-      > = ParentOptions<PluginsArg, ParentErrorClass>,
+      > = ParentInstanceOptions<PluginsArg, ParentErrorClass>,
     >(
       message: string,
       options?: NoAdditionalProps<
-        Options,
-        ParentOptions<PluginsArg, ParentErrorClass>
+        InstanceOptions,
+        ParentInstanceOptions<PluginsArg, ParentErrorClass>
       >,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
+    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, InstanceOptions>
     readonly prototype: BaseError<
       PluginsArg,
       ErrorArg,
@@ -337,17 +337,17 @@ type CreateSubclass<
   ErrorArg extends Error,
 > = <
   ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions<PluginsArg, ParentErrorClass, ErrorArg>,
+  ClassOptionsArg extends ClassOptions<PluginsArg, ParentErrorClass, ErrorArg>,
 >(
   errorName: ErrorNameArg,
-  options?: OptionsArg,
+  options?: ClassOptionsArg,
 ) => ErrorSubclass<
   PluginsArg,
-  OptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? OptionsArg['custom']
+  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+    ? ClassOptionsArg['custom']
     : ParentErrorClass,
-  OptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? InstanceType<OptionsArg['custom']> &
+  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+    ? InstanceType<ClassOptionsArg['custom']> &
         InstanceType<ErrorConstructor<PluginsArg>>
     : InstanceType<ParentErrorClass>,
   ErrorNameArg
