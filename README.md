@@ -154,11 +154,12 @@ Options:
 - any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
 - `custom`: [custom class](#custom-logic) to add any methods, `constructor` or
-  properties.
+  properties
 
 ### AnyError.normalize(anyException)
 
-_Type_: `(anyException) => AnyError`
+`anyException`: `any`\
+_Return value_: `AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors).
@@ -167,7 +168,7 @@ class to [_unknown_ errors](#unknown-errors).
 
 `message`: `string`\
 `options`: `object?`\
-_Return value_: `Error`
+_Return value_: `AnyError`
 
 Options:
 
