@@ -146,7 +146,7 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
   : NamedError<Cause extends Error ? MergeCause<Cause> : Error, 'UnknownError'>
 
 /**
- * Base error class.
+ * Base error class. Cannot be instantiated, except when wrapping errors.
  *
  * @example
  * ```js
