@@ -390,7 +390,7 @@ expectAssignable<object>(imInfo.ErrorClasses)
 expectError(imInfo.ErrorClasses.other)
 expectError(new imInfo.ErrorClasses.AnyError('', { cause: genericError }))
 const iUnknownError = new imInfo.ErrorClasses.UnknownError('')
-expectAssignable<UnknownInstance>(iUnknownError)
+expectAssignable<ErrorInstance>(iUnknownError)
 expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
 expectAssignable<typeof imInfo.ErrorClasses.TestError>(SError)
 

@@ -1,26 +1,14 @@
 import type { ErrorName } from 'error-custom-class'
 
 interface CommonInfo {
-  error: BaseError<Plugins, Error, ErrorName, InstanceOptions<Plugins>>
+  error: ErrorInstance
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
   readonly ErrorClasses: {
     AnyError: never
-    UnknownError: ErrorSubclass<
-      Plugins,
-      ErrorProps,
-      ErrorConstructor<Plugins>,
-      Error,
-      'UnknownError'
-    >
-    [name: ErrorName]: ErrorSubclass<
-      Plugins,
-      ErrorProps,
-      ErrorConstructor<Plugins>,
-      Error,
-      ErrorName
-    >
+    UnknownError: ErrorClass
+    [name: ErrorName]: ErrorClass
   }
   readonly errorInfo: (error: unknown) => Info['errorInfo']
 }
@@ -258,6 +246,7 @@ type GlobalOptions<PluginsArg extends Plugins> = PluginsOptions<PluginsArg>
 
 type BaseError<
   PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
@@ -273,6 +262,7 @@ type BaseError<
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
+  ErrorProps,
   Error,
   ErrorName,
   InstanceOptions<PluginsArg>
@@ -324,9 +314,16 @@ type ErrorSubclass<
         ParentInstanceOptions<PluginsArg, ParentErrorClass>
       >,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, InstanceOptions>
+    ): BaseError<
+      PluginsArg,
+      ErrorPropsArg,
+      ErrorArg,
+      ErrorNameArg,
+      InstanceOptions
+    >
     readonly prototype: BaseError<
       PluginsArg,
+      ErrorPropsArg,
       ErrorArg,
       ErrorNameArg,
       InstanceOptions<PluginsArg>
@@ -380,15 +377,34 @@ type CreateSubclass<
 
 type NormalizeError<
   PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
-> = ErrorArg extends BaseError<PluginsArg, Error, ErrorName, InstanceOptionsArg>
+> = ErrorArg extends BaseError<
+  PluginsArg,
+  ErrorProps,
+  Error,
+  ErrorName,
+  InstanceOptionsArg
+>
   ? ErrorArg
   : ErrorArg extends Error
-  ? BaseError<PluginsArg, ErrorArg, 'UnknownError', InstanceOptionsArg>
+  ? BaseError<
+      PluginsArg,
+      ErrorPropsArg,
+      ErrorArg,
+      'UnknownError',
+      InstanceOptionsArg
+    >
   : unknown extends ErrorArg
-  ? BaseError<PluginsArg, Error, ErrorName, InstanceOptionsArg>
-  : BaseError<PluginsArg, Error, 'UnknownError', InstanceOptionsArg>
+  ? BaseError<PluginsArg, ErrorPropsArg, Error, ErrorName, InstanceOptionsArg>
+  : BaseError<
+      PluginsArg,
+      ErrorPropsArg,
+      Error,
+      'UnknownError',
+      InstanceOptionsArg
+    >
 
 /**
  * Base error class.
@@ -416,9 +432,15 @@ export type AnyErrorClass<
       InstanceOptions<PluginsArg>
     >,
     ...extra: any[]
-  ): NormalizeError<PluginsArg, InstanceOptionsArg['cause'], InstanceOptionsArg>
+  ): NormalizeError<
+    PluginsArg,
+    ErrorPropsArg,
+    InstanceOptionsArg['cause'],
+    InstanceOptionsArg
+  >
   readonly prototype: BaseError<
     PluginsArg,
+    ErrorPropsArg,
     Error,
     ErrorName,
     InstanceOptions<PluginsArg>
@@ -438,7 +460,13 @@ export type AnyErrorClass<
     PluginsArg,
     ErrorPropsArg,
     AnyErrorClass<PluginsArg, ErrorPropsArg>,
-    BaseError<PluginsArg, Error, ErrorName, InstanceOptions<PluginsArg>>
+    BaseError<
+      PluginsArg,
+      ErrorPropsArg,
+      Error,
+      ErrorName,
+      InstanceOptions<PluginsArg>
+    >
   >
 
   /**
@@ -457,7 +485,12 @@ export type AnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<PluginsArg, ErrorArg, InstanceOptions<PluginsArg>>
+  ): NormalizeError<
+    PluginsArg,
+    ErrorPropsArg,
+    ErrorArg,
+    InstanceOptions<PluginsArg>
+  >
 } & PluginsStaticMethods<PluginsArg>
 
 /**
