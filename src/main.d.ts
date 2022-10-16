@@ -65,6 +65,11 @@ type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
 
+type ParentOptions<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+> = ConstructorParameters<ParentErrorClass>[1] & InitOptions<PluginsArg>
+
 type ErrorClass<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -73,9 +78,10 @@ type ErrorClass<
 > = MaybeIntersect<
   {
     new <
-      Options extends ConstructorParameters<ParentErrorClass>[1] &
-        InitOptions<PluginsArg> = ConstructorParameters<ParentErrorClass>[1] &
-        InitOptions<PluginsArg>,
+      Options extends ParentOptions<
+        PluginsArg,
+        ParentErrorClass
+      > = ParentOptions<PluginsArg, ParentErrorClass>,
     >(
       message: string,
       options?: Options,
