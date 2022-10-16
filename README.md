@@ -135,8 +135,6 @@ Options:
 
 ## AnyError
 
-_Type_: `class extends Error {}`
-
 Base error class.
 
 ### new AnyError(message, options?)
