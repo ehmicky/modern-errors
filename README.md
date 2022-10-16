@@ -421,7 +421,7 @@ try {
 
 Wrapping a module's main functions with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) ensures every error
-thrown from it is [valid](#invalid-errors) and has a [_known_](#unknown-errors)
+being thrown is [valid](#invalid-errors) and has a [_known_](#unknown-errors)
 class.
 
 ```js
