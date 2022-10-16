@@ -173,18 +173,10 @@ type MergeProps<
 
 type MergeErrorProps<
   Props extends ErrorProps,
-  OptionsArg extends object,
-> = MergeProps<Props, GetPropsOption<OptionsArg>>
-
-type GetPropsOptionTwo<InstanceOptionsArg extends InstanceOptions<Plugins>> =
-  InstanceOptionsArg['props'] extends ErrorProps
-    ? InstanceOptionsArg['props']
-    : {}
-
-type MergeErrorPropsTwo<
-  Props extends ErrorProps,
-  OptionsArg extends object,
-> = MergeProps<Props, GetPropsOptionTwo<OptionsArg>>
+  InstanceOptionsArg extends InstanceOptions<Plugins>,
+> = InstanceOptionsArg['props'] extends ErrorProps
+  ? MergeProps<Props, InstanceOptionsArg['props']>
+  : Props
 
 type GetPropsOption<OptionsArg extends object> = OptionsArg extends {
   props: infer PropsArg extends ErrorProps
@@ -332,7 +324,7 @@ type ErrorSubclass<
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<
       PluginsArg,
-      MergeErrorPropsTwo<ErrorPropsArg, InstanceOptionsArg>,
+      MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
       ErrorArg,
       ErrorNameArg,
       InstanceOptionsArg
@@ -406,7 +398,7 @@ type NormalizeError<
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
 > = BaseError<
   PluginsArg,
-  MergeErrorPropsTwo<ErrorPropsArg, InstanceOptionsArg>,
+  MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
   ErrorArg extends Error ? ErrorArg : Error,
   NormalizeErrorName<ErrorArg>,
   InstanceOptionsArg
