@@ -308,7 +308,7 @@ expectError(paError.instanceMethod(true))
 expectError(psError.instanceMethod(true))
 expectError(paError.unknownMethod())
 expectError(psError.unknownMethod())
-// TODO: re-enable
+// See above
 // if (exception instanceof PAnyError) {
 //   expectType<'arg'>(exception.instanceMethod('arg'))
 // }
