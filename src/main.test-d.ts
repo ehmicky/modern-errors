@@ -5,7 +5,11 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { InstanceMethodInfo, ErrorInfo } from './main.js'
+import modernErrors, {
+  InstanceMethodInfo,
+  ErrorInfo,
+  PluginsInstanceMethods,
+} from './main.js'
 
 type ErrorName = `${string}Error`
 
@@ -215,6 +219,8 @@ const instanceMethods = { instanceMethod }
 const plugin = { name, getOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
+const paError = new PAnyError('', { cause: genericError })
+const psError = new PSError('')
 modernErrors([])
 modernErrors([], {})
 modernErrors([plugin], {})
@@ -265,6 +271,13 @@ expectType<InstanceMethodInfo['showStack']>(eInfo.showStack)
 expectError(eInfo.AnyError)
 expectError(eInfo.ErrorClasses)
 expectError(eInfo.errorInfo)
+
+expectType<true>(paError.instanceMethod(true))
+expectType<true>(psError.instanceMethod(true))
+expectError(paError.instanceMethod({} as InstanceMethodInfo, true))
+expectError(psError.instanceMethod({} as InstanceMethodInfo, true))
+expectError(paError.instanceMethod(true, true))
+expectError(psError.instanceMethod(true, true))
 
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))

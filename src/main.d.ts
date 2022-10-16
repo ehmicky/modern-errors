@@ -26,6 +26,9 @@ interface Info {
 export type InstanceMethodInfo = Info
 export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 
+type InstanceMethod = (info: InstanceMethodInfo, ...args: never[]) => unknown
+type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
+
 /**
  * Plugins extend `modern-errors` features.
  *
@@ -40,15 +43,42 @@ export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 interface Plugin {
   readonly name: string
   readonly getOptions?: (input: never, full: boolean) => unknown
-  readonly instanceMethods?: {
-    readonly [MethodName: string]: (
-      info: InstanceMethodInfo,
-      ...args: never[]
-    ) => unknown
-  }
+  readonly instanceMethods?: InstanceMethods
 }
 
 type Plugins = readonly Plugin[]
+
+type UnionToIntersection<T> = (
+  T extends any ? (arg: T) => any : never
+) extends (arg: infer U) => any
+  ? U
+  : never
+
+type SliceFirst<tuple extends unknown[]> = tuple extends [
+  unknown,
+  ...infer Rest,
+]
+  ? Rest
+  : []
+
+type ErrorInstanceMethod<InstanceMethodArg extends InstanceMethod> = (
+  ...args: SliceFirst<Parameters<InstanceMethodArg>>
+) => ReturnType<InstanceMethodArg>
+
+type ErrorInstanceMethods<InstanceMethodsArg extends InstanceMethods> = {
+  readonly [MethodName in keyof InstanceMethodsArg]: ErrorInstanceMethod<
+    InstanceMethodsArg[MethodName]
+  >
+}
+
+type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
+  ? PluginArg['instanceMethods'] extends InstanceMethods
+    ? ErrorInstanceMethods<PluginArg['instanceMethods']>
+    : {}
+  : {}
+
+export type PluginsInstanceMethods<PluginsArg extends Plugins> =
+  UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>
 
 type PluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
@@ -80,7 +110,8 @@ type CoreError<
 > = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg } & Pick<
     unknown extends Options['errors'] ? InitOptions<PluginsArg> : Options,
     'errors'
-  >
+  > &
+  PluginsInstanceMethods<PluginsArg>
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
