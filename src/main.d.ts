@@ -30,6 +30,8 @@ export type Info = {
   errorInfo: Omit<CommonInfo, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 }
 
+type GetOptions = (input: never, full: boolean) => unknown
+type IsOptions = (input: unknown) => boolean
 type InstanceMethod = (
   info: Info['instanceMethods'],
   ...args: never[]
@@ -51,8 +53,8 @@ type StaticMethods = { readonly [MethodName: string]: StaticMethod }
  */
 interface Plugin {
   readonly name: string
-  readonly getOptions?: (input: never, full: boolean) => unknown
-  readonly isOptions?: (input: unknown) => boolean
+  readonly getOptions?: GetOptions
+  readonly isOptions?: IsOptions
   readonly instanceMethods?: InstanceMethods
   readonly staticMethods?: StaticMethods
 }
