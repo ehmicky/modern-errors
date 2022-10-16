@@ -15,7 +15,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-- Create [error classes](#create-error-classes)
+- Create [error classes](#create-error-classes) (including
+  [custom logic](#custom-logic))
 - Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
@@ -27,7 +28,6 @@ Error handling framework that is pluggable, minimalist yet featureful.
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
   [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
   [`class`](#custom-logic), [`toJSON()`](docs/plugins/serialize.md)
-- [Custom logic](#custom-logic)
 
 # Plugins
 
