@@ -278,6 +278,12 @@ expectError(paError.instanceMethod({} as InstanceMethodInfo, true))
 expectError(psError.instanceMethod({} as InstanceMethodInfo, true))
 expectError(paError.instanceMethod(true, true))
 expectError(psError.instanceMethod(true, true))
+if (exception instanceof PAnyError) {
+  expectType<true>(exception.instanceMethod(true))
+}
+if (exception instanceof PSError) {
+  expectType<true>(exception.instanceMethod(true))
+}
 
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
