@@ -10,8 +10,7 @@ import { validateNonEmpty } from './subclass.js'
 // like the error classes.
 export const normalize = function (error, AnyError, ErrorClasses) {
   validateNonEmpty(ErrorClasses)
-  const errorA = normalizeException(error)
-  return errorA instanceof AnyError
-    ? errorA
-    : new ErrorClasses.UnknownError.ErrorClass('', { cause: errorA })
+  return error instanceof AnyError
+    ? normalizeException(error)
+    : new ErrorClasses.UnknownError.ErrorClass('', { cause: error })
 }
