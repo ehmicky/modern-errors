@@ -228,12 +228,13 @@ expectType<[true]>(new AnyError('', { errors: [true] as [true] }).errors)
 expectAssignable<[true]>(new CCError('', { errors: [true] as [true] }).errors)
 expectType<unknown[] | undefined>(new AnyError('').errors)
 expectType<unknown[] | undefined>(new CCError('').errors)
-expectNotAssignable<
-  NonNullable<ConstructorParameters<typeof AnyError>[1]>['errors']
->(new Error(''))
-expectNotAssignable<
-  NonNullable<ConstructorParameters<typeof CCError>[1]>['errors']
->(new Error(''))
+expectError(new AnyError('', { errors: true }))
+expectError(new CCError('', { errors: true }))
+
+new AnyError('', { props: {} })
+new CCError('', { props: {} })
+expectError(new AnyError('', { props: true }))
+expectError(new CCError('', { props: true }))
 
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input

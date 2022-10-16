@@ -165,6 +165,7 @@ type PluginsOptions<PluginsArg extends Plugins> = FixEmptyObject<{
 type InitOptions<PluginsArg extends Plugins> = {
   cause?: unknown
   errors?: unknown[]
+  props?: object
 } & PluginsOptions<PluginsArg>
 
 type BaseError<
