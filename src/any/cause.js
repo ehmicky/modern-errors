@@ -8,7 +8,13 @@ import normalizeException from 'normalize-exception'
 // This applies regardless of parent class:
 //  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
 //  - With an empty message or not
-// We allow `cause: undefined` since `undefined` exceptions can be thrown.
+// `undefined` causes are not ignored when the `cause` key is defined:
+//  - This is because `new AnyError()` requires a `cause`, which might be a
+//    legitimate `undefined` error
+//  - Other error classes have the same behavior for consistency with `AnyError`
+//  - This makes the behavior different from:
+//     - `normalize-exception` and `merge-error-cause`
+//     - Other options (`errors` and plugin options)
 export const normalizeCause = function ({
   message,
   opts,
@@ -23,9 +29,9 @@ export const normalizeCause = function ({
     return { message, opts: { ...opts, cause: AnyError.normalize(opts.cause) } }
   }
 
-  const causeA = normalizeException(opts.cause)
-  const messageA = GENERIC_NAMES.has(causeA.name) ? message : `${causeA.name}:`
-  return { message: messageA, opts: { ...opts, cause: causeA } }
+  const cause = normalizeException(opts.cause)
+  const messageA = GENERIC_NAMES.has(cause.name) ? message : `${cause.name}:`
+  return { message: messageA, opts: { ...opts, cause } }
 }
 
 // The error name is not kept if generic or `UnknownError` itself
