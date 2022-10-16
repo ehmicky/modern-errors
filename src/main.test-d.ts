@@ -222,19 +222,27 @@ const noOptsPlugin = { name } as const
 const plugin = { name, getOptions } as const
 modernErrors([plugin])
 modernErrors([plugin], {})
-const PluginAnyError = modernErrors([plugin], { test: true })
-PluginAnyError.subclass('TestError', { test: true })
+const PAnyError = modernErrors([plugin], { test: true })
+const PSError = PAnyError.subclass('PSError', { test: true })
+new PAnyError('', { test: true })
+new PSError('', { test: true })
 expectError(modernErrors([noOptsPlugin], { test: true }))
 expectError(AnyError.subclass('TestError', { test: true }))
+expectError(new AnyError('', { test: true }))
+expectError(new SError('', { test: true }))
 expectError(modernErrors([plugin], { unknown: true }))
-expectError(PluginAnyError.subclass('TestError', { unknown: true }))
+expectError(PAnyError.subclass('TestError', { unknown: true }))
+expectError(new PAnyError('', { unknown: true }))
+expectError(new PSError('', { unknown: true }))
 expectError(
   modernErrors([{ ...plugin, name: 'test' }, { name: 'two' as const }], {
     test: true,
   }),
 )
 expectError(modernErrors([plugin], { test: 'true' }))
-expectError(PluginAnyError.subclass('TestError', { test: 'true' }))
+expectError(PAnyError.subclass('TestError', { test: 'true' }))
+expectError(new PAnyError('', { test: 'true' }))
+expectError(new PSError('', { test: 'true' }))
 
 expectError(AnyError.subclass())
 expectError(AnyError.subclass({}))
