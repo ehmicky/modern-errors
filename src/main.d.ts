@@ -323,7 +323,7 @@ type ErrorSubclass<
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<
       PluginsArg,
-      ErrorProps,
+      ErrorPropsArg,
       ErrorArg,
       ErrorNameArg,
       InstanceOptionsArg
