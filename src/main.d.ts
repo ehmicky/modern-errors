@@ -443,13 +443,13 @@ type AnyErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+  MainInstanceOptionsArg extends MainInstanceOptions,
 > = BaseError<
   PluginsArg,
-  MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
+  ErrorPropsArg,
   GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<PluginsArg, ErrorArg>,
-  InstanceOptionsArg
+  MainInstanceOptionsArg
 > &
   ErrorInstance
 
@@ -479,7 +479,7 @@ type SpecificAnyErrorClass<
     ...extra: any[]
   ): AnyErrorInstance<
     PluginsArg,
-    ErrorPropsArg,
+    MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     InstanceOptionsArg['cause'],
     InstanceOptionsArg
   >
@@ -524,12 +524,7 @@ type SpecificAnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): AnyErrorInstance<
-    PluginsArg,
-    ErrorPropsArg,
-    ErrorArg,
-    SpecificInstanceOptions<PluginsArg>
-  >
+  ): AnyErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>
 } & PluginsStaticMethods<PluginsArg>
 
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
