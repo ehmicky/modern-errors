@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 
 interface CommonInfo {
-  readonly error: BaseError<Plugins, Error, ErrorName, InitOptions<Plugins>>
+  readonly error: BaseError<Plugins, Error, ErrorName, InstanceOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
@@ -99,7 +99,7 @@ type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['instanceMethods'] extends InstanceMethods
     ? ErrorInstanceMethods<
         PluginArg['instanceMethods'],
-        PluginOptions<PluginArg>
+        ExternalPluginOptions<PluginArg>
       >
     : {}
   : {}
@@ -127,7 +127,10 @@ type ErrorStaticMethods<
 
 type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['staticMethods'] extends StaticMethods
-    ? ErrorStaticMethods<PluginArg['staticMethods'], PluginOptions<PluginArg>>
+    ? ErrorStaticMethods<
+        PluginArg['staticMethods'],
+        ExternalPluginOptions<PluginArg>
+      >
     : {}
   : {}
 
@@ -145,11 +148,6 @@ type PluginsProperties<PluginsArg extends Plugins> = UnionToIntersection<
   PluginProperties<PluginsArg[number]>
 >
 
-type PluginOptions<PluginArg extends Plugin> =
-  PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
-    ? Parameters<PluginArg['getOptions']>[0]
-    : never
-
 type NoAdditionalProps<
   T extends object,
   U extends object,
@@ -157,10 +155,15 @@ type NoAdditionalProps<
 
 type LiteralString<T extends string> = string extends T ? never : T
 
+type ExternalPluginOptions<PluginArg extends Plugin> =
+  PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
+    ? Parameters<PluginArg['getOptions']>[0]
+    : never
+
 type ExternalPluginsOptions<PluginsArg extends Plugins> = {
   readonly [PluginArg in PluginsArg[number] as LiteralString<
     PluginArg['name']
-  >]?: PluginOptions<PluginArg>
+  >]?: ExternalPluginOptions<PluginArg>
 }
 
 interface CorePluginsOptions {
@@ -172,94 +175,10 @@ type PluginsOptions<PluginsArg extends Plugins> =
     ? CorePluginsOptions
     : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
 
-type InitOptions<PluginsArg extends Plugins> = {
+type InstanceOptions<PluginsArg extends Plugins> = {
   cause?: unknown
   errors?: unknown[]
 } & PluginsOptions<PluginsArg>
-
-type BaseError<
-  PluginsArg extends Plugins,
-  ErrorArg extends Error,
-  ErrorNameArg extends ErrorName,
-  Options extends InitOptions<PluginsArg>,
-> = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
-    unknown extends Options['errors'] ? InitOptions<PluginsArg> : Options,
-    'errors'
-  > &
-  Options['props'] &
-  PluginsInstanceMethods<PluginsArg> &
-  PluginsProperties<PluginsArg>
-
-export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
-  PluginsArg,
-  Error,
-  ErrorName,
-  InitOptions<PluginsArg>
->
-
-type ErrorConstructor<PluginsArg extends Plugins> = new (
-  message: string,
-  options?: InitOptions<PluginsArg>,
-  ...extra: any[]
-) => Error
-
-type MaybeIntersect<T extends object, U extends object> = keyof U extends never
-  ? T
-  : T & U
-
-type ParentOptions<
-  PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = ConstructorParameters<ParentErrorClass>[1] & InitOptions<PluginsArg>
-
-type ParentExtra<
-  PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = ConstructorParameters<ParentErrorClass> extends [
-  unknown,
-  unknown?,
-  ...infer Extra,
-]
-  ? Extra
-  : never
-
-type ErrorSubclass<
-  PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorArg extends Error,
-  ErrorNameArg extends ErrorName,
-> = MaybeIntersect<
-  {
-    new <
-      Options extends ParentOptions<
-        PluginsArg,
-        ParentErrorClass
-      > = ParentOptions<PluginsArg, ParentErrorClass>,
-    >(
-      message: string,
-      options?: NoAdditionalProps<
-        Options,
-        ParentOptions<PluginsArg, ParentErrorClass>
-      >,
-      ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
-    prototype: BaseError<
-      PluginsArg,
-      ErrorArg,
-      ErrorNameArg,
-      InitOptions<PluginsArg>
-    >
-    subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorArg>
-  },
-  Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
->
-
-export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
-  PluginsArg,
-  ErrorConstructor<PluginsArg>,
-  Error,
-  ErrorName
->
 
 /**
  * Class-specific options
@@ -310,6 +229,92 @@ type ClassOptions<
   >
 } & PluginsOptions<PluginsArg>
 
+type GlobalOptions<PluginsArg extends Plugins> = PluginsOptions<PluginsArg>
+
+type BaseError<
+  PluginsArg extends Plugins,
+  ErrorArg extends Error,
+  ErrorNameArg extends ErrorName,
+  Options extends InstanceOptions<PluginsArg>,
+> = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
+    unknown extends Options['errors'] ? InstanceOptions<PluginsArg> : Options,
+    'errors'
+  > &
+  Options['props'] &
+  PluginsInstanceMethods<PluginsArg> &
+  PluginsProperties<PluginsArg>
+
+export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
+  PluginsArg,
+  Error,
+  ErrorName,
+  InstanceOptions<PluginsArg>
+>
+
+type ErrorConstructor<PluginsArg extends Plugins> = new (
+  message: string,
+  options?: InstanceOptions<PluginsArg>,
+  ...extra: any[]
+) => Error
+
+type MaybeIntersect<T extends object, U extends object> = keyof U extends never
+  ? T
+  : T & U
+
+type ParentOptions<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+> = ConstructorParameters<ParentErrorClass>[1] & InstanceOptions<PluginsArg>
+
+type ParentExtra<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+> = ConstructorParameters<ParentErrorClass> extends [
+  unknown,
+  unknown?,
+  ...infer Extra,
+]
+  ? Extra
+  : never
+
+type ErrorSubclass<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ErrorArg extends Error,
+  ErrorNameArg extends ErrorName,
+> = MaybeIntersect<
+  {
+    new <
+      Options extends ParentOptions<
+        PluginsArg,
+        ParentErrorClass
+      > = ParentOptions<PluginsArg, ParentErrorClass>,
+    >(
+      message: string,
+      options?: NoAdditionalProps<
+        Options,
+        ParentOptions<PluginsArg, ParentErrorClass>
+      >,
+      ...extra: ParentExtra<PluginsArg, ParentErrorClass>
+    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
+    prototype: BaseError<
+      PluginsArg,
+      ErrorArg,
+      ErrorNameArg,
+      InstanceOptions<PluginsArg>
+    >
+    subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorArg>
+  },
+  Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
+>
+
+export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
+  PluginsArg,
+  ErrorConstructor<PluginsArg>,
+  Error,
+  ErrorName
+>
+
 type CreateSubclass<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -335,7 +340,7 @@ type CreateSubclass<
 type NormalizeError<
   PluginsArg extends Plugins,
   ErrorArg extends unknown,
-  Options extends InitOptions<PluginsArg>,
+  Options extends InstanceOptions<PluginsArg>,
 > = ErrorArg extends BaseError<PluginsArg, Error, ErrorName, Options>
   ? ErrorArg
   : ErrorArg extends Error
@@ -357,13 +362,23 @@ type NormalizeError<
  * }
  * ```
  */
-export type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <Options extends InitOptions<PluginsArg> = InitOptions<PluginsArg>>(
+export type AnyErrorClass<
+  PluginsArg extends Plugins = [],
+  GlobalOptionsArg extends PluginsOptions<PluginsArg> = {},
+> = {
+  new <
+    Options extends InstanceOptions<PluginsArg> = InstanceOptions<PluginsArg>,
+  >(
     message: string,
-    options?: NoAdditionalProps<Options, InitOptions<PluginsArg>>,
+    options?: NoAdditionalProps<Options, InstanceOptions<PluginsArg>>,
     ...extra: any[]
   ): NormalizeError<PluginsArg, Options['cause'], Options>
-  prototype: BaseError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
+  prototype: BaseError<
+    PluginsArg,
+    Error,
+    ErrorName,
+    InstanceOptions<PluginsArg>
+  >
 
   /**
    * Creates and returns an error subclass.
@@ -377,8 +392,8 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> = {
    */
   subclass: CreateSubclass<
     PluginsArg,
-    AnyErrorClass<PluginsArg>,
-    BaseError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
+    AnyErrorClass<PluginsArg, GlobalOptionsArg>,
+    BaseError<PluginsArg, Error, ErrorName, InstanceOptions<PluginsArg>>
   >
 
   /**
@@ -397,7 +412,7 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> = {
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<PluginsArg, ErrorArg, InitOptions<PluginsArg>>
+  ): NormalizeError<PluginsArg, ErrorArg, InstanceOptions<PluginsArg>>
 } & PluginsStaticMethods<PluginsArg>
 
 /**
@@ -415,7 +430,10 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> = {
  *  export const DatabaseError = AnyError.subclass('DatabaseError')
  * ```
  */
-export default function modernErrors<PluginsArg extends Plugins = []>(
+export default function modernErrors<
+  PluginsArg extends Plugins = [],
+  GlobalOptionsArg extends PluginsOptions<PluginsArg> = {},
+>(
   plugins?: PluginsArg,
-  options?: PluginsOptions<PluginsArg>,
-): AnyErrorClass<PluginsArg>
+  options?: GlobalOptionsArg,
+): AnyErrorClass<PluginsArg, GlobalOptionsArg>
