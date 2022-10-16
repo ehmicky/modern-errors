@@ -104,7 +104,7 @@ export const createAnyError = function ({
 // Return whether this is a `AnyError.normalize()` call, which calls
 // `new UnknownError('', { cause })`.
 // Calling `new UnknownError('', { cause })` behaves as if
-// `AnyError.normalize()` was called.
+// `AnyError.normalize()` was called, including child `UnknownError`.
 const getIsAnyNormalize = function (
   NewTarget,
   { UnknownError: { ErrorClass: UnknownError } },
