@@ -215,7 +215,12 @@ expectNotAssignable<
 const name = 'test'
 const getOptions = (options: true, full: boolean) => options
 const instanceMethod = (
-  info: { error: Error; options: true; showStack: boolean },
+  info: {
+    error: Error
+    options: true
+    showStack: boolean
+    AnyError: typeof AnyError
+  },
   value: true,
 ) => value
 const instanceMethods = { instanceMethod }
@@ -278,6 +283,14 @@ expectError(
       instanceMethods: {
         instanceMethod: (info: { showStack: string }) => true,
       },
+    },
+  ]),
+)
+expectError(
+  modernErrors([
+    {
+      ...plugin,
+      instanceMethods: { instanceMethod: (info: { AnyError: true }) => true },
     },
   ]),
 )
