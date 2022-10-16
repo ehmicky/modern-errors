@@ -480,13 +480,7 @@ type SpecificAnyErrorClass<
     PluginsArg,
     ErrorPropsArg,
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-    BaseError<
-      PluginsArg,
-      ErrorPropsArg,
-      Error,
-      ErrorName,
-      SpecificInstanceOptions<PluginsArg>
-    >
+    InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
   >
 
   /**
