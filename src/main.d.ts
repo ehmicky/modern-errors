@@ -1,5 +1,4 @@
 import type { ErrorName } from 'error-custom-class'
-import type MergeErrorCause from 'merge-error-cause'
 
 interface Info {
   readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
@@ -67,11 +66,6 @@ type PluginsOptions<PluginsArg extends Plugins> = FixEmptyObject<{
     PluginArg['name']
   >]?: PluginOptions<PluginArg>
 }>
-
-// TODO: re-enable
-// type MergeCause<ErrorInstance extends unknown> = ReturnType<
-//   typeof MergeErrorCause<ErrorInstance>
-// >
 
 type InitOptions<PluginsArg extends Plugins> = {
   cause?: unknown
