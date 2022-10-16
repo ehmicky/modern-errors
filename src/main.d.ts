@@ -268,7 +268,7 @@ type BaseError<
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
-  ErrorProps & ErrorProps,
+  ErrorProps,
   Error,
   ErrorName,
   InstanceOptions<PluginsArg>
@@ -332,7 +332,7 @@ type ErrorSubclass<
     >
     readonly prototype: BaseError<
       PluginsArg,
-      ErrorPropsArg & {},
+      ErrorPropsArg,
       ErrorArg,
       ErrorNameArg,
       InstanceOptions<PluginsArg>
@@ -442,7 +442,7 @@ type SpecificAnyErrorClass<
   >
   readonly prototype: BaseError<
     PluginsArg,
-    ErrorPropsArg & {},
+    ErrorPropsArg,
     Error,
     ErrorName,
     InstanceOptions<PluginsArg>
@@ -464,7 +464,7 @@ type SpecificAnyErrorClass<
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
     BaseError<
       PluginsArg,
-      ErrorPropsArg & {},
+      ErrorPropsArg,
       Error,
       ErrorName,
       InstanceOptions<PluginsArg>
