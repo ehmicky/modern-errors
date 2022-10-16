@@ -295,6 +295,14 @@ expectAssignable<{ one: true; two: true; three: true }>(
 expectAssignable<{ one: true; two: true; three: true }>(
   new QSError('', { props: { two: true as const, three: true as const } }),
 )
+expectAssignable<{ one: true; two: true; three: true }>(
+  new AnyError('', {
+    cause: new SError('', {
+      props: { two: true as const, three: false as const },
+    }),
+    props: { one: true as const, three: true as const },
+  }),
+)
 
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
