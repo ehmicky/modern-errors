@@ -2,7 +2,7 @@
 
 This document explains how to create a plugin for `modern-errors`. To learn how
 to [install](../README.md#adding-plugins), [use](../README.md#adding-plugins)
-and [configure](../README.md#plugin-options) plugins, please refer to the
+and [configure](../README.md#plugin-options-1) plugins, please refer to the
 [main documentation](../README.md#plugins-1) instead.
 
 ## Features
@@ -55,7 +55,7 @@ export default {
 
 _Type_: `string`
 
-Plugin's name. It is used to [configure](../README.md#plugin-options) the
+Plugin's name. It is used to [configure](../README.md#plugin-options-1) the
 plugin's options.
 
 Only lowercase letters must be used (as opposed to `_` `-` `.` or uppercase
@@ -136,7 +136,8 @@ export default {
 
 _Type_: `(options, full) => options`
 
-Normalize and return the plugin's `options`. Required to use plugin `options`.
+Normalize and return the [plugin's `options`](../README.md#plugin-options-1).
+Required to use plugin `options`.
 
 If `options` are invalid, an `Error` should be thrown. The error message is
 automatically prepended with `Invalid "${plugin.name}" options:`. Regular
@@ -162,8 +163,8 @@ export default {
 
 #### full
 
-Users can pass additional `options`
-[at multiple stages](../README.md#plugin-options). Each stage calls
+Plugin users can pass additional `options`
+[at multiple stages](../README.md#plugin-options-1). Each stage calls
 `getOptions()`.
 
 - When error classes are defined:
@@ -204,10 +205,11 @@ export default {
 
 _Type_: `(options) => boolean`
 
-Users [can pass](../README.md#plugin-options) the plugin's `options` as the last
-argument of any plugin method (instance or static). `isOptions()` determines
-whether the last argument of a plugin method are `options` or not. This should
-be defined if the plugin has any method with arguments.
+Plugin users [can pass](../README.md#plugin-options-1) the plugin's `options` as
+the last argument of any plugin method ([instance](#instancemethodsmethodname)
+or [static](#staticmethodsmethodname)). `isOptions()` determines whether the
+last argument of a plugin method are `options` or not. This should be defined if
+the plugin has any method with arguments.
 
 If `options` are invalid but can be determined not to be the last argument of
 any plugin's method, `isOptions()` should still return `true`. This allows
@@ -243,10 +245,11 @@ export default {
 and [static methods](#staticmethodsmethodname).
 
 [`info.error`](#error) and [`info.showStack`](#showstack) are not passed to
-static methods.
+[static methods](#staticmethodsmethodname).
 
 Its members are readonly and should not be mutated, except for
-[`info.error`](#error) inside instance methods (not inside `properties()`).
+[`info.error`](#error) inside [instance methods](#instancemethodsmethodname)
+(not inside [`properties()`](#properties)).
 
 ### error
 
@@ -398,7 +401,7 @@ when possible.
 #### Separate options
 
 `modern-errors` provides with a
-[consistent pattern](../README.md#plugin-options) for options. Plugins should
+[consistent pattern](../README.md#plugin-options-1) for options. Plugins should
 avoid alternatives like:
 
 - Functions taking options as input and returning the plugin:
