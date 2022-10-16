@@ -264,12 +264,7 @@ type SpecificGlobalOptions<PluginsArg extends Plugins> =
 export type GlobalOptions<PluginsArg extends Plugins = []> =
   SpecificGlobalOptions<PluginsArg>
 
-type NamedError<
-  ErrorArg extends Error,
-  ErrorNameArg extends ErrorName,
-> = (ErrorNameArg extends ErrorArg['name']
-  ? ErrorArg
-  : Omit<ErrorArg, 'name'>) & { name: ErrorNameArg }
+type NamedError<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
 type AggregateErrors<
   PluginsArg extends Plugins,
@@ -287,7 +282,8 @@ type BaseError<
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = NamedError<ErrorArg, ErrorNameArg> &
+> = ErrorArg &
+  NamedError<ErrorNameArg> &
   AggregateErrors<PluginsArg, InstanceOptionsArg> &
   ErrorPropsArg &
   PluginsInstanceMethods<PluginsArg> &
@@ -404,7 +400,8 @@ type CreateSubclass<
     : ParentErrorClass,
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
     ? InstanceType<ClassOptionsArg['custom']> extends ErrorInstance<PluginsArg>
-      ? InstanceType<ClassOptionsArg['custom']>
+      ? Omit<InstanceType<ClassOptionsArg['custom']>, 'name'> &
+          ErrorInstance<PluginsArg>
       : ErrorInstanceArg
     : ErrorInstanceArg,
   ErrorNameArg
