@@ -43,10 +43,6 @@ type NamedError<
 
 type ErrorConstructor = new (...args: any[]) => Error
 
-type AnyErrorOptions = {
-  cause?: unknown
-}
-
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
   : T & U
@@ -144,6 +140,10 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
 >
   ? MergeCause<Cause>
   : NamedError<Cause extends Error ? MergeCause<Cause> : Error, 'UnknownError'>
+
+type AnyErrorOptions = {
+  cause?: unknown
+}
 
 /**
  * Base error class.
