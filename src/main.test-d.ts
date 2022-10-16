@@ -72,8 +72,11 @@ if (exception instanceof SSError) {
 }
 
 class BCError extends AnyError {
-  constructor(message: string, options?: object | boolean) {
-    super(String(message), options)
+  constructor(
+    message: ConstructorParameters<typeof AnyError>[0],
+    options?: ConstructorParameters<typeof AnyError>[1] & { cProp?: true },
+  ) {
+    super(message, options)
   }
   prop = true as const
   static staticProp = true as const
@@ -81,7 +84,12 @@ class BCError extends AnyError {
 const CError = AnyError.subclass('CError', { custom: BCError })
 type CInstance = typeof CError['prototype']
 
-const cError = new CError('', true)
+const cError = new CError('', { cProp: true })
+expectError(new CError())
+expectError(new CError(true))
+expectError(new CError('', true))
+expectError(new CError('', { unknown: true }))
+expectError(new CError('', { cProp: false }))
 expectType<CInstance>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<Error>(cError)
@@ -99,7 +107,12 @@ expectError(CError.normalize(''))
 const SCError = CError.subclass('SCError')
 type SCInstance = typeof SCError['prototype']
 
-const scError = new SCError('', true)
+const scError = new SCError('', { cProp: true })
+expectError(new SCError())
+expectError(new SCError(true))
+expectError(new SCError('', true))
+expectError(new SCError('', { unknown: true }))
+expectError(new SCError('', { cProp: false }))
 expectType<SCInstance>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<Error>(scError)
@@ -113,8 +126,11 @@ expectError(SCError.normalize(''))
 // }
 
 class BCSError extends SError {
-  constructor(message: string, options?: object | boolean) {
-    super(String(message), options)
+  constructor(
+    message: ConstructorParameters<typeof SError>[0],
+    options?: ConstructorParameters<typeof SError>[1] & { cProp?: true },
+  ) {
+    super(message, options)
   }
   prop = true as const
   static staticProp = true as const
@@ -122,7 +138,12 @@ class BCSError extends SError {
 const CSError = CError.subclass('CSError', { custom: BCSError })
 type CSInstance = typeof CSError['prototype']
 
-const csError = new CSError('', true)
+const csError = new CSError('', { cProp: true })
+expectError(new CSError())
+expectError(new CSError(true))
+expectError(new CSError('', true))
+expectError(new CSError('', { unknown: true }))
+expectError(new CSError('', { cProp: false }))
 expectType<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
 expectAssignable<Error>(csError)
@@ -136,8 +157,11 @@ expectError(CSError.normalize(''))
 // }
 
 class BCCError extends CError {
-  constructor(message: string, options?: object | boolean | number) {
-    super(String(message), options)
+  constructor(
+    message: ConstructorParameters<typeof CError>[0],
+    options?: ConstructorParameters<typeof CError>[1] & { ccProp?: true },
+  ) {
+    super(message, options)
   }
   deepProp = true as const
   static deepStaticProp = true as const
@@ -145,7 +169,13 @@ class BCCError extends CError {
 const CCError = CError.subclass('CCError', { custom: BCCError })
 type CCInstance = typeof CCError['prototype']
 
-const ccError = new CCError('', 0)
+const ccError = new CCError('', { cProp: true, ccProp: true })
+expectError(new CCError())
+expectError(new CCError(true))
+expectError(new CCError('', true))
+expectError(new CCError('', { unknown: true }))
+expectError(new CCError('', { cProp: false }))
+expectError(new CCError('', { ccProp: false }))
 expectType<CCInstance>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<Error>(ccError)
@@ -192,20 +222,48 @@ expectError(AnyError.subclass('TestError', { custom: class extends Object {} }))
 expectError(AnyError.subclass('TestError', { custom: class extends Error {} }))
 expectError(CError.subclass('TestError', { custom: class extends AnyError {} }))
 expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
+
 expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
-      constructor(message: string, options?: boolean) {
-        super(String(message), options)
+      constructor(options?: object) {
+        super('', options)
       }
     },
   }),
 )
 expectError(
-  CError.subclass('TestError', {
+  AnyError.subclass('TestError', {
+    custom: class extends AnyError {
+      constructor(
+        message: ConstructorParameters<typeof AnyError>[0],
+        options?: true,
+      ) {
+        super(message, options)
+      }
+    },
+  }),
+)
+expectError(
+  AnyError.subclass('TestError', {
+    custom: class extends AnyError {
+      constructor(
+        message: ConstructorParameters<typeof AnyError>[0],
+        options?: ConstructorParameters<typeof AnyError>[1] & { cause?: true },
+      ) {
+        super(message, options)
+      }
+    },
+  }),
+)
+expectError(
+  CError.subclass('CCError', {
     custom: class extends CError {
-      constructor(message: string, options?: object | true) {
-        super(String(message), options)
+      constructor(
+        message: ConstructorParameters<typeof CError>[0],
+        options?: ConstructorParameters<typeof CError>[1] & { cProp?: false },
+      ) {
+        super(message, options)
       }
     },
   }),

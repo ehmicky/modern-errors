@@ -160,7 +160,7 @@ type AnyErrorOptions = {
  * ```
  */
 type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <InitOptions extends AnyErrorOptions = {}>(
+  new <InitOptions extends AnyErrorOptions = AnyErrorOptions>(
     message: string,
     options?: InitOptions,
   ): AnyErrorReturn<
