@@ -346,8 +346,8 @@ try {
 ### Wrap error options
 
 The outer error's options ([`props`](#props) and
-[plugin options](#plugin-options-1)) replace the inner one's, unless the outer
-error's class is [`AnyError`](#anyerror), in which case they are merged instead.
+[plugin options](#plugin-options-1)) replace the inner one's. If the outer
+error's class is [`AnyError`](#anyerror), those are merged instead.
 
 ```js
 try {
