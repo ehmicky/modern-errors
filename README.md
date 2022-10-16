@@ -571,7 +571,7 @@ const options = {
 }
 ```
 
-Those can apply to (in priority order):
+Plugin options can apply to (in priority order):
 
 - Any error: second argument to [`modernErrors()`](#modernerrorsplugins-options)
 
