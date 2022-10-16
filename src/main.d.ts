@@ -46,6 +46,12 @@ type InitOptions = {
   cause?: unknown
 }
 
+type CoreError<
+  ErrorInstance extends Error,
+  ErrorNameArg extends ErrorName,
+  Options extends InitOptions,
+> = NamedError<ErrorInstance, ErrorNameArg>
+
 type ErrorConstructor = new (...args: any[]) => Error
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
@@ -64,8 +70,8 @@ type ErrorClass<
     >(
       message: string,
       options?: Options,
-    ): NamedError<ErrorInstance, ErrorNameArg>
-    prototype: NamedError<ErrorInstance, ErrorNameArg>
+    ): CoreError<ErrorInstance, ErrorNameArg, Options>
+    prototype: CoreError<ErrorInstance, ErrorNameArg, InitOptions>
     subclass: CreateSubclass<ParentErrorClass, ErrorInstance, PluginsArg>
   },
   Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
@@ -141,17 +147,20 @@ type CreateSubclass<
   PluginsArg
 >
 
-type NormalizeError<ErrorInstance extends unknown> =
-  ErrorInstance extends NamedError<Error, ErrorName>
-    ? ErrorInstance
-    : NamedError<
-        ErrorInstance extends Error ? ErrorInstance : Error,
-        'UnknownError'
-      >
+type NormalizeError<
+  ErrorInstance extends unknown,
+  Options extends InitOptions,
+> = ErrorInstance extends CoreError<Error, ErrorName, Options>
+  ? ErrorInstance
+  : CoreError<
+      ErrorInstance extends Error ? ErrorInstance : Error,
+      'UnknownError',
+      Options
+    >
 
 type AnyReturn<Options extends InitOptions> = unknown extends Options['cause']
-  ? NamedError<Error, ErrorName>
-  : NormalizeError<Options['cause']>
+  ? CoreError<Error, ErrorName, Options>
+  : NormalizeError<Options['cause'], Options>
 
 /**
  * Base error class.
@@ -171,7 +180,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
     message: string,
     options?: Options,
   ): AnyReturn<Options>
-  prototype: NamedError<Error, ErrorName>
+  prototype: CoreError<Error, ErrorName, InitOptions>
 
   /**
    * Creates and returns an error subclass.
@@ -205,7 +214,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
    */
   normalize<ErrorInstance extends unknown>(
     error: ErrorInstance,
-  ): NormalizeError<ErrorInstance>
+  ): NormalizeError<ErrorInstance, InitOptions>
 }
 
 /**
