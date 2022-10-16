@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 import type MergeErrorCause from 'merge-error-cause'
 
-export interface Info {
+interface Info {
   readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean
@@ -24,7 +24,8 @@ export interface Info {
   readonly errorInfo: (error: Error) => ErrorInfo
 }
 
-type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
+export type InstanceMethodInfo = Info
+export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 
 /**
  * Plugins extend `modern-errors` features.
@@ -41,7 +42,10 @@ interface Plugin {
   readonly name: string
   readonly getOptions?: (input: never, full: boolean) => unknown
   readonly instanceMethods?: {
-    readonly [MethodName: string]: (info: Info, ...args: never[]) => unknown
+    readonly [MethodName: string]: (
+      info: InstanceMethodInfo,
+      ...args: never[]
+    ) => unknown
   }
 }
 

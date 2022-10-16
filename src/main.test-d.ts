@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { Info } from './main.js'
+import modernErrors, { InstanceMethodInfo, ErrorInfo } from './main.js'
 
 type ErrorName = `${string}Error`
 
@@ -214,7 +214,7 @@ expectNotAssignable<
 
 const name = 'test'
 const getOptions = (options: true, full: boolean) => options
-const instanceMethod = (info: Info, value: true) => value
+const instanceMethod = (info: InstanceMethodInfo, value: true) => value
 const instanceMethods = { instanceMethod }
 const plugin = { name, getOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
@@ -246,24 +246,26 @@ expectError(
   modernErrors([{ ...plugin, instanceMethods: { instanceMethod: true } }]),
 )
 
-const info = {} as Info
-expectError(info.unknown)
-expectAssignable<Error>(info.error)
-expectAssignable<boolean>(info.options)
-expectType<boolean>(info.showStack)
-expectAssignable<typeof AnyError>(info.AnyError)
-expectAssignable<object>(info.ErrorClasses)
-expectError(info.ErrorClasses.unknown)
-expectError(new info.ErrorClasses.AnyError('', { cause: genericError }))
-const iUnknownError = new info.ErrorClasses.UnknownError('')
+const imInfo = {} as InstanceMethodInfo
+expectError(imInfo.unknown)
+expectAssignable<Error>(imInfo.error)
+expectAssignable<boolean>(imInfo.options)
+expectType<boolean>(imInfo.showStack)
+expectAssignable<typeof AnyError>(imInfo.AnyError)
+expectAssignable<object>(imInfo.ErrorClasses)
+expectError(imInfo.ErrorClasses.unknown)
+expectError(new imInfo.ErrorClasses.AnyError('', { cause: genericError }))
+const iUnknownError = new imInfo.ErrorClasses.UnknownError('')
 expectAssignable<UnknownInstance>(iUnknownError)
-expectAssignable<Function | undefined>(info.ErrorClasses.SError)
-expectAssignable<typeof info.ErrorClasses.TestError>(SError)
-expectError(info.errorInfo(true))
-const eInfo = info.errorInfo(iUnknownError)
-expectType<Info['error']>(eInfo.error)
-expectType<Info['options']>(eInfo.options)
-expectType<Info['showStack']>(eInfo.showStack)
+expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
+expectAssignable<typeof imInfo.ErrorClasses.TestError>(SError)
+
+expectError(imInfo.errorInfo(true))
+const eInfo = imInfo.errorInfo(iUnknownError)
+expectType<ErrorInfo>(eInfo)
+expectType<InstanceMethodInfo['error']>(eInfo.error)
+expectType<InstanceMethodInfo['options']>(eInfo.options)
+expectType<InstanceMethodInfo['showStack']>(eInfo.showStack)
 expectError(eInfo.AnyError)
 expectError(eInfo.ErrorClasses)
 expectError(eInfo.errorInfo)
