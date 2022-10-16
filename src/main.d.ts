@@ -73,17 +73,14 @@ type ErrorClass<
 > = MaybeIntersect<
   {
     new <
-      Options extends ConstructorParameters<ParentErrorClass>[1] = ConstructorParameters<ParentErrorClass>[1],
+      Options extends ConstructorParameters<ParentErrorClass>[1] &
+        InitOptions<PluginsArg> = ConstructorParameters<ParentErrorClass>[1] &
+        InitOptions<PluginsArg>,
     >(
       message: string,
       options?: Options,
       extra?: ConstructorParameters<ParentErrorClass>[2],
-    ): CoreError<
-      PluginsArg,
-      ErrorInstance,
-      ErrorNameArg,
-      Options & InitOptions<PluginsArg>
-    >
+    ): CoreError<PluginsArg, ErrorInstance, ErrorNameArg, Options>
     prototype: CoreError<
       PluginsArg,
       ErrorInstance,
