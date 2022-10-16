@@ -219,20 +219,21 @@ modernErrors([], {})
 const name = 'test'
 const getOptions = (options: true) => options
 const plugin = { name, getOptions } as const
-modernErrors([plugin])
+const PAnyError = modernErrors([plugin])
+const PSError = PAnyError.subclass('PSError')
 modernErrors([plugin], {})
-const PAnyError = modernErrors([plugin], { test: true })
-const PSError = PAnyError.subclass('PSError', { test: true })
+modernErrors([plugin], { test: true })
+PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
 new PSError('', { test: true })
 expectError(modernErrors([], { test: true }))
 expectError(
-  modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
-)
-expectError(
   modernErrors([plugin as Omit<typeof plugin, 'name'> & { name: string }], {
     test: true,
   }),
+)
+expectError(
+  modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
 )
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
