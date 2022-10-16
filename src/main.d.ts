@@ -300,11 +300,11 @@ type BaseError<
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+  MainInstanceOptionsArg extends MainInstanceOptions,
 > = Error &
   CustomAttributesArg &
   NamedError<ErrorNameArg> &
-  AggregateErrors<InstanceOptionsArg> &
+  AggregateErrors<MainInstanceOptionsArg> &
   ErrorPropsArg &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
@@ -314,7 +314,7 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   ErrorProps,
   CustomAttributes,
   ErrorName,
-  SpecificInstanceOptions<PluginsArg>
+  MainInstanceOptions
 >
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
@@ -376,7 +376,7 @@ type ErrorSubclass<
       ErrorPropsArg,
       CustomAttributesArg,
       ErrorNameArg,
-      SpecificInstanceOptions<PluginsArg>
+      MainInstanceOptions
     >
     readonly subclass: CreateSubclass<
       PluginsArg,
@@ -488,7 +488,7 @@ type SpecificAnyErrorClass<
     ErrorPropsArg,
     {},
     ErrorName,
-    SpecificInstanceOptions<PluginsArg>
+    MainInstanceOptions
   >
 
   /**
