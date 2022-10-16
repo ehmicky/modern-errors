@@ -239,8 +239,14 @@ expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
 expectType<true>(new CCError('', { props: { one: true as const } }).one)
+modernErrors([], { props: {} })
+AnyError.subclass('TestError', { props: {} })
+SError.subclass('TestError', { props: {} })
 new AnyError('', { cause: '', props: {} })
 new CCError('', { cause: '', props: {} })
+expectError(modernErrors([], { props: true }))
+expectError(AnyError.subclass('TestError', { props: true }))
+expectError(SError.subclass('TestError', { props: true }))
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
 
