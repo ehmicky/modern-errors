@@ -128,17 +128,10 @@ not `require()`.
 
 Creates and returns [`AnyError`](#anyerror).
 
-#### Options
+Options:
 
-##### props
-
-_Type_: `object`
-
-[Error properties](#error-instance-properties).
-
-##### plugin options
-
-Any [plugin options](#plugin-options-1) can be specified.
+- `props` (`object`): [error properties](#error-instance-properties)
+- any [plugin options](#plugin-options-1)
 
 ## AnyError
 
@@ -152,29 +145,15 @@ Base error class.
 `options`: [`Options?`](#options)\
 _Return value_: `Error`
 
-#### Options
+Options:
 
-##### props
-
-Same as [above](#props).
-
-##### plugin options
-
-Same as [above](#plugin-options).
-
-##### cause
-
-_Type_: `Error | unknown`
-
-Inner error being [wrapped](#wrap-errors). Required with
-[`AnyError`](#anyerror), optional with its
-[subclasses](#anyerrorsubclassname-options).
-
-##### errors
-
-_Type_: `Array<Error | unknown>`
-
-Errors being [aggregated](#aggregate-errors).
+- `props` (`object`): [error properties](#error-instance-properties)
+- any [plugin options](#plugin-options-1)
+- `cause` (`Error | unknown`): Inner error being [wrapped](#wrap-errors).
+  Required with [`AnyError`](#anyerror), optional with its
+  [subclasses](#anyerrorsubclassname-options).
+- `errors` (`Array<Error | unknown>`): errors being
+  [aggregated](#aggregate-errors)
 
 ### AnyError.subclass(name, options?)
 
@@ -188,22 +167,12 @@ Creates and returns an error subclass. The first one must be named
 Subclasses can [also call](#shared-custom-logic) `ErrorClass.subclass()`
 themselves.
 
-#### Options
+Options:
 
-##### props
-
-Same as [above](#props).
-
-##### plugin options
-
-Same as [above](#plugin-options).
-
-##### custom
-
-_Type_: `class extends AnyError {}`
-
-[Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extends` from [`AnyError`](#anyerror).
+- `props` (`object`): [error properties](#error-instance-properties)
+- any [plugin options](#plugin-options-1)
+- `custom` (`class extends AnyError {}`): [custom class](#custom-logic) to add
+  any methods, `constructor` or properties.
 
 ### AnyError.normalize(anyException)
 
