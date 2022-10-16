@@ -373,7 +373,8 @@ try {
 ### Handle errors
 
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) should be applied on
-handled errors.
+handled errors. This prevents any issue if the error is
+[_unknown_](#unknown-errors) or [invalid](#invalid-errors).
 
 ```js
 try {
@@ -388,7 +389,7 @@ try {
 
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) is automatically
 applied on the [`cause` option](#wrap-inner-error). Therefore it does not need
-to be applied on handled errors that are only passed as `cause`.
+to be applied on handled errors that are directly passed as `cause`.
 
 ```js
 try {
