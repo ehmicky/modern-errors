@@ -370,26 +370,11 @@ try {
 
 ## Normalize errors
 
-### Handle errors
-
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) should be applied on
-handled errors. This prevents any issue if the error is
-[_unknown_](#unknown-errors) or [invalid](#invalid-errors).
-
-```js
-try {
-  // ...
-} catch (error) {
-  const normalizedError = AnyError.normalize(error)
-  // ...
-}
-```
-
 ### Wrapped errors
 
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) is automatically
-applied on the [`cause` option](#wrap-inner-error). Therefore it does not need
-to be applied on handled errors that are directly passed as `cause`.
+Any error can be passed to the [`cause` option](#wrap-inner-error), even if it
+is [invalid](#invalid-errors), [unknown](#unknown-errors) or not
+[normalized](#anyerrornormalizeanyexception).
 
 ```js
 try {
@@ -399,28 +384,15 @@ try {
 }
 ```
 
-### Top-level error handler
-
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) should wrap each main
-function, for the [same reason](#handle-errors).
-
-```js
-export const main = function () {
-  try {
-    // ...
-  } catch (error) {
-    throw AnyError.normalize(error)
-  }
-}
-```
-
 ### Invalid errors
 
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) fixes exceptions that
-are not
+Handling errors that are not
 [`Error` instances](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 or that have
-[invalid properties](https://github.com/ehmicky/normalize-exception#features).
+[invalid properties](https://github.com/ehmicky/normalize-exception#features)
+can lead to unexpected bugs. Applying
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) on any handled error
+fixes that.
 
 <!-- eslint-disable no-throw-literal -->
 
@@ -443,6 +415,23 @@ try {
   // This works: 'Missing file path.'
   // `normalizedError` is an `Error` instance.
   console.log(normalizedError.message.trim())
+}
+```
+
+### Top-level error handler
+
+Wrapping a module's main functions with
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) ensures every error
+thrown from it is [valid](#invalid-errors) and has a [_known_](#unknown-errors)
+class.
+
+```js
+export const main = function () {
+  try {
+    // ...
+  } catch (error) {
+    throw AnyError.normalize(error)
+  }
 }
 ```
 
