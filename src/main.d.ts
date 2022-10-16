@@ -262,6 +262,16 @@ type NamedError<ErrorArg extends Error, ErrorNameArg extends ErrorName> = Omit<
   'name'
 > & { name: ErrorNameArg }
 
+type AggregateErrors<
+  PluginsArg extends Plugins,
+  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+> = Pick<
+  unknown extends InstanceOptionsArg['errors']
+    ? SpecificInstanceOptions<PluginsArg>
+    : InstanceOptionsArg,
+  'errors'
+>
+
 type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -269,12 +279,7 @@ type BaseError<
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = NamedError<ErrorArg, ErrorNameArg> &
-  Pick<
-    unknown extends InstanceOptionsArg['errors']
-      ? SpecificInstanceOptions<PluginsArg>
-      : InstanceOptionsArg,
-    'errors'
-  > &
+  AggregateErrors<PluginsArg, InstanceOptionsArg> &
   ErrorPropsArg &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
