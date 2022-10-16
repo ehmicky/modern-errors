@@ -52,7 +52,7 @@ type CoreError<
   ErrorNameArg extends ErrorName,
   Options extends InitOptions,
 > = NamedError<ErrorInstance, ErrorNameArg> &
-  Pick<Options['errors'] extends unknown[] ? Options : InitOptions, 'errors'>
+  Pick<unknown extends Options['errors'] ? InitOptions : Options, 'errors'>
 
 type ErrorConstructor = new (message: string, options?: InitOptions) => Error
 
