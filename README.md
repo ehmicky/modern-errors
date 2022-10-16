@@ -297,21 +297,24 @@ try {
 The outer error message is appended, unless it is empty. If the outer error
 message ends with `:` or `:\n`, it is prepended instead.
 
-<!-- eslint-disable no-unreachable -->
-
 ```js
 const cause = new InputError('File does not exist.')
-
 // InputError: File does not exist.
 throw new InputError('', { cause })
+```
 
+```js
 // InputError: File does not exist.
 // Could not read the file.
 throw new InputError('Could not read the file.', { cause })
+```
 
+```js
 // InputError: Could not read the file: File does not exist.
 throw new InputError(`Could not read the file:`, { cause })
+```
 
+```js
 // InputError: Could not read the file:
 // File does not exist.
 throw new InputError(`Could not read the file:\n`, { cause })
@@ -322,8 +325,6 @@ throw new InputError(`Could not read the file:\n`, { cause })
 The outer error's class replaces the inner one's, unless the outer error's class
 is [`AnyError`](#anyerror).
 
-<!-- eslint-disable no-unreachable -->
-
 ```js
 try {
   throw new AuthError('...')
@@ -331,7 +332,9 @@ try {
   // Now an InputError
   throw new InputError('...', { cause })
 }
+```
 
+```js
 try {
   throw new AuthError('...')
 } catch (cause) {
@@ -346,8 +349,6 @@ The outer error's options ([`props`](#props) and
 [plugin options](#plugin-options-1)) replace the inner one's, unless the outer
 error's class is [`AnyError`](#anyerror), in which case they are merged instead.
 
-<!-- eslint-disable no-unreachable -->
-
 ```js
 try {
   throw new AuthError('...', innerOptions)
@@ -355,7 +356,9 @@ try {
   // Options are now `outerOptions`. `innerOptions` are ignored.
   throw new InputError('...', { cause, ...outerOptions })
 }
+```
 
+```js
 try {
   throw new AuthError('...', innerOptions)
 } catch (cause) {
@@ -398,7 +401,11 @@ try {
   // This fails: `error.message` is `undefined`
   console.log(invalidError.message.trim())
 }
+```
 
+<!-- eslint-disable no-throw-literal -->
+
+```js
 try {
   throw 'Missing file path.'
 } catch (invalidError) {
