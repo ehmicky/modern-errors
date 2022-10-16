@@ -270,8 +270,7 @@ type BaseError<
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = Error &
-  Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
+> = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
     unknown extends InstanceOptionsArg['errors']
       ? SpecificInstanceOptions<PluginsArg>
       : InstanceOptionsArg,
@@ -417,7 +416,8 @@ type NormalizeError<
   ErrorArg extends Error ? ErrorArg : Error,
   NormalizeErrorName<PluginsArg, ErrorArg>,
   InstanceOptionsArg
->
+> &
+  Error
 
 /**
  * Base error class.
