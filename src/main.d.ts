@@ -55,9 +55,9 @@ type ErrorClass<
   PluginsArg extends Plugins = [],
 > = MaybeIntersect<
   {
-    new <InitOptions extends ConstructorParameters<ParentErrorClass>[1] = {}>(
+    new <Options extends ConstructorParameters<ParentErrorClass>[1] = {}>(
       message: string,
-      options?: InitOptions,
+      options?: Options,
     ): NamedError<ErrorInstance, ErrorNameArg>
     prototype: NamedError<ErrorInstance, ErrorNameArg>
     subclass: CreateSubclass<ParentErrorClass, ErrorInstance, PluginsArg>
@@ -164,10 +164,10 @@ type AnyErrorOptions = {
  * ```
  */
 type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <InitOptions extends AnyErrorOptions = AnyErrorOptions>(
+  new <Options extends AnyErrorOptions = AnyErrorOptions>(
     message: string,
-    options?: InitOptions,
-  ): AnyReturn<InitOptions['cause']>
+    options?: Options,
+  ): AnyReturn<Options['cause']>
   prototype: NamedError<Error, ErrorName>
 
   /**
