@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 
 interface CommonInfo {
-  readonly error: BaseError<Plugins, Error, ErrorName, InstanceOptions<Plugins>>
+  error: BaseError<Plugins, Error, ErrorName, InstanceOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
@@ -24,10 +24,13 @@ interface CommonInfo {
 }
 
 export type Info = {
-  properties: CommonInfo
-  instanceMethods: CommonInfo
-  staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
-  errorInfo: Omit<CommonInfo, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
+  readonly properties: CommonInfo
+  readonly instanceMethods: CommonInfo
+  readonly staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
+  readonly errorInfo: Omit<
+    CommonInfo,
+    'AnyError' | 'ErrorClasses' | 'errorInfo'
+  >
 }
 
 type GetOptions = (input: never, full: boolean) => unknown
@@ -82,7 +85,7 @@ type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
   OptionsArg extends unknown,
 > = (
-  ...args: [...SliceFirst<Parameters<InstanceMethodArg>>, OptionsArg?]
+  ...args: readonly [...SliceFirst<Parameters<InstanceMethodArg>>, OptionsArg?]
 ) => ReturnType<InstanceMethodArg>
 
 type ErrorInstanceMethods<
@@ -112,7 +115,7 @@ type ErrorStaticMethod<
   StaticMethodArg extends StaticMethod,
   OptionsArg extends unknown,
 > = (
-  ...args: [...SliceFirst<Parameters<StaticMethodArg>>, OptionsArg?]
+  ...args: readonly [...SliceFirst<Parameters<StaticMethodArg>>, OptionsArg?]
 ) => ReturnType<StaticMethodArg>
 
 type ErrorStaticMethods<
@@ -167,7 +170,7 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 }
 
 interface CorePluginsOptions {
-  props?: object
+  readonly props?: object
 }
 
 type PluginsOptions<PluginsArg extends Plugins> =
@@ -176,8 +179,8 @@ type PluginsOptions<PluginsArg extends Plugins> =
     : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
 
 type InstanceOptions<PluginsArg extends Plugins> = {
-  cause?: unknown
-  errors?: unknown[]
+  readonly cause?: unknown
+  readonly errors?: unknown[]
 } & PluginsOptions<PluginsArg>
 
 /**
@@ -297,13 +300,13 @@ type ErrorSubclass<
       >,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
-    prototype: BaseError<
+    readonly prototype: BaseError<
       PluginsArg,
       ErrorArg,
       ErrorNameArg,
       InstanceOptions<PluginsArg>
     >
-    subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorArg>
+    readonly subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorArg>
   },
   Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
 >
@@ -373,7 +376,7 @@ export type AnyErrorClass<
     options?: NoAdditionalProps<Options, InstanceOptions<PluginsArg>>,
     ...extra: any[]
   ): NormalizeError<PluginsArg, Options['cause'], Options>
-  prototype: BaseError<
+  readonly prototype: BaseError<
     PluginsArg,
     Error,
     ErrorName,
@@ -390,7 +393,7 @@ export type AnyErrorClass<
    * export const InputError = AnyError.subclass('InputError', options)
    * ```
    */
-  subclass: CreateSubclass<
+  readonly subclass: CreateSubclass<
     PluginsArg,
     AnyErrorClass<PluginsArg, GlobalOptionsArg>,
     BaseError<PluginsArg, Error, ErrorName, InstanceOptions<PluginsArg>>
