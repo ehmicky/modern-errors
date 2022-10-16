@@ -135,6 +135,16 @@ type PluginsStaticMethods<PluginsArg extends Plugins> = UnionToIntersection<
   PluginStaticMethods<PluginsArg[number]>
 >
 
+type PluginProperties<PluginArg extends Plugin> = PluginArg extends Plugin
+  ? PluginArg['properties'] extends GetProperties
+    ? ReturnType<PluginArg['properties']>
+    : {}
+  : {}
+
+type PluginsProperties<PluginsArg extends Plugins> = UnionToIntersection<
+  PluginProperties<PluginsArg[number]>
+>
+
 type PluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
     ? Parameters<PluginArg['getOptions']>[0]
@@ -166,7 +176,8 @@ type CoreError<
     unknown extends Options['errors'] ? InitOptions<PluginsArg> : Options,
     'errors'
   > &
-  PluginsInstanceMethods<PluginsArg>
+  PluginsInstanceMethods<PluginsArg> &
+  PluginsProperties<PluginsArg>
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,

@@ -215,7 +215,7 @@ const instanceMethod = (info: Info['instanceMethods'], arg: 'arg') => arg
 const instanceMethods = { instanceMethod }
 const staticMethod = (info: Info['staticMethods'], arg: 'arg') => arg
 const staticMethods = { staticMethod }
-const properties = (info: Info['properties']) => ({ prop: true as const })
+const properties = (info: Info['properties']) => ({ property: true as const })
 const plugin = {
   name,
   getOptions,
@@ -343,6 +343,18 @@ expectError(
 expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
 expectError(expectType<'arg'>(PAnyError.staticMethod(true)))
 expectError(PAnyError.unknownMethod())
+
+expectType<true>(paError.property)
+expectType<true>(psError.property)
+expectError(paError.unknownProperty)
+expectError(psError.unknownProperty)
+// See above
+// if (exception instanceof PAnyError) {
+//   expectType<true>(exception.property)
+// }
+if (exception instanceof PSError) {
+  expectType<true>(exception.property)
+}
 
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
