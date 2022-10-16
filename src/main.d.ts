@@ -206,7 +206,6 @@ type SpecificClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorArg extends Error,
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -245,18 +244,13 @@ type SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    ErrorArg,
+    InstanceType<ParentErrorClass>,
     ErrorName
   >
 } & PluginsOptions<PluginsArg>
 
 export type ClassOptions<PluginsArg extends Plugins = []> =
-  SpecificClassOptions<
-    PluginsArg,
-    ErrorProps,
-    ErrorConstructor<PluginsArg>,
-    Error
-  >
+  SpecificClassOptions<PluginsArg, ErrorProps, ErrorConstructor<PluginsArg>>
 
 type SpecificGlobalOptions<PluginsArg extends Plugins> =
   PluginsOptions<PluginsArg>
@@ -352,8 +346,7 @@ type ErrorSubclass<
     readonly subclass: CreateSubclass<
       PluginsArg,
       ErrorPropsArg,
-      ParentErrorClass,
-      ErrorArg
+      ParentErrorClass
     >
   },
   Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
@@ -371,14 +364,12 @@ type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorArg extends Error,
 > = <
   ErrorNameArg extends ErrorName,
   ClassOptionsArg extends SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
-    ParentErrorClass,
-    ErrorArg
+    ParentErrorClass
   >,
 >(
   errorName: ErrorNameArg,
@@ -472,14 +463,7 @@ type SpecificAnyErrorClass<
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-    BaseError<
-      PluginsArg,
-      ErrorPropsArg,
-      Error,
-      ErrorName,
-      SpecificInstanceOptions<PluginsArg>
-    >
+    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
   >
 
   /**
