@@ -161,7 +161,9 @@ type FixEmptyObject<Object extends object> = keyof Object extends never
   ? { _?: never }
   : Object
 
-type PluginsOptions<PluginsArg extends Plugins> = FixEmptyObject<{
+type PluginsOptions<PluginsArg extends Plugins> = {
+  props?: object
+} & FixEmptyObject<{
   readonly [PluginArg in PluginsArg[number] as LiteralString<
     PluginArg['name']
   >]?: PluginOptions<PluginArg>
@@ -170,7 +172,6 @@ type PluginsOptions<PluginsArg extends Plugins> = FixEmptyObject<{
 type InitOptions<PluginsArg extends Plugins> = {
   cause?: unknown
   errors?: unknown[]
-  props?: object
 } & PluginsOptions<PluginsArg>
 
 type BaseError<
