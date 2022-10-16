@@ -146,7 +146,7 @@ type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
   : NamedError<Cause extends Error ? MergeCause<Cause> : Error, 'UnknownError'>
 
 /**
- * Base error class. Cannot be instantiated, except when wrapping errors.
+ * Base error class.
  *
  * @example
  * ```js
@@ -187,16 +187,15 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
-   * _unknown_ errors. This should wrap each main function.
+   * _unknown_ errors.
    *
    * @example
    * ```js
-   * export const main = function () {
-   *   try {
-   *     // ...
-   *   } catch (error) {
-   *     throw AnyError.normalize(error)
-   *   }
+   * try {
+   *   throw 'Missing file path.'
+   * } catch (error) {
+   *   // Normalized from a string to an `Error` instance
+   *   throw AnyError.normalize(error)
    * }
    * ```
    */
