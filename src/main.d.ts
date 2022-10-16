@@ -63,7 +63,7 @@ type SliceFirst<tuple extends unknown[]> = tuple extends [
   : []
 
 type ErrorInstanceMethod<InstanceMethodArg extends InstanceMethod> = (
-  ...args: SliceFirst<Parameters<InstanceMethodArg>>
+  ...args: [...SliceFirst<Parameters<InstanceMethodArg>>, object?]
 ) => ReturnType<InstanceMethodArg>
 
 type ErrorInstanceMethods<InstanceMethodsArg extends InstanceMethods> = {

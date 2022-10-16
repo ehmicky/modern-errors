@@ -273,10 +273,14 @@ expectError(eInfo.errorInfo)
 
 expectType<true>(paError.instanceMethod(true))
 expectType<true>(psError.instanceMethod(true))
+expectType<true>(paError.instanceMethod(true, {}))
+expectType<true>(psError.instanceMethod(true, {}))
 expectError(paError.instanceMethod({} as InstanceMethodInfo, true))
 expectError(psError.instanceMethod({} as InstanceMethodInfo, true))
-expectError(paError.instanceMethod(true, true))
-expectError(psError.instanceMethod(true, true))
+expectError(paError.instanceMethod(true, false))
+expectError(psError.instanceMethod(true, false))
+expectError(paError.instanceMethod({}))
+expectError(psError.instanceMethod({}))
 if (exception instanceof PAnyError) {
   expectType<true>(exception.instanceMethod(true))
 }
