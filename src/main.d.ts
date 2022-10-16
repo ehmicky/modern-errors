@@ -13,7 +13,7 @@ interface CommonInfo {
   readonly errorInfo: (error: unknown) => Info['errorInfo']
 }
 
-export type Info = {
+export interface Info {
   readonly properties: CommonInfo
   readonly instanceMethods: CommonInfo
   readonly staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
@@ -29,9 +29,13 @@ type InstanceMethod = (
   info: Info['instanceMethods'],
   ...args: never[]
 ) => unknown
-type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
+interface InstanceMethods {
+  readonly [MethodName: string]: InstanceMethod
+}
 type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
-type StaticMethods = { readonly [MethodName: string]: StaticMethod }
+interface StaticMethods {
+  readonly [MethodName: string]: StaticMethod
+}
 type GetProperties = (info: Info['properties']) => {
   [PropName: string]: unknown
 }
@@ -206,10 +210,13 @@ type PluginsOptions<PluginsArg extends Plugins> =
     ? CorePluginsOptions
     : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
 
-type SpecificInstanceOptions<PluginsArg extends Plugins> = {
+interface MainInstanceOptions {
   readonly cause?: unknown
   readonly errors?: unknown[]
-} & PluginsOptions<PluginsArg>
+}
+
+type SpecificInstanceOptions<PluginsArg extends Plugins> = MainInstanceOptions &
+  PluginsOptions<PluginsArg>
 
 export type InstanceOptions<PluginsArg extends Plugins = []> =
   SpecificInstanceOptions<PluginsArg>
