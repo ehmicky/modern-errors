@@ -11,9 +11,8 @@ import { validateNonEmpty } from './subclass.js'
 // We let any exceptions from custom constructors propagate.
 export const normalize = function (error, AnyError, ErrorClasses) {
   validateNonEmpty(ErrorClasses)
-  const errorA =
-    error instanceof AnyError
-      ? error
-      : new ErrorClasses.UnknownError.ErrorClass('', { cause: error })
-  return normalizeException(errorA)
+  const errorA = normalizeException(error)
+  return errorA instanceof AnyError
+    ? errorA
+    : new ErrorClasses.UnknownError.ErrorClass('', { cause: errorA })
 }

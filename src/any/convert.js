@@ -1,4 +1,5 @@
 import isErrorInstance from 'is-error-instance'
+import normalizeException from 'normalize-exception'
 
 // If `cause` is not an `AnyError` instance, we convert it using
 // `AnyError.normalize()` to:
@@ -15,8 +16,14 @@ export const applyConvertError = function ({
   isUnknownError,
 }) {
   return isUnknownError && message === ''
-    ? { message: keepCauseMessage(message, opts), opts }
+    ? { message: keepCauseMessage(message, opts), opts: normalizeThis(opts) }
     : { message, opts: normalizeCause(opts, AnyError) }
+}
+
+const normalizeThis = function (opts) {
+  return 'cause' in opts
+    ? { ...opts, cause: normalizeException(opts.cause) }
+    : opts
 }
 
 const keepCauseMessage = function (message, { cause }) {

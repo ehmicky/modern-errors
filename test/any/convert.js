@@ -15,11 +15,7 @@ import {
 } from '../helpers/known.js'
 
 const getExpectedMessage = function (cause) {
-  if (isErrorInstance(cause)) {
-    return cause.message
-  }
-
-  return cause === undefined ? '' : String(cause)
+  return isErrorInstance(cause) ? cause.message : String(cause)
 }
 
 each(

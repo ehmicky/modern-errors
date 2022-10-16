@@ -62,8 +62,9 @@ each([TestError, AnyError], ({ title }, ErrorClass) => {
 
   test(`"cause" can have undefined value | ${title}`, (t) => {
     const outerMessage = 'message'
-    const error = new ErrorClass(outerMessage, { cause: undefined })
+    const cause = undefined
+    const error = new ErrorClass(outerMessage, { cause })
     t.false('cause' in error)
-    t.is(error.message, outerMessage)
+    t.is(error.message, `${cause}\n${outerMessage}`)
   })
 })
