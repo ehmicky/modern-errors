@@ -333,10 +333,6 @@ type ErrorConstructor<PluginsArg extends Plugins> = new (
   ...extra: any[]
 ) => ErrorInstance<PluginsArg>
 
-type MaybeIntersect<T extends object, U extends object> = keyof U extends never
-  ? T
-  : T & U
-
 type ParentInstanceOptions<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -360,41 +356,40 @@ type ErrorSubclass<
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-> = MaybeIntersect<
-  {
-    new <
-      InstanceOptionsArg extends ParentInstanceOptions<
-        PluginsArg,
-        ParentErrorClass
-      > = {},
-    >(
-      message: string,
-      options?: NoAdditionalProps<
-        InstanceOptionsArg,
-        ParentInstanceOptions<PluginsArg, ParentErrorClass>
-      >,
-      ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-    ): BaseError<
+> = {
+  new <
+    InstanceOptionsArg extends ParentInstanceOptions<
       PluginsArg,
-      MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-      CustomAttributesArg,
-      ErrorNameArg,
-      InstanceOptionsArg
-    >
-    readonly prototype: BaseError<
-      PluginsArg,
-      ErrorPropsArg,
-      CustomAttributesArg,
-      ErrorNameArg,
-      MainInstanceOptions
-    >
-    readonly subclass: CreateSubclass<
-      PluginsArg,
-      ErrorPropsArg,
-      ParentErrorClass,
-      CustomAttributesArg
-    >
-  },
+      ParentErrorClass
+    > = {},
+  >(
+    message: string,
+    options?: NoAdditionalProps<
+      InstanceOptionsArg,
+      ParentInstanceOptions<PluginsArg, ParentErrorClass>
+    >,
+    ...extra: ParentExtra<PluginsArg, ParentErrorClass>
+  ): BaseError<
+    PluginsArg,
+    MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
+    CustomAttributesArg,
+    ErrorNameArg,
+    InstanceOptionsArg
+  >
+  readonly prototype: BaseError<
+    PluginsArg,
+    ErrorPropsArg,
+    CustomAttributesArg,
+    ErrorNameArg,
+    MainInstanceOptions
+  >
+  readonly subclass: CreateSubclass<
+    PluginsArg,
+    ErrorPropsArg,
+    ParentErrorClass,
+    CustomAttributesArg
+  >
+} & SimplifyEmptyObject<
   Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
 >
 
