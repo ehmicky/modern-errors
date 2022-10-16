@@ -159,12 +159,6 @@ type NoAdditionalProps<
   U extends object,
 > = keyof T extends keyof U ? T : never
 
-type MergePluginsOptions<
-  PluginsArg extends Plugins,
-  OptionsOne extends PluginsOptions<PluginsArg>,
-  OptionsTwo extends PluginsOptions<PluginsArg>,
-> = OptionsOne & OptionsTwo
-
 type LiteralString<T extends string> = string extends T ? never : T
 
 type ExternalPluginOptions<PluginArg extends Plugin> =
@@ -181,6 +175,11 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 type MethodOptions<PluginArg extends Plugin> = ExternalPluginOptions<PluginArg>
 
 type ErrorProps = object
+
+type MergeProps<
+  PropsOne extends ErrorProps,
+  PropsTwo extends ErrorProps,
+> = PropsOne & PropsTwo
 
 interface CorePluginsOptions {
   readonly props?: ErrorProps
