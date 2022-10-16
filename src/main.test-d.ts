@@ -259,6 +259,8 @@ const iUnknownError = new info.ErrorClasses.UnknownError('')
 expectAssignable<UnknownInstance>(iUnknownError)
 expectAssignable<Function | undefined>(info.ErrorClasses.SError)
 expectAssignable<typeof info.ErrorClasses.TestError>(SError)
+expectError(info.errorInfo(true))
+const eInfo = info.errorInfo(iUnknownError)
 
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))

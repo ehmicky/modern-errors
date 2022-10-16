@@ -21,6 +21,7 @@ export interface Info {
       ErrorName
     >
   }
+  readonly errorInfo: (error: Error) => Info
 }
 
 /**
