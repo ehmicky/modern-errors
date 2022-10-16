@@ -55,8 +55,8 @@ expectType<true>(unknownError.genericProp)
 expectAssignable<UnknownInstance>(unknownError)
 expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
 expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
-expectType<UnknownInstance>(AnyError.normalize(''))
-expectType<UnknownInstance>(AnyError.normalize(undefined))
+expectAssignable<UnknownInstance>(AnyError.normalize(''))
+expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
 expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
 if (unknownError instanceof AnyError) {
   expectAssignable<UnknownInstance>(unknownError)
@@ -130,7 +130,7 @@ expectError(new CError('', { unknown: true }))
 expectError(new CError('', { cProp: false }))
 expectNotAssignable<AnyErrorClass>(CError)
 expectAssignable<ErrorClass>(CError)
-expectType<CInstance>(cError)
+expectAssignable<CInstance>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<ErrorInstance>(cError)
 expectAssignable<Error>(cError)
@@ -150,7 +150,7 @@ expectError(new SCError('', { unknown: true }))
 expectError(new SCError('', { cProp: false }))
 expectNotAssignable<AnyErrorClass>(SCError)
 expectAssignable<ErrorClass>(SCError)
-expectType<SCInstance>(scError)
+expectAssignable<SCInstance>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<ErrorInstance>(scError)
 expectAssignable<Error>(scError)
@@ -181,7 +181,7 @@ expectError(new CSError('', { unknown: true }))
 expectError(new CSError('', { cProp: false }))
 expectNotAssignable<AnyErrorClass>(CSError)
 expectAssignable<ErrorClass>(CSError)
-expectType<CSInstance>(csError)
+expectAssignable<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
 expectAssignable<ErrorInstance>(csError)
 expectAssignable<Error>(csError)
@@ -213,7 +213,7 @@ expectError(new CCError('', { cProp: false }))
 expectError(new CCError('', { ccProp: false }))
 expectNotAssignable<AnyErrorClass>(CCError)
 expectAssignable<ErrorClass>(CCError)
-expectType<CCInstance>(ccError)
+expectAssignable<CCInstance>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<ErrorInstance>(ccError)
 expectAssignable<Error>(ccError)
@@ -224,16 +224,22 @@ expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 
-expectType<[true]>(new AnyError('', { errors: [true] as [true] }).errors)
-expectAssignable<[true]>(new CCError('', { errors: [true] as [true] }).errors)
-expectType<unknown[] | undefined>(new AnyError('').errors)
+expectType<[true]>(
+  new AnyError('', { cause: '', errors: [true] as [true] }).errors,
+)
+expectAssignable<[true]>(
+  new CCError('', { cause: '', errors: [true] as [true] }).errors,
+)
+expectType<unknown[] | undefined>(new AnyError('', { cause: '' }).errors)
 expectType<unknown[] | undefined>(new CCError('').errors)
-expectError(new AnyError('', { errors: true }))
+expectError(new AnyError('', { cause: '', errors: true }))
 expectError(new CCError('', { errors: true }))
 
-new AnyError('', { props: {} })
-new CCError('', { props: {} })
-expectError(new AnyError('', { props: true }))
+expectType<true>(
+  new AnyError('', { cause: '', props: { one: true as const } }).one,
+)
+expectType<true>(new CCError('', { props: { one: true as const } }).one)
+expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
 
 const name = 'test'
@@ -301,7 +307,6 @@ modernErrors([], {})
 modernErrors([plugin], {})
 expectError(modernErrors(true))
 modernErrors([plugin], { test: true })
-expectError(modernErrors([{ name, unknown: true }]))
 PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
 new PSError('', { test: true })
@@ -447,7 +452,7 @@ if (exception instanceof GPSError) {
 }
 
 expectError(AnyError.subclass('TestError', { test: true }))
-expectError(new AnyError('', { test: true }))
+expectError(new AnyError('', { cause: '', test: true }))
 expectError(new SError('', { test: true }))
 expectError(modernErrors([plugin], { unknown: true }))
 expectError(PAnyError.subclass('TestError', { unknown: true }))
@@ -562,11 +567,11 @@ if (cError instanceof SError) {
   expectType<never>(cError)
 }
 if (cError instanceof CError) {
-  expectType<CInstance>(cError)
+  expectAssignable<CInstance>(cError)
 }
 if (cError instanceof AnyError) {
-  expectType<CInstance>(cError)
+  expectAssignable<CInstance>(cError)
 }
 if (cError instanceof Error) {
-  expectType<CInstance>(cError)
+  expectAssignable<CInstance>(cError)
 }

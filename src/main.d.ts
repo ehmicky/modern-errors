@@ -177,6 +177,7 @@ type BaseError<
     unknown extends Options['errors'] ? InitOptions<PluginsArg> : Options,
     'errors'
   > &
+  Options['props'] &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
 
@@ -403,6 +404,6 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> = {
  * ```
  */
 export default function modernErrors<PluginsArg extends Plugins = []>(
-  plugins?: PluginsArg & Plugins,
+  plugins?: PluginsArg,
   options?: PluginsOptions<PluginsArg>,
 ): AnyErrorClass<PluginsArg>
