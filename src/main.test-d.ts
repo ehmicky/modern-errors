@@ -1,4 +1,9 @@
-import { expectType, expectAssignable, expectError } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
 import modernErrors from './main.js'
 
@@ -197,6 +202,12 @@ expectType<[true]>(new AnyError('', { errors: [true] as [true] }).errors)
 expectAssignable<[true]>(new CCError('', { errors: [true] as [true] }).errors)
 expectType<unknown[] | undefined>(new AnyError('').errors)
 expectType<unknown[] | undefined>(new CCError('').errors)
+expectNotAssignable<
+  NonNullable<ConstructorParameters<typeof AnyError>[1]>['errors']
+>(new Error(''))
+expectNotAssignable<
+  NonNullable<ConstructorParameters<typeof CCError>[1]>['errors']
+>(new Error(''))
 
 expectError(modernErrors(true))
 expectError(modernErrors([{}]))
