@@ -18,9 +18,9 @@ interface Info {
  */
 interface Plugin {
   readonly name: string
-  readonly getOptions?: (input: any, full: boolean) => any
+  readonly getOptions?: (input: never, full: boolean) => unknown
   readonly instanceMethods?: {
-    readonly [MethodName: string]: (info: Info, ...args: any[]) => any
+    readonly [MethodName: string]: (info: Info, ...args: never[]) => unknown
   }
 }
 
