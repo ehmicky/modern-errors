@@ -257,6 +257,12 @@ expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
 expectType<true>(new CCError('', { props: { one: true as const } }).one)
+expectAssignable<{ one: true; two: true }>(
+  new RAnyError('', { cause: '', props: { two: true as const } }),
+)
+expectAssignable<{ one: true; two: true }>(
+  new RSError('', { cause: '', props: { two: true as const } }),
+)
 
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
