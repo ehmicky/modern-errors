@@ -460,9 +460,11 @@ try {
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) is required for
 [_unknown_ errors](#unknown-errors) to use [plugins](#plugins-1).
 
+<!-- eslint-skip -->
+
 ```js
 try {
-  // ...
+  return regExp.test(value)
 } catch (unknownError) {
   unknownError.examplePluginMethod() // This throws
   const normalizedError = AnyError.normalize(unknownError)
