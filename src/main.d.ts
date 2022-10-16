@@ -32,9 +32,8 @@ type PluginsOptions<PluginsArg extends Plugins> = {
   >]?: PluginOptions<PluginArg>
 }
 
-type MergeCause<ErrorArg extends unknown> = ReturnType<
-  typeof MergeErrorCause<ErrorArg>
->
+type MergeCause<ErrorArg extends unknown> = Error &
+  ReturnType<typeof MergeErrorCause<ErrorArg>>
 
 type NamedError<
   ErrorInstance extends Error,
@@ -134,12 +133,10 @@ type CreateSubclass<
   PluginsArg
 >
 
-type AnyErrorReturn<Cause extends unknown> = Cause extends NamedError<
-  Error,
-  ErrorName
+type AnyErrorReturn<Cause extends unknown> = NamedError<
+  MergeCause<Cause>,
+  Cause extends NamedError<Error, ErrorName> ? Cause['name'] : 'UnknownError'
 >
-  ? MergeCause<Cause>
-  : NamedError<Cause extends Error ? MergeCause<Cause> : Error, 'UnknownError'>
 
 type AnyErrorOptions = {
   cause?: unknown
