@@ -274,7 +274,7 @@ throw new InputError('...', { errors: [databaseError, authError] })
 
 Any error's [message](#wrap-error-message), [class](#wrap-error-class) and
 [options](#wrap-error-options) can be wrapped using the
-[standard `cause` parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
+[standard `cause` option](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
 
 Instead of being set as a `cause` property, the inner error is directly
 [merged](https://github.com/ehmicky/merge-error-cause) to the outer error,
@@ -370,10 +370,38 @@ try {
 
 ## Normalize errors
 
+### Handle errors
+
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) should be applied on
+handled errors.
+
+```js
+try {
+  // ...
+} catch (error) {
+  const normalizedError = AnyError.normalize(error)
+  // ...
+}
+```
+
+### Wrapped errors
+
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) is automatically
+applied on the [`cause` option](#wrap-inner-error). Therefore it does not need
+to be applied on handled errors that are only passed as `cause`.
+
+```js
+try {
+  // ...
+} catch (cause) {
+  throw new InputError('...', { cause })
+}
+```
+
 ### Top-level error handler
 
-Each main function should be wrapped with
-[`AnyError.normalize()`](#anyerrornormalizeanyexception).
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) should wrap each main
+function.
 
 ```js
 export const main = function () {
