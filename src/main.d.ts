@@ -336,7 +336,7 @@ type ErrorSubclass<
       InstanceOptionsArg extends ParentInstanceOptions<
         PluginsArg,
         ParentErrorClass
-      > = ParentInstanceOptions<PluginsArg, ParentErrorClass>,
+      > = {},
     >(
       message: string,
       options?: NoAdditionalProps<
@@ -445,9 +445,7 @@ type SpecificAnyErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
 > = {
-  new <
-    InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg> = SpecificInstanceOptions<PluginsArg>,
-  >(
+  new <InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg> = {}>(
     message: string,
     options?: NoAdditionalProps<
       InstanceOptionsArg,
