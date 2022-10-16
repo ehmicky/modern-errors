@@ -15,6 +15,7 @@ import type MergeErrorCause from 'merge-error-cause'
 interface Plugin {
   readonly name: string
   readonly getOptions?: (input: any, full: boolean) => any
+  readonly instanceMethods?: object
 }
 
 type Plugins = readonly Plugin[]
@@ -265,6 +266,6 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
  * ```
  */
 export default function modernErrors<PluginsArg extends Plugins = []>(
-  plugins?: PluginsArg,
+  plugins?: PluginsArg & Plugins,
   options?: PluginsOptions<PluginsArg>,
 ): AnyErrorClass<PluginsArg>
