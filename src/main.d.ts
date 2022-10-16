@@ -157,17 +157,20 @@ type NoAdditionalProps<
 
 type LiteralString<T extends string> = string extends T ? never : T
 
-type FixEmptyObject<Object extends object> = keyof Object extends never
-  ? { _?: never }
-  : Object
-
-type PluginsOptions<PluginsArg extends Plugins> = {
-  props?: object
-} & FixEmptyObject<{
+type ExternalPluginsOptions<PluginsArg extends Plugins> = {
   readonly [PluginArg in PluginsArg[number] as LiteralString<
     PluginArg['name']
   >]?: PluginOptions<PluginArg>
-}>
+}
+
+interface CorePluginsOptions {
+  props?: object
+}
+
+type PluginsOptions<PluginsArg extends Plugins> =
+  keyof ExternalPluginsOptions<PluginsArg> extends never
+    ? CorePluginsOptions
+    : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
 
 type InitOptions<PluginsArg extends Plugins> = {
   cause?: unknown
