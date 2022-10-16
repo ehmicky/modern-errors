@@ -133,15 +133,14 @@ type CreateSubclass<
   PluginsArg
 >
 
-type NormalizedErrorName<Cause extends unknown> = Cause extends Error
-  ? Cause['name'] extends ErrorName
-    ? Cause['name']
-    : 'UnknownError'
-  : 'UnknownError'
-
 type AnyErrorReturn<Cause extends unknown> = unknown extends Cause
   ? NamedError<Error, ErrorName>
-  : NamedError<MergeCause<Cause>, NormalizedErrorName<Cause>>
+  : Cause extends Error
+  ? NamedError<
+      MergeCause<Cause>,
+      Cause['name'] extends ErrorName ? Cause['name'] : 'UnknownError'
+    >
+  : NamedError<Error, 'UnknownError'>
 
 type AnyErrorOptions = {
   cause?: unknown
