@@ -30,6 +30,10 @@ import modernErrors, {
   AnyErrorClass,
   ErrorClass,
   ErrorInstance,
+  GlobalOptions,
+  ClassOptions,
+  InstanceOptions,
+  MethodOptions,
   Plugin,
   Info,
 } from './main.js'
