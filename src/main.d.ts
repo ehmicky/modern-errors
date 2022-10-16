@@ -69,8 +69,8 @@ type ErrorClass<
 > = MaybeIntersect<
   {
     new <
-      Options extends ConstructorParameters<ParentErrorClass>[1] = {},
-      Extra extends ConstructorParameters<ParentErrorClass>[2] = any,
+      Options extends ConstructorParameters<ParentErrorClass>[1] = ConstructorParameters<ParentErrorClass>[1],
+      Extra extends ConstructorParameters<ParentErrorClass>[2] = ConstructorParameters<ParentErrorClass>[2],
     >(
       message: string,
       options?: Options,
@@ -177,7 +177,7 @@ type NormalizeError<
  * ```
  */
 type AnyErrorClass<PluginsArg extends Plugins = []> = {
-  new <Options extends InitOptions = {}>(
+  new <Options extends InitOptions = InitOptions>(
     message: string,
     options?: Options,
     extra?: any,

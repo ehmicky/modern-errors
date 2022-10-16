@@ -172,7 +172,7 @@ class BCCError extends CError {
     options?: ConstructorParameters<typeof CError>[1] & { ccProp?: true },
     extra?: boolean,
   ) {
-    super(message, options, extra)
+    super(message, options, true)
   }
   deepProp = true as const
   static deepStaticProp = true as const
@@ -319,10 +319,17 @@ expectError(
         options?: ConstructorParameters<typeof CError>[1],
         extra?: false,
       ) {
-        super(message, options, extra)
+        super(message, options, true)
       }
     },
   }),
+)
+expectError(
+  class extends CError {
+    constructor() {
+      super('', {}, false)
+    }
+  },
 )
 
 if (cError instanceof SError) {
