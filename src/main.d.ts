@@ -74,11 +74,10 @@ type ErrorClass<
   {
     new <
       Options extends ConstructorParameters<ParentErrorClass>[1] = ConstructorParameters<ParentErrorClass>[1],
-      Extra extends ConstructorParameters<ParentErrorClass>[2] = ConstructorParameters<ParentErrorClass>[2],
     >(
       message: string,
       options?: Options,
-      extra?: Extra,
+      extra?: ConstructorParameters<ParentErrorClass>[2],
     ): CoreError<
       PluginsArg,
       ErrorInstance,
