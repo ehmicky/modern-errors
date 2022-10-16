@@ -83,7 +83,7 @@ type SliceFirst<tuple extends unknown[]> = tuple extends [
 
 type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
-  MethodOptionsArg extends unknown,
+  MethodOptionsArg extends MethodOptions<Plugin>,
 > = (
   ...args: readonly [
     ...SliceFirst<Parameters<InstanceMethodArg>>,
@@ -93,7 +93,7 @@ type ErrorInstanceMethod<
 
 type ErrorInstanceMethods<
   InstanceMethodsArg extends InstanceMethods,
-  MethodOptionsArg extends unknown,
+  MethodOptionsArg extends MethodOptions<Plugin>,
 > = {
   readonly [MethodName in keyof InstanceMethodsArg]: ErrorInstanceMethod<
     InstanceMethodsArg[MethodName],
@@ -105,7 +105,7 @@ type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['instanceMethods'] extends InstanceMethods
     ? ErrorInstanceMethods<
         PluginArg['instanceMethods'],
-        ExternalPluginOptions<PluginArg>
+        MethodOptions<PluginArg>
       >
     : {}
   : {}
@@ -116,27 +116,27 @@ type PluginsInstanceMethods<PluginsArg extends Plugins> = UnionToIntersection<
 
 type ErrorStaticMethod<
   StaticMethodArg extends StaticMethod,
-  OptionsArg extends unknown,
+  MethodOptionsArg extends MethodOptions<Plugin>,
 > = (
-  ...args: readonly [...SliceFirst<Parameters<StaticMethodArg>>, OptionsArg?]
+  ...args: readonly [
+    ...SliceFirst<Parameters<StaticMethodArg>>,
+    MethodOptionsArg?,
+  ]
 ) => ReturnType<StaticMethodArg>
 
 type ErrorStaticMethods<
   StaticMethodsArg extends StaticMethods,
-  OptionsArg extends unknown,
+  MethodOptionsArg extends MethodOptions<Plugin>,
 > = {
   readonly [MethodName in keyof StaticMethodsArg]: ErrorStaticMethod<
     StaticMethodsArg[MethodName],
-    OptionsArg
+    MethodOptionsArg
   >
 }
 
 type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['staticMethods'] extends StaticMethods
-    ? ErrorStaticMethods<
-        PluginArg['staticMethods'],
-        ExternalPluginOptions<PluginArg>
-      >
+    ? ErrorStaticMethods<PluginArg['staticMethods'], MethodOptions<PluginArg>>
     : {}
   : {}
 
@@ -177,6 +177,8 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
     PluginArg['name']
   >]?: ExternalPluginOptions<PluginArg>
 }
+
+type MethodOptions<PluginArg extends Plugin> = ExternalPluginOptions<PluginArg>
 
 interface CorePluginsOptions {
   readonly props?: object
