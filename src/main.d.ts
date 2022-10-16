@@ -299,6 +299,8 @@ type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> = Pick<
   'errors'
 >
 
+type SimplifyEmptyObject<T extends unknown> = keyof T extends never ? {} : T
+
 type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -306,12 +308,12 @@ type BaseError<
   ErrorNameArg extends ErrorName,
   MainInstanceOptionsArg extends MainInstanceOptions,
 > = Error &
-  CustomAttributesArg &
   NamedError<ErrorNameArg> &
-  AggregateErrors<MainInstanceOptionsArg> &
-  ErrorPropsArg &
-  PluginsInstanceMethods<PluginsArg> &
-  PluginsProperties<PluginsArg>
+  SimplifyEmptyObject<CustomAttributesArg> &
+  SimplifyEmptyObject<AggregateErrors<MainInstanceOptionsArg>> &
+  SimplifyEmptyObject<ErrorPropsArg> &
+  SimplifyEmptyObject<PluginsInstanceMethods<PluginsArg>> &
+  SimplifyEmptyObject<PluginsProperties<PluginsArg>>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
