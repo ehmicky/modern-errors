@@ -214,7 +214,8 @@ expectNotAssignable<
 
 const name = 'test'
 const getOptions = (options: true, full: boolean) => options
-const instanceMethod = (info: { error: Error }, value: true) => value
+const instanceMethod = (info: { error: Error; options: true }, value: true) =>
+  value
 const instanceMethods = { instanceMethod }
 const plugin = { name, getOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
