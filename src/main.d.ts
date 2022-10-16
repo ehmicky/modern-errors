@@ -190,7 +190,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
    */
   subclass: CreateSubclass<
     AnyErrorClass<PluginsArg>,
-    NamedError<Error, ErrorName>,
+    CoreError<Error, ErrorName, InitOptions>,
     PluginsArg
   >
 
