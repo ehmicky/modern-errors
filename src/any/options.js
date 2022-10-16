@@ -20,7 +20,7 @@ export const normalizeOpts = function ({
   args,
   AnyError,
   isAnyError,
-  isUnknownError,
+  isAnyNormalize,
 }) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
@@ -35,7 +35,7 @@ export const normalizeOpts = function ({
   }
 
   validateAnyErrorArgs(isAnyError, args, opts)
-  return applyConvertError({ message, opts, AnyError, isUnknownError })
+  return applyConvertError({ message, opts, AnyError, isAnyNormalize })
 }
 
 // `new AnyError()` does not make sense without a `cause`, so we validate it.

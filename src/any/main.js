@@ -38,7 +38,7 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-
+// eslint-disable-next-line max-lines-per-function
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
@@ -50,14 +50,18 @@ export const createAnyError = function ({
     constructor(message, opts, ...args) {
       const isAnyError = new.target === AnyError
       validateSubClass(new.target, isAnyError, ErrorClasses)
-      const isUnknownError = getIsUnknownError(new.target, ErrorClasses)
+      const isAnyNormalize = getIsAnyNormalize(
+        new.target,
+        ErrorClasses,
+        message,
+      )
       const { message: messageA, opts: optsA } = normalizeOpts({
         message,
         opts,
         args,
         AnyError,
         isAnyError,
-        isUnknownError,
+        isAnyNormalize,
       })
       super(messageA, optsA)
       /* c8 ignore start */
@@ -97,12 +101,18 @@ export const createAnyError = function ({
   return AnyError
 }
 
-const getIsUnknownError = function (
+// Return whether this is a `AnyError.normalize()` call, which calls
+// `new UnknownError('', { cause })`.
+// Calling `new UnknownError('', { cause })` behaves as if
+// `AnyError.normalize()` was called.
+const getIsAnyNormalize = function (
   NewTarget,
   { UnknownError: { ErrorClass: UnknownError } },
+  message,
 ) {
   return (
-    NewTarget === UnknownError ||
-    Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)
+    (NewTarget === UnknownError ||
+      Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)) &&
+    message === ''
   )
 }

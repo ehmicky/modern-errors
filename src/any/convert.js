@@ -13,23 +13,19 @@ export const applyConvertError = function ({
   message,
   opts,
   AnyError,
-  isUnknownError,
+  isAnyNormalize,
 }) {
   if (!('cause' in opts)) {
     return { message, opts }
   }
 
-  if (!isAnyNormalize(isUnknownError, message)) {
+  if (!isAnyNormalize) {
     return { message, opts: { ...opts, cause: AnyError.normalize(opts.cause) } }
   }
 
   const causeA = normalizeException(opts.cause)
   const messageA = GENERIC_NAMES.has(causeA.name) ? message : `${causeA.name}:`
   return { message: messageA, opts: { ...opts, cause: causeA } }
-}
-
-const isAnyNormalize = function (isUnknownError, message) {
-  return isUnknownError && message === ''
 }
 
 // The error name is not kept if generic or `UnknownError` itself
