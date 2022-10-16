@@ -135,12 +135,16 @@ type CreateSubclass<
   PluginsArg
 >
 
-type AnyErrorReturn<Cause extends unknown> = Cause extends Error
-  ? NamedError<
-      Cause,
-      Cause['name'] extends ErrorName ? Cause['name'] : 'UnknownError'
-    >
-  : NamedError<Error, 'UnknownError'>
+type NormalizeError<ErrorArg extends unknown> = ErrorArg extends NamedError<
+  Error,
+  ErrorName
+>
+  ? ErrorArg
+  : NamedError<ErrorArg extends Error ? ErrorArg : Error, 'UnknownError'>
+
+type AnyReturn<Cause extends unknown> = NormalizeError<
+  unknown extends Cause ? NamedError<Error, ErrorName> : Cause
+>
 
 type AnyErrorOptions = {
   cause?: unknown
@@ -163,11 +167,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <InitOptions extends AnyErrorOptions = AnyErrorOptions>(
     message: string,
     options?: InitOptions,
-  ): AnyErrorReturn<
-    unknown extends InitOptions['cause']
-      ? NamedError<Error, ErrorName>
-      : InitOptions['cause']
-  >
+  ): AnyReturn<InitOptions['cause']>
   prototype: NamedError<Error, ErrorName>
 
   /**
@@ -200,7 +200,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
    * }
    * ```
    */
-  normalize<ErrorArg extends unknown>(error: ErrorArg): AnyErrorReturn<ErrorArg>
+  normalize<ErrorArg extends unknown>(error: ErrorArg): NormalizeError<ErrorArg>
 }
 
 /**
