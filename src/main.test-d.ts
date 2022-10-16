@@ -239,10 +239,6 @@ expectType<unknown[] | undefined>(new CCError('').errors)
 expectError(new AnyError('', { cause: '', errors: true }))
 expectError(new CCError('', { errors: true }))
 
-expectType<true>(
-  new AnyError('', { cause: '', props: { one: true as const } }).one,
-)
-expectType<true>(new CCError('', { props: { one: true as const } }).one)
 modernErrors([], { props: {} })
 AnyError.subclass('TestError', { props: {} })
 SError.subclass('TestError', { props: {} })
@@ -253,6 +249,14 @@ expectError(AnyError.subclass('TestError', { props: true }))
 expectError(SError.subclass('TestError', { props: true }))
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
+const RAnyError = modernErrors([], { props: { one: true as const } })
+const RSError = RAnyError.subclass('RSError')
+expectType<true>(new RAnyError('', { cause: '' }).one)
+expectType<true>(new RSError('', { cause: '' }).one)
+expectType<true>(
+  new AnyError('', { cause: '', props: { one: true as const } }).one,
+)
+expectType<true>(new CCError('', { props: { one: true as const } }).one)
 
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
