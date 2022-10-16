@@ -211,7 +211,7 @@ expectNotAssignable<
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
 const isOptions = (input: unknown) => input === true
-const instanceMethod = (info: InstanceMethodInfo, value: true) => value
+const instanceMethod = (info: InstanceMethodInfo, arg: 'arg') => arg
 const instanceMethods = { instanceMethod }
 const plugin = { name, getOptions, isOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
@@ -271,21 +271,21 @@ expectError(eInfo.AnyError)
 expectError(eInfo.ErrorClasses)
 expectError(eInfo.errorInfo)
 
-expectType<true>(paError.instanceMethod(true))
-expectType<true>(psError.instanceMethod(true))
-expectType<true>(paError.instanceMethod(true, {}))
-expectType<true>(psError.instanceMethod(true, {}))
-expectError(paError.instanceMethod({} as InstanceMethodInfo, true))
-expectError(psError.instanceMethod({} as InstanceMethodInfo, true))
-expectError(paError.instanceMethod(true, false))
-expectError(psError.instanceMethod(true, false))
-expectError(paError.instanceMethod({}))
-expectError(psError.instanceMethod({}))
+expectType<'arg'>(paError.instanceMethod('arg'))
+expectType<'arg'>(psError.instanceMethod('arg'))
+expectType<'arg'>(paError.instanceMethod('arg', true))
+expectType<'arg'>(psError.instanceMethod('arg', true))
+expectError(paError.instanceMethod({} as InstanceMethodInfo, 'arg'))
+expectError(psError.instanceMethod({} as InstanceMethodInfo, 'arg'))
+expectError(paError.instanceMethod('arg', false))
+expectError(psError.instanceMethod('arg', false))
+expectError(paError.instanceMethod(true))
+expectError(psError.instanceMethod(true))
 if (exception instanceof PAnyError) {
-  expectType<true>(exception.instanceMethod(true))
+  expectType<'arg'>(exception.instanceMethod('arg'))
 }
 if (exception instanceof PSError) {
-  expectType<true>(exception.instanceMethod(true))
+  expectType<'arg'>(exception.instanceMethod('arg'))
 }
 
 expectError(AnyError.subclass('TestError', { test: true }))

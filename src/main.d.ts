@@ -62,19 +62,29 @@ type SliceFirst<tuple extends unknown[]> = tuple extends [
   ? Rest
   : []
 
-type ErrorInstanceMethod<InstanceMethodArg extends InstanceMethod> = (
-  ...args: [...SliceFirst<Parameters<InstanceMethodArg>>, object?]
+type ErrorInstanceMethod<
+  InstanceMethodArg extends InstanceMethod,
+  OptionsArg extends unknown,
+> = (
+  ...args: [...SliceFirst<Parameters<InstanceMethodArg>>, OptionsArg?]
 ) => ReturnType<InstanceMethodArg>
 
-type ErrorInstanceMethods<InstanceMethodsArg extends InstanceMethods> = {
+type ErrorInstanceMethods<
+  InstanceMethodsArg extends InstanceMethods,
+  OptionsArg extends unknown,
+> = {
   readonly [MethodName in keyof InstanceMethodsArg]: ErrorInstanceMethod<
-    InstanceMethodsArg[MethodName]
+    InstanceMethodsArg[MethodName],
+    OptionsArg
   >
 }
 
 type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['instanceMethods'] extends InstanceMethods
-    ? ErrorInstanceMethods<PluginArg['instanceMethods']>
+    ? ErrorInstanceMethods<
+        PluginArg['instanceMethods'],
+        PluginOptions<PluginArg>
+      >
     : {}
   : {}
 
