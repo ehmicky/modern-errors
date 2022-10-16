@@ -222,15 +222,19 @@ const noOptsPlugin = { name } as const
 const plugin = { name, getOptions } as const
 modernErrors([plugin])
 modernErrors([plugin], {})
-modernErrors([plugin], { test: true })
+const PluginAnyError = modernErrors([plugin], { test: true })
+PluginAnyError.subclass('TestError', { test: true })
 expectError(modernErrors([noOptsPlugin], { test: true }))
-expectError(modernErrors([plugin], { other: true }))
+expectError(AnyError.subclass('TestError', { test: true }))
+expectError(modernErrors([plugin], { unknown: true }))
+expectError(PluginAnyError.subclass('TestError', { unknown: true }))
 expectError(
   modernErrors([{ ...plugin, name: 'test' }, { name: 'two' as const }], {
     test: true,
   }),
 )
 expectError(modernErrors([plugin], { test: 'true' }))
+expectError(PluginAnyError.subclass('TestError', { test: 'true' }))
 
 expectError(AnyError.subclass())
 expectError(AnyError.subclass({}))

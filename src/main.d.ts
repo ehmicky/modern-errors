@@ -89,47 +89,50 @@ type ClassOptions<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
   PluginsArg extends Plugins = [],
-> = {
-  /**
-   * Custom class to add any methods, `constructor` or properties.
-   *
-   * @example
-   * ```js
-   * export const InputError = AnyError.subclass('InputError', {
-   *   // The `class` must extend from `AnyError`
-   *   custom: class extends AnyError {
-   *     // If a `constructor` is defined, its parameters must be (message, options)
-   *     // like `AnyError`
-   *     constructor(message, options) {
-   *       // Modifying `message` or `options` should be done before `super()`
-   *       message += message.endsWith('.') ? '' : '.'
-   *
-   *       // All arguments should be forwarded to `super()`, including any
-   *       // custom `options` or additional `constructor` parameters
-   *       super(message, options)
-   *
-   *       // `name` is automatically added, so this is not necessary
-   *       // this.name = 'InputError'
-   *     }
-   *
-   *     isUserInput() {
-   *       // ...
-   *     }
-   *   },
-   * })
-   *
-   * const error = new InputError('Wrong user name')
-   * console.log(error.message) // 'Wrong user name.'
-   * console.log(error.isUserInput())
-   * ```
-   */
-  readonly custom?: ErrorClass<
-    ParentErrorClass,
-    ErrorInstance,
-    ErrorName,
-    PluginsArg
-  >
-}
+> = MaybeIntersect<
+  {
+    /**
+     * Custom class to add any methods, `constructor` or properties.
+     *
+     * @example
+     * ```js
+     * export const InputError = AnyError.subclass('InputError', {
+     *   // The `class` must extend from `AnyError`
+     *   custom: class extends AnyError {
+     *     // If a `constructor` is defined, its parameters must be (message, options)
+     *     // like `AnyError`
+     *     constructor(message, options) {
+     *       // Modifying `message` or `options` should be done before `super()`
+     *       message += message.endsWith('.') ? '' : '.'
+     *
+     *       // All arguments should be forwarded to `super()`, including any
+     *       // custom `options` or additional `constructor` parameters
+     *       super(message, options)
+     *
+     *       // `name` is automatically added, so this is not necessary
+     *       // this.name = 'InputError'
+     *     }
+     *
+     *     isUserInput() {
+     *       // ...
+     *     }
+     *   },
+     * })
+     *
+     * const error = new InputError('Wrong user name')
+     * console.log(error.message) // 'Wrong user name.'
+     * console.log(error.isUserInput())
+     * ```
+     */
+    readonly custom?: ErrorClass<
+      ParentErrorClass,
+      ErrorInstance,
+      ErrorName,
+      PluginsArg
+    >
+  },
+  PluginsOptions<PluginsArg>
+>
 
 type CreateSubclass<
   ParentErrorClass extends ErrorConstructor,
