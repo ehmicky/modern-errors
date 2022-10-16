@@ -252,7 +252,6 @@ type GlobalOptions<PluginsArg extends Plugins> = PluginsOptions<PluginsArg>
 type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  InstanceErrorProps extends ErrorProps,
   ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
@@ -264,14 +263,12 @@ type BaseError<
     'errors'
   > &
   ErrorPropsArg &
-  InstanceErrorProps &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
-  ErrorProps,
-  ErrorProps,
+  ErrorProps & ErrorProps,
   Error,
   ErrorName,
   InstanceOptions<PluginsArg>
@@ -325,18 +322,17 @@ type ErrorSubclass<
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): BaseError<
       PluginsArg,
-      ErrorPropsArg,
-      InstanceOptionsArg['props'] extends ErrorProps
-        ? InstanceOptionsArg['props']
-        : {},
+      ErrorPropsArg &
+        (InstanceOptionsArg['props'] extends ErrorProps
+          ? InstanceOptionsArg['props']
+          : {}),
       ErrorArg,
       ErrorNameArg,
       InstanceOptionsArg
     >
     readonly prototype: BaseError<
       PluginsArg,
-      ErrorPropsArg,
-      {},
+      ErrorPropsArg & {},
       ErrorArg,
       ErrorNameArg,
       InstanceOptions<PluginsArg>
@@ -403,10 +399,10 @@ type NormalizeError<
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
 > = BaseError<
   PluginsArg,
-  ErrorPropsArg,
-  InstanceOptionsArg['props'] extends ErrorProps
-    ? InstanceOptionsArg['props']
-    : {},
+  ErrorPropsArg &
+    (InstanceOptionsArg['props'] extends ErrorProps
+      ? InstanceOptionsArg['props']
+      : {}),
   ErrorArg extends Error ? ErrorArg : Error,
   NormalizeErrorName<ErrorArg>,
   InstanceOptionsArg
@@ -446,8 +442,7 @@ type SpecificAnyErrorClass<
   >
   readonly prototype: BaseError<
     PluginsArg,
-    ErrorPropsArg,
-    {},
+    ErrorPropsArg & {},
     Error,
     ErrorName,
     InstanceOptions<PluginsArg>
@@ -469,8 +464,7 @@ type SpecificAnyErrorClass<
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
     BaseError<
       PluginsArg,
-      ErrorPropsArg,
-      {},
+      ErrorPropsArg & {},
       Error,
       ErrorName,
       InstanceOptions<PluginsArg>
