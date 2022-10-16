@@ -239,6 +239,8 @@ expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
 expectType<true>(new CCError('', { props: { one: true as const } }).one)
+new AnyError('', { cause: '', props: {} })
+new CCError('', { cause: '', props: {} })
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
 
