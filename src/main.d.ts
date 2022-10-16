@@ -21,8 +21,10 @@ export interface Info {
       ErrorName
     >
   }
-  readonly errorInfo: (error: Error) => Info
+  readonly errorInfo: (error: Error) => ErrorInfo
 }
+
+type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
 
 /**
  * Plugins extend `modern-errors` features.
