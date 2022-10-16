@@ -244,7 +244,6 @@ type SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    InstanceType<ParentErrorClass>,
     ErrorName
   >
 } & PluginsOptions<PluginsArg>
@@ -313,7 +312,6 @@ type ErrorSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
@@ -332,14 +330,14 @@ type ErrorSubclass<
     ): BaseError<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-      ErrorArg,
+      InstanceType<ParentErrorClass>,
       ErrorNameArg,
       InstanceOptionsArg
     >
     readonly prototype: BaseError<
       PluginsArg,
       ErrorPropsArg,
-      ErrorArg,
+      InstanceType<ParentErrorClass>,
       ErrorNameArg,
       SpecificInstanceOptions<PluginsArg>
     >
@@ -356,7 +354,6 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
   ErrorProps,
   ErrorConstructor<PluginsArg>,
-  Error,
   ErrorName
 >
 
@@ -380,10 +377,6 @@ type CreateSubclass<
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
     ? ClassOptionsArg['custom']
     : ParentErrorClass,
-  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? InstanceType<ClassOptionsArg['custom']> &
-        InstanceType<ErrorConstructor<PluginsArg>>
-    : InstanceType<ParentErrorClass>,
   ErrorNameArg
 >
 
