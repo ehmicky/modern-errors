@@ -9,7 +9,7 @@ import normalizeException from 'normalize-exception'
 //  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
 //  - With an empty message or not
 // We allow `cause: undefined` since `undefined` exceptions can be thrown.
-export const applyConvertError = function ({
+export const normalizeCause = function ({
   message,
   opts,
   AnyError,
