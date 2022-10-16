@@ -417,22 +417,26 @@ type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => ErrorSubclass<
-  PluginsArg,
-  MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
-  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? ClassOptionsArg['custom']
-    : ParentErrorClass,
-  ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? OmitCustomName<
+) => ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+  ? ErrorSubclass<
+      PluginsArg,
+      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
+      ClassOptionsArg['custom'],
+      OmitCustomName<
         GetCustomAttributes<
           InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
           InstanceType<ClassOptionsArg['custom']>
         >
-      >
-    : CustomAttributesArg,
-  ErrorNameArg
->
+      >,
+      ErrorNameArg
+    >
+  : ErrorSubclass<
+      PluginsArg,
+      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
+      ParentErrorClass,
+      CustomAttributesArg,
+      ErrorNameArg
+    >
 
 type NormalizedErrorName<
   PluginsArg extends Plugins,
