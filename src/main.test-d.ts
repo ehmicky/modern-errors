@@ -5,12 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, {
-  PropertiesInfo,
-  InstanceMethodInfo,
-  StaticMethodInfo,
-  ErrorInfo,
-} from './main.js'
+import modernErrors, { Info } from './main.js'
 
 type ErrorName = `${string}Error`
 
@@ -216,9 +211,9 @@ expectNotAssignable<
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
 const isOptions = (input: unknown) => input === true
-const instanceMethod = (info: InstanceMethodInfo, arg: 'arg') => arg
+const instanceMethod = (info: Info['instanceMethods'], arg: 'arg') => arg
 const instanceMethods = { instanceMethod }
-const staticMethod = (info: StaticMethodInfo, arg: 'arg') => arg
+const staticMethod = (info: Info['staticMethods'], arg: 'arg') => arg
 const staticMethods = { staticMethod }
 const plugin = {
   name,
@@ -265,7 +260,7 @@ expectError(
   modernErrors([{ ...plugin, staticMethods: { staticMethod: true } }]),
 )
 
-const imInfo = {} as InstanceMethodInfo
+const imInfo = {} as Info['instanceMethods']
 expectError(imInfo.unknown)
 expectAssignable<Error>(imInfo.error)
 expectAssignable<boolean>(imInfo.options)
@@ -279,28 +274,28 @@ expectAssignable<UnknownInstance>(iUnknownError)
 expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
 expectAssignable<typeof imInfo.ErrorClasses.TestError>(SError)
 
-const smInfo = {} as StaticMethodInfo
-expectType<InstanceMethodInfo['options']>(smInfo.options)
-expectType<InstanceMethodInfo['AnyError']>(smInfo.AnyError)
-expectType<InstanceMethodInfo['ErrorClasses']>(smInfo.ErrorClasses)
-expectType<InstanceMethodInfo['errorInfo']>(smInfo.errorInfo)
+const smInfo = {} as Info['staticMethods']
+expectType<Info['instanceMethods']['options']>(smInfo.options)
+expectType<Info['instanceMethods']['AnyError']>(smInfo.AnyError)
+expectType<Info['instanceMethods']['ErrorClasses']>(smInfo.ErrorClasses)
+expectType<Info['instanceMethods']['errorInfo']>(smInfo.errorInfo)
 expectError(smInfo.error)
 expectError(smInfo.showStack)
 
-const pInfo = {} as PropertiesInfo
-expectType<InstanceMethodInfo['error']>(pInfo.error)
-expectType<InstanceMethodInfo['options']>(pInfo.options)
-expectType<InstanceMethodInfo['showStack']>(pInfo.showStack)
-expectType<InstanceMethodInfo['AnyError']>(pInfo.AnyError)
-expectType<InstanceMethodInfo['ErrorClasses']>(pInfo.ErrorClasses)
-expectType<InstanceMethodInfo['errorInfo']>(pInfo.errorInfo)
+const pInfo = {} as Info['properties']
+expectType<Info['instanceMethods']['error']>(pInfo.error)
+expectType<Info['instanceMethods']['options']>(pInfo.options)
+expectType<Info['instanceMethods']['showStack']>(pInfo.showStack)
+expectType<Info['instanceMethods']['AnyError']>(pInfo.AnyError)
+expectType<Info['instanceMethods']['ErrorClasses']>(pInfo.ErrorClasses)
+expectType<Info['instanceMethods']['errorInfo']>(pInfo.errorInfo)
 
 const eInfo = imInfo.errorInfo(iUnknownError)
 imInfo.errorInfo('')
-expectType<ErrorInfo>(eInfo)
-expectType<InstanceMethodInfo['error']>(eInfo.error)
-expectType<InstanceMethodInfo['options']>(eInfo.options)
-expectType<InstanceMethodInfo['showStack']>(eInfo.showStack)
+expectType<Info['errorInfo']>(eInfo)
+expectType<Info['instanceMethods']['error']>(eInfo.error)
+expectType<Info['instanceMethods']['options']>(eInfo.options)
+expectType<Info['instanceMethods']['showStack']>(eInfo.showStack)
 expectError(eInfo.AnyError)
 expectError(eInfo.ErrorClasses)
 expectError(eInfo.errorInfo)
@@ -309,8 +304,8 @@ expectType<'arg'>(paError.instanceMethod('arg'))
 expectType<'arg'>(psError.instanceMethod('arg'))
 expectType<'arg'>(paError.instanceMethod('arg', true))
 expectType<'arg'>(psError.instanceMethod('arg', true))
-expectError(paError.instanceMethod({} as InstanceMethodInfo, 'arg'))
-expectError(psError.instanceMethod({} as InstanceMethodInfo, 'arg'))
+expectError(paError.instanceMethod({} as Info['instanceMethods'], 'arg'))
+expectError(psError.instanceMethod({} as Info['instanceMethods'], 'arg'))
 expectError(paError.instanceMethod('arg', false))
 expectError(psError.instanceMethod('arg', false))
 expectError(paError.instanceMethod(true))
@@ -328,7 +323,7 @@ if (exception instanceof PSError) {
 expectType<'arg'>(PAnyError.staticMethod('arg'))
 expectType<'arg'>(PAnyError.staticMethod('arg', true))
 expectError(
-  expectType<'arg'>(PAnyError.staticMethod({} as StaticMethodInfo, 'arg')),
+  expectType<'arg'>(PAnyError.staticMethod({} as Info['staticMethods'], 'arg')),
 )
 expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
 expectError(expectType<'arg'>(PAnyError.staticMethod(true)))

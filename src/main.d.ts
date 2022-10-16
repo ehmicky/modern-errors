@@ -1,6 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
 
-interface Info {
+interface CommonInfo {
   readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean
@@ -20,17 +20,22 @@ interface Info {
       ErrorName
     >
   }
-  readonly errorInfo: (error: unknown) => ErrorInfo
+  readonly errorInfo: (error: unknown) => Info['errorInfo']
 }
 
-export type PropertiesInfo = Info
-export type InstanceMethodInfo = Info
-export type StaticMethodInfo = Omit<Info, 'error' | 'showStack'>
-export type ErrorInfo = Omit<Info, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
+export type Info = {
+  properties: CommonInfo
+  instanceMethods: CommonInfo
+  staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
+  errorInfo: Omit<CommonInfo, 'AnyError' | 'ErrorClasses' | 'errorInfo'>
+}
 
-type InstanceMethod = (info: InstanceMethodInfo, ...args: never[]) => unknown
+type InstanceMethod = (
+  info: Info['instanceMethods'],
+  ...args: never[]
+) => unknown
 type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
-type StaticMethod = (info: StaticMethodInfo, ...args: never[]) => unknown
+type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
 type StaticMethods = { readonly [MethodName: string]: StaticMethod }
 
 /**
