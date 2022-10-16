@@ -4,6 +4,7 @@ import type MergeErrorCause from 'merge-error-cause'
 interface Info {
   readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
   readonly options: never
+  readonly showStack: boolean
 }
 
 /**
