@@ -39,7 +39,6 @@ import modernErrors, {
 } from './main.js'
 
 const exception = {} as unknown
-const genericError = {} as Error & { genericProp: true }
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
@@ -50,18 +49,16 @@ expectAssignable<ErrorInstance>(wideError)
 expectAssignable<Error>(wideError)
 expectType<ErrorName>(wideError.name)
 
-const unknownError = new AnyError('', { cause: genericError })
-const bareUnknownError = new AnyError('', { cause: '' })
-type UnknownInstance = typeof bareUnknownError
+const unknownError = new AnyError('', { cause: '' })
+type UnknownInstance = typeof unknownError
 
 expectAssignable<AnyInstance>(unknownError)
 expectAssignable<ErrorInstance>(unknownError)
 expectAssignable<Error>(unknownError)
 expectType<'UnknownError'>(unknownError.name)
-expectType<true>(unknownError.genericProp)
 expectAssignable<UnknownInstance>(unknownError)
 expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
-expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
+expectAssignable<UnknownInstance>(AnyError.normalize(new Error('')))
 expectAssignable<UnknownInstance>(AnyError.normalize(''))
 expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
 expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
@@ -243,19 +240,35 @@ expectAssignable<[true]>(
 )
 expectType<unknown[] | undefined>(new AnyError('', { cause: '' }).errors)
 expectType<unknown[] | undefined>(new CCError('').errors)
+expectAssignable<InstanceOptions>({ errors: [''] })
 expectError(new AnyError('', { cause: '', errors: true }))
 expectError(new CCError('', { errors: true }))
+expectNotAssignable<InstanceOptions>({ errors: '' })
+expectNotAssignable<GlobalOptions>({ errors: [''] })
+expectNotAssignable<ClassOptions>({ errors: [''] })
+
+const cause = {} as Error & { prop: true }
+expectType<true>(new AnyError('', { cause }).prop)
+expectAssignable<InstanceOptions>({ cause: '' })
+expectNotAssignable<GlobalOptions>({ cause: '' })
+expectNotAssignable<ClassOptions>({ cause: '' })
 
 modernErrors([], { props: {} })
 AnyError.subclass('TestError', { props: {} })
 SError.subclass('TestError', { props: {} })
 new AnyError('', { cause: '', props: {} })
 new CCError('', { cause: '', props: {} })
+expectAssignable<GlobalOptions>({ props: {} })
+expectAssignable<ClassOptions>({ props: {} })
+expectAssignable<InstanceOptions>({ props: {} })
 expectError(modernErrors([], { props: true }))
 expectError(AnyError.subclass('TestError', { props: true }))
 expectError(SError.subclass('TestError', { props: true }))
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
+expectNotAssignable<GlobalOptions>({ props: true })
+expectNotAssignable<ClassOptions>({ props: true })
+expectNotAssignable<InstanceOptions>({ props: true })
 const QAnyError = modernErrors([], {
   props: { one: true as const, three: false as const },
 })
@@ -352,9 +365,9 @@ expectNotAssignable<PAnyErrorClass>(GPSError)
 expectAssignable<ErrorClass>(GPSError)
 expectNotAssignable<PErrorClass>(GPSError)
 
-const paError = new PAnyError('', { cause: genericError })
+const paError = new PAnyError('', { cause: '' })
 const psError = new PSError('')
-const gpaError = new GPAnyError('', { cause: genericError })
+const gpaError = new GPAnyError('', { cause: '' })
 const gpsError = new GPSError('')
 type PErrorInstance = ErrorInstance<[typeof plugin]>
 
@@ -379,11 +392,19 @@ modernErrors([plugin], { test: true })
 PAnyError.subclass('TestError', { test: true })
 new PAnyError('', { test: true })
 new PSError('', { test: true })
+expectAssignable<GlobalOptions<[typeof plugin]>>({ test: true })
+expectAssignable<ClassOptions<[typeof plugin]>>({ test: true })
+expectAssignable<InstanceOptions<[typeof plugin]>>({ test: true })
+expectAssignable<MethodOptions<typeof plugin>>(true)
 
 expectError(modernErrors([plugin], { test: 'true' }))
 expectError(PAnyError.subclass('TestError', { test: 'true' }))
 expectError(new PAnyError('', { test: 'true' }))
 expectError(new PSError('', { test: 'true' }))
+expectNotAssignable<GlobalOptions<[typeof plugin]>>({ test: 'true' })
+expectNotAssignable<ClassOptions<[typeof plugin]>>({ test: 'true' })
+expectNotAssignable<InstanceOptions<[typeof plugin]>>({ test: 'true' })
+expectNotAssignable<MethodOptions<typeof plugin>>('true')
 
 expectError(modernErrors([], { other: true }))
 expectError(modernErrors([plugin as Plugin], { other: true }))
@@ -391,6 +412,9 @@ expectError(modernErrors([{ ...plugin, name: '' as string }], { other: true }))
 expectError(new PAnyError('', { cause: '', other: true }))
 expectError(new PSError('', { other: true }))
 expectError(new PSError('', { cause: '', other: true }))
+expectNotAssignable<GlobalOptions>({ other: true })
+expectNotAssignable<ClassOptions>({ other: true })
+expectNotAssignable<InstanceOptions>({ other: true })
 
 expectError(
   modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
@@ -445,7 +469,7 @@ expectAssignable<typeof AnyError>(imInfo.AnyError)
 expectAssignable<AnyErrorClass>(imInfo.AnyError)
 expectAssignable<object>(imInfo.ErrorClasses)
 expectError(imInfo.ErrorClasses.other)
-expectError(new imInfo.ErrorClasses.AnyError('', { cause: genericError }))
+expectError(new imInfo.ErrorClasses.AnyError('', { cause: '' }))
 const iUnknownError = new imInfo.ErrorClasses.UnknownError('')
 expectAssignable<ErrorInstance>(iUnknownError)
 expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
@@ -532,6 +556,13 @@ if (exception instanceof GPSError) {
   expectAssignable<InstanceType<typeof GPSError>>(exception)
 }
 
+expectAssignable<GlobalOptions>({})
+expectAssignable<ClassOptions>({})
+expectAssignable<InstanceOptions>({})
+expectNotAssignable<GlobalOptions>(true)
+expectNotAssignable<ClassOptions>(true)
+expectNotAssignable<InstanceOptions>(true)
+
 expectError(AnyError.subclass())
 expectError(PAnyError.subclass())
 expectError(CCError.subclass())
@@ -550,6 +581,11 @@ expectError(CCError.subclass('TestError', { other: true }))
 expectError(AnyError.subclass('TestError', { custom: true }))
 expectError(PAnyError.subclass('TestError', { custom: true }))
 expectError(CCError.subclass('TestError', { custom: true }))
+expectNotAssignable<ClassOptions>({ custom: true })
+
+expectAssignable<ClassOptions>({ custom: AnyError })
+expectNotAssignable<GlobalOptions>({ custom: AnyError })
+expectNotAssignable<InstanceOptions>({ custom: AnyError })
 
 expectError(AnyError.subclass('TestError', { custom: class {} }))
 expectError(PAnyError.subclass('TestError', { custom: class {} }))
