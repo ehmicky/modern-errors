@@ -190,7 +190,7 @@ type MergeProps<
 type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
   CorePluginsOptionsArg['props'] extends ErrorProps
     ? CorePluginsOptionsArg['props']
-    : {}
+    : ErrorProps
 
 type MergeErrorProps<
   Props extends ErrorProps,
