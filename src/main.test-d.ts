@@ -49,23 +49,6 @@ expectAssignable<ErrorInstance>(wideError)
 expectAssignable<Error>(wideError)
 expectType<ErrorName>(wideError.name)
 
-const unknownError = new AnyError('', { cause: '' })
-type UnknownInstance = typeof unknownError
-
-expectAssignable<AnyInstance>(unknownError)
-expectAssignable<ErrorInstance>(unknownError)
-expectAssignable<Error>(unknownError)
-expectType<'UnknownError'>(unknownError.name)
-expectAssignable<UnknownInstance>(unknownError)
-expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
-expectAssignable<UnknownInstance>(AnyError.normalize(new Error('')))
-expectAssignable<UnknownInstance>(AnyError.normalize(''))
-expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
-expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
-if (unknownError instanceof AnyError) {
-  expectAssignable<UnknownInstance>(unknownError)
-}
-
 const SError = AnyError.subclass('SError')
 type SInstance = typeof SError['prototype']
 const sError = new SError('')
@@ -79,6 +62,29 @@ expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
 if (exception instanceof SError) {
   expectType<SInstance>(exception)
+}
+
+const unknownError = new AnyError('', { cause: '' })
+type UnknownInstance = typeof unknownError
+
+expectAssignable<AnyInstance>(unknownError)
+expectAssignable<ErrorInstance>(unknownError)
+expectAssignable<Error>(unknownError)
+expectAssignable<UnknownInstance>(unknownError)
+expectType<'UnknownError'>('' as UnknownInstance['name'])
+expectType<'UnknownError'>(unknownError.name)
+expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
+expectNotAssignable<UnknownInstance>(new AnyError('', { cause: sError }))
+expectNotAssignable<UnknownInstance>(AnyError.normalize(sError))
+expectAssignable<UnknownInstance>(new AnyError('', { cause: unknownError }))
+expectAssignable<UnknownInstance>(AnyError.normalize(unknownError))
+expectAssignable<UnknownInstance>(new AnyError('', { cause: new Error('') }))
+expectAssignable<UnknownInstance>(AnyError.normalize(new Error('')))
+expectAssignable<UnknownInstance>(new AnyError('', { cause: undefined }))
+expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
+expectAssignable<UnknownInstance>(AnyError.normalize(''))
+if (unknownError instanceof AnyError) {
+  expectAssignable<UnknownInstance>(unknownError)
 }
 
 const anyError = new AnyError('', { cause: sError })
@@ -370,6 +376,8 @@ const psError = new PSError('')
 const gpaError = new GPAnyError('', { cause: '' })
 const gpsError = new GPSError('')
 type PErrorInstance = ErrorInstance<[typeof plugin]>
+type PUnknownInstance = typeof paError
+expectType<'UnknownError'>('' as PUnknownInstance['name'])
 
 expectAssignable<Error>(paError)
 expectAssignable<ErrorInstance>(paError)
@@ -383,6 +391,11 @@ expectNotAssignable<PErrorInstance>(gpaError)
 expectAssignable<Error>(gpsError)
 expectAssignable<ErrorInstance>(gpsError)
 expectNotAssignable<PErrorInstance>(gpsError)
+
+expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
+expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
+expectAssignable<PUnknownInstance>(new PAnyError('', { cause: sError }))
+expectAssignable<PUnknownInstance>(PAnyError.normalize(sError))
 
 modernErrors([])
 modernErrors([], {})

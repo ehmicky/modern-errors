@@ -397,12 +397,13 @@ type CreateSubclass<
   ErrorNameArg
 >
 
-type NormalizeErrorName<ErrorArg extends unknown> = unknown extends ErrorArg
+type NormalizeErrorName<
+  PluginsArg extends Plugins,
+  ErrorArg extends unknown,
+> = unknown extends ErrorArg
   ? ErrorName
-  : ErrorArg extends Error
-  ? ErrorArg['name'] extends ErrorName
-    ? ErrorArg['name']
-    : 'UnknownError'
+  : ErrorArg extends ErrorInstance<PluginsArg>
+  ? ErrorArg['name']
   : 'UnknownError'
 
 type NormalizeError<
@@ -414,7 +415,7 @@ type NormalizeError<
   PluginsArg,
   MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
   ErrorArg extends Error ? ErrorArg : Error,
-  NormalizeErrorName<ErrorArg>,
+  NormalizeErrorName<PluginsArg, ErrorArg>,
   InstanceOptionsArg
 >
 
