@@ -54,7 +54,7 @@ type GetProperties = (info: Info['properties']) => {
  * export const AnyError = modernErrors([modernErrorsBugs, modernErrorsSerialize])
  * ```
  */
-interface Plugin {
+export interface Plugin {
   readonly name: string
   readonly getOptions?: GetOptions
   readonly isOptions?: IsOptions

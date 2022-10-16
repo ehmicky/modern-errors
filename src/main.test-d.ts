@@ -25,7 +25,7 @@ import type { ErrorName } from 'error-custom-class'
  *     - `new AnyError()` should require a second argument as an object with a
  *       `cause` property
  */
-import modernErrors, { Info } from './main.js'
+import modernErrors, { Plugin, Info } from './main.js'
 
 const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
@@ -233,8 +233,6 @@ modernErrors([], {})
 modernErrors([plugin], {})
 expectError(modernErrors(true))
 modernErrors([plugin], { test: true })
-modernErrors([{ name }])
-expectError(modernErrors([{}]))
 expectError(modernErrors([{ name, unknown: true }]))
 PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
@@ -244,36 +242,46 @@ expectError(modernErrors([{ ...plugin, name: '' as string }], { test: true }))
 expectError(
   modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
 )
-expectError(
-  modernErrors([
-    { ...plugin, getOptions: (input: true, full: string) => input },
-  ]),
-)
-expectError(modernErrors([{ ...plugin, isOptions: (input: true) => true }]))
-expectError(modernErrors([{ ...plugin, isOptions: (input: unknown) => 0 }]))
-modernErrors([{ ...plugin, instanceMethods: {} }])
-expectError(modernErrors([{ ...plugin, instanceMethods: true }]))
-expectError(
-  modernErrors([{ ...plugin, instanceMethods: { instanceMethod: true } }]),
-)
-modernErrors([{ ...plugin, staticMethods: {} }])
-expectError(modernErrors([{ ...plugin, staticMethods: true }]))
-expectError(
-  modernErrors([{ ...plugin, staticMethods: { staticMethod: true } }]),
-)
-expectError(modernErrors([{ ...plugin, properties: true }]))
-expectError(modernErrors([{ ...plugin, properties: (info: true) => ({}) }]))
-expectError(
-  modernErrors([
-    { ...plugin, properties: (info: Info['properties'], arg: true) => ({}) },
-  ]),
-)
-expectError(
-  modernErrors([{ ...plugin, properties: (info: Info['properties']) => true }]),
-)
-expectError(
-  modernErrors([{ ...plugin, properties: (info: Info['properties']) => [] }]),
-)
+
+expectAssignable<Plugin>(plugin)
+expectAssignable<Plugin>({ name })
+expectNotAssignable<Plugin>({})
+expectNotAssignable<Plugin>({ name, unknown: true })
+expectNotAssignable<Plugin>({ ...plugin, getOptions: true })
+expectAssignable<Plugin>({ ...plugin, getOptions: () => true })
+expectNotAssignable<Plugin>({
+  ...plugin,
+  getOptions: (input: true, full: string) => input,
+})
+expectNotAssignable<Plugin>({ ...plugin, isOptions: true })
+expectNotAssignable<Plugin>({ ...plugin, isOptions: (input: true) => true })
+expectNotAssignable<Plugin>({ ...plugin, isOptions: (input: unknown) => 0 })
+expectAssignable<Plugin>({ ...plugin, instanceMethods: {} })
+expectNotAssignable<Plugin>({ ...plugin, instanceMethods: true })
+expectNotAssignable<Plugin>({
+  ...plugin,
+  instanceMethods: { instanceMethod: true },
+})
+expectAssignable<Plugin>({ ...plugin, staticMethods: {} })
+expectNotAssignable<Plugin>({ ...plugin, staticMethods: true })
+expectNotAssignable<Plugin>({
+  ...plugin,
+  staticMethods: { staticMethod: true },
+})
+expectNotAssignable<Plugin>({ ...plugin, properties: true })
+expectNotAssignable<Plugin>({ ...plugin, properties: (info: true) => ({}) })
+expectNotAssignable<Plugin>({
+  ...plugin,
+  properties: (info: Info['properties'], arg: true) => ({}),
+})
+expectNotAssignable<Plugin>({
+  ...plugin,
+  properties: (info: Info['properties']) => true,
+})
+expectNotAssignable<Plugin>({
+  ...plugin,
+  properties: (info: Info['properties']) => [],
+})
 
 const imInfo = {} as Info['instanceMethods']
 expectError(imInfo.unknown)
