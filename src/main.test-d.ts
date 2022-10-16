@@ -5,11 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, {
-  InstanceMethodInfo,
-  ErrorInfo,
-  PluginsInstanceMethods,
-} from './main.js'
+import modernErrors, { InstanceMethodInfo, ErrorInfo } from './main.js'
 
 type ErrorName = `${string}Error`
 

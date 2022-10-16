@@ -77,8 +77,9 @@ type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
     : {}
   : {}
 
-export type PluginsInstanceMethods<PluginsArg extends Plugins> =
-  UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>
+type PluginsInstanceMethods<PluginsArg extends Plugins> = UnionToIntersection<
+  PluginInstanceMethods<PluginsArg[number]>
+>
 
 type PluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
