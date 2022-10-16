@@ -539,8 +539,8 @@ Plugins extend `modern-errors` features. All available plugins are
 
 ### Adding plugins
 
-To use a plugin, please install it, then pass it as a first argument to
-[`modernErrors()`](#modernerrorsplugins-options).
+To use a plugin, please install it, then pass it to
+[`modernErrors()`](#modernerrorsplugins-options)'s first argument.
 
 ```bash
 npm install modern-errors-{pluginName}
