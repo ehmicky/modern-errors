@@ -130,7 +130,8 @@ Creates and returns [`AnyError`](#anyerror).
 
 ## AnyError
 
-Base error class.
+Base error class. Cannot be instantiated, except when
+[wrapping errors](#wrap-error-class).
 
 ### AnyError.subclass(name, options?)
 
