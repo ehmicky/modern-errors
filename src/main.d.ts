@@ -270,7 +270,7 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
     PluginsArg,
     ErrorProps,
     ErrorConstructor<PluginsArg>,
-    ErrorInstance<PluginsArg>
+    CustomAttributes
   >
 
 type SpecificGlobalOptions<PluginsArg extends Plugins> =
