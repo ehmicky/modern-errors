@@ -4,6 +4,7 @@ import {
   expectNotAssignable,
   expectError,
 } from 'tsd'
+import type { ErrorName } from 'error-custom-class'
 
 /**
  * Known limitations of current types:
@@ -25,8 +26,6 @@ import {
  *       `cause` property
  */
 import modernErrors, { Info } from './main.js'
-
-type ErrorName = `${string}Error`
 
 const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
