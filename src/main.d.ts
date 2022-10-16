@@ -298,7 +298,7 @@ type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
   options?: SpecificInstanceOptions<PluginsArg>,
   ...extra: any[]
-) => ErrorInstance
+) => ErrorInstance<PluginsArg>
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
