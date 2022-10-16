@@ -3,7 +3,6 @@ import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
 import {
-  TestError,
   UnknownError,
   AnyError,
   KnownErrorClasses,
@@ -20,12 +19,7 @@ const getExpectedMessage = function (cause) {
 
 each(
   [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
-  [
-    ...getNativeErrors(),
-    () => new UnknownError('message'),
-    // eslint-disable-next-line fp/no-mutating-assign
-    () => Object.assign(new TestError('message'), { name: true }),
-  ],
+  [...getNativeErrors(), () => new UnknownError('message')],
   ({ title }, ParentErrorClass, getCause) => {
     test(`Cause name is ignored if absent | ${title}`, (t) => {
       const cause = getCause()
