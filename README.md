@@ -43,7 +43,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Example
 
-Create [error classes](#create-error-classes).
+Create [error classes](#error-classes).
 
 ```js
 import modernErrors from 'modern-errors'
@@ -81,7 +81,7 @@ try {
 try {
   throw 'Missing file path.'
 } catch (error) {
-  // Normalize error string to an error instance
+  // Normalized from a string to an `Error` instance
   throw AnyError.normalize(error)
 }
 ```
@@ -94,9 +94,9 @@ import modernErrorsSerialize from 'modern-errors-serialize'
 
 // Use a plugin to serialize errors as JSON
 export const AnyError = modernErrors([modernErrorsSerialize])
-```
 
-```js
+// ...
+
 // Serialize error as JSON, then back to identical error instance
 const error = new InputError('Missing file path.')
 const errorString = JSON.stringify(error)
