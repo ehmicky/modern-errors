@@ -33,8 +33,8 @@ type PluginsOptions<PluginsArg extends Plugins> = {
 }
 
 // TODO: re-enable
-// type MergeCause<ErrorArg extends unknown> = ReturnType<
-//   typeof MergeErrorCause<ErrorArg>
+// type MergeCause<ErrorInstance extends unknown> = ReturnType<
+//   typeof MergeErrorCause<ErrorInstance>
 // >
 
 type NamedError<
@@ -139,12 +139,13 @@ type CreateSubclass<
   PluginsArg
 >
 
-type NormalizeError<ErrorArg extends unknown> = ErrorArg extends NamedError<
-  Error,
-  ErrorName
->
-  ? ErrorArg
-  : NamedError<ErrorArg extends Error ? ErrorArg : Error, 'UnknownError'>
+type NormalizeError<ErrorInstance extends unknown> =
+  ErrorInstance extends NamedError<Error, ErrorName>
+    ? ErrorInstance
+    : NamedError<
+        ErrorInstance extends Error ? ErrorInstance : Error,
+        'UnknownError'
+      >
 
 type AnyReturn<Cause extends unknown> = unknown extends Cause
   ? NamedError<Error, ErrorName>
@@ -200,7 +201,9 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
    * }
    * ```
    */
-  normalize<ErrorArg extends unknown>(error: ErrorArg): NormalizeError<ErrorArg>
+  normalize<ErrorInstance extends unknown>(
+    error: ErrorInstance,
+  ): NormalizeError<ErrorInstance>
 }
 
 /**
