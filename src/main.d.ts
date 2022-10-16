@@ -257,10 +257,12 @@ type SpecificGlobalOptions<PluginsArg extends Plugins> =
 export type GlobalOptions<PluginsArg extends Plugins = []> =
   SpecificGlobalOptions<PluginsArg>
 
-type NamedError<ErrorArg extends Error, ErrorNameArg extends ErrorName> = Omit<
-  ErrorArg,
-  'name'
-> & { name: ErrorNameArg }
+type NamedError<
+  ErrorArg extends Error,
+  ErrorNameArg extends ErrorName,
+> = (ErrorNameArg extends ErrorArg['name']
+  ? ErrorArg
+  : Omit<ErrorArg, 'name'>) & { name: ErrorNameArg }
 
 type AggregateErrors<
   PluginsArg extends Plugins,
