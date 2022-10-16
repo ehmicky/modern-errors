@@ -534,18 +534,17 @@ export const AuthError = SharedError.subclass('AuthError')
 
 ### List of plugins
 
-[Full list](#plugins) of plugins.
+Plugins extend `modern-errors` features. All available plugins are
+[listed here](#plugins).
 
 ### Adding plugins
 
-Plugins extend `modern-errors` features. They must first be installed.
+To use a plugin, please install it, then pass it as a first argument to
+[`modernErrors()`](#modernerrorsplugins-options).
 
 ```bash
 npm install modern-errors-{pluginName}
 ```
-
-They are then passed as a first argument to
-[`modernErrors()`](#modernerrorsplugins-options).
 
 <!-- eslint-disable import/order -->
 
