@@ -1,19 +1,19 @@
 import type { ErrorName } from 'error-custom-class'
 
 interface CommonInfo {
-  readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
+  readonly error: BaseError<Plugins, Error, ErrorName, InitOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean
   readonly AnyError: AnyErrorClass<Plugins>
   readonly ErrorClasses: {
     AnyError: never
-    UnknownError: ErrorClass<
+    UnknownError: ErrorSubclass<
       Plugins,
       ErrorConstructor<Plugins>,
       Error,
       'UnknownError'
     >
-    [name: ErrorName]: ErrorClass<
+    [name: ErrorName]: ErrorSubclass<
       Plugins,
       ErrorConstructor<Plugins>,
       Error,
@@ -167,17 +167,24 @@ type InitOptions<PluginsArg extends Plugins> = {
   errors?: unknown[]
 } & PluginsOptions<PluginsArg>
 
-type CoreError<
+type BaseError<
   PluginsArg extends Plugins,
-  ErrorInstance extends Error,
+  ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
   Options extends InitOptions<PluginsArg>,
-> = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg } & Pick<
+> = Omit<ErrorArg, 'name'> & { name: ErrorNameArg } & Pick<
     unknown extends Options['errors'] ? InitOptions<PluginsArg> : Options,
     'errors'
   > &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
+
+export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
+  PluginsArg,
+  Error,
+  ErrorName,
+  InitOptions<PluginsArg>
+>
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
@@ -205,10 +212,10 @@ type ParentExtra<
   ? Extra
   : never
 
-type ErrorClass<
+type ErrorSubclass<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstance extends Error,
+  ErrorArg extends Error,
   ErrorNameArg extends ErrorName,
 > = MaybeIntersect<
   {
@@ -221,16 +228,23 @@ type ErrorClass<
       message: string,
       options?: Options,
       ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-    ): CoreError<PluginsArg, ErrorInstance, ErrorNameArg, Options>
-    prototype: CoreError<
+    ): BaseError<PluginsArg, ErrorArg, ErrorNameArg, Options>
+    prototype: BaseError<
       PluginsArg,
-      ErrorInstance,
+      ErrorArg,
       ErrorNameArg,
       InitOptions<PluginsArg>
     >
-    subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorInstance>
+    subclass: CreateSubclass<PluginsArg, ParentErrorClass, ErrorArg>
   },
   Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
+>
+
+export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
+  PluginsArg,
+  ErrorConstructor<PluginsArg>,
+  Error,
+  ErrorName
 >
 
 /**
@@ -239,7 +253,7 @@ type ErrorClass<
 type ClassOptions<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstance extends Error,
+  ErrorArg extends Error,
 > = {
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -274,10 +288,10 @@ type ClassOptions<
    * console.log(error.isUserInput())
    * ```
    */
-  readonly custom?: ErrorClass<
+  readonly custom?: ErrorSubclass<
     PluginsArg,
     ParentErrorClass,
-    ErrorInstance,
+    ErrorArg,
     ErrorName
   >
 } & PluginsOptions<PluginsArg>
@@ -285,14 +299,14 @@ type ClassOptions<
 type CreateSubclass<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ErrorInstance extends Error,
+  ErrorArg extends Error,
 > = <
   ErrorNameArg extends ErrorName,
-  OptionsArg extends ClassOptions<PluginsArg, ParentErrorClass, ErrorInstance>,
+  OptionsArg extends ClassOptions<PluginsArg, ParentErrorClass, ErrorArg>,
 >(
   errorName: ErrorNameArg,
   options?: OptionsArg,
-) => ErrorClass<
+) => ErrorSubclass<
   PluginsArg,
   OptionsArg['custom'] extends ErrorConstructor<PluginsArg>
     ? OptionsArg['custom']
@@ -306,15 +320,15 @@ type CreateSubclass<
 
 type NormalizeError<
   PluginsArg extends Plugins,
-  ErrorInstance extends unknown,
+  ErrorArg extends unknown,
   Options extends InitOptions<PluginsArg>,
-> = ErrorInstance extends CoreError<PluginsArg, Error, ErrorName, Options>
-  ? ErrorInstance
-  : ErrorInstance extends Error
-  ? CoreError<PluginsArg, ErrorInstance, 'UnknownError', Options>
-  : unknown extends ErrorInstance
-  ? CoreError<PluginsArg, Error, ErrorName, Options>
-  : CoreError<PluginsArg, Error, 'UnknownError', Options>
+> = ErrorArg extends BaseError<PluginsArg, Error, ErrorName, Options>
+  ? ErrorArg
+  : ErrorArg extends Error
+  ? BaseError<PluginsArg, ErrorArg, 'UnknownError', Options>
+  : unknown extends ErrorArg
+  ? BaseError<PluginsArg, Error, ErrorName, Options>
+  : BaseError<PluginsArg, Error, 'UnknownError', Options>
 
 /**
  * Base error class.
@@ -329,13 +343,13 @@ type NormalizeError<
  * }
  * ```
  */
-type AnyErrorClass<PluginsArg extends Plugins> = {
+export type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <Options extends InitOptions<PluginsArg> = InitOptions<PluginsArg>>(
     message: string,
     options?: Options,
     ...extra: any[]
   ): NormalizeError<PluginsArg, Options['cause'], Options>
-  prototype: CoreError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
+  prototype: BaseError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
 
   /**
    * Creates and returns an error subclass.
@@ -350,7 +364,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
   subclass: CreateSubclass<
     PluginsArg,
     AnyErrorClass<PluginsArg>,
-    CoreError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
+    BaseError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
   >
 
   /**
@@ -367,9 +381,9 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
    * }
    * ```
    */
-  normalize<ErrorInstance extends unknown>(
-    error: ErrorInstance,
-  ): NormalizeError<PluginsArg, ErrorInstance, InitOptions<PluginsArg>>
+  normalize<ErrorArg extends unknown>(
+    error: ErrorArg,
+  ): NormalizeError<PluginsArg, ErrorArg, InitOptions<PluginsArg>>
 } & PluginsStaticMethods<PluginsArg>
 
 /**

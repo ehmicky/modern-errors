@@ -20,12 +20,16 @@ import type { ErrorName } from 'error-custom-class'
  *  - `AnyError` does not always respect proper inheritance, i.e. it sometimes
  *    has stronger constraints than its subclasses, resulting in the following
  *    runtime behavior which cannot be typed:
- *     - Plugins static methods should only be defined on `AnyError.*`, not on
- *       its subclasses
  *     - `new AnyError()` should require a second argument as an object with a
  *       `cause` property
  */
-import modernErrors, { Plugin, Info } from './main.js'
+import modernErrors, {
+  AnyErrorClass,
+  ErrorClass,
+  ErrorInstance,
+  Plugin,
+  Info,
+} from './main.js'
 
 const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
@@ -33,6 +37,9 @@ const genericError = {} as Error & { genericProp: true }
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 const wideError = {} as any as AnyInstance
+expectAssignable<AnyErrorClass>(AnyError)
+expectAssignable<ErrorClass>(AnyError)
+expectAssignable<ErrorInstance>(wideError)
 expectAssignable<Error>(wideError)
 expectType<ErrorName>(wideError.name)
 
@@ -41,6 +48,7 @@ const bareUnknownError = new AnyError('', { cause: '' })
 type UnknownInstance = typeof bareUnknownError
 
 expectAssignable<AnyInstance>(unknownError)
+expectAssignable<ErrorInstance>(unknownError)
 expectAssignable<Error>(unknownError)
 expectType<'UnknownError'>(unknownError.name)
 expectType<true>(unknownError.genericProp)
@@ -57,8 +65,11 @@ if (unknownError instanceof AnyError) {
 const SError = AnyError.subclass('SError')
 type SInstance = typeof SError['prototype']
 const sError = new SError('')
+expectNotAssignable<AnyErrorClass>(SError)
+expectAssignable<ErrorClass>(SError)
 expectType<SInstance>(sError)
 expectAssignable<AnyInstance>(sError)
+expectAssignable<ErrorInstance>(sError)
 expectAssignable<Error>(sError)
 expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
@@ -72,6 +83,7 @@ expectError(new AnyError(true))
 expectError(new AnyError('', true))
 expectError(new AnyError('', { unknown: true }))
 expectAssignable<SInstance>(anyError)
+expectAssignable<ErrorInstance>(anyError)
 expectAssignable<Error>(anyError)
 expectType<'SError'>(anyError.name)
 expectAssignable<SInstance>(AnyError.normalize(sError))
@@ -84,8 +96,11 @@ const SSError = SError.subclass('SSError')
 type SSInstance = typeof SSError['prototype']
 
 const ssError = new SSError('')
+expectNotAssignable<AnyErrorClass>(SSError)
+expectAssignable<ErrorClass>(SSError)
 expectType<SSInstance>(ssError)
 expectAssignable<AnyInstance>(ssError)
+expectAssignable<ErrorInstance>(ssError)
 expectAssignable<Error>(ssError)
 expectType<'SSError'>(ssError.name)
 expectError(SSError.normalize(''))
@@ -113,8 +128,11 @@ expectError(new CError(true))
 expectError(new CError('', true))
 expectError(new CError('', { unknown: true }))
 expectError(new CError('', { cProp: false }))
+expectNotAssignable<AnyErrorClass>(CError)
+expectAssignable<ErrorClass>(CError)
 expectType<CInstance>(cError)
 expectAssignable<AnyInstance>(cError)
+expectAssignable<ErrorInstance>(cError)
 expectAssignable<Error>(cError)
 expectType<true>(cError.prop)
 expectType<true>(CError.staticProp)
@@ -130,8 +148,11 @@ expectError(new SCError(true))
 expectError(new SCError('', true))
 expectError(new SCError('', { unknown: true }))
 expectError(new SCError('', { cProp: false }))
+expectNotAssignable<AnyErrorClass>(SCError)
+expectAssignable<ErrorClass>(SCError)
 expectType<SCInstance>(scError)
 expectAssignable<AnyInstance>(scError)
+expectAssignable<ErrorInstance>(scError)
 expectAssignable<Error>(scError)
 expectType<true>(scError.prop)
 expectType<true>(SCError.staticProp)
@@ -158,8 +179,11 @@ expectError(new CSError(true))
 expectError(new CSError('', true))
 expectError(new CSError('', { unknown: true }))
 expectError(new CSError('', { cProp: false }))
+expectNotAssignable<AnyErrorClass>(CSError)
+expectAssignable<ErrorClass>(CSError)
 expectType<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
+expectAssignable<ErrorInstance>(csError)
 expectAssignable<Error>(csError)
 expectType<true>(csError.prop)
 expectType<true>(CSError.staticProp)
@@ -187,8 +211,11 @@ expectError(new CCError('', true))
 expectError(new CCError('', { unknown: true }))
 expectError(new CCError('', { cProp: false }))
 expectError(new CCError('', { ccProp: false }))
+expectNotAssignable<AnyErrorClass>(CCError)
+expectAssignable<ErrorClass>(CCError)
 expectType<CCInstance>(ccError)
 expectAssignable<AnyInstance>(ccError)
+expectAssignable<ErrorInstance>(ccError)
 expectAssignable<Error>(ccError)
 expectType<true>(ccError.prop)
 expectType<true>(ccError.deepProp)
@@ -224,14 +251,50 @@ const plugin = {
   staticMethods,
   properties,
 } as const
+
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const GPAnyError = modernErrors([{} as Plugin])
 const GPSError = GPAnyError.subclass('GPSError')
+type PAnyErrorClass = AnyErrorClass<[typeof plugin]>
+type PErrorClass = ErrorClass<[typeof plugin]>
+
+expectAssignable<AnyErrorClass>(PAnyError)
+expectAssignable<PAnyErrorClass>(PAnyError)
+expectAssignable<ErrorClass>(PAnyError)
+expectAssignable<PErrorClass>(PAnyError)
+expectNotAssignable<AnyErrorClass>(PSError)
+expectNotAssignable<PAnyErrorClass>(PSError)
+expectAssignable<ErrorClass>(PSError)
+expectAssignable<PErrorClass>(PSError)
+expectAssignable<AnyErrorClass>(GPAnyError)
+expectNotAssignable<PAnyErrorClass>(GPAnyError)
+expectAssignable<ErrorClass>(GPAnyError)
+expectNotAssignable<PErrorClass>(GPAnyError)
+expectNotAssignable<AnyErrorClass>(GPSError)
+expectNotAssignable<PAnyErrorClass>(GPSError)
+expectAssignable<ErrorClass>(GPSError)
+expectNotAssignable<PErrorClass>(GPSError)
+
 const paError = new PAnyError('', { cause: genericError })
 const psError = new PSError('')
 const gpaError = new GPAnyError('', { cause: genericError })
 const gpsError = new GPSError('')
+type PErrorInstance = ErrorInstance<[typeof plugin]>
+
+expectAssignable<Error>(paError)
+expectAssignable<ErrorInstance>(paError)
+expectAssignable<PErrorInstance>(paError)
+expectAssignable<Error>(psError)
+expectAssignable<ErrorInstance>(psError)
+expectAssignable<PErrorInstance>(psError)
+expectAssignable<Error>(gpaError)
+expectAssignable<ErrorInstance>(gpaError)
+expectNotAssignable<PErrorInstance>(gpaError)
+expectAssignable<Error>(gpsError)
+expectAssignable<ErrorInstance>(gpsError)
+expectNotAssignable<PErrorInstance>(gpsError)
+
 modernErrors([])
 modernErrors([], {})
 modernErrors([plugin], {})
@@ -294,6 +357,7 @@ expectAssignable<Error>(imInfo.error)
 expectAssignable<boolean>(imInfo.options)
 expectType<boolean>(imInfo.showStack)
 expectAssignable<typeof AnyError>(imInfo.AnyError)
+expectAssignable<AnyErrorClass>(imInfo.AnyError)
 expectAssignable<object>(imInfo.ErrorClasses)
 expectError(imInfo.ErrorClasses.unknown)
 expectError(new imInfo.ErrorClasses.AnyError('', { cause: genericError }))
@@ -353,8 +417,12 @@ expectError(
 )
 expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
 expectError(expectType<'arg'>(PAnyError.staticMethod(true)))
+expectError(PSError.staticMethod())
+expectError(GPSError.staticMethod())
 expectError(PAnyError.unknownMethod())
 expectError(GPAnyError.unknownMethod())
+expectError(PSError.unknownMethod())
+expectError(GPSError.unknownMethod())
 
 expectType<true>(paError.property)
 expectType<true>(psError.property)
@@ -366,7 +434,6 @@ if (exception instanceof PSError) {
   expectType<true>(exception.property)
 }
 
-expectAssignable<Error>(gpsError)
 expectType<'GPSError'>(gpsError.name)
 expectAssignable<InstanceType<typeof GPSError>>(gpsError)
 expectAssignable<InstanceType<typeof GPAnyError>>(gpsError)
