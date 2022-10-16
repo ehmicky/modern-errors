@@ -256,6 +256,7 @@ type BaseError<
       : InstanceOptionsArg,
     'errors'
   > &
+  ErrorPropsArg &
   InstanceOptionsArg['props'] &
   PluginsInstanceMethods<PluginsArg> &
   PluginsProperties<PluginsArg>
