@@ -285,7 +285,7 @@ type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
   options?: SpecificInstanceOptions<PluginsArg>,
   ...extra: any[]
-) => Error
+) => ErrorInstance
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
@@ -401,7 +401,7 @@ type NormalizeError<
   NormalizeErrorName<PluginsArg, ErrorArg>,
   InstanceOptionsArg
 > &
-  Error
+  ErrorInstance
 
 /**
  * Base error class.

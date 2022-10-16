@@ -239,7 +239,7 @@ expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 
-expectType<[true]>(
+expectAssignable<[true]>(
   new AnyError('', { cause: '', errors: [true] as [true] }).errors,
 )
 expectAssignable<[true]>(
