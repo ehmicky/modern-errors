@@ -37,11 +37,6 @@ type PluginsOptions<PluginsArg extends Plugins> = {
 //   typeof MergeErrorCause<ErrorInstance>
 // >
 
-type NamedError<
-  ErrorInstance extends Error,
-  ErrorNameArg extends ErrorName,
-> = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg }
-
 type InitOptions = {
   cause?: unknown
   errors?: unknown[]
@@ -51,8 +46,10 @@ type CoreError<
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
   Options extends InitOptions,
-> = NamedError<ErrorInstance, ErrorNameArg> &
-  Pick<unknown extends Options['errors'] ? InitOptions : Options, 'errors'>
+> = Omit<ErrorInstance, 'name'> & { name: ErrorNameArg } & Pick<
+    unknown extends Options['errors'] ? InitOptions : Options,
+    'errors'
+  >
 
 type ErrorConstructor = new (message: string, options?: InitOptions) => Error
 
