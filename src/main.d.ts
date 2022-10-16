@@ -399,9 +399,8 @@ type CreateSubclass<
     ? ClassOptionsArg['custom']
     : ParentErrorClass,
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
-    ? InstanceType<ClassOptionsArg['custom']> extends ErrorInstance<PluginsArg>
-      ? Omit<InstanceType<ClassOptionsArg['custom']>, 'name'> &
-          ErrorInstance<PluginsArg>
+    ? InstanceType<ClassOptionsArg['custom']> extends ErrorInstanceArg
+      ? Omit<InstanceType<ClassOptionsArg['custom']>, 'name'> & ErrorInstanceArg
       : ErrorInstanceArg
     : ErrorInstanceArg,
   ErrorNameArg
