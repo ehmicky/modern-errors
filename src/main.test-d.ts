@@ -245,11 +245,11 @@ expectAssignable<[true]>(
 expectAssignable<[true]>(
   new CCError('', { cause: '', errors: [true] as [true] }).errors,
 )
-expectType<unknown[] | undefined>(new AnyError('', { cause: '' }).errors)
-expectType<unknown[] | undefined>(new CCError('').errors)
-expectAssignable<InstanceOptions>({ errors: [''] })
+expectError(new AnyError('', { cause: '' }).errors)
+expectError(new CCError('').errors)
 expectError(new AnyError('', { cause: '', errors: true }))
 expectError(new CCError('', { errors: true }))
+expectAssignable<InstanceOptions>({ errors: [''] })
 expectNotAssignable<InstanceOptions>({ errors: '' })
 expectNotAssignable<GlobalOptions>({ errors: [''] })
 expectNotAssignable<ClassOptions>({ errors: [''] })
