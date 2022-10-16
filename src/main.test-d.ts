@@ -212,16 +212,16 @@ expectNotAssignable<
   NonNullable<ConstructorParameters<typeof CCError>[1]>['errors']
 >(new Error(''))
 
-expectError(modernErrors(true))
-expectError(modernErrors([{}]))
-modernErrors([])
-modernErrors([], {})
 const name = 'test'
 const getOptions = (options: true) => options
 const plugin = { name, getOptions } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
+modernErrors([])
+modernErrors([], {})
 modernErrors([plugin], {})
+expectError(modernErrors(true))
+expectError(modernErrors([{}]))
 modernErrors([plugin], { test: true })
 PAnyError.subclass('PSError', { test: true })
 new PAnyError('', { test: true })
