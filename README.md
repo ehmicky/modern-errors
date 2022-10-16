@@ -16,9 +16,10 @@ Error handling framework that is pluggable, minimalist yet featureful.
 # Features
 
 - Create [error classes](#create-error-classes)
-- Wrap errors' [message](#wrap-error-message) or [class](#set-error-class)
 - Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
+- Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
+  [properties](#wrap-error-options)
 - Separate known and [unknown errors](#unknown-errors)
 - Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
   `stack`, etc.)
