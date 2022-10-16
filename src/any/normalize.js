@@ -8,7 +8,6 @@ import { validateNonEmpty } from './subclass.js'
 // before re-throwing it if needed.
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
-// We let any exceptions from custom constructors propagate.
 export const normalize = function (error, AnyError, ErrorClasses) {
   validateNonEmpty(ErrorClasses)
   const errorA = normalizeException(error)
