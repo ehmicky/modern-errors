@@ -289,9 +289,11 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 type NamedError<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
 type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> = Pick<
-  unknown extends MainInstanceOptionsArg['errors']
+  unknown extends MainInstanceOptionsArg
     ? MainInstanceOptions
-    : MainInstanceOptionsArg,
+    : 'errors' extends keyof MainInstanceOptionsArg
+    ? MainInstanceOptionsArg
+    : MainInstanceOptions,
   'errors'
 >
 
