@@ -249,19 +249,27 @@ expectError(AnyError.subclass('TestError', { props: true }))
 expectError(SError.subclass('TestError', { props: true }))
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
-const QAnyError = modernErrors([], { props: { one: true as const } })
+const QAnyError = modernErrors([], {
+  props: { one: true as const, three: false as const },
+})
 const SQAError = QAnyError.subclass('SQAError')
 const SSQAError = SQAError.subclass('SSQAError')
-const QError = AnyError.subclass('QError', { props: { one: true as const } })
+const QError = AnyError.subclass('QError', {
+  props: { one: true as const, three: false as const },
+})
 const SQError = QError.subclass('SQError')
-const QSError = SError.subclass('QSError', { props: { one: true as const } })
+const QSError = SError.subclass('QSError', {
+  props: { one: true as const, three: false as const },
+})
 const MQAError = QAnyError.subclass('MQAError', {
-  props: { two: true as const },
+  props: { two: true as const, three: true as const },
 })
 const MSQAError = SQAError.subclass('MSQAError', {
-  props: { two: true as const },
+  props: { two: true as const, three: true as const },
 })
-const MQError = QError.subclass('MQError', { props: { two: true as const } })
+const MQError = QError.subclass('MQError', {
+  props: { two: true as const, three: true as const },
+})
 expectType<true>(new QAnyError('', { cause: '' }).one)
 expectType<true>(new SQAError('', { cause: '' }).one)
 expectType<true>(new SSQAError('', { cause: '' }).one)
@@ -272,17 +280,20 @@ expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
 expectType<true>(new CCError('', { props: { one: true as const } }).one)
-expectAssignable<{ one: true; two: true }>(new MQAError(''))
-expectAssignable<{ one: true; two: true }>(new MSQAError(''))
-expectAssignable<{ one: true; two: true }>(
-  new QAnyError('', { cause: '', props: { two: true as const } }),
+expectAssignable<{ one: true; two: true; three: true }>(new MQAError(''))
+expectAssignable<{ one: true; two: true; three: true }>(new MSQAError(''))
+expectAssignable<{ one: true; two: true; three: true }>(
+  new QAnyError('', {
+    cause: '',
+    props: { two: true as const, three: true as const },
+  }),
 )
-expectAssignable<{ one: true; two: true }>(new MQError(''))
-expectAssignable<{ one: true; two: true }>(
-  new QError('', { props: { two: true as const } }),
+expectAssignable<{ one: true; two: true; three: true }>(new MQError(''))
+expectAssignable<{ one: true; two: true; three: true }>(
+  new QError('', { props: { two: true as const, three: true as const } }),
 )
-expectAssignable<{ one: true; two: true }>(
-  new QSError('', { props: { two: true as const } }),
+expectAssignable<{ one: true; two: true; three: true }>(
+  new QSError('', { props: { two: true as const, three: true as const } }),
 )
 
 const name = 'test'

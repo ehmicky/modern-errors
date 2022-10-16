@@ -169,7 +169,7 @@ type ErrorProps = object
 type MergeProps<
   PropsOne extends ErrorProps,
   PropsTwo extends ErrorProps,
-> = PropsOne & PropsTwo
+> = Omit<PropsOne, keyof PropsTwo> & PropsTwo
 
 type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
   CorePluginsOptionsArg['props'] extends ErrorProps
