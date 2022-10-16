@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { applyConvertError } from './convert.js'
+import { applyConvertError } from './cause.js'
 
 // Unknown `Error` options are not validated, for compatibility with any
 // potential JavaScript platform, since `error` has many non-standard elements.
