@@ -178,11 +178,8 @@ type MergeErrorProps<
   ? MergeProps<Props, InstanceOptionsArg['props']>
   : Props
 
-type GetPropsOption<OptionsArg extends object> = OptionsArg extends {
-  props: ErrorProps
-}
-  ? OptionsArg['props']
-  : {}
+type GetPropsOption<GlobalOptionsArg extends GlobalOptions<Plugins>> =
+  GlobalOptionsArg['props'] extends ErrorProps ? GlobalOptionsArg['props'] : {}
 
 interface CorePluginsOptions {
   readonly props?: ErrorProps
