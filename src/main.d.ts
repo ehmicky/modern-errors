@@ -171,17 +171,15 @@ type MergeProps<
   PropsTwo extends ErrorProps,
 > = PropsOne & PropsTwo
 
-type MergeErrorProps<
-  Props extends ErrorProps,
-  CorePluginsOptionsArg extends CorePluginsOptions,
-> = CorePluginsOptionsArg['props'] extends ErrorProps
-  ? MergeProps<Props, CorePluginsOptionsArg['props']>
-  : Props
-
 type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
   CorePluginsOptionsArg['props'] extends ErrorProps
     ? CorePluginsOptionsArg['props']
     : {}
+
+type MergeErrorProps<
+  Props extends ErrorProps,
+  CorePluginsOptionsArg extends CorePluginsOptions,
+> = MergeProps<Props, GetPropsOption<CorePluginsOptionsArg>>
 
 interface CorePluginsOptions {
   readonly props?: ErrorProps
