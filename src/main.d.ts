@@ -44,13 +44,15 @@ type NamedError<
 
 type InitOptions = {
   cause?: unknown
+  errors?: unknown[]
 }
 
 type CoreError<
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
   Options extends InitOptions,
-> = NamedError<ErrorInstance, ErrorNameArg>
+> = NamedError<ErrorInstance, ErrorNameArg> &
+  Pick<Options['errors'] extends unknown[] ? Options : InitOptions, 'errors'>
 
 type ErrorConstructor = new (message: string, options?: InitOptions) => Error
 

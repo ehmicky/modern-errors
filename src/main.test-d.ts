@@ -190,6 +190,11 @@ expectError(CCError.normalize(''))
 //   expectType<CCInstance>(exception)
 // }
 
+expectType<[true]>(new AnyError('', { errors: [true] as [true] }).errors)
+expectAssignable<[true]>(new CCError('', { errors: [true] as [true] }).errors)
+expectType<unknown[] | undefined>(new AnyError('').errors)
+expectType<unknown[] | undefined>(new CCError('').errors)
+
 expectError(modernErrors(true))
 expectError(modernErrors([{}]))
 modernErrors([])
