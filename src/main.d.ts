@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 import type MergeErrorCause from 'merge-error-cause'
 
-interface Info {
+export interface Info {
   readonly error: CoreError<Plugins, Error, ErrorName, InitOptions<Plugins>>
   readonly options: never
   readonly showStack: boolean

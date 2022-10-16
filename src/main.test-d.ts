@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors from './main.js'
+import modernErrors, { Info } from './main.js'
 
 type ErrorName = `${string}Error`
 
@@ -214,16 +214,7 @@ expectNotAssignable<
 
 const name = 'test'
 const getOptions = (options: true, full: boolean) => options
-const instanceMethod = (
-  info: {
-    error: Error
-    options: true
-    showStack: boolean
-    AnyError: typeof AnyError
-    ErrorClasses: {}
-  },
-  value: true,
-) => value
+const instanceMethod = (info: Info, value: true) => value
 const instanceMethods = { instanceMethod }
 const plugin = { name, getOptions, instanceMethods } as const
 const PAnyError = modernErrors([plugin])
@@ -254,57 +245,15 @@ expectError(modernErrors([{ ...plugin, instanceMethods: true }]))
 expectError(
   modernErrors([{ ...plugin, instanceMethods: { instanceMethod: true } }]),
 )
-expectError(
-  modernErrors([
-    { ...plugin, instanceMethods: { instanceMethod: (info: true) => true } },
-  ]),
-)
-expectError(
-  modernErrors([
-    {
-      ...plugin,
-      instanceMethods: {
-        instanceMethod: (info: { error: Error; unknown: true }) => true,
-      },
-    },
-  ]),
-)
-expectError(
-  modernErrors([
-    {
-      ...plugin,
-      instanceMethods: { instanceMethod: (info: { error: true }) => true },
-    },
-  ]),
-)
-expectError(
-  modernErrors([
-    {
-      ...plugin,
-      instanceMethods: {
-        instanceMethod: (info: { showStack: string }) => true,
-      },
-    },
-  ]),
-)
-expectError(
-  modernErrors([
-    {
-      ...plugin,
-      instanceMethods: { instanceMethod: (info: { AnyError: true }) => true },
-    },
-  ]),
-)
-expectError(
-  modernErrors([
-    {
-      ...plugin,
-      instanceMethods: {
-        instanceMethod: (info: { ErrorClasses: true }) => true,
-      },
-    },
-  ]),
-)
+
+const info = {} as Info
+expectError(info.unknown)
+expectAssignable<Error>(info.error)
+expectAssignable<boolean>(info.options)
+expectType<boolean>(info.showStack)
+expectAssignable<typeof AnyError>(info.AnyError)
+expectAssignable<object>(info.ErrorClasses)
+
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
 expectError(new SError('', { test: true }))
