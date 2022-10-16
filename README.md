@@ -409,9 +409,9 @@ try {
 try {
   throw 'Missing file path.'
 } catch (invalidError) {
-  // UnknownError: Missing file path.
   const normalizedError = AnyError.normalize(invalidError)
   // This works: 'Missing file path.'
+  // `normalizedError` is an `Error` instance.
   console.log(normalizedError.message.trim())
 }
 ```
