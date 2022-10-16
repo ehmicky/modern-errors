@@ -9,8 +9,10 @@ test('error.errors can be set', (t) => {
   t.deepEqual(new TestError('test', { errors: [] }).errors, [])
 })
 
-test('error.errors is not set by default', (t) => {
-  t.is(new TestError('test').errors, undefined)
+each([undefined, {}, { errors: undefined }], ({ title }, opts) => {
+  test(`error.errors is not set by default | ${title}`, (t) => {
+    t.false('errors' in new TestError('test', opts))
+  })
 })
 
 test('error.errors is validated', (t) => {
