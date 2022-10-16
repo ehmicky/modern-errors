@@ -293,7 +293,7 @@ type SpecificGlobalOptions<PluginsArg extends Plugins> =
 export type GlobalOptions<PluginsArg extends Plugins = []> =
   SpecificGlobalOptions<PluginsArg>
 
-type NamedError<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
+type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
 type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> = {
   [ErrorsKey in 'errors' as MainInstanceOptionsArg['errors'] extends NonNullable<
@@ -312,7 +312,7 @@ type BaseError<
   ErrorNameArg extends ErrorName,
   MainInstanceOptionsArg extends MainInstanceOptions,
 > = Error &
-  NamedError<ErrorNameArg> &
+  SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<AggregateErrors<MainInstanceOptionsArg>> &
   SimplifyEmptyObject<ErrorPropsArg> &
