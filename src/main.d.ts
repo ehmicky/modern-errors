@@ -335,7 +335,7 @@ type ErrorSubclass<
       ErrorArg
     >
   },
-  Omit<ParentErrorClass, keyof AnyErrorClass<PluginsArg>>
+  Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
 >
 
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
@@ -413,9 +413,9 @@ type NormalizeError<
  * }
  * ```
  */
-export type AnyErrorClass<
-  PluginsArg extends Plugins = [],
-  ErrorPropsArg extends ErrorProps = {},
+type SpecificAnyErrorClass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
 > = {
   new <
     InstanceOptionsArg extends InstanceOptions<PluginsArg> = InstanceOptions<PluginsArg>,
@@ -453,7 +453,7 @@ export type AnyErrorClass<
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    AnyErrorClass<PluginsArg, ErrorPropsArg>,
+    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
     BaseError<
       PluginsArg,
       ErrorPropsArg,
@@ -487,6 +487,9 @@ export type AnyErrorClass<
   >
 } & PluginsStaticMethods<PluginsArg>
 
+export type AnyErrorClass<PluginsArg extends Plugins = []> =
+  SpecificAnyErrorClass<PluginsArg, ErrorProps>
+
 /**
  * Creates and returns `AnyError`.
  *
@@ -508,4 +511,4 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): AnyErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
+): SpecificAnyErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
