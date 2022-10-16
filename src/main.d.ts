@@ -316,8 +316,8 @@ type BaseError<
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<AggregateErrors<MainInstanceOptionsArg>> &
   SimplifyEmptyObject<ErrorPropsArg> &
-  SimplifyEmptyObject<PluginsInstanceMethods<PluginsArg>> &
-  SimplifyEmptyObject<PluginsProperties<PluginsArg>>
+  SimplifyEmptyObject<PluginsProperties<PluginsArg>> &
+  SimplifyEmptyObject<PluginsInstanceMethods<PluginsArg>>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
