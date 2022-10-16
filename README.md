@@ -124,7 +124,7 @@ not `require()`.
 ## modernErrors(plugins?, options?)
 
 `plugins`: [`Plugin[]?`](#plugins-1)\
-`options`: [`Options?`](#plugin-options-1)
+`options`: [`Options?`](#options)
 
 Creates and returns [`AnyError`](#anyerror).
 
@@ -217,7 +217,7 @@ try {
     // ...
   }
 
-  // Any known or unknown error (from that specific library)
+  // Any error (from that specific library)
   if (error instanceof AnyError) {
     // ...
   }
