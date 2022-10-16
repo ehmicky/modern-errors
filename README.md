@@ -401,8 +401,8 @@ try {
 
 ### Top-level error handler
 
-For the same reason, [`AnyError.normalize()`](#anyerrornormalizeanyexception)
-should wrap each main function.
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) should wrap each main
+function, for the [same reason](#handle-errors).
 
 ```js
 export const main = function () {
