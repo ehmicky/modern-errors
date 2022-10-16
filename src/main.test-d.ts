@@ -5,6 +5,25 @@ import {
   expectError,
 } from 'tsd'
 
+/**
+ * Known limitations of current types:
+ *  - If two `plugin.properties()` return the same property, they are
+ *    intersected using `&`, instead of the second one overriding the first.
+ *    Therefore, the type of `plugin.properties()` that are not unique should
+ *    currently be wide to avoid the `&` intersection resulting in `never`.
+ *  - Type narrowing with `instanceof` does not always work due to:
+ *      https://github.com/microsoft/TypeScript/issues/50844
+ *    This applies:
+ *     - With `AnyError` if there are any plugins with static methods
+ *     - With any error class with a `custom` option
+ *  - `AnyError` does not always respect proper inheritance, i.e. it sometimes
+ *    has stronger constraints than its subclasses, resulting in the following
+ *    runtime behavior which cannot be typed:
+ *     - Plugins static methods should only be defined on `AnyError.*`, not on
+ *       its subclasses
+ *     - `new AnyError()` should require a second argument as an object with a
+ *       `cause` property
+ */
 import modernErrors, { Info } from './main.js'
 
 type ErrorName = `${string}Error`
@@ -102,12 +121,6 @@ expectType<true>(cError.prop)
 expectType<true>(CError.staticProp)
 expectType<'CError'>(cError.name)
 expectError(CError.normalize(''))
-// Type narrowing with `instanceof` of error classes with a `custom` option
-// does not work due to:
-// https://github.com/microsoft/TypeScript/issues/50844
-// if (exception instanceof CError) {
-//   expectType<CInstance>(exception)
-// }
 
 const SCError = CError.subclass('SCError')
 type SCInstance = typeof SCError['prototype']
@@ -125,10 +138,6 @@ expectType<true>(scError.prop)
 expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 expectError(SCError.normalize(''))
-// See above
-// if (exception instanceof SCError) {
-//   expectType<SCInstance>(exception)
-// }
 
 class BCSError extends SError {
   constructor(
@@ -157,10 +166,6 @@ expectType<true>(csError.prop)
 expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
 expectError(CSError.normalize(''))
-// See above
-// if (exception instanceof CSError) {
-//   expectType<CSInstance>(exception)
-// }
 
 class BCCError extends CError {
   constructor(
@@ -192,10 +197,6 @@ expectType<true>(CCError.staticProp)
 expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
-// See above
-// if (exception instanceof CCError) {
-//   expectType<CCInstance>(exception)
-// }
 
 expectType<[true]>(new AnyError('', { errors: [true] as [true] }).errors)
 expectAssignable<[true]>(new CCError('', { errors: [true] as [true] }).errors)
@@ -327,10 +328,6 @@ expectError(paError.instanceMethod(true))
 expectError(psError.instanceMethod(true))
 expectError(paError.unknownMethod())
 expectError(psError.unknownMethod())
-// See above
-// if (exception instanceof PAnyError) {
-//   expectType<'arg'>(exception.instanceMethod('arg'))
-// }
 if (exception instanceof PSError) {
   expectType<'arg'>(exception.instanceMethod('arg'))
 }
@@ -348,10 +345,6 @@ expectType<true>(paError.property)
 expectType<true>(psError.property)
 expectError(paError.unknownProperty)
 expectError(psError.unknownProperty)
-// See above
-// if (exception instanceof PAnyError) {
-//   expectType<true>(exception.property)
-// }
 if (exception instanceof PSError) {
   expectType<true>(exception.property)
 }
