@@ -369,7 +369,7 @@ type CreateSubclass<
   options?: ClassOptionsArg,
 ) => ErrorSubclass<
   PluginsArg,
-  ErrorPropsArg,
+  MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
   ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
     ? ClassOptionsArg['custom']
     : ParentErrorClass,

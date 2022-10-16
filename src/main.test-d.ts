@@ -249,19 +249,40 @@ expectError(AnyError.subclass('TestError', { props: true }))
 expectError(SError.subclass('TestError', { props: true }))
 expectError(new AnyError('', { cause: '', props: true }))
 expectError(new CCError('', { props: true }))
-const RAnyError = modernErrors([], { props: { one: true as const } })
-const RSError = RAnyError.subclass('RSError')
-expectType<true>(new RAnyError('', { cause: '' }).one)
-expectType<true>(new RSError('', { cause: '' }).one)
+const QAnyError = modernErrors([], { props: { one: true as const } })
+const SQAError = QAnyError.subclass('SQAError')
+const SSQAError = SQAError.subclass('SSQAError')
+const QError = AnyError.subclass('QError', { props: { one: true as const } })
+const SQError = QError.subclass('SQError')
+const QSError = SError.subclass('QSError', { props: { one: true as const } })
+const MQAError = QAnyError.subclass('MQAError', {
+  props: { two: true as const },
+})
+const MSQAError = SQAError.subclass('MSQAError', {
+  props: { two: true as const },
+})
+const MQError = QError.subclass('MQError', { props: { two: true as const } })
+expectType<true>(new QAnyError('', { cause: '' }).one)
+expectType<true>(new SQAError('', { cause: '' }).one)
+expectType<true>(new SSQAError('', { cause: '' }).one)
+expectType<true>(new QError('', { cause: '' }).one)
+expectType<true>(new SQError('', { cause: '' }).one)
+expectType<true>(new QSError('', { cause: '' }).one)
 expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
 expectType<true>(new CCError('', { props: { one: true as const } }).one)
+expectAssignable<{ one: true; two: true }>(new MQAError(''))
+expectAssignable<{ one: true; two: true }>(new MSQAError(''))
 expectAssignable<{ one: true; two: true }>(
-  new RAnyError('', { cause: '', props: { two: true as const } }),
+  new QAnyError('', { cause: '', props: { two: true as const } }),
+)
+expectAssignable<{ one: true; two: true }>(new MQError(''))
+expectAssignable<{ one: true; two: true }>(
+  new QError('', { props: { two: true as const } }),
 )
 expectAssignable<{ one: true; two: true }>(
-  new RSError('', { cause: '', props: { two: true as const } }),
+  new QSError('', { props: { two: true as const } }),
 )
 
 const name = 'test'
