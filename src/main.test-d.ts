@@ -2,6 +2,7 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 
 import modernErrors from './main.js'
 
+const exception = {} as unknown
 const genericError = {} as Error & { genericProp: true }
 
 const AnyError = modernErrors()
@@ -19,7 +20,6 @@ expectAssignable<Error>(unknownError)
 expectType<'UnknownError'>(unknownError.name)
 expectType<true>(unknownError.genericProp)
 expectAssignable<UnknownInstance>(unknownError)
-expectType<UnknownInstance>(bareUnknownError)
 expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
 expectAssignable<UnknownInstance>(AnyError.normalize(genericError))
 expectType<UnknownInstance>(AnyError.normalize(''))
@@ -36,8 +36,8 @@ expectAssignable<AnyInstance>(sError)
 expectAssignable<Error>(sError)
 expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
-if (wideError instanceof SError) {
-  expectType<SInstance>(wideError)
+if (exception instanceof SError) {
+  expectType<SInstance>(exception)
 }
 
 const anyError = new AnyError('', { cause: sError })
@@ -50,6 +50,9 @@ expectAssignable<Error>(anyError)
 expectType<'SError'>(anyError.name)
 expectType<SInstance>(AnyError.normalize(sError))
 expectError(AnyError.normalize('', true))
+if (exception instanceof AnyError) {
+  expectAssignable<AnyInstance>(exception)
+}
 
 const SSError = SError.subclass('SSError')
 type SSInstance = typeof SSError['prototype']
@@ -60,8 +63,8 @@ expectAssignable<AnyInstance>(ssError)
 expectAssignable<Error>(ssError)
 expectType<'SSError'>(ssError.name)
 expectError(SSError.normalize(''))
-if (wideError instanceof SSError) {
-  expectType<SSInstance>(wideError)
+if (exception instanceof SSError) {
+  expectType<SSInstance>(exception)
 }
 
 class BCError extends AnyError {
@@ -85,8 +88,8 @@ expectError(CError.normalize(''))
 // Type narrowing with `instanceof` of error classes with a `custom` option
 // does not work due to:
 // https://github.com/microsoft/TypeScript/issues/50844
-// if (wideError instanceof CError) {
-//   expectType<CInstance>(wideError)
+// if (exception instanceof CError) {
+//   expectType<CInstance>(exception)
 // }
 
 const SCError = CError.subclass('SCError')
@@ -101,8 +104,8 @@ expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 expectError(SCError.normalize(''))
 // See above
-// if (wideError instanceof SCError) {
-//   expectType<SCInstance>(wideError)
+// if (exception instanceof SCError) {
+//   expectType<SCInstance>(exception)
 // }
 
 class BCSError extends SError {
@@ -124,8 +127,8 @@ expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
 expectError(CSError.normalize(''))
 // See above
-// if (wideError instanceof CSError) {
-//   expectType<CSInstance>(wideError)
+// if (exception instanceof CSError) {
+//   expectType<CSInstance>(exception)
 // }
 
 class BCCError extends CError {
@@ -149,8 +152,8 @@ expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 // See above
-// if (wideError instanceof CCError) {
-//   expectType<CCInstance>(wideError)
+// if (exception instanceof CCError) {
+//   expectType<CCInstance>(exception)
 // }
 
 expectError(modernErrors(true))
@@ -204,9 +207,6 @@ expectError(
   }),
 )
 
-if (genericError instanceof AnyError) {
-  expectAssignable<AnyInstance>(genericError)
-}
 if (cError instanceof SError) {
   expectType<never>(cError)
 }
