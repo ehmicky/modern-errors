@@ -142,9 +142,9 @@ type NormalizeError<ErrorArg extends unknown> = ErrorArg extends NamedError<
   ? ErrorArg
   : NamedError<ErrorArg extends Error ? ErrorArg : Error, 'UnknownError'>
 
-type AnyReturn<Cause extends unknown> = NormalizeError<
-  unknown extends Cause ? NamedError<Error, ErrorName> : Cause
->
+type AnyReturn<Cause extends unknown> = unknown extends Cause
+  ? NamedError<Error, ErrorName>
+  : NormalizeError<Cause>
 
 type AnyErrorOptions = {
   cause?: unknown
