@@ -372,8 +372,8 @@ try {
 
 ### Wrapped errors
 
-Any error can be passed to the [`cause` option](#wrap-inner-error), even if it
-is [invalid](#invalid-errors), [unknown](#unknown-errors) or not
+Any error can be directly passed to the [`cause` option](#wrap-inner-error),
+even if it is [invalid](#invalid-errors), [unknown](#unknown-errors) or not
 [normalized](#anyerrornormalizeanyexception).
 
 ```js
@@ -386,13 +386,12 @@ try {
 
 ### Invalid errors
 
-Handling errors that are not
+Manipulating errors that are not
 [`Error` instances](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 or that have
 [invalid properties](https://github.com/ehmicky/normalize-exception#features)
-can lead to unexpected bugs. Applying
-[`AnyError.normalize()`](#anyerrornormalizeanyexception) on any handled error
-fixes that.
+can lead to unexpected bugs.
+[`AnyError.normalize()`](#anyerrornormalizeanyexception) fixes that.
 
 <!-- eslint-disable no-throw-literal -->
 
