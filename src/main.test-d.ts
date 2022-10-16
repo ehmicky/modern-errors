@@ -215,12 +215,14 @@ const instanceMethod = (info: Info['instanceMethods'], arg: 'arg') => arg
 const instanceMethods = { instanceMethod }
 const staticMethod = (info: Info['staticMethods'], arg: 'arg') => arg
 const staticMethods = { staticMethod }
+const properties = (info: Info['properties']) => ({ prop: true as const })
 const plugin = {
   name,
   getOptions,
   isOptions,
   instanceMethods,
   staticMethods,
+  properties,
 } as const
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
@@ -258,6 +260,19 @@ modernErrors([{ ...plugin, staticMethods: {} }])
 expectError(modernErrors([{ ...plugin, staticMethods: true }]))
 expectError(
   modernErrors([{ ...plugin, staticMethods: { staticMethod: true } }]),
+)
+expectError(modernErrors([{ ...plugin, properties: true }]))
+expectError(modernErrors([{ ...plugin, properties: (info: true) => ({}) }]))
+expectError(
+  modernErrors([
+    { ...plugin, properties: (info: Info['properties'], arg: true) => ({}) },
+  ]),
+)
+expectError(
+  modernErrors([{ ...plugin, properties: (info: Info['properties']) => true }]),
+)
+expectError(
+  modernErrors([{ ...plugin, properties: (info: Info['properties']) => [] }]),
 )
 
 const imInfo = {} as Info['instanceMethods']

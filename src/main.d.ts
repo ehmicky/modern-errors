@@ -39,6 +39,9 @@ type InstanceMethod = (
 type InstanceMethods = { readonly [MethodName: string]: InstanceMethod }
 type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
 type StaticMethods = { readonly [MethodName: string]: StaticMethod }
+type GetProperties = (info: Info['properties']) => {
+  [PropName: string]: unknown
+}
 
 /**
  * Plugins extend `modern-errors` features.
@@ -57,6 +60,7 @@ interface Plugin {
   readonly isOptions?: IsOptions
   readonly instanceMethods?: InstanceMethods
   readonly staticMethods?: StaticMethods
+  readonly properties?: GetProperties
 }
 
 type Plugins = readonly Plugin[]
