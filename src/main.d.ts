@@ -380,13 +380,7 @@ type NormalizeError<
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
   InstanceOptionsArg extends InstanceOptions<PluginsArg>,
-> = ErrorArg extends BaseError<
-  PluginsArg,
-  ErrorProps,
-  Error,
-  ErrorName,
-  InstanceOptionsArg
->
+> = ErrorArg extends ErrorInstance<PluginsArg>
   ? ErrorArg
   : ErrorArg extends Error
   ? BaseError<
