@@ -181,6 +181,12 @@ type MergeProps<
   PropsTwo extends ErrorProps,
 > = PropsOne & PropsTwo
 
+type GetPropsOption<OptionsArg extends object> = OptionsArg extends {
+  props: infer PropsArg extends ErrorProps
+}
+  ? PropsArg
+  : {}
+
 interface CorePluginsOptions {
   readonly props?: ErrorProps
 }
@@ -381,7 +387,7 @@ type NormalizeError<
  */
 export type AnyErrorClass<
   PluginsArg extends Plugins = [],
-  GlobalOptionsArg extends PluginsOptions<PluginsArg> = {},
+  ErrorPropsArg extends ErrorProps = {},
 > = {
   new <
     InstanceOptionsArg extends InstanceOptions<PluginsArg> = InstanceOptions<PluginsArg>,
@@ -412,7 +418,7 @@ export type AnyErrorClass<
    */
   readonly subclass: CreateSubclass<
     PluginsArg,
-    AnyErrorClass<PluginsArg, GlobalOptionsArg>,
+    AnyErrorClass<PluginsArg, ErrorPropsArg>,
     BaseError<PluginsArg, Error, ErrorName, InstanceOptions<PluginsArg>>
   >
 
@@ -456,4 +462,4 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): AnyErrorClass<PluginsArg, GlobalOptionsArg>
+): AnyErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
