@@ -15,7 +15,9 @@ import type MergeErrorCause from 'merge-error-cause'
 interface Plugin {
   readonly name: string
   readonly getOptions?: (input: any, full: boolean) => any
-  readonly instanceMethods?: object
+  readonly instanceMethods?: {
+    readonly [MethodName: string]: (...args: any[]) => any
+  }
 }
 
 type Plugins = readonly Plugin[]
