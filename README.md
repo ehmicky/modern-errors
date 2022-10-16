@@ -124,14 +124,14 @@ not `require()`.
 ## modernErrors(plugins?, options?)
 
 `plugins`: [`Plugin[]?`](#plugins-1)\
-`options`: [`Options?`](#options)
+`options`: `object?`
 
 Creates and returns [`AnyError`](#anyerror).
 
 Options:
 
-- `props` (`object`): [error properties](#error-instance-properties)
 - any [plugin options](#plugin-options-1)
+- `props`: [error properties](#error-instance-properties)
 
 ## AnyError
 
@@ -142,23 +142,22 @@ Base error class.
 ### new AnyError(message, options?)
 
 `message`: `string`\
-`options`: [`Options?`](#options)\
+`options`: `object?`\
 _Return value_: `Error`
 
 Options:
 
-- `props` (`object`): [error properties](#error-instance-properties)
 - any [plugin options](#plugin-options-1)
-- `cause` (`Error | unknown`): Inner error being [wrapped](#wrap-errors).
-  Required with [`AnyError`](#anyerror), optional with its
+- `props`: [error properties](#error-instance-properties)
+- `cause`: inner error being [wrapped](#wrap-errors). Required with
+  [`AnyError`](#anyerror), optional with its
   [subclasses](#anyerrorsubclassname-options).
-- `errors` (`Array<Error | unknown>`): errors being
-  [aggregated](#aggregate-errors)
+- `errors`: array of errors being [aggregated](#aggregate-errors)
 
 ### AnyError.subclass(name, options?)
 
 `name`: `string`\
-`options`: [`Options?`](#options)\
+`options`: `object?`\
 _Return value_: `class extends AnyError {}`
 
 Creates and returns an error subclass. The first one must be named
@@ -169,10 +168,10 @@ themselves.
 
 Options:
 
-- `props` (`object`): [error properties](#error-instance-properties)
 - any [plugin options](#plugin-options-1)
-- `custom` (`class extends AnyError {}`): [custom class](#custom-logic) to add
-  any methods, `constructor` or properties.
+- `props`: [error properties](#error-instance-properties)
+- `custom`: [custom class](#custom-logic) to add any methods, `constructor` or
+  properties.
 
 ### AnyError.normalize(anyException)
 
