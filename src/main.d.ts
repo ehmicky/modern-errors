@@ -139,10 +139,9 @@ type NormalizedErrorName<Cause extends unknown> = Cause extends Error
     : 'UnknownError'
   : 'UnknownError'
 
-type AnyErrorReturn<Cause extends unknown> = NamedError<
-  MergeCause<Cause>,
-  NormalizedErrorName<Cause>
->
+type AnyErrorReturn<Cause extends unknown> = unknown extends Cause
+  ? NamedError<Error, ErrorName>
+  : NamedError<MergeCause<Cause>, NormalizedErrorName<Cause>>
 
 type AnyErrorOptions = {
   cause?: unknown
@@ -165,11 +164,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <InitOptions extends AnyErrorOptions = {}>(
     message: string,
     options?: InitOptions,
-  ): AnyErrorReturn<
-    unknown extends InitOptions['cause']
-      ? NamedError<Error, ErrorName>
-      : InitOptions['cause']
-  >
+  ): AnyErrorReturn<InitOptions['cause']>
   prototype: NamedError<Error, ErrorName>
 
   /**
