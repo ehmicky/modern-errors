@@ -137,21 +137,6 @@ Options:
 
 Base error class.
 
-### new AnyError(message, options?)
-
-`message`: `string`\
-`options`: `object?`\
-_Return value_: `Error`
-
-Options:
-
-- any [plugin options](#plugin-options)
-- `props`: [error properties](#error-instance-properties)
-- `cause`: inner error being [wrapped](#wrap-errors). Required with
-  [`AnyError`](#anyerror), optional with its
-  [subclasses](#anyerrorsubclassname-options).
-- `errors`: array of errors being [aggregated](#aggregate-errors)
-
 ### AnyError.subclass(name, options?)
 
 `name`: `string`\
@@ -177,6 +162,21 @@ _Type_: `(anyException) => AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
 class to [_unknown_ errors](#unknown-errors).
+
+### new AnyError(message, options?)
+
+`message`: `string`\
+`options`: `object?`\
+_Return value_: `Error`
+
+Options:
+
+- any [plugin options](#plugin-options)
+- `props`: [error properties](#error-instance-properties)
+- `cause`: inner error being [wrapped](#wrap-errors). Required with
+  [`AnyError`](#anyerror), optional with its
+  [subclasses](#anyerrorsubclassname-options).
+- `errors`: array of errors being [aggregated](#aggregate-errors)
 
 # Usage
 
