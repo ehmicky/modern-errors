@@ -51,7 +51,11 @@ type CoreError<
     'errors'
   >
 
-type ErrorConstructor = new (message: string, options?: InitOptions) => Error
+type ErrorConstructor = new (
+  message: string,
+  options?: InitOptions,
+  extra?: any,
+) => Error
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
   ? T
@@ -64,9 +68,13 @@ type ErrorClass<
   PluginsArg extends Plugins = [],
 > = MaybeIntersect<
   {
-    new <Options extends ConstructorParameters<ParentErrorClass>[1] = {}>(
+    new <
+      Options extends ConstructorParameters<ParentErrorClass>[1] = {},
+      Extra extends ConstructorParameters<ParentErrorClass>[2] = any,
+    >(
       message: string,
       options?: Options,
+      extra?: Extra,
     ): CoreError<ErrorInstance, ErrorNameArg, NonNullable<Options>>
     prototype: CoreError<ErrorInstance, ErrorNameArg, InitOptions>
     subclass: CreateSubclass<ParentErrorClass, ErrorInstance, PluginsArg>
@@ -172,6 +180,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
   new <Options extends InitOptions = {}>(
     message: string,
     options?: Options,
+    extra?: any,
   ): NormalizeError<Options['cause'], Options>
   prototype: CoreError<Error, ErrorName, InitOptions>
 
