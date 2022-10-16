@@ -180,8 +180,10 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 
 type MethodOptions<PluginArg extends Plugin> = ExternalPluginOptions<PluginArg>
 
+type ErrorProps = object
+
 interface CorePluginsOptions {
-  readonly props?: object
+  readonly props?: ErrorProps
 }
 
 type PluginsOptions<PluginsArg extends Plugins> =
