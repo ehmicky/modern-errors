@@ -432,8 +432,8 @@ unexpected exception, usually a bug.
 try {
   return regExp.test(value)
 } catch (unknownError) {
-  // UnknownError: ...
-  console.log(AnyError.normalize(unknownError))
+  // Now an `UnknownError` instance
+  throw AnyError.normalize(unknownError)
 }
 ```
 
@@ -450,7 +450,7 @@ prevent catching other unrelated _unknown_ errors.
 try {
   return regExp.test(value)
 } catch (unknownError) {
-  // InputError: Invalid regular expression: ...
+  // Now an `InputError` instance
   throw new InputError('Invalid regular expression:', { cause: unknownError })
 }
 ```
