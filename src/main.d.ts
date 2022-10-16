@@ -96,6 +96,33 @@ type PluginsInstanceMethods<PluginsArg extends Plugins> = UnionToIntersection<
   PluginInstanceMethods<PluginsArg[number]>
 >
 
+type ErrorStaticMethod<
+  StaticMethodArg extends StaticMethod,
+  OptionsArg extends unknown,
+> = (
+  ...args: [...SliceFirst<Parameters<StaticMethodArg>>, OptionsArg?]
+) => ReturnType<StaticMethodArg>
+
+type ErrorStaticMethods<
+  StaticMethodsArg extends StaticMethods,
+  OptionsArg extends unknown,
+> = {
+  readonly [MethodName in keyof StaticMethodsArg]: ErrorStaticMethod<
+    StaticMethodsArg[MethodName],
+    OptionsArg
+  >
+}
+
+type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends Plugin
+  ? PluginArg['staticMethods'] extends StaticMethods
+    ? ErrorStaticMethods<PluginArg['staticMethods'], PluginOptions<PluginArg>>
+    : {}
+  : {}
+
+type PluginsStaticMethods<PluginsArg extends Plugins> = UnionToIntersection<
+  PluginStaticMethods<PluginsArg[number]>
+>
+
 type PluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
     ? Parameters<PluginArg['getOptions']>[0]
@@ -320,7 +347,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
   normalize<ErrorInstance extends unknown>(
     error: ErrorInstance,
   ): NormalizeError<PluginsArg, ErrorInstance, InitOptions<PluginsArg>>
-}
+} & PluginsStaticMethods<PluginsArg>
 
 /**
  * Creates and returns `AnyError`.

@@ -306,12 +306,24 @@ expectError(paError.instanceMethod('arg', false))
 expectError(psError.instanceMethod('arg', false))
 expectError(paError.instanceMethod(true))
 expectError(psError.instanceMethod(true))
-if (exception instanceof PAnyError) {
-  expectType<'arg'>(exception.instanceMethod('arg'))
-}
+expectError(paError.unknownMethod())
+expectError(psError.unknownMethod())
+// TODO: re-enable
+// if (exception instanceof PAnyError) {
+//   expectType<'arg'>(exception.instanceMethod('arg'))
+// }
 if (exception instanceof PSError) {
   expectType<'arg'>(exception.instanceMethod('arg'))
 }
+
+expectType<'arg'>(PAnyError.staticMethod('arg'))
+expectType<'arg'>(PAnyError.staticMethod('arg', true))
+expectError(
+  expectType<'arg'>(PAnyError.staticMethod({} as StaticMethodInfo, 'arg')),
+)
+expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
+expectError(expectType<'arg'>(PAnyError.staticMethod(true)))
+expectError(PAnyError.unknownMethod())
 
 expectError(AnyError.subclass('TestError', { test: true }))
 expectError(new AnyError('', { test: true }))
