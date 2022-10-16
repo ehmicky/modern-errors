@@ -65,7 +65,7 @@ type ErrorClass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
   ErrorNameArg extends ErrorName,
-  PluginsArg extends Plugins = [],
+  PluginsArg extends Plugins,
 > = MaybeIntersect<
   {
     new <
@@ -88,7 +88,7 @@ type ErrorClass<
 type ClassOptions<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
-  PluginsArg extends Plugins = [],
+  PluginsArg extends Plugins,
 > = MaybeIntersect<
   {
     /**
@@ -137,7 +137,7 @@ type ClassOptions<
 type CreateSubclass<
   ParentErrorClass extends ErrorConstructor,
   ErrorInstance extends Error,
-  PluginsArg extends Plugins = [],
+  PluginsArg extends Plugins,
 > = <
   ErrorNameArg extends ErrorName,
   OptionsArg extends ClassOptions<ParentErrorClass, ErrorInstance, PluginsArg>,
@@ -179,7 +179,7 @@ type NormalizeError<
  * }
  * ```
  */
-type AnyErrorClass<PluginsArg extends Plugins = []> = {
+type AnyErrorClass<PluginsArg extends Plugins> = {
   new <Options extends InitOptions = InitOptions>(
     message: string,
     options?: Options,
