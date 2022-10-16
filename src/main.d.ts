@@ -58,7 +58,7 @@ type CoreError<
 type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
   options?: InitOptions<PluginsArg>,
-  extra?: any,
+  ...extra: any[]
 ) => Error
 
 type MaybeIntersect<T extends object, U extends object> = keyof U extends never
@@ -69,6 +69,17 @@ type ParentOptions<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = ConstructorParameters<ParentErrorClass>[1] & InitOptions<PluginsArg>
+
+type ParentExtra<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+> = ConstructorParameters<ParentErrorClass> extends [
+  unknown,
+  unknown?,
+  ...infer Extra,
+]
+  ? Extra
+  : never
 
 type ErrorClass<
   PluginsArg extends Plugins,
@@ -85,7 +96,7 @@ type ErrorClass<
     >(
       message: string,
       options?: Options,
-      extra?: ConstructorParameters<ParentErrorClass>[2],
+      ...extra: ParentExtra<PluginsArg, ParentErrorClass>
     ): CoreError<PluginsArg, ErrorInstance, ErrorNameArg, Options>
     prototype: CoreError<
       PluginsArg,
@@ -201,7 +212,7 @@ type AnyErrorClass<PluginsArg extends Plugins> = {
   new <Options extends InitOptions<PluginsArg> = InitOptions<PluginsArg>>(
     message: string,
     options?: Options,
-    extra?: any,
+    ...extra: any[]
   ): NormalizeError<PluginsArg, Options['cause'], Options>
   prototype: CoreError<PluginsArg, Error, ErrorName, InitOptions<PluginsArg>>
 
