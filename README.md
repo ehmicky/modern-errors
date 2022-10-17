@@ -15,14 +15,14 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-- Create [error classes](#create-error-classes) (including
+- Create [error classes](#create-error-classes) (including with
   [custom logic](#custom-logic))
 - Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
   [properties](#wrap-error-options)
 - Separate known and [unknown errors](#unknown-errors)
-- Handle [invalid errors](#invalid-errors) (not an `Error` instance, missing
+- Normalize [invalid errors](#invalid-errors) (not an `Error` instance, missing
   `stack`, etc.)
 - Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
