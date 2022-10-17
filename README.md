@@ -353,7 +353,7 @@ error's class is [`AnyError`](#anyerror), those are merged instead.
 try {
   throw new AuthError('...', innerOptions)
 } catch (cause) {
-  // Options are now `outerOptions`. `innerOptions` are ignored.
+  // Options are now `outerOptions`. `innerOptions` are discarded.
   throw new InputError('...', { ...outerOptions, cause })
 }
 ```
