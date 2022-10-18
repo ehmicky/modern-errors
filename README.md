@@ -177,6 +177,10 @@ Any [plugin options](#plugin-options-1) can also be specified.
 
 ### Create error classes
 
+Error classes (including [`AnyError`](#anyerror) and
+[`UnknownError`](#unknown-errors)) can be exported for
+other modules to check them or re-use them.
+
 ```js
 // Base error class
 export const AnyError = modernErrors()
@@ -189,10 +193,6 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
 ### Check error classes
-
-Error classes (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) can be exported to be checked by users or to be
-re-used across multiple modules.
 
 <!-- eslint-disable max-depth -->
 
