@@ -150,8 +150,7 @@ themselves.
 _Type_: `(anyException) => AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
-class to [_unknown_ errors](#unknown-errors). This should
-[wrap each main function](#top-level-error-handler).
+class to [_unknown_ errors](#unknown-errors).
 
 ## Options
 
