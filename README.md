@@ -197,15 +197,8 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 <!-- eslint-disable max-depth -->
 
 ```js
-import {
-  exampleModule,
-  InputError,
-  UnknownError,
-  AnyError,
-} from 'example-module'
-
 try {
-  exampleModule()
+  // ...
 } catch (error) {
   // Known `InputError`
   if (error instanceof InputError) {
