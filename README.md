@@ -191,7 +191,7 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 ### Check error classes
 
 Error classes (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) should be exported so they can be checked, or
+[`UnknownError`](#unknown-errors)) can be exported to be checked by users or to be
 re-used across multiple modules.
 
 <!-- eslint-disable max-depth -->
