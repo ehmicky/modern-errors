@@ -165,7 +165,7 @@ _Type_: `object`
 _Type_: `class extends AnyError {}`
 
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
-It must `extend` from [`AnyError`](#anyerror).
+It must `extends` from [`AnyError`](#anyerror).
 
 ### Plugin options
 
