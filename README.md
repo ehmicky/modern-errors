@@ -179,7 +179,7 @@ Any [plugin options](#plugin-options-1) can also be specified.
 
 Error classes (including [`AnyError`](#anyerror) and
 [`UnknownError`](#unknown-errors)) can be exported for
-users (or other modules) to check or re-use.
+users to check, or other modules to re-use.
 
 ```js
 // Base error class
