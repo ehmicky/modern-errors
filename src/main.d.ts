@@ -199,7 +199,7 @@ type AnyErrorClass<PluginsArg extends Plugins = []> = {
    * }
    * ```
    */
-  normalize<T extends unknown>(error: T): AnyErrorReturn<T>
+  normalize<ErrorArg extends unknown>(error: ErrorArg): AnyErrorReturn<ErrorArg>
 }
 
 /**
