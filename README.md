@@ -217,10 +217,10 @@ try {
 
 Exporting and documenting error classes 
 (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)), so
-users can check them.
-This also allows other modules to re-use
-them.
+[`UnknownError`](#unknown-errors)) allows
+consumers to check them, or other modules
+to
+re-use them.
 
 ## Throw errors
 
