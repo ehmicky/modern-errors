@@ -196,12 +196,12 @@ if (error instanceof InputError) {
   // ...
 }
 
-// Unknown error (from that specific library)
+// Unknown error (from a specific library)
 if (error instanceof UnknownError) {
   // ...
 }
 
-// Any error (from that specific library)
+// Any error (from a specific library)
 if (error instanceof AnyError) {
   // ...
 }
