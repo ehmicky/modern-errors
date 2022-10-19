@@ -188,6 +188,15 @@ export const AuthError = AnyError.subclass('AuthError')
 export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
+### Export error classes
+
+Exporting and documenting error classes 
+(including [`AnyError`](#anyerror) and
+[`UnknownError`](#unknown-errors)) allows
+consumers to check them. This also
+enables sharing error classes between 
+modules.
+
 ### Check error classes
 
 ```js
@@ -206,15 +215,6 @@ if (error instanceof AnyError) {
   // ...
 }
 ```
-
-### Export error classes
-
-Exporting and documenting error classes 
-(including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) allows
-consumers to check them. This also
-enables sharing error classes between 
-modules.
 
 ## Throw errors
 
