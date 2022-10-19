@@ -190,26 +190,20 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 
 ### Check error classes
 
-<!-- eslint-disable max-depth -->
-
 ```js
-try {
+// Known `InputError`
+if (error instanceof InputError) {
   // ...
-} catch (error) {
-  // Known `InputError`
-  if (error instanceof InputError) {
-    // ...
-  }
+}
 
-  // Unknown error (from that specific library)
-  if (error instanceof UnknownError) {
-    // ...
-  }
+// Unknown error (from that specific library)
+if (error instanceof UnknownError) {
+  // ...
+}
 
-  // Any error (from that specific library)
-  if (error instanceof AnyError) {
-    // ...
-  }
+// Any error (from that specific library)
+if (error instanceof AnyError) {
+  // ...
 }
 ```
 
