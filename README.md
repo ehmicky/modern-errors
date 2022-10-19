@@ -212,9 +212,9 @@ if (error instanceof AnyError) {
 Exporting and documenting error classes 
 (including [`AnyError`](#anyerror) and
 [`UnknownError`](#unknown-errors)) allows
-consumers to check them, or other modules
-to
-re-use them.
+consumers to check them. This also
+enables sharing error classes between 
+modules.
 
 ## Throw errors
 
