@@ -177,10 +177,6 @@ Any [plugin options](#plugin-options-1) can also be specified.
 
 ### Create error classes
 
-Error classes (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) can be exported for
-users to check, or other modules to re-use.
-
 ```js
 // Base error class
 export const AnyError = modernErrors()
@@ -216,6 +212,15 @@ try {
   }
 }
 ```
+
+### Export error classes
+
+Exporting and documenting error classes 
+(including [`AnyError`](#anyerror) and
+[`UnknownError`](#unknown-errors)), so
+users can check them.
+This also allows other modules to re-use
+them.
 
 ## Throw errors
 
