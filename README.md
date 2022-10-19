@@ -130,6 +130,8 @@ Creates and returns [`AnyError`](#anyerror).
 
 ## AnyError
 
+_Type_: `class extends Error {}`
+
 Base error class. Cannot be instantiated, except when
 [wrapping errors](#wrap-error-class).
 
@@ -160,16 +162,16 @@ _Type_: `object`
 
 [Error properties](#error-instance-properties).
 
+### Plugin options
+
+Any [plugin options](#plugin-options-1) can be specified.
+
 ### custom
 
 _Type_: `class extends AnyError {}`
 
 [Custom class](#custom-logic) to add any methods, `constructor` or properties.
 It must `extends` from [`AnyError`](#anyerror).
-
-### Plugin options
-
-Any [plugin options](#plugin-options-1) can also be specified.
 
 # Usage
 
