@@ -578,6 +578,8 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    method `methodName(...) { ... }`.
 //    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
+//  - Plugin static methods should not be allowed to override `Error.*`
+//    (e.g. `prepareStackTrace()`)
 /**
  * Creates and returns `AnyError`.
  *
