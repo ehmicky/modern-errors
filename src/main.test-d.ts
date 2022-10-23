@@ -762,6 +762,7 @@ const CorePropsAnyError = modernErrors([
         cause: 'test',
         errors: ['test'],
         two: 'test',
+        three: 'test',
       } as const),
     instanceMethods: { one: () => {}, two: () => {} },
   },
@@ -774,7 +775,14 @@ expectType<Error['cause']>(corePropsError.cause)
 expectError(corePropsError.errors)
 expectNotAssignable<string>(corePropsError.two)
 expectNotAssignable<string>(
-  new CorePropsAnyError('', { cause: '', props: { one: '' } }).one,
+  new CorePropsAnyError('', { cause: '', props: { one: '' as const } }).one,
+)
+expectType<never>(
+  new CorePropsAnyError('', { cause: '', props: { three: '' as const } }),
+)
+expectType<'test'>(
+  new CorePropsAnyError('', { cause: '', props: { three: 'test' as const } })
+    .three,
 )
 expectType<'test'>(
   new SError('', { props: { message: 'test' as const } }).message,
