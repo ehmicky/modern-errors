@@ -25,6 +25,7 @@ import './options/global.test-d.js'
 import './options/instance.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
+import './plugins/static.test-d.js'
 
 const exception = {} as unknown
 
@@ -374,20 +375,6 @@ expectNotAssignable<Plugin>({
   ...plugin,
   properties: (info: Info['properties']) => [],
 })
-
-expectType<'arg'>(PAnyError.staticMethod('arg'))
-expectType<'arg'>(PAnyError.staticMethod('arg', true))
-expectError(
-  expectType<'arg'>(PAnyError.staticMethod({} as Info['staticMethods'], 'arg')),
-)
-expectError(expectType<'arg'>(PAnyError.staticMethod('arg', false)))
-expectError(expectType<'arg'>(PAnyError.staticMethod(true)))
-expectError(PSError.staticMethod())
-expectError(GPSError.staticMethod())
-expectError(PAnyError.otherMethod())
-expectError(GPAnyError.otherMethod())
-expectError(PSError.otherMethod())
-expectError(GPSError.otherMethod())
 
 expectType<true>(paError.property)
 expectType<true>(psError.property)
