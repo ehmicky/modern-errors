@@ -4,6 +4,7 @@ import type { ErrorClass } from '../class.js'
 import type { ErrorInstance } from '../instance.js'
 import type { MethodOptions } from '../options.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
+import type { StaticMethods } from './static.js'
 
 /**
  *
@@ -80,10 +81,6 @@ type InstanceMethod = (
 ) => unknown
 interface InstanceMethods {
   readonly [MethodName: string]: InstanceMethod
-}
-type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
-interface StaticMethods {
-  readonly [MethodName: string]: StaticMethod
 }
 export type GetProperties = (info: Info['properties']) => {
   [PropName: string]: unknown
@@ -164,31 +161,3 @@ type PluginInstanceMethods<PluginArg extends Plugin> =
 
 export type PluginsInstanceMethods<PluginsArg extends Plugins> =
   UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>
-
-type ErrorStaticMethod<
-  StaticMethodArg extends StaticMethod,
-  MethodOptionsArg extends MethodOptions<Plugin>,
-> = (
-  ...args: readonly [
-    ...SliceFirst<Parameters<StaticMethodArg>>,
-    MethodOptionsArg?,
-  ]
-) => ReturnType<StaticMethodArg>
-
-type ErrorStaticMethods<
-  StaticMethodsArg extends StaticMethods,
-  MethodOptionsArg extends MethodOptions<Plugin>,
-> = {
-  readonly [MethodName in keyof StaticMethodsArg]: ErrorStaticMethod<
-    StaticMethodsArg[MethodName],
-    MethodOptionsArg
-  >
-}
-
-type PluginStaticMethods<PluginArg extends Plugin> =
-  PluginArg['staticMethods'] extends StaticMethods
-    ? ErrorStaticMethods<PluginArg['staticMethods'], MethodOptions<PluginArg>>
-    : {}
-
-export type PluginsStaticMethods<PluginsArg extends Plugins> =
-  UnionToIntersection<PluginStaticMethods<PluginsArg[number]>>
