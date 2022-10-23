@@ -26,16 +26,30 @@ expectAssignable<PErrorInstance>(psError)
 
 const GPAnyError = modernErrors([{} as Plugin])
 const gpaError = new GPAnyError('', { cause: '' })
+type GPAErrorInstance = InstanceType<typeof GPAnyError>
 
 expectAssignable<Error>(gpaError)
 expectAssignable<ErrorInstance>(gpaError)
 expectAssignable<BErrorInstance>(gpaError)
 expectNotAssignable<PErrorInstance>(gpaError)
+expectAssignable<GPAErrorInstance>(gpaError)
+
+const exception = {} as unknown
+if (exception instanceof GPAnyError) {
+  expectAssignable<GPAErrorInstance>(exception)
+}
 
 const GPSError = GPAnyError.subclass('GPSError')
 const gpsError = new GPSError('')
+type GPSErrorInstance = InstanceType<typeof GPSError>
 
 expectAssignable<Error>(gpsError)
 expectAssignable<ErrorInstance>(gpsError)
 expectAssignable<BErrorInstance>(gpsError)
 expectNotAssignable<PErrorInstance>(gpsError)
+expectAssignable<GPAErrorInstance>(gpsError)
+expectAssignable<GPSErrorInstance>(gpsError)
+
+if (exception instanceof GPSError) {
+  expectAssignable<GPSErrorInstance>(exception)
+}

@@ -254,21 +254,14 @@ const psError = new PSError('')
 const gpsError = new GPSError('')
 
 type PUnknownInstance = typeof paError
+type GPAErrorInstance = InstanceType<typeof GPAnyError>
 
 expectType<'UnknownError'>('' as PUnknownInstance['name'])
 expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
 expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
+expectAssignable<GPAErrorInstance>(GPAnyError.normalize(''))
 
 expectType<'GPSError'>(gpsError.name)
-expectAssignable<InstanceType<typeof GPSError>>(gpsError)
-expectAssignable<InstanceType<typeof GPAnyError>>(gpsError)
-expectAssignable<InstanceType<typeof GPAnyError>>(GPAnyError.normalize(''))
-if (exception instanceof GPAnyError) {
-  expectAssignable<InstanceType<typeof GPAnyError>>(exception)
-}
-if (exception instanceof GPSError) {
-  expectAssignable<InstanceType<typeof GPSError>>(exception)
-}
 
 modernErrors([])
 modernErrors([], {})
