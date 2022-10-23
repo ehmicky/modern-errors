@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { defineGlobalOpts } from '../helpers/main.js'
+import { defineGlobalOpts } from '../../helpers/main.js'
 
 test('plugin.staticMethods cannot be defined twice by different plugins', (t) => {
   t.throws(

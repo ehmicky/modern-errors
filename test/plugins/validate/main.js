@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineGlobalOpts } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { defineGlobalOpts } from '../../helpers/main.js'
+import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
 test('Should allow valid plugins', (t) => {
   t.notThrows(defineGlobalOpts.bind(undefined, {}, [TEST_PLUGIN]))
