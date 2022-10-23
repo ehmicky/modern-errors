@@ -1,13 +1,15 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
-import modernErrors, { ClassOptions } from '../main.js'
+import modernErrors, {
+  ClassOptions,
+  InstanceOptions,
+  GlobalOptions,
+} from '../main.js'
 
 const AnyError = modernErrors()
 const PAnyError = modernErrors([{ name: 'test' as const }])
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
-
-expectAssignable<ClassOptions>({ custom: AnyError })
 
 expectError(AnyError.subclass('TestError', true))
 expectError(PAnyError.subclass('TestError', true))
@@ -46,3 +48,7 @@ expectError(SSError.subclass('TestError', { custom: class extends SError {} }))
 expectError(
   AnyError.subclass('UnknownError', { custom: class extends AnyError {} }),
 )
+
+expectAssignable<ClassOptions>({ custom: AnyError })
+expectNotAssignable<InstanceOptions>({ custom: AnyError })
+expectNotAssignable<GlobalOptions>({ custom: AnyError })

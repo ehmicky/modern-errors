@@ -13,7 +13,6 @@ import modernErrors, {
   GlobalOptions,
   ClassOptions,
   InstanceOptions,
-  MethodOptions,
   Plugin,
   Info,
 } from './main.js'
@@ -21,8 +20,6 @@ import modernErrors, {
 import './any/aggregate.test-d.js'
 import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
-import './options/global.test-d.js'
-import './options/instance.test-d.js'
 import './options/plugins.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
