@@ -336,9 +336,11 @@ type BaseError<
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
   SimplifyEmptyObject<CustomAttributesArg> &
-  SimplifyEmptyObject<Omit<ErrorPropsArg, ConstErrorProps>> &
+  SimplifyEmptyObject<
+    Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>
+  > &
   SimplifyEmptyObject<Omit<PluginsProperties<PluginsArg>, ConstErrorProps>> &
-  SimplifyEmptyObject<Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>>
+  SimplifyEmptyObject<Omit<ErrorPropsArg, ConstErrorProps>>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
