@@ -257,6 +257,17 @@ type GetCustomAttributes<
     }
   : {}
 
+type AddCustomAttributes<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  CustomClass extends ErrorConstructor<PluginsArg>,
+> = OmitCustomName<
+  GetCustomAttributes<
+    InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
+    InstanceType<CustomClass>
+  >
+>
+
 type CustomStaticAttributes<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -594,12 +605,7 @@ type CreateSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
-      OmitCustomName<
-        GetCustomAttributes<
-          InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
-          InstanceType<ClassOptionsArg['custom']>
-        >
-      >,
+      AddCustomAttributes<PluginsArg, ErrorPropsArg, ClassOptionsArg['custom']>,
       ErrorNameArg
     >
   : ErrorSubclass<
