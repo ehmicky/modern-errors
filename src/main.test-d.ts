@@ -49,6 +49,7 @@ expectAssignable<ErrorInstance>(wideError)
 expectAssignable<Error>(wideError)
 expectType<ErrorName>(wideError.name)
 expectAssignable<Error>({} as ErrorInstance)
+expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
 
 const SError = AnyError.subclass('SError')
 type SInstance = typeof SError['prototype']

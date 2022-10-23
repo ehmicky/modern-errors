@@ -191,7 +191,7 @@ type GetCustomAttributes<
 
 type CustomStaticAttributes<
   PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = SimplifyEmptyObject<
   Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorProps>>
 >
