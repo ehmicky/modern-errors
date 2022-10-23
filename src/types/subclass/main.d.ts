@@ -15,7 +15,7 @@ import type {
   ErrorConstructor,
   ParentInstanceOptions,
   ParentExtra,
-} from './validate.js'
+} from './parent.js'
 
 export type ErrorSubclass<
   PluginsArg extends Plugins,

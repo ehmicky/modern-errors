@@ -1,7 +1,7 @@
 import { setErrorName } from 'error-class-utils'
 
 import { setInheritedMethods } from './inherited.js'
-import { validateCustom } from './validate.js'
+import { validateCustom } from './parent.js'
 
 // The `custom` option can be used to customize a specific error class.
 // It must extend directly from `AnyError`.

@@ -1,5 +1,5 @@
 import type { Plugins } from '../plugins/main.js'
-import type { ErrorConstructor } from './validate.js'
+import type { ErrorConstructor } from './parent.js'
 import type { Intersect } from '../utils.js'
 
 export type CustomStaticAttributes<
