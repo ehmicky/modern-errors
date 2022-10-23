@@ -93,7 +93,8 @@ export type CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    CustomAttributesArg
+    CustomAttributesArg,
+    ErrorNameArg
   >,
 >(
   errorName: ErrorNameArg,

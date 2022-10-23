@@ -14,15 +14,12 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
   ): InstanceType<ConstructorArg>
 } & { [Key in keyof ConstructorArg]: ConstructorArg[Key] }
 
-/**
- * Class-specific options
- */
-export type SpecificClassOptions<
+interface CustomOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
-> = {
+> {
   /**
    * Custom class to add any methods, `constructor` or properties.
    *
@@ -65,7 +62,26 @@ export type SpecificClassOptions<
       ErrorName
     >
   >
-} & PluginsOptions<PluginsArg>
+}
+
+/**
+ * Class-specific options
+ */
+export type SpecificClassOptions<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
+  ErrorNameArg extends ErrorName,
+> = (ErrorNameArg extends 'UnknownError'
+  ? {}
+  : CustomOption<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >) &
+  PluginsOptions<PluginsArg>
 
 /**
  *
@@ -75,5 +91,6 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
     PluginsArg,
     ErrorProps,
     ErrorConstructor<PluginsArg>,
-    CustomAttributes
+    CustomAttributes,
+    ErrorName
   >

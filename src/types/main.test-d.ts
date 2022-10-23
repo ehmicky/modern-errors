@@ -621,6 +621,9 @@ expectError(PAnyError.subclass('TestError', { custom: class extends Error {} }))
 expectError(CCError.subclass('TestError', { custom: class extends Error {} }))
 expectError(CError.subclass('TestError', { custom: class extends AnyError {} }))
 expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
+expectError(
+  AnyError.subclass('UnknownError', { custom: class extends AnyError {} }),
+)
 
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
