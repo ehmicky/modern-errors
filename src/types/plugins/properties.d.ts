@@ -1,6 +1,6 @@
 import type { UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './main.js'
-import type { Info } from './plugin_info.js'
+import type { Info } from './info.js'
 
 type GetProperties = (info: Info['properties']) => {
   [PropName: string]: unknown
