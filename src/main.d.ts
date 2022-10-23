@@ -331,8 +331,8 @@ type BaseError<
   SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = Error &
   SpecificErrorName<ErrorNameArg> &
-  SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
+  SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<ErrorPropsArg> &
   SimplifyEmptyObject<PluginsProperties<PluginsArg>> &
   SimplifyEmptyObject<PluginsInstanceMethods<PluginsArg>>
