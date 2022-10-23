@@ -64,6 +64,7 @@ interface ErrorSubclassCore<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
+    ErrorNameArg,
     CustomAttributesArg
   >
 }
@@ -102,6 +103,7 @@ export type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentName extends ErrorName,
   CustomAttributesArg extends CustomAttributes,
 > = <
   ErrorNameArg extends ErrorName,
@@ -109,6 +111,7 @@ export type CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
+    ParentName,
     CustomAttributesArg,
     ErrorNameArg
   >,

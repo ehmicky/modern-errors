@@ -1,3 +1,5 @@
+import type { ErrorName } from 'error-custom-class'
+
 import type { Plugins } from '../plugins/shape.js'
 import type { PluginsStaticMethods } from '../plugins/static.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
@@ -56,6 +58,7 @@ interface AnyErrorClassCore<
     PluginsArg,
     ErrorPropsArg,
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+    ErrorName,
     {}
   >
 

@@ -168,7 +168,7 @@ class BCSError extends SError {
   prop = true as const
   static staticProp = true as const
 }
-const CSError = CError.subclass('CSError', { custom: BCSError })
+const CSError = SError.subclass('CSError', { custom: BCSError })
 type CSInstance = typeof CSError['prototype']
 
 const csError = new CSError('', { cProp: true })
