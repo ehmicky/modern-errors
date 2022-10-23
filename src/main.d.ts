@@ -95,14 +95,13 @@ type ErrorInstanceMethods<
   >
 }
 
-type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends Plugin
-  ? PluginArg['instanceMethods'] extends InstanceMethods
+type PluginInstanceMethods<PluginArg extends Plugin> =
+  PluginArg['instanceMethods'] extends InstanceMethods
     ? ErrorInstanceMethods<
         PluginArg['instanceMethods'],
         MethodOptions<PluginArg>
       >
     : {}
-  : {}
 
 type PluginsInstanceMethods<PluginsArg extends Plugins> = UnionToIntersection<
   PluginInstanceMethods<PluginsArg[number]>
@@ -128,11 +127,10 @@ type ErrorStaticMethods<
   >
 }
 
-type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends Plugin
-  ? PluginArg['staticMethods'] extends StaticMethods
+type PluginStaticMethods<PluginArg extends Plugin> =
+  PluginArg['staticMethods'] extends StaticMethods
     ? ErrorStaticMethods<PluginArg['staticMethods'], MethodOptions<PluginArg>>
     : {}
-  : {}
 
 type PluginsStaticMethods<PluginsArg extends Plugins> = UnionToIntersection<
   PluginStaticMethods<PluginsArg[number]>
