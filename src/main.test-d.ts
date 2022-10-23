@@ -745,6 +745,24 @@ const FourError = AnyError.subclass('FourError', {
 expectType<'arg'>(ThreeError.staticMethod('arg'))
 expectType<'arg'>(FourError.staticMethod('arg'))
 
+// `tsd`'s `expectError()` fails to properly lint those, so they must be
+// manually checked by uncommenting those lines.
+// expectError(
+//   class extends PAnyError {
+//     property = true as boolean
+//   },
+// )
+// expectError(
+//   class extends PAnyError {
+//     instanceMethod = (arg: string) => arg
+//   },
+// )
+// expectError(
+//   class extends PAnyError {
+//     static staticMethod = (arg: string) => arg
+//   },
+// )
+
 const MessageMethodAnyError = modernErrors([
   { name, instanceMethods: { message: () => {} } },
 ])
@@ -799,23 +817,12 @@ const DuplicateProppertiesAnyError = modernErrors([
 ])
 expectType<undefined>(new DuplicateProppertiesAnyError('', { cause: '' }).prop)
 
-// `tsd`'s `expectError()` fails to properly lint those, so they must be
-// manually checked by uncommenting those lines.
-// expectError(
-//   class extends PAnyError {
-//     property = true as boolean
-//   },
-// )
-// expectError(
-//   class extends PAnyError {
-//     instanceMethod = (arg: string) => arg
-//   },
-// )
-// expectError(
-//   class extends PAnyError {
-//     static staticMethod = (arg: string) => arg
-//   },
-// )
+expectError(new SError('', { cause: new CError('') }).prop)
+expectError(new SError('', { cause: new PAnyError('') }).property)
+expectError(new SError('', { cause: new PAnyError('') }).instanceMethod)
+expectError(
+  new SError('', { cause: new SError('', { props: { prop: true } }) }).prop,
+)
 
 if (cError instanceof SError) {
   expectType<never>(cError)
