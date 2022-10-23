@@ -1,5 +1,5 @@
 import type { Plugins } from '../plugins/main.js'
-import type { NormalizeError } from '../any.js'
+import type { NormalizeError } from './main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { ErrorProps } from '../core_plugins/props.js'
 

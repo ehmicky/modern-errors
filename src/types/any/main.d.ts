@@ -1,13 +1,13 @@
 import type { ErrorName } from 'error-custom-class'
-import type { Plugins } from './plugins/main.js'
-import type { PluginsStaticMethods } from './plugins/static.js'
-import type { GetAggregateErrorsOption } from './any/aggregate.js'
-import type { ErrorProps, MergeErrorProps } from './core_plugins/props.js'
-import type { CustomInstanceAttributes } from './attributes.js'
-import type { SpecificInstanceOptions } from './options/instance.js'
-import type { ErrorInstance, BaseError } from './instance.js'
-import type { NoAdditionalProps } from './utils.js'
-import type { CreateSubclass } from './subclass.js'
+import type { Plugins } from '../plugins/main.js'
+import type { PluginsStaticMethods } from '../plugins/static.js'
+import type { GetAggregateErrorsOption } from './aggregate.js'
+import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
+import type { CustomInstanceAttributes } from '../attributes.js'
+import type { SpecificInstanceOptions } from '../options/instance.js'
+import type { ErrorInstance, BaseError } from '../instance.js'
+import type { NoAdditionalProps } from '../utils.js'
+import type { CreateSubclass } from '../subclass.js'
 
 type NormalizedErrorName<ErrorArg extends unknown> = unknown extends ErrorArg
   ? ErrorName

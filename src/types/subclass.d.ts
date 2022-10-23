@@ -11,7 +11,7 @@ import type { SpecificInstanceOptions } from './options/instance.js'
 import type { SpecificClassOptions } from './options/class.js'
 import type { ErrorInstance, BaseError } from './instance.js'
 import type { NoAdditionalProps } from './utils.js'
-import type { SpecificAnyErrorClass } from './any.js'
+import type { SpecificAnyErrorClass } from './any/main.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
