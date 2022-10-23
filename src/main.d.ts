@@ -312,12 +312,14 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 
 type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
-type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> =
-  MainInstanceOptionsArg['errors'] extends NonNullable<
-    MainInstanceOptions['errors']
-  >
-    ? { errors: MainInstanceOptionsArg['errors'] }
-    : {}
+type AggregateErrors<
+  PluginsArg extends Plugins,
+  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+> = SpecificInstanceOptionsArg['errors'] extends NonNullable<
+  SpecificInstanceOptions<PluginsArg>['errors']
+>
+  ? { errors: SpecificInstanceOptionsArg['errors'] }
+  : {}
 
 type SimplifyEmptyObject<T extends unknown> = keyof T extends never ? {} : T
 
@@ -326,11 +328,11 @@ type BaseError<
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-  MainInstanceOptionsArg extends MainInstanceOptions,
+  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = Error &
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<CustomAttributesArg> &
-  SimplifyEmptyObject<AggregateErrors<MainInstanceOptionsArg>> &
+  SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
   SimplifyEmptyObject<ErrorPropsArg> &
   SimplifyEmptyObject<PluginsProperties<PluginsArg>> &
   SimplifyEmptyObject<PluginsInstanceMethods<PluginsArg>>
@@ -340,7 +342,7 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   ErrorProps,
   CustomAttributes,
   ErrorName,
-  MainInstanceOptions
+  SpecificInstanceOptions<PluginsArg>
 >
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
@@ -397,7 +399,7 @@ type ErrorSubclass<
     ErrorPropsArg,
     CustomAttributesArg,
     ErrorNameArg,
-    MainInstanceOptions
+    SpecificInstanceOptions<PluginsArg>
   >
   readonly subclass: CreateSubclass<
     PluginsArg,
@@ -465,13 +467,13 @@ type AnyErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-  MainInstanceOptionsArg extends MainInstanceOptions,
+  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = BaseError<
   PluginsArg,
   ErrorPropsArg,
   GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<PluginsArg, ErrorArg>,
-  MainInstanceOptionsArg
+  SpecificInstanceOptionsArg
 >
 
 /**
@@ -509,7 +511,7 @@ type SpecificAnyErrorClass<
     ErrorPropsArg,
     {},
     ErrorName,
-    MainInstanceOptions
+    SpecificInstanceOptions<PluginsArg>
   >
 
   /**
@@ -545,7 +547,12 @@ type SpecificAnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): AnyErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>
+  ): AnyErrorInstance<
+    PluginsArg,
+    ErrorPropsArg,
+    ErrorArg,
+    SpecificInstanceOptions<PluginsArg>
+  >
 } & PluginsStaticMethods<PluginsArg>
 
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
