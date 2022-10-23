@@ -13,7 +13,7 @@ import type {
 } from './options.js'
 import type { ErrorInstance, BaseError } from './instance.js'
 import type { NoAdditionalProps } from './utils.js'
-import type { SpecificAnyErrorClass } from './to_sort.js'
+import type { SpecificAnyErrorClass } from './any.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,

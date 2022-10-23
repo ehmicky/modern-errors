@@ -1,5 +1,5 @@
 import type { Plugins } from './plugin.js'
-import type { NormalizeError } from './to_sort.js'
+import type { NormalizeError } from './any.js'
 import type { SpecificInstanceOptions } from './options.js'
 import type { ErrorProps } from './props.js'
 

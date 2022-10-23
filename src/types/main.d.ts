@@ -1,5 +1,5 @@
 import type { Plugin, Plugins, Info } from './plugin.js'
-import type { AnyErrorClass, SpecificAnyErrorClass } from './to_sort.js'
+import type { AnyErrorClass, SpecificAnyErrorClass } from './any.js'
 import type { ErrorClass } from './class.js'
 import type { ErrorInstance } from './instance.js'
 import type {
