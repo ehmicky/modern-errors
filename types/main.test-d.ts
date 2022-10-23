@@ -13,7 +13,6 @@ import modernErrors, {
   GlobalOptions,
   ClassOptions,
   InstanceOptions,
-  Info,
 } from './main.js'
 
 import './any/aggregate.test-d.js'
@@ -28,9 +27,11 @@ import './plugins/instance.test-d.js'
 import './plugins/properties.test-d.js'
 import './plugins/shape.test-d.js'
 import './plugins/static.test-d.js'
+import './subclass/custom.test-d.js'
 import './subclass/inherited.test-d.js'
 import './subclass/main.test-d.js'
 import './subclass/name.test-d.js'
+import './subclass/parent.test-d.js'
 
 const exception = {} as unknown
 
@@ -209,203 +210,10 @@ expectAssignable<InstanceOptions>({ cause: '' })
 expectNotAssignable<GlobalOptions>({ cause: '' })
 expectNotAssignable<ClassOptions>({ cause: '' })
 
-const name = 'test' as const
-const staticMethod = (info: Info['staticMethods'], arg: '') => arg
-const staticMethods = { staticMethod }
-const plugin = { name, staticMethods } as const
-
-const PAnyError = modernErrors([plugin])
-
 modernErrors([])
 modernErrors([], {})
-modernErrors([{ name }], {})
+modernErrors([{ name: 'test' as const }], {})
 expectError(modernErrors(true))
-
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
-    constructor(
-      message: ConstructorParameters<typeof AnyError>[0],
-      options?: InstanceOptions,
-    ) {
-      super(message, options)
-    }
-  },
-})
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
-    constructor(
-      message: string,
-      options?: ConstructorParameters<typeof AnyError>[1],
-    ) {
-      super(message, options)
-    }
-  },
-})
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
-    constructor(message: string, options?: InstanceOptions) {
-      super(message, options)
-    }
-  },
-})
-PAnyError.subclass('TestError', {
-  custom: class extends PAnyError {
-    constructor(message: string, options?: InstanceOptions) {
-      super(message, options)
-    }
-  },
-})
-PAnyError.subclass('TestError', {
-  custom: class extends PAnyError {
-    constructor(message: string, options?: InstanceOptions<[typeof plugin]>) {
-      super(message, options)
-    }
-  },
-})
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
-    constructor(message: string, options?: object) {
-      super(message, options)
-    }
-  },
-})
-expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
-      constructor(options?: object) {
-        super('', options)
-      }
-    },
-  }),
-)
-expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
-      constructor() {
-        super()
-      }
-    },
-  }),
-)
-expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
-      constructor(message: string, options?: true) {
-        super(message, {})
-      }
-    },
-  }),
-)
-expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
-      constructor(
-        message: string,
-        options?: InstanceOptions & { cause?: true },
-      ) {
-        super(message, options)
-      }
-    },
-  }),
-)
-AnyError.subclass('TestError', {
-  custom: class extends CError {
-    constructor(message: string, options?: InstanceOptions) {
-      super(message, options)
-    }
-  },
-})
-expectError(
-  CError.subclass('TestError', {
-    custom: class extends CError {
-      constructor(
-        message: string,
-        options?: InstanceOptions & { cProp?: false },
-        extra?: true,
-      ) {
-        super(message, options, extra)
-      }
-    },
-  }),
-)
-expectError(
-  CError.subclass('TestError', {
-    custom: class extends CError {
-      constructor(message: string, options?: InstanceOptions, extra?: false) {
-        super(message, options, true)
-      }
-    },
-  }),
-)
-expectError(
-  class extends CError {
-    constructor() {
-      super('', {}, false)
-    }
-  },
-)
-
-const OneError = PAnyError.subclass('OneError', {
-  custom: class extends PAnyError {
-    property = true as const
-  },
-})
-expectType<true>(new OneError('').property)
-const TwoError = PAnyError.subclass('TwoError', {
-  custom: class extends PAnyError {
-    instanceMethod = (arg: '') => arg
-  },
-})
-expectType<''>(new TwoError('').instanceMethod(''))
-const ThreeError = PAnyError.subclass('ThreeError', {
-  custom: class extends PAnyError {
-    static staticMethod(arg: '') {
-      return arg
-    }
-  },
-})
-expectError(ThreeError.staticMethod(''))
-const FourError = PAnyError.subclass('FourError', {
-  custom: class extends PAnyError {
-    static staticMethod = (arg: '') => arg
-  },
-})
-expectError(FourError.staticMethod(''))
-const PropsError = AnyError.subclass('PropsError', { props: { one: true } })
-const ChildPropsError = PropsError.subclass('ChildPropsError', {
-  custom: class extends PropsError {
-    one = false as const
-  },
-})
-expectType<false>(new ChildPropsError('').one)
-
-// `tsd`'s `expectError()` fails to properly lint those, so they must be
-// manually checked by uncommenting those lines.
-// expectError(
-//   class extends PAnyError {
-//     property = true as boolean
-//   },
-// )
-// expectError(
-//   class extends PAnyError {
-//     instanceMethod = (arg: string) => arg
-//   },
-// )
-// expectError(
-//   class extends PAnyError {
-//     static staticMethod = (arg: string) => arg
-//   },
-// )
-// expectError(
-//   class extends AnyError {
-//     message = true
-//   },
-// )
-// expectError(
-//   class extends PropsError {
-//     one = ''
-//   },
-// )
 
 if (cError instanceof SError) {
   expectType<never>(cError)
