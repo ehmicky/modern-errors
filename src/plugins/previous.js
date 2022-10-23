@@ -1,4 +1,4 @@
-import { deepClone } from './clone.js'
+import { deepClone } from '../utils/clone.js'
 
 // When an error is wrapped, the parent error overrides the child error's
 // options.

@@ -1,6 +1,6 @@
 import { excludeKeys, includeKeys } from 'filter-obj'
 
-import { deepClone } from '../plugins/clone.js'
+import { deepClone } from '../utils/clone.js'
 
 import { mergePluginsOpts, getPluginNames } from './merge.js'
 

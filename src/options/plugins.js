@@ -1,5 +1,5 @@
 import { mergeSpecificCause } from '../any/merge.js'
-import { deepClone } from '../plugins/clone.js'
+import { deepClone } from '../utils/clone.js'
 
 import { mergeMethodOpts } from './method.js'
 
