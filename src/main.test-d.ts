@@ -608,9 +608,37 @@ AnyError.subclass('TestError', {
 })
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
+    constructor(message: string, options?: InstanceOptions) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    constructor(message: string, options?: InstanceOptions) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    constructor(message: string, options?: InstanceOptions<[typeof plugin]>) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends AnyError {
+    constructor(message: string, options?: object) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends AnyError {
     constructor(
       message: ConstructorParameters<typeof AnyError>[0],
-      options?: ConstructorParameters<typeof AnyError>[1],
+      options?: InstanceOptions,
     ) {
       super(message, options)
     }
