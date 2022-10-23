@@ -1,5 +1,5 @@
 import { setNonEnumProp } from '../../utils/descriptors.js'
-import { validateDuplicatePlugin } from '../duplicate.js'
+import { validateDuplicatePlugin } from '../validate/duplicate.js'
 
 import { callInstanceMethod } from './call.js'
 

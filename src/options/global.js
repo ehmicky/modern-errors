@@ -1,7 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
+import { validatePluginsOptsNames } from '../plugins/validate/name.js'
 import { deepClone } from '../utils/clone.js'
-import { validatePluginsOptsNames } from '../plugins/name.js'
 
 import { getPluginOpts } from './plugins.js'
 

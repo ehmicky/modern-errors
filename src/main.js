@@ -2,7 +2,7 @@ import { createAnyError } from './any/main.js'
 import { getGlobalOpts } from './options/global.js'
 import { addAllInstanceMethods } from './plugins/instance/add.js'
 import { addAllStaticMethods } from './plugins/static/add.js'
-import { normalizePlugins } from './plugins/validate.js'
+import { normalizePlugins } from './plugins/validate/main.js'
 
 // Creates error classes.
 export default function modernErrors(plugins, globalOpts) {

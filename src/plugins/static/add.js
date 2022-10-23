@@ -1,6 +1,6 @@
 import { ANY_ERROR_STATIC_METHODS } from '../../subclass/inherited.js'
 import { setNonEnumProp } from '../../utils/descriptors.js'
-import { validateDuplicatePlugin } from '../duplicate.js'
+import { validateDuplicatePlugin } from '../validate/duplicate.js'
 
 import { callStaticMethod } from './call.js'
 
