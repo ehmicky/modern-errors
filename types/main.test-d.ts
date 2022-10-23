@@ -18,6 +18,10 @@ import modernErrors, {
   Info,
 } from './main.js'
 
+import './options/class.test-d.js'
+import './options/global.test-d.js'
+import './options/instance.test-d.js'
+
 const exception = {} as unknown
 
 const AnyError = modernErrors()
