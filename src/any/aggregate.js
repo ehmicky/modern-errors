@@ -7,7 +7,7 @@
 //     - This is more monomorphic
 //     - This parallels the `cause` option
 // Child `errors` are always kept, only appended to.
-export const setAggregateErrors = function (error, { errors }, AnyError) {
+export const setAggregateErrors = function (error, { errors }) {
   if (errors === undefined) {
     return
   }
@@ -16,11 +16,25 @@ export const setAggregateErrors = function (error, { errors }, AnyError) {
     throw new TypeError(`"errors" option must be an array: ${errors}`)
   }
 
-  const errorsA = errors.map(AnyError.normalize)
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(error, 'errors', {
+    value: errors,
+    enumerable: false,
+    writable: true,
+    configurable: true,
+  })
+}
+
+export const normalizeAggregateErrors = function (error, AnyError) {
+  if (!Array.isArray(error.errors)) {
+    return
+  }
+
+  const errorsA = error.errors.map(AnyError.normalize)
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(error, 'errors', {
     value: errorsA,
-    enumerable: true,
+    enumerable: false,
     writable: true,
     configurable: true,
   })

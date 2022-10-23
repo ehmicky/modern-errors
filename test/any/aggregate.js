@@ -9,6 +9,15 @@ test('error.errors can be set', (t) => {
   t.deepEqual(new TestError('test', { errors: [] }).errors, [])
 })
 
+test('error.errors are not enumerable', (t) => {
+  t.false(
+    Object.getOwnPropertyDescriptor(
+      new TestError('test', { errors: [] }),
+      'errors',
+    ).enumerable,
+  )
+})
+
 each([undefined, {}, { errors: undefined }], ({ title }, opts) => {
   test(`error.errors is not set by default | ${title}`, (t) => {
     t.false('errors' in new TestError('test', opts))
@@ -32,6 +41,14 @@ test('error.errors are normalized', (t) => {
   t.true(
     new TestError('test', { errors: [true] }).errors[0] instanceof AnyError,
   )
+})
+
+test('error.errors are normalized deeply', (t) => {
+  const cause = new Error('causeMessage')
+  // eslint-disable-next-line fp/no-mutation
+  cause.errors = ['one']
+  const { errors } = new TestError('test', { cause })
+  t.true(errors[0] instanceof AnyError)
 })
 
 each([TestError, AnyError], ({ title }, ErrorClass) => {

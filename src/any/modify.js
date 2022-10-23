@@ -2,7 +2,7 @@ import { computePluginsOpts } from '../plugins/compute.js'
 import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
 import { setPluginsProperties } from '../plugins/properties.js'
 
-import { setAggregateErrors } from './aggregate.js'
+import { setAggregateErrors, normalizeAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
 import { getCause, mergeCause } from './merge.js'
 import { getShowStack } from './stack.js'
@@ -36,6 +36,7 @@ export const modifyError = function ({
   return error
 }
 
+// eslint-disable-next-line max-statements
 const applyErrorLogic = function ({
   currentError,
   cause,
@@ -61,8 +62,9 @@ const applyErrorLogic = function ({
     pluginsOpts,
     args,
   })
-  setAggregateErrors(currentError, optsA, AnyError)
+  setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, isAnyError)
+  normalizeAggregateErrors(error, AnyError)
   const showStack = getShowStack({ error, cause, errorData, ErrorClasses })
   setConstructorArgs(error, constructorArgs)
   errorData.set(error, {
