@@ -1,5 +1,5 @@
 import type { Plugins } from './plugin.js'
-import type { ErrorConstructor } from './to_sort.js'
+import type { ErrorConstructor } from './class.js'
 import type { Intersect } from './utils.js'
 
 export type CustomAttributes = object
