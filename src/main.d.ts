@@ -564,22 +564,17 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    intersected using `&`, instead of the second one overriding the first.
 //    Therefore, the type of `plugin.properties()` that are not unique should
 //    currently be wide to avoid the `&` intersection resulting in `never`.
-//  - Type narrowing with `instanceof` does not always work due to:
+//  - Type narrowing with `instanceof` with:
+//     - Any error class with a `custom` option
+//     - `AnyError` if there are any plugins with static methods
+//    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
-//    This applies:
-//     - With `AnyError` if there are any plugins with static methods
-//     - With any error class with a `custom` option
-//  - `AnyError` does not always respect proper inheritance, i.e. it sometimes
-//    has stronger constraints than its subclasses, resulting in the following
-//    runtime behavior which cannot be typed:
-//     - `new AnyError()` should require a second argument as an object with a
-//       `cause` property
-//  - `new ErrorClass('...', { cause })` (as opposed to
-//    `new AnyError('...', { cause })`) should delete `props` set by `cause`.
-//    At the moment, those are kept.
+//  - `new AnyError()` should require a second argument as an object with a
+//    `cause` property
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
-//    method `methodName(...) { ... }`. This is due to the following bug:
+//    method `methodName(...) { ... }`.
+//    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
 /**
  * Creates and returns `AnyError`.
