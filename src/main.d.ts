@@ -271,9 +271,8 @@ type AddCustomAttributes<
 type CustomStaticAttributes<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = SimplifyEmptyObject<
-  Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorProps>>
->
+  ParentAnyErrorClass extends ErrorConstructor<PluginsArg>,
+> = Intersect<{}, ParentErrorClass, keyof ParentAnyErrorClass>
 
 type ErrorProps = object
 
@@ -462,7 +461,13 @@ type AggregateErrorsProp<AggregateErrorsArg extends AggregateErrorsOption> =
 type CoreErrorProps = keyof Error | 'errors'
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
 
-type SimplifyEmptyObject<T extends unknown> = keyof T extends never ? {} : T
+type Intersect<
+  Source extends object,
+  Target extends unknown,
+  OmittedKeys extends PropertyKey,
+> = keyof Target extends OmittedKeys
+  ? Source
+  : Source & Omit<Target, OmittedKeys>
 
 type BaseError<
   PluginsArg extends Plugins,
@@ -470,25 +475,27 @@ type BaseError<
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
   AggregateErrorsArg extends AggregateErrorsOption,
-> = Error &
-  SpecificErrorName<ErrorNameArg> &
-  SimplifyEmptyObject<AggregateErrorsProp<AggregateErrorsArg>> &
-  SimplifyEmptyObject<Omit<CustomAttributesArg, CoreErrorProps>> &
-  SimplifyEmptyObject<
-    Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>
-  > &
-  SimplifyEmptyObject<
-    Omit<
-      PluginsProperties<PluginsArg>,
-      ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
-    >
-  > &
-  SimplifyEmptyObject<
-    Omit<
-      ErrorPropsArg,
-      ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
-    >
-  >
+> = Intersect<
+  Intersect<
+    Intersect<
+      Intersect<
+        Intersect<
+          Error & SpecificErrorName<ErrorNameArg>,
+          AggregateErrorsProp<AggregateErrorsArg>,
+          never
+        >,
+        CustomAttributesArg,
+        CoreErrorProps
+      >,
+      PluginsInstanceMethods<PluginsArg>,
+      CoreErrorProps
+    >,
+    PluginsProperties<PluginsArg>,
+    ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+  >,
+  ErrorPropsArg,
+  ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+>
 
 /**
  *
@@ -571,7 +578,11 @@ type ErrorSubclass<
     ParentErrorClass,
     CustomAttributesArg
   >
-} & CustomStaticAttributes<PluginsArg, ParentErrorClass>
+} & CustomStaticAttributes<
+  PluginsArg,
+  ParentErrorClass,
+  SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
+>
 
 /**
  *
