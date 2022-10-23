@@ -7,10 +7,10 @@ import type { CreateSubclass } from '../subclass/main.js'
 
 import type { AnyErrorInstance, NormalizeError } from './normalize.js'
 
-export type SpecificAnyErrorClass<
+interface AnyErrorClassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-> = {
+> {
   /**
    * Base error class.
    *
@@ -37,6 +37,7 @@ export type SpecificAnyErrorClass<
     InstanceOptionsArg['cause'],
     InstanceOptionsArg
   >
+
   readonly prototype: InstanceType<
     SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
   >
@@ -75,7 +76,13 @@ export type SpecificAnyErrorClass<
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
   ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
-} & PluginsStaticMethods<PluginsArg>
+}
+
+export type SpecificAnyErrorClass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+> = AnyErrorClassCore<PluginsArg, ErrorPropsArg> &
+  PluginsStaticMethods<PluginsArg>
 
 /**
  *

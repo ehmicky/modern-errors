@@ -17,13 +17,13 @@ import type {
   ParentExtra,
 } from './parent.js'
 
-export type ErrorSubclass<
+interface ErrorSubclassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-> = {
+> {
   /**
    *
    */
@@ -46,6 +46,7 @@ export type ErrorSubclass<
     ErrorNameArg,
     GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
   >
+
   readonly prototype: InstanceType<
     ErrorSubclass<
       PluginsArg,
@@ -65,11 +66,26 @@ export type ErrorSubclass<
     ParentErrorClass,
     CustomAttributesArg
   >
-} & CustomStaticAttributes<
+}
+
+export type ErrorSubclass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
+  ErrorNameArg extends ErrorName,
+> = ErrorSubclassCore<
   PluginsArg,
-  SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-  ParentErrorClass
->
+  ErrorPropsArg,
+  ParentErrorClass,
+  CustomAttributesArg,
+  ErrorNameArg
+> &
+  CustomStaticAttributes<
+    PluginsArg,
+    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+    ParentErrorClass
+  >
 
 /**
  *
