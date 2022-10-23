@@ -378,7 +378,7 @@ type BaseError<
 > = Error &
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<AggregateErrorsProp<AggregateErrorsArg>> &
-  SimplifyEmptyObject<CustomAttributesArg> &
+  SimplifyEmptyObject<Omit<CustomAttributesArg, CoreErrorProps>> &
   SimplifyEmptyObject<
     Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>
   > &

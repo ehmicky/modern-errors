@@ -769,12 +769,6 @@ const FourError = PAnyError.subclass('FourError', {
   },
 })
 expectError(FourError.staticMethod('arg'))
-const FiveError = AnyError.subclass('FiveError', {
-  custom: class extends AnyError {
-    message = 'test' as const
-  },
-})
-expectType<'test'>(new FiveError('').message)
 const PropsError = AnyError.subclass('PropsError', { props: { one: true } })
 const ChildPropsError = PropsError.subclass('ChildPropsError', {
   custom: class extends PropsError {
