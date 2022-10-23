@@ -102,7 +102,7 @@ if (exception instanceof SSError) {
 
 class BCError extends AnyError {
   constructor(
-    message: ConstructorParameters<typeof AnyError>[0],
+    message: string,
     options?: ConstructorParameters<typeof AnyError>[1] & { cProp?: true },
     extra?: true,
   ) {
@@ -155,7 +155,7 @@ expectError(SCError.normalize(''))
 
 class BCSError extends SError {
   constructor(
-    message: ConstructorParameters<typeof SError>[0],
+    message: string,
     options?: ConstructorParameters<typeof SError>[1] & { cProp?: true },
     extra?: true,
   ) {
@@ -187,7 +187,7 @@ expectError(CSError.normalize(''))
 
 class BCCError extends CError {
   constructor(
-    message: ConstructorParameters<typeof CError>[0],
+    message: string,
     options?: ConstructorParameters<typeof CError>[1] & { ccProp?: true },
     extra?: boolean,
   ) {
@@ -665,10 +665,7 @@ expectError(
 expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
-      constructor(
-        message: ConstructorParameters<typeof AnyError>[0],
-        options?: true,
-      ) {
+      constructor(message: string, options?: true) {
         super(message, {})
       }
     },
@@ -678,7 +675,7 @@ expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
       constructor(
-        message: ConstructorParameters<typeof AnyError>[0],
+        message: string,
         options?: ConstructorParameters<typeof AnyError>[1] & { cause?: true },
       ) {
         super(message, options)
@@ -689,7 +686,7 @@ expectError(
 AnyError.subclass('TestError', {
   custom: class extends CError {
     constructor(
-      message: ConstructorParameters<typeof AnyError>[0],
+      message: string,
       options?: ConstructorParameters<typeof AnyError>[1],
     ) {
       super(message, options)
@@ -700,7 +697,7 @@ expectError(
   CError.subclass('TestError', {
     custom: class extends CError {
       constructor(
-        message: ConstructorParameters<typeof CError>[0],
+        message: string,
         options?: ConstructorParameters<typeof CError>[1] & { cProp?: false },
         extra?: ConstructorParameters<typeof CError>[2],
       ) {
@@ -713,7 +710,7 @@ expectError(
   CError.subclass('TestError', {
     custom: class extends CError {
       constructor(
-        message: ConstructorParameters<typeof CError>[0],
+        message: string,
         options?: ConstructorParameters<typeof CError>[1],
         extra?: false,
       ) {
