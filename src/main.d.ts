@@ -314,11 +314,18 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
 type AggregateErrors<
   PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
   SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = SpecificInstanceOptionsArg['errors'] extends NonNullable<
   SpecificInstanceOptions<PluginsArg>['errors']
 >
-  ? { errors: SpecificInstanceOptionsArg['errors'] }
+  ? {
+      errors: NormalizeErrors<
+        PluginsArg,
+        ErrorPropsArg,
+        SpecificInstanceOptionsArg['errors']
+      >
+    }
   : {}
 
 type CoreErrorProps = keyof Error | 'errors'
@@ -334,7 +341,9 @@ type BaseError<
   SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = Error &
   SpecificErrorName<ErrorNameArg> &
-  SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
+  SimplifyEmptyObject<
+    AggregateErrors<PluginsArg, ErrorPropsArg, SpecificInstanceOptionsArg>
+  > &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<
     Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>
@@ -488,6 +497,29 @@ type AnyErrorInstance<
   SpecificInstanceOptionsArg
 >
 
+type NormalizeError<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ErrorArg extends unknown,
+> = AnyErrorInstance<
+  PluginsArg,
+  ErrorPropsArg,
+  ErrorArg,
+  SpecificInstanceOptions<PluginsArg>
+>
+
+type NormalizeErrors<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ErrorArgs extends unknown[],
+> = {
+  [Key in keyof ErrorArgs]: NormalizeError<
+    PluginsArg,
+    ErrorPropsArg,
+    ErrorArgs[Key]
+  >
+}
+
 /**
  * Base error class.
  *
@@ -559,12 +591,7 @@ type SpecificAnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): AnyErrorInstance<
-    PluginsArg,
-    ErrorPropsArg,
-    ErrorArg,
-    SpecificInstanceOptions<PluginsArg>
-  >
+  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
 } & PluginsStaticMethods<PluginsArg>
 
 export type AnyErrorClass<PluginsArg extends Plugins = []> =

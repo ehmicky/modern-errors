@@ -220,11 +220,18 @@ expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 expectError(CCError.normalize(''))
 
-expectAssignable<[true]>(
+expectAssignable<[UnknownInstance]>(
   new AnyError('', { cause: '', errors: [true] as [true] }).errors,
 )
-expectAssignable<[true]>(
-  new CCError('', { cause: '', errors: [true] as [true] }).errors,
+expectAssignable<[UnknownInstance]>(
+  new CCError('', { errors: [true] as [true] }).errors,
+)
+expectAssignable<[CCInstance]>(
+  new AnyError('', { cause: '', errors: [new CCError('')] as [CCInstance] })
+    .errors,
+)
+expectAssignable<[CCInstance]>(
+  new CCError('', { errors: [new CCError('')] as [CCInstance] }).errors,
 )
 expectError(new AnyError('', { cause: '' }).errors)
 expectError(new CCError('').errors)
