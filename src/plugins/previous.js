@@ -89,15 +89,6 @@ const getChangedDescriptor = function (descriptors, key) {
 //     - Set as `custom` instance properties
 //  - This allows using the above cases when the user needs to set a property
 //    that should not be restored when the error is wrapped with another class
-// `custom` instance properties and errors set after instantiation can always
-// override any other property
-//  - Including error core properties, `plugin.properties()`, instance|static
-//    methods
-//  - Reasons:
-//     - It is not possible for `BaseError` to check its child class since it
-//       is called afterwards
-//     - It allows for some useful overrides like `toJSON()`
-//     - It prevents user-defined `props` from overriding `custom` properties
 export const restorePreviousValues = function (cause, errorData) {
   if (cause !== undefined) {
     restoreValues(cause, errorData.get(cause).previousValues)

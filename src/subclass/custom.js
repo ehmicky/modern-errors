@@ -10,6 +10,15 @@ import { validateCustom } from './validate.js'
 //  - Creating several classes with the same `custom` option
 // `setErrorName()` also checks that `name` is a string and is not one of the
 // native error classes.
+// `custom` instance properties and errors set after instantiation can always
+// override any other property
+//  - Including error core properties, `plugin.properties()`, instance|static
+//    methods
+//  - Reasons:
+//     - It is not possible for `BaseError` to check its child class since it
+//       is called afterwards
+//     - It allows for some useful overrides like `toJSON()`
+//     - It prevents user-defined `props` from overriding `custom` properties
 export const getErrorClass = function ({
   ParentError,
   className,
