@@ -529,6 +529,14 @@ type NormalizeError<
   SpecificInstanceOptions<PluginsArg>
 >
 
+type AnyNormalize<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ErrorArg extends unknown,
+> = ErrorArg extends NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+  ? ErrorArg
+  : NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+
 /**
  * Base error class.
  *
@@ -600,7 +608,7 @@ type SpecificAnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+  ): AnyNormalize<PluginsArg, ErrorPropsArg, ErrorArg>
 } & PluginsStaticMethods<PluginsArg>
 
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
