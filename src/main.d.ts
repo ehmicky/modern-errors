@@ -321,6 +321,9 @@ type AggregateErrors<
   ? { errors: SpecificInstanceOptionsArg['errors'] }
   : {}
 
+type CoreErrorProps = keyof Error | 'errors'
+type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
+
 type SimplifyEmptyObject<T extends unknown> = keyof T extends never ? {} : T
 
 type BaseError<
@@ -333,11 +336,9 @@ type BaseError<
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
   SimplifyEmptyObject<CustomAttributesArg> &
-  SimplifyEmptyObject<ErrorPropsArg> &
+  SimplifyEmptyObject<Omit<ErrorPropsArg, ConstErrorProps>> &
   SimplifyEmptyObject<PluginsProperties<PluginsArg>> &
-  SimplifyEmptyObject<
-    Omit<PluginsInstanceMethods<PluginsArg>, keyof Error | 'errors'>
-  >
+  SimplifyEmptyObject<Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,

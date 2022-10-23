@@ -753,6 +753,15 @@ const MessageMethodAnyError = modernErrors([
 expectType<Error['message']>(
   new MessageMethodAnyError('', { cause: '' }).message,
 )
+expectType<'test'>(
+  new SError('', { props: { message: 'test' as const } }).message,
+)
+expectType<'test'>(new SError('', { props: { stack: 'test' as const } }).stack)
+expectType<'SError'>(new SError('', { props: { name: 'test' as const } }).name)
+expectType<Error['cause']>(
+  new SError('', { props: { cause: 'test' as const } }).cause,
+)
+expectError(new SError('', { props: { errors: ['test'] } }).errors)
 
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
