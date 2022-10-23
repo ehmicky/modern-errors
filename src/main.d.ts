@@ -317,7 +317,13 @@ type AggregateErrorsOption = unknown[] | undefined
 type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = InstanceOptionsArg['errors']
+> = InstanceOptionsArg['errors'] extends NonNullable<AggregateErrorsOption>
+  ? InstanceOptionsArg['errors']
+  : 'errors' extends keyof InstanceOptionsArg['cause']
+  ? InstanceOptionsArg['cause']['errors'] extends NonNullable<AggregateErrorsOption>
+    ? InstanceOptionsArg['cause']['errors']
+    : undefined
+  : undefined
 
 type AggregateErrorsProp<
   PluginsArg extends Plugins,
