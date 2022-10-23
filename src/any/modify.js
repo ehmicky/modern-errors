@@ -1,6 +1,9 @@
 import { computePluginsOpts } from '../options/instance.js'
-import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
-import { setPluginsProperties } from '../plugins/properties.js'
+import { setPluginsProperties } from '../plugins/properties/main.js'
+import {
+  restorePreviousValues,
+  restoreNewValues,
+} from '../plugins/properties/previous.js'
 
 import { setAggregateErrors, normalizeAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'

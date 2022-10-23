@@ -2,9 +2,8 @@ import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
-import { setNonEnumProp } from '../utils/descriptors.js'
-
-import { getPluginsMethodNames } from './instance/add.js'
+import { setNonEnumProp } from '../../utils/descriptors.js'
+import { getPluginsMethodNames } from '../instance/add.js'
 
 // `plugin.properties()` returns an object of properties to set.
 // `undefined` values delete properties.

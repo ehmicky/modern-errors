@@ -1,7 +1,8 @@
 import isPlainObj from 'is-plain-obj'
 
+import { getErrorPluginInfo } from '../plugin_info.js'
+
 import { assignError } from './assign.js'
-import { getErrorPluginInfo } from './plugin_info.js'
 import { getAllValues } from './previous.js'
 
 // Set each `plugin.properties()`.
