@@ -1,5 +1,5 @@
 import type { Plugin, Plugins } from './plugins/main.js'
-import type { Info } from './plugins/info.js'
+import type { Info } from './plugins/plugin_info.js'
 import type { AnyErrorClass, SpecificAnyErrorClass } from './any.js'
 import type { ErrorClass } from './class.js'
 import type { ErrorInstance } from './instance.js'

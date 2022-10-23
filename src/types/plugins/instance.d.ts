@@ -1,7 +1,7 @@
 import type { MethodOptions } from '../options.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './main.js'
-import type { Info } from './info.js'
+import type { Info } from './plugin_info.js'
 
 type InstanceMethod = (
   info: Info['instanceMethods'],
