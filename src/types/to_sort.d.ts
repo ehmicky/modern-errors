@@ -1,15 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
-import type {
-  Plugins,
-  PluginsInstanceMethods,
-  PluginsStaticMethods,
-  PluginsProperties,
-} from './plugin.js'
-import type {
-  AggregateErrorsOption,
-  GetAggregateErrorsOption,
-  AggregateErrorsProp,
-} from './aggregate.js'
+import type { Plugins, PluginsStaticMethods } from './plugin.js'
+import type { GetAggregateErrorsOption } from './aggregate.js'
 import type { ErrorProps, MergeErrorProps } from './props.js'
 import type {
   CustomAttributes,
@@ -21,56 +12,12 @@ import type {
   SpecificClassOptions,
   SpecificInstanceOptions,
 } from './options.js'
-import type { Intersect } from './utils.js'
+import type { ErrorInstance, BaseError } from './instance.js'
 
 type NoAdditionalProps<
   T extends object,
   U extends object,
 > = keyof T extends keyof U ? T : never
-
-type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
-
-type CoreErrorProps = keyof Error | 'errors'
-type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
-
-type BaseError<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  CustomAttributesArg extends CustomAttributes,
-  ErrorNameArg extends ErrorName,
-  AggregateErrorsArg extends AggregateErrorsOption,
-> = Intersect<
-  Intersect<
-    Intersect<
-      Intersect<
-        Intersect<
-          Error & SpecificErrorName<ErrorNameArg>,
-          AggregateErrorsProp<AggregateErrorsArg>,
-          never
-        >,
-        CustomAttributesArg,
-        CoreErrorProps
-      >,
-      PluginsInstanceMethods<PluginsArg>,
-      CoreErrorProps
-    >,
-    PluginsProperties<PluginsArg>,
-    ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
-  >,
-  ErrorPropsArg,
-  ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
->
-
-/**
- *
- */
-export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
-  PluginsArg,
-  ErrorProps,
-  CustomAttributes,
-  ErrorName,
-  AggregateErrorsOption
->
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,

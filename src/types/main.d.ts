@@ -1,10 +1,10 @@
 import type { Plugin, Plugins, Info } from './plugin.js'
 import type {
-  ErrorInstance,
   ErrorClass,
   AnyErrorClass,
   SpecificAnyErrorClass,
 } from './to_sort.js'
+import type { ErrorInstance } from './instance.js'
 import type {
   MethodOptions,
   InstanceOptions,
