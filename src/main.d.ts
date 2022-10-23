@@ -532,20 +532,14 @@ type NormalizeError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-> = AnyErrorInstance<
-  PluginsArg,
-  ErrorPropsArg,
-  ErrorArg,
-  SpecificInstanceOptions<PluginsArg>
->
-
-type AnyNormalize<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  ErrorArg extends unknown,
-> = ErrorArg extends NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+> = ErrorArg extends ErrorInstance
   ? ErrorArg
-  : NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+  : AnyErrorInstance<
+      PluginsArg,
+      ErrorPropsArg,
+      ErrorArg,
+      SpecificInstanceOptions<PluginsArg>
+    >
 
 /**
  * Base error class.
@@ -618,7 +612,7 @@ type SpecificAnyErrorClass<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): AnyNormalize<PluginsArg, ErrorPropsArg, ErrorArg>
+  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
 } & PluginsStaticMethods<PluginsArg>
 
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
@@ -658,8 +652,10 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    (e.g. `prepareStackTrace()`)
 //  - Plugins should not be allowed to define static or instance methods already
 //    defined by other plugins
-//  - When wrapping an error from another `modernErrors()` call, the resulting
-//    error `name` should be `UnknownError`
+//  - Error normalization (`AnyError.normalize()` and aggregate `errors`) is not
+//    applied on errors coming from another `modernErrors()` call, even though
+//    it should (as opposed to errors coming from the same `modernErrors()`
+//    call)
 /**
  * Creates and returns `AnyError`.
  *
