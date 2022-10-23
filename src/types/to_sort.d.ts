@@ -13,11 +13,7 @@ import type {
   SpecificInstanceOptions,
 } from './options.js'
 import type { ErrorInstance, BaseError } from './instance.js'
-
-type NoAdditionalProps<
-  T extends object,
-  U extends object,
-> = keyof T extends keyof U ? T : never
+import type { NoAdditionalProps } from './utils.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
