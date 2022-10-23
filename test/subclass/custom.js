@@ -81,13 +81,22 @@ test('Can use "custom" with UnknownError children', (t) => {
   t.true(ChildUnknownError.prop)
 })
 
-test('"custom" option can override error core properties', (t) => {
-  const { OtherTestError } = defineClassesOpts((TestAnyError) => ({
-    OtherTestError: {
-      custom: class extends TestAnyError {
-        message = 'one'
+each(['message', 'properties', 'getInstance'], ({ title }, propName) => {
+  test(`"custom" option can override other properties | ${title}`, (t) => {
+    // eslint-disable-next-line max-nested-callbacks
+    const { OtherTestError } = defineClassesOpts((TestAnyError) => ({
+      OtherTestError: {
+        custom: class extends TestAnyError {
+          // eslint-disable-next-line max-nested-callbacks
+          constructor(message, options) {
+            super(message, options)
+            // eslint-disable-next-line fp/no-this, fp/no-mutation
+            this[propName] = true
+          }
+        },
       },
-    },
-  }))
-  t.is(new OtherTestError('two').message, 'one')
+    }))
+    t.not(new TestError('test')[propName], undefined)
+    t.true(new OtherTestError('test')[propName])
+  })
 })

@@ -19,6 +19,9 @@ import { validateCustom } from './validate.js'
 //       is called afterwards
 //     - It allows for some useful overrides like `toJSON()`
 //     - It prevents user-defined `props` from overriding `custom` properties
+// This does not apply to static methods because:
+//  - They can be checked
+//  - Overriding can be done through a different method
 export const getErrorClass = function ({
   ParentError,
   className,
