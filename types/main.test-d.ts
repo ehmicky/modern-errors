@@ -221,16 +221,6 @@ modernErrors([], {})
 modernErrors([{ name }], {})
 expectError(modernErrors(true))
 
-expectError(AnyError.subclass())
-expectError(PAnyError.subclass())
-expectError(CCError.subclass())
-expectError(AnyError.subclass({}))
-expectError(PAnyError.subclass({}))
-expectError(CCError.subclass({}))
-expectError(AnyError.subclass('Test'))
-expectError(PAnyError.subclass('Test'))
-expectError(CCError.subclass('Test'))
-
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
     constructor(

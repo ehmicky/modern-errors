@@ -1,4 +1,4 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
+import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
 import modernErrors, { Plugin, ErrorClass } from '../main.js'
 
@@ -31,3 +31,16 @@ const GPSError = GPAnyError.subclass('GPSError')
 expectAssignable<ErrorClass>(GPSError)
 expectAssignable<BErrorClass>(GPSError)
 expectNotAssignable<PErrorClass>(GPSError)
+
+const AnyError = modernErrors()
+const SError = AnyError.subclass('SError')
+
+expectError(AnyError.subclass())
+expectError(PAnyError.subclass())
+expectError(SError.subclass())
+expectError(AnyError.subclass({}))
+expectError(PAnyError.subclass({}))
+expectError(SError.subclass({}))
+expectError(AnyError.subclass('Test'))
+expectError(PAnyError.subclass('Test'))
+expectError(SError.subclass('Test'))
