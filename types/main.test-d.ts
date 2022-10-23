@@ -18,6 +18,7 @@ import modernErrors, {
 } from './main.js'
 
 import './any/aggregate.test-d.js'
+import './any/main.test-d.js'
 import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/plugins.test-d.js'
@@ -236,32 +237,23 @@ expectNotAssignable<GlobalOptions>({ cause: '' })
 expectNotAssignable<ClassOptions>({ cause: '' })
 
 const name = 'test' as const
-const staticMethod = (info: Info['staticMethods'], arg: 'arg') => arg
+const staticMethod = (info: Info['staticMethods'], arg: '') => arg
 const staticMethods = { staticMethod }
-const properties = (info: Info['properties']) => ({ property: true } as const)
+const properties = () => ({ property: true } as const)
 const plugin = { name, staticMethods, properties } as const
 
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const GPAnyError = modernErrors([{} as Plugin])
 const GPSError = GPAnyError.subclass('GPSError')
-type PAnyErrorClass = AnyErrorClass<[typeof plugin]>
 type PErrorClass = ErrorClass<[typeof plugin]>
 
-expectAssignable<AnyErrorClass>(PAnyError)
-expectAssignable<PAnyErrorClass>(PAnyError)
 expectAssignable<ErrorClass>(PAnyError)
 expectAssignable<PErrorClass>(PAnyError)
-expectNotAssignable<AnyErrorClass>(PSError)
-expectNotAssignable<PAnyErrorClass>(PSError)
 expectAssignable<ErrorClass>(PSError)
 expectAssignable<PErrorClass>(PSError)
-expectAssignable<AnyErrorClass>(GPAnyError)
-expectNotAssignable<PAnyErrorClass>(GPAnyError)
 expectAssignable<ErrorClass>(GPAnyError)
 expectNotAssignable<PErrorClass>(GPAnyError)
-expectNotAssignable<AnyErrorClass>(GPSError)
-expectNotAssignable<PAnyErrorClass>(GPSError)
 expectAssignable<ErrorClass>(GPSError)
 expectNotAssignable<PErrorClass>(GPSError)
 
@@ -451,24 +443,24 @@ const OneError = PAnyError.subclass('OneError', {
 expectType<true>(new OneError('').property)
 const TwoError = PAnyError.subclass('TwoError', {
   custom: class extends PAnyError {
-    instanceMethod = (arg: 'arg') => arg
+    instanceMethod = (arg: '') => arg
   },
 })
-expectType<'arg'>(new TwoError('').instanceMethod('arg'))
+expectType<''>(new TwoError('').instanceMethod(''))
 const ThreeError = PAnyError.subclass('ThreeError', {
   custom: class extends PAnyError {
-    static staticMethod(arg: 'arg') {
+    static staticMethod(arg: '') {
       return arg
     }
   },
 })
-expectError(ThreeError.staticMethod('arg'))
+expectError(ThreeError.staticMethod(''))
 const FourError = PAnyError.subclass('FourError', {
   custom: class extends PAnyError {
-    static staticMethod = (arg: 'arg') => arg
+    static staticMethod = (arg: '') => arg
   },
 })
-expectError(FourError.staticMethod('arg'))
+expectError(FourError.staticMethod(''))
 const PropsError = AnyError.subclass('PropsError', { props: { one: true } })
 const ChildPropsError = PropsError.subclass('ChildPropsError', {
   custom: class extends PropsError {
