@@ -1,6 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
 import type { Plugins } from '../plugins/main.js'
-import type { ErrorProps } from '../props.js'
+import type { ErrorProps } from '../core_plugins/props.js'
 import type { CustomAttributes } from '../attributes.js'
 import type { ErrorConstructor, ErrorSubclass } from '../subclass.js'
 import type { PluginsOptions } from './plugins.js'

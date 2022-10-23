@@ -1,4 +1,4 @@
-import type { CorePluginsOptions } from './options/plugins.js'
+import type { CorePluginsOptions } from '../options/plugins.js'
 
 export type ErrorProps = object
 

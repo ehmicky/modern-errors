@@ -8,7 +8,7 @@ import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
 import type { ClassOptions } from './options/class.js'
 import type { GlobalOptions } from './options/global.js'
-import type { GetPropsOption } from './props.js'
+import type { GetPropsOption } from './core_plugins/props.js'
 
 export type {
   Plugin,

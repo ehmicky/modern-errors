@@ -1,5 +1,5 @@
 import type { Plugins, Plugin } from '../plugins/main.js'
-import type { ErrorProps } from '../props.js'
+import type { ErrorProps } from '../core_plugins/props.js'
 
 type LiteralString<T extends string> = string extends T ? never : T
 
