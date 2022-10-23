@@ -1,7 +1,7 @@
 import { mergeSpecificCause } from '../any/merge.js'
+import { deepClone } from '../plugins/clone.js'
 
-import { deepClone } from './clone.js'
-import { mergeMethodOpts } from './method_opts.js'
+import { mergeMethodOpts } from './method.js'
 
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`

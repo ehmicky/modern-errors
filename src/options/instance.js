@@ -1,7 +1,7 @@
 import { excludeKeys, includeKeys } from 'filter-obj'
 
-import { deepClone } from './clone.js'
-import { mergePluginsOpts, getPluginNames } from './merge.js'
+import { deepClone } from '../plugins/clone.js'
+import { mergePluginsOpts, getPluginNames } from '../plugins/merge.js'
 
 // We keep track of un-normalized plugins options to re-use them later:
 //  - When merging with parent `AnyError`

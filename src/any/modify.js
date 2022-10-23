@@ -1,4 +1,4 @@
-import { computePluginsOpts } from '../plugins/compute.js'
+import { computePluginsOpts } from '../options/instance.js'
 import { restorePreviousValues, restoreNewValues } from '../plugins/previous.js'
 import { setPluginsProperties } from '../plugins/properties.js'
 

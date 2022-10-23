@@ -1,5 +1,5 @@
 import { createAnyError } from './any/main.js'
-import { getGlobalOpts } from './plugins/class_opts.js'
+import { getGlobalOpts } from './options/global.js'
 import { addAllInstanceMethods } from './plugins/instance/add.js'
 import { addAllStaticMethods } from './plugins/static/add.js'
 import { normalizePlugins } from './plugins/validate.js'

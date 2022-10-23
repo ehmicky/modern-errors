@@ -1,4 +1,4 @@
-import { getMethodOpts } from '../method_opts.js'
+import { getMethodOpts } from '../../options/method.js'
 import { getErrorPluginInfo } from '../plugin_info.js'
 
 // Called on `error.{methodName}(...args)`

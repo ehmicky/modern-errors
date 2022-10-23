@@ -1,4 +1,5 @@
-import { finalizePluginsOpts } from './get.js'
+import { finalizePluginsOpts } from '../options/plugins.js'
+
 import { mergeClassOpts } from './merge.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:

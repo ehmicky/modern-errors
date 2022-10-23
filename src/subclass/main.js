@@ -1,5 +1,5 @@
 import { setNonEnumProp } from '../descriptors.js'
-import { getClassOpts } from '../plugins/class_opts.js'
+import { getClassOpts } from '../options/class.js'
 
 import { getErrorClass } from './custom.js'
 import { validateClassName } from './name.js'

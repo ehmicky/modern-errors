@@ -1,6 +1,6 @@
 import { validateNonEmpty } from '../../any/subclass.js'
-import { finalizePluginsOpts } from '../get.js'
-import { getMethodOpts } from '../method_opts.js'
+import { getMethodOpts } from '../../options/method.js'
+import { finalizePluginsOpts } from '../../options/plugins.js'
 import { getPluginInfo } from '../plugin_info.js'
 
 // Called on `AnyError.{methodName}(...args)`
