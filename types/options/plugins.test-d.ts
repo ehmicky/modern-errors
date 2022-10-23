@@ -8,7 +8,8 @@ import modernErrors, {
   MethodOptions,
 } from '../main.js'
 
-const barePlugin = { name: 'test' as const }
+const name = 'test'
+const barePlugin = { name } as const
 const plugin = { ...barePlugin, getOptions: (input: true) => input }
 
 const PAnyError = modernErrors([plugin])
@@ -53,3 +54,19 @@ expectNotAssignable<InstanceOptions>(true)
 expectNotAssignable<GlobalOptions>(true)
 expectNotAssignable<ClassOptions>(true)
 expectNotAssignable<MethodOptions<typeof barePlugin>>(true)
+
+expectAssignable<Plugin>({
+  name,
+  getOptions: (input: true, full: boolean) => input,
+})
+expectAssignable<Plugin>({ name, getOptions: () => true })
+expectNotAssignable<Plugin>({ name, getOptions: true })
+expectNotAssignable<Plugin>({
+  name,
+  getOptions: (input: true, full: string) => input,
+})
+
+expectAssignable<Plugin>({ name, isOptions: (input: unknown) => true })
+expectNotAssignable<Plugin>({ name, isOptions: true })
+expectNotAssignable<Plugin>({ name, isOptions: (input: true) => true })
+expectNotAssignable<Plugin>({ name, isOptions: (input: unknown) => 0 })

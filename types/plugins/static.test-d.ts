@@ -1,12 +1,18 @@
-import { expectType, expectError } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
 import modernErrors, { Info, Plugin } from '../main.js'
 
+const name = 'test' as const
 const plugin = {
-  name: 'test' as const,
+  name,
   getOptions: (input: true) => input,
   staticMethods: {
-    staticMethod: (_: Info['staticMethods'], arg: '') => arg,
+    staticMethod: (info: Info['staticMethods'], arg: '') => arg,
   },
 }
 
@@ -32,3 +38,17 @@ expectError(GPSError.otherMethod())
 
 expectError(PSError.staticMethod())
 expectError(GPSError.staticMethod())
+
+expectAssignable<Plugin>({
+  name,
+  staticMethods: {
+    staticMethod: (info: Info['staticMethods'], one: '', two: '') => '',
+  },
+})
+expectAssignable<Plugin>({ name, staticMethods: {} })
+expectNotAssignable<Plugin>({ name, staticMethods: true })
+expectNotAssignable<Plugin>({ name, staticMethods: { staticMethod: true } })
+expectNotAssignable<Plugin>({
+  name,
+  staticMethods: { staticMethod: (info: true) => '' },
+})

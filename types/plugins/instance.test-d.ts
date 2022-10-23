@@ -1,12 +1,18 @@
-import { expectType, expectError } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
 import modernErrors, { Info, Plugin } from '../main.js'
 
+const name = 'test' as const
 const plugin = {
-  name: 'test' as const,
+  name,
   getOptions: (input: true) => input,
   instanceMethods: {
-    instanceMethod: (_: Info['instanceMethods'], arg: '') => arg,
+    instanceMethod: (info: Info['instanceMethods'], arg: '') => arg,
   },
 }
 
@@ -43,3 +49,17 @@ const exception = {} as unknown
 if (exception instanceof PSError) {
   expectType<''>(exception.instanceMethod(''))
 }
+
+expectAssignable<Plugin>({
+  name,
+  instanceMethods: {
+    instanceMethod: (info: Info['instanceMethods'], one: '', two: '') => '',
+  },
+})
+expectAssignable<Plugin>({ name, instanceMethods: {} })
+expectNotAssignable<Plugin>({ name, instanceMethods: true })
+expectNotAssignable<Plugin>({ name, instanceMethods: { instanceMethod: true } })
+expectNotAssignable<Plugin>({
+  name,
+  instanceMethods: { instanceMethod: (info: true) => '' },
+})

@@ -1,10 +1,16 @@
-import { expectType, expectError } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
 import modernErrors, { Info, Plugin } from '../main.js'
 
+const name = 'test' as const
 const plugin = {
-  name: 'test' as const,
-  properties: (_: Info['properties']) => ({ property: true } as const),
+  name,
+  properties: (info: Info['properties']) => ({ property: true } as const),
 }
 
 const PAnyError = modernErrors([plugin])
@@ -29,3 +35,19 @@ const exception = {} as unknown
 if (exception instanceof PSError) {
   expectType<true>(exception.property)
 }
+
+expectAssignable<Plugin>(plugin)
+expectNotAssignable<Plugin>({ name, properties: true })
+expectNotAssignable<Plugin>({ name, properties: (info: true) => ({}) })
+expectNotAssignable<Plugin>({
+  name,
+  properties: (info: Info['properties'], arg: true) => ({}),
+})
+expectNotAssignable<Plugin>({
+  name,
+  properties: (info: Info['properties']) => true,
+})
+expectNotAssignable<Plugin>({
+  name,
+  properties: (info: Info['properties']) => [],
+})

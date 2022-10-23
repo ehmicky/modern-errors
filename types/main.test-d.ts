@@ -24,6 +24,7 @@ import './options/plugins.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
 import './plugins/properties.test-d.js'
+import './plugins/shape.test-d.js'
 import './plugins/static.test-d.js'
 
 const exception = {} as unknown
@@ -299,51 +300,6 @@ expectNotAssignable<PErrorInstance>(gpsError)
 expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
 expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
 
-modernErrors([])
-modernErrors([], {})
-modernErrors([plugin], {})
-expectError(modernErrors(true))
-
-expectAssignable<Plugin>(plugin)
-expectAssignable<Plugin>({ name })
-expectNotAssignable<Plugin>({})
-expectNotAssignable<Plugin>({ name, unknown: true })
-expectNotAssignable<Plugin>({ ...plugin, getOptions: true })
-expectAssignable<Plugin>({ ...plugin, getOptions: () => true })
-expectNotAssignable<Plugin>({
-  ...plugin,
-  getOptions: (input: true, full: string) => input,
-})
-expectNotAssignable<Plugin>({ ...plugin, isOptions: true })
-expectNotAssignable<Plugin>({ ...plugin, isOptions: (input: true) => true })
-expectNotAssignable<Plugin>({ ...plugin, isOptions: (input: unknown) => 0 })
-expectAssignable<Plugin>({ ...plugin, instanceMethods: {} })
-expectNotAssignable<Plugin>({ ...plugin, instanceMethods: true })
-expectNotAssignable<Plugin>({
-  ...plugin,
-  instanceMethods: { instanceMethod: true },
-})
-expectAssignable<Plugin>({ ...plugin, staticMethods: {} })
-expectNotAssignable<Plugin>({ ...plugin, staticMethods: true })
-expectNotAssignable<Plugin>({
-  ...plugin,
-  staticMethods: { staticMethod: true },
-})
-expectNotAssignable<Plugin>({ ...plugin, properties: true })
-expectNotAssignable<Plugin>({ ...plugin, properties: (info: true) => ({}) })
-expectNotAssignable<Plugin>({
-  ...plugin,
-  properties: (info: Info['properties'], arg: true) => ({}),
-})
-expectNotAssignable<Plugin>({
-  ...plugin,
-  properties: (info: Info['properties']) => true,
-})
-expectNotAssignable<Plugin>({
-  ...plugin,
-  properties: (info: Info['properties']) => [],
-})
-
 expectType<'GPSError'>(gpsError.name)
 expectAssignable<InstanceType<typeof GPSError>>(gpsError)
 expectAssignable<InstanceType<typeof GPAnyError>>(gpsError)
@@ -354,6 +310,11 @@ if (exception instanceof GPAnyError) {
 if (exception instanceof GPSError) {
   expectAssignable<InstanceType<typeof GPSError>>(exception)
 }
+
+modernErrors([])
+modernErrors([], {})
+modernErrors([plugin], {})
+expectError(modernErrors(true))
 
 expectError(AnyError.subclass())
 expectError(PAnyError.subclass())
