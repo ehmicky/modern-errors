@@ -2,7 +2,7 @@ import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
-import { setNonEnumProp } from '../descriptors.js'
+import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getPluginsMethodNames } from './instance/add.js'
 

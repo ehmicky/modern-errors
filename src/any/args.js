@@ -1,8 +1,8 @@
 import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
-import { setNonEnumProp } from '../descriptors.js'
 import { deepClone } from '../plugins/clone.js'
+import { setNonEnumProp } from '../utils/descriptors.js'
 
 // Set `error.constructorArgs` so plugins like `modern-errors-serialize` can
 // clone or serialize the error.

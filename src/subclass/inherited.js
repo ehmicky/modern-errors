@@ -1,4 +1,4 @@
-import { setNonEnumProp } from '../descriptors.js'
+import { setNonEnumProp } from '../utils/descriptors.js'
 
 // We do not pass `ErrorClass` to plugins' `staticMethods` because:
 //  - If the constructor is `custom`, it cannot be called safely since its
