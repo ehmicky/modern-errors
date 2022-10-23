@@ -3,7 +3,7 @@ import type {
   Plugins,
   PluginsInstanceMethods,
   PluginsProperties,
-} from './plugin.js'
+} from './plugins/main.js'
 import type { AggregateErrorsOption, AggregateErrorsProp } from './aggregate.js'
 import type { ErrorProps } from './props.js'
 import type { CustomAttributes } from './attributes.js'

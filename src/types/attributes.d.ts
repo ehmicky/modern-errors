@@ -1,4 +1,4 @@
-import type { Plugins } from './plugin.js'
+import type { Plugins } from './plugins/main.js'
 import type { ErrorConstructor } from './class.js'
 import type { Intersect } from './utils.js'
 
