@@ -2,7 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { assignError } from './assign.js'
 import { getErrorPluginInfo } from './plugin_info.js'
-import { getPreviousValues, getAllValues } from './previous.js'
+import { getAllValues } from './previous.js'
 
 // Set each `plugin.properties()`
 export const setPluginsProperties = function ({
@@ -12,6 +12,7 @@ export const setPluginsProperties = function ({
   errorData,
   plugins,
 }) {
+  const previousDescriptors = Object.getOwnPropertyDescriptors(error)
   const allNewProps = plugins.filter(pluginHasProperties).map((plugin) =>
     getPluginProperties({
       error,
@@ -23,9 +24,9 @@ export const setPluginsProperties = function ({
     }),
   )
   const newProps = Object.assign({}, ...allNewProps)
-  const previousValues = getPreviousValues(newProps, error)
   assignError(error, newProps, plugins)
-  return getAllValues(previousValues, error)
+  const newDescriptors = Object.getOwnPropertyDescriptors(error)
+  return getAllValues(previousDescriptors, newDescriptors)
 }
 
 const pluginHasProperties = function ({ properties }) {

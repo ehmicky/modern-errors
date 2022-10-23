@@ -24,18 +24,6 @@ import { deepClone } from './clone.js'
 //       after applying `AnyError.normalize()`
 // This also keeps options merging with inner error separate and orthogonal
 // from merging its class, message and stack.
-export const getPreviousValues = function (newProps, error) {
-  return getValues(getPreviousKeys(newProps), error)
-}
-
-// Setting `message` also updates the `stack`
-const getPreviousKeys = function (newProps) {
-  const previousKeys = Reflect.ownKeys(newProps)
-  return previousKeys.includes('message') && !previousKeys.includes('stack')
-    ? [...previousKeys, 'stack']
-    : previousKeys
-}
-
 // Keep track of the `newValues` so that reverting to `previousValues` can
 // itself be reverted.
 // An alternative would be cloning errors, but it is hard to implement since:
@@ -44,48 +32,51 @@ const getPreviousKeys = function (newProps) {
 //  - Constructor might throw while cloning due to change in either:
 //     - Global scope
 //     - Class instance passed as argument
-export const getAllValues = function (previousValues, error) {
-  const previousValuesA = filterPreviousValues(previousValues, error)
-  const newValues = getNewValues(previousValuesA, error)
-  return { previousValues: previousValuesA, newValues }
+export const getAllValues = function (previousDescriptors, newDescriptors) {
+  const changedKeys = getChangedKeys(previousDescriptors, newDescriptors)
+  const previousValues = getChangedDescriptors(previousDescriptors, changedKeys)
+  const newValues = getChangedDescriptors(newDescriptors, changedKeys)
+  return { previousValues, newValues }
 }
 
-// Only keep `previousValues` that:
+// Only keep keys that:
 //  - Have not been ignored by `set-error-props` (e.g. core properties)
 //  - Were different either:
 //     - Different value (including addition or deletion)
 //     - Initial value was inherited, and is now an own property
-const filterPreviousValues = function (previousValues, error) {
-  const previousValuesA = previousValues.filter((previousValue) =>
-    hasChanged(previousValue, error),
+const getChangedKeys = function (previousDescriptors, newDescriptors) {
+  const bothKeys = [
+    ...new Set([
+      ...Reflect.ownKeys(previousDescriptors),
+      ...Reflect.ownKeys(newDescriptors),
+    ]),
+  ]
+  return bothKeys.filter((key) =>
+    hasChanged(key, previousDescriptors, newDescriptors),
   )
-  return deepClone(previousValuesA)
 }
 
-const hasChanged = function ({ key, descriptor }, error) {
-  const newDescriptor = Object.getOwnPropertyDescriptor(error, key)
+const hasChanged = function (key, previousDescriptors, newDescriptors) {
+  const previousDescriptor = previousDescriptors[key]
+  const newDescriptor = newDescriptors[key]
 
   if (newDescriptor === undefined) {
-    return descriptor !== undefined
+    return previousDescriptor !== undefined
   }
 
-  return descriptor === undefined || descriptor.value !== newDescriptor.value
+  if (previousDescriptor === undefined) {
+    return newDescriptor !== undefined
+  }
+
+  return previousDescriptor.value !== newDescriptor.value
 }
 
-const getNewValues = function (previousValues, error) {
-  return getValues(previousValues.map(getKey), error)
+const getChangedDescriptors = function (descriptors, changedKeys) {
+  return changedKeys.map((key) => getChangedDescriptor(descriptors, key))
 }
 
-const getKey = function ({ key }) {
-  return key
-}
-
-const getValues = function (keys, error) {
-  return keys.map((key) => getValue(key, error))
-}
-
-const getValue = function (key, error) {
-  const descriptor = Object.getOwnPropertyDescriptor(error, key)
+const getChangedDescriptor = function (descriptors, key) {
+  const descriptor = deepClone(descriptors[key])
   return { key, descriptor }
 }
 
@@ -106,12 +97,12 @@ export const restoreNewValues = function (cause, errorData, isAnyError) {
 }
 
 const restoreValues = function (cause, values) {
-  values.forEach((value) => {
-    restoreValue(cause, value)
+  values.forEach(({ key, descriptor }) => {
+    restoreValue(cause, key, descriptor)
   })
 }
 
-const restoreValue = function (cause, { key, descriptor }) {
+const restoreValue = function (cause, key, descriptor) {
   if (descriptor === undefined) {
     // eslint-disable-next-line fp/no-delete, no-param-reassign
     delete cause[key]
