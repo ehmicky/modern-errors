@@ -9,7 +9,7 @@ import type {
   ClassOptions,
   GlobalOptions,
   PluginsOptions,
-} from './options.js'
+} from './options/main.js'
 import type { GetPropsOption } from './props.js'
 
 export type {

@@ -1,9 +1,9 @@
 import type { ErrorName } from 'error-custom-class'
-import type { Plugins, Plugin } from './plugins/main.js'
-import type { AggregateErrorsOption } from './aggregate.js'
-import type { ErrorProps } from './props.js'
-import type { CustomAttributes } from './attributes.js'
-import type { ErrorConstructor, ErrorSubclass } from './class.js'
+import type { Plugins, Plugin } from '../plugins/main.js'
+import type { AggregateErrorsOption } from '../aggregate.js'
+import type { ErrorProps } from '../props.js'
+import type { CustomAttributes } from '../attributes.js'
+import type { ErrorConstructor, ErrorSubclass } from '../class.js'
 
 type LiteralString<T extends string> = string extends T ? never : T
 

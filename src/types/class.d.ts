@@ -10,7 +10,7 @@ import type {
 import type {
   SpecificClassOptions,
   SpecificInstanceOptions,
-} from './options.js'
+} from './options/main.js'
 import type { ErrorInstance, BaseError } from './instance.js'
 import type { NoAdditionalProps } from './utils.js'
 import type { SpecificAnyErrorClass } from './any.js'
