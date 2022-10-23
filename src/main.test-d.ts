@@ -747,6 +747,13 @@ const FourError = AnyError.subclass('FourError', {
 expectType<'arg'>(ThreeError.staticMethod('arg'))
 expectType<'arg'>(FourError.staticMethod('arg'))
 
+const MessageMethodAnyError = modernErrors([
+  { name, instanceMethods: { message: () => {} } },
+])
+expectType<Error['message']>(
+  new MessageMethodAnyError('', { cause: '' }).message,
+)
+
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
 // expectError(
