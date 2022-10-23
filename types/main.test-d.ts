@@ -241,27 +241,21 @@ expectNotAssignable<ClassOptions>({ cause: '' })
 const name = 'test' as const
 const staticMethod = (info: Info['staticMethods'], arg: '') => arg
 const staticMethods = { staticMethod }
-const properties = () => ({ property: true } as const)
-const plugin = { name, staticMethods, properties } as const
+const plugin = { name, staticMethods } as const
 
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const GPAnyError = modernErrors([{} as Plugin])
-const GPSError = GPAnyError.subclass('GPSError')
 
 const paError = new PAnyError('', { cause: '' })
 const psError = new PSError('')
-const gpsError = new GPSError('')
 
 type PUnknownInstance = typeof paError
 type GPAErrorInstance = InstanceType<typeof GPAnyError>
 
-expectType<'UnknownError'>('' as PUnknownInstance['name'])
 expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
 expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
 expectAssignable<GPAErrorInstance>(GPAnyError.normalize(''))
-
-expectType<'GPSError'>(gpsError.name)
 
 modernErrors([])
 modernErrors([], {})
