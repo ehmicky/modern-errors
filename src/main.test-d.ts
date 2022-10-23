@@ -756,7 +756,9 @@ expectType<Error['message']>(
 expectType<'test'>(
   new SError('', { props: { message: 'test' as const } }).message,
 )
+expectType<never>(new SError('', { props: { message: true as const } }))
 expectType<'test'>(new SError('', { props: { stack: 'test' as const } }).stack)
+expectType<never>(new SError('', { props: { stack: true as const } }))
 expectType<'SError'>(new SError('', { props: { name: 'test' as const } }).name)
 expectType<Error['cause']>(
   new SError('', { props: { cause: 'test' as const } }).cause,
