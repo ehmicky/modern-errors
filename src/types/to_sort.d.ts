@@ -11,6 +11,7 @@ import type {
   GetAggregateErrorsOption,
   AggregateErrorsProp,
 } from './aggregate.js'
+import type { ErrorProps, MergeErrorProps } from './props.js'
 
 type NoAdditionalProps<
   T extends object,
@@ -73,28 +74,7 @@ type CustomStaticAttributes<
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = Intersect<{}, ParentErrorClass, keyof ParentAnyErrorClass>
 
-export type ErrorProps = object
-
-type MergeProps<
-  PropsOne extends ErrorProps,
-  PropsTwo extends ErrorProps,
-> = keyof PropsTwo extends never
-  ? PropsOne
-  : Omit<PropsOne, keyof PropsTwo> & PropsTwo
-
-export type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
-  unknown extends CorePluginsOptionsArg
-    ? {}
-    : CorePluginsOptionsArg['props'] extends ErrorProps
-    ? CorePluginsOptionsArg['props']
-    : {}
-
-type MergeErrorProps<
-  Props extends ErrorProps,
-  CorePluginsOptionsArg extends CorePluginsOptions,
-> = MergeProps<Props, GetPropsOption<CorePluginsOptionsArg>>
-
-interface CorePluginsOptions {
+export interface CorePluginsOptions {
   /**
    *
    */

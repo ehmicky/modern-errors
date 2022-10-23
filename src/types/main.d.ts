@@ -7,10 +7,10 @@ import type {
   ErrorInstance,
   ErrorClass,
   AnyErrorClass,
-  GetPropsOption,
   PluginsOptions,
   SpecificAnyErrorClass,
 } from './to_sort.js'
+import type { GetPropsOption } from './props.js'
 
 export type {
   Plugin,
