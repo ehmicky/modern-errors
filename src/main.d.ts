@@ -337,7 +337,7 @@ type BaseError<
   SimplifyEmptyObject<AggregateErrors<PluginsArg, SpecificInstanceOptionsArg>> &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<Omit<ErrorPropsArg, ConstErrorProps>> &
-  SimplifyEmptyObject<PluginsProperties<PluginsArg>> &
+  SimplifyEmptyObject<Omit<PluginsProperties<PluginsArg>, ConstErrorProps>> &
   SimplifyEmptyObject<Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>>
 
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
@@ -457,12 +457,9 @@ type CreateSubclass<
       ErrorNameArg
     >
 
-type NormalizedErrorName<
-  PluginsArg extends Plugins,
-  ErrorArg extends unknown,
-> = unknown extends ErrorArg
+type NormalizedErrorName<ErrorArg extends unknown> = unknown extends ErrorArg
   ? ErrorName
-  : ErrorArg extends ErrorInstance<PluginsArg>
+  : ErrorArg extends ErrorInstance
   ? ErrorArg['name']
   : 'UnknownError'
 
@@ -475,7 +472,7 @@ type AnyErrorInstance<
   PluginsArg,
   ErrorPropsArg,
   GetCustomAttributes<Error, ErrorArg>,
-  NormalizedErrorName<PluginsArg, ErrorArg>,
+  NormalizedErrorName<ErrorArg>,
   SpecificInstanceOptionsArg
 >
 
@@ -584,6 +581,8 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    (e.g. `prepareStackTrace()`)
 //  - Plugins should not be allowed to define static or instance methods already
 //    defined by other plugins
+//  - When wrapping an error from another `modernErrors()` call, the resulting
+//    error `name` should be `UnknownError`.
 /**
  * Creates and returns `AnyError`.
  *

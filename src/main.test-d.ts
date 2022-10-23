@@ -376,8 +376,6 @@ expectNotAssignable<PErrorInstance>(gpsError)
 
 expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
 expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
-expectAssignable<PUnknownInstance>(new PAnyError('', { cause: sError }))
-expectAssignable<PUnknownInstance>(PAnyError.normalize(sError))
 
 modernErrors([])
 modernErrors([], {})
@@ -753,6 +751,25 @@ const MessageMethodAnyError = modernErrors([
 expectType<Error['message']>(
   new MessageMethodAnyError('', { cause: '' }).message,
 )
+const CorePropsAnyError = modernErrors([
+  {
+    name,
+    properties: () =>
+      ({
+        name: 'test',
+        message: 'test',
+        stack: 'test',
+        cause: 'test',
+        errors: ['test'],
+      } as const),
+  },
+])
+const corePropsError = new CorePropsAnyError('', { cause: '' })
+expectType<'test'>(corePropsError.message)
+expectType<'test'>(corePropsError.stack)
+expectType<'UnknownError'>(corePropsError.name)
+expectType<Error['cause']>(corePropsError.cause)
+expectError(corePropsError.errors)
 expectType<'test'>(
   new SError('', { props: { message: 'test' as const } }).message,
 )
