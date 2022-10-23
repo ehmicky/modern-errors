@@ -720,6 +720,46 @@ expectError(
   },
 )
 
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    property = true as const
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    instanceMethod = (arg: 'arg') => arg
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    static staticMethod(arg: 'arg') {
+      return arg
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends PAnyError {
+    static staticMethod = (arg: 'arg') => arg
+  },
+})
+// `tsd`'s `expectError()` fails to properly lint those, so they must be
+// manually checked by uncommenting those lines
+// expectError(
+//   class extends PAnyError {
+//     property = true as boolean
+//   },
+// )
+// expectError(
+//   class extends PAnyError {
+//     instanceMethod = (arg: string) => arg
+//   },
+// )
+// expectError(
+//   class extends PAnyError {
+//     static staticMethod = (arg: string) => arg
+//   },
+// )
+
 if (cError instanceof SError) {
   expectType<never>(cError)
 }
