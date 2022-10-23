@@ -23,6 +23,7 @@ import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/global.test-d.js'
 import './options/instance.test-d.js'
+import './plugins/info.test-d.js'
 
 const exception = {} as unknown
 
@@ -372,49 +373,6 @@ expectNotAssignable<Plugin>({
   ...plugin,
   properties: (info: Info['properties']) => [],
 })
-
-const imInfo = {} as Info['instanceMethods']
-expectError(imInfo.other)
-expectAssignable<Error>(imInfo.error)
-expectAssignable<boolean>(imInfo.options)
-expectType<boolean>(imInfo.showStack)
-expectAssignable<typeof AnyError>(imInfo.AnyError)
-expectAssignable<AnyErrorClass>(imInfo.AnyError)
-expectAssignable<object>(imInfo.ErrorClasses)
-expectError(imInfo.ErrorClasses.other)
-expectError(new imInfo.ErrorClasses.AnyError('', { cause: '' }))
-const iUnknownError = new imInfo.ErrorClasses.UnknownError('')
-expectAssignable<ErrorInstance>(iUnknownError)
-expectAssignable<Function | undefined>(imInfo.ErrorClasses.SError)
-expectAssignable<typeof imInfo.ErrorClasses.TestError>(SError)
-
-const smInfo = {} as Info['staticMethods']
-expectType<Info['instanceMethods']['options']>(smInfo.options)
-expectType<Info['instanceMethods']['AnyError']>(smInfo.AnyError)
-expectType<Info['instanceMethods']['ErrorClasses']>(smInfo.ErrorClasses)
-expectType<Info['instanceMethods']['errorInfo']>(smInfo.errorInfo)
-expectError(smInfo.other)
-expectError(smInfo.error)
-expectError(smInfo.showStack)
-
-const pInfo = {} as Info['properties']
-expectType<Info['instanceMethods']['error']>(pInfo.error)
-expectType<Info['instanceMethods']['options']>(pInfo.options)
-expectType<Info['instanceMethods']['showStack']>(pInfo.showStack)
-expectType<Info['instanceMethods']['AnyError']>(pInfo.AnyError)
-expectType<Info['instanceMethods']['ErrorClasses']>(pInfo.ErrorClasses)
-expectType<Info['instanceMethods']['errorInfo']>(pInfo.errorInfo)
-
-const eInfo = imInfo.errorInfo(iUnknownError)
-imInfo.errorInfo('')
-expectType<Info['errorInfo']>(eInfo)
-expectType<Info['instanceMethods']['error']>(eInfo.error)
-expectType<Info['instanceMethods']['options']>(eInfo.options)
-expectType<Info['instanceMethods']['showStack']>(eInfo.showStack)
-expectError(eInfo.other)
-expectError(eInfo.AnyError)
-expectError(eInfo.ErrorClasses)
-expectError(eInfo.errorInfo)
 
 expectType<'arg'>(paError.instanceMethod('arg'))
 expectType<'arg'>(psError.instanceMethod('arg'))
