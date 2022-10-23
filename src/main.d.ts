@@ -226,7 +226,7 @@ type PluginsOptions<PluginsArg extends Plugins> =
 
 interface MainInstanceOptions {
   readonly cause?: unknown
-  readonly errors?: unknown[]
+  readonly errors?: AggregateErrorsOption
 }
 
 type SpecificInstanceOptions<PluginsArg extends Plugins> = MainInstanceOptions &
@@ -312,17 +312,24 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 
 type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
-type AggregateErrors<
+type AggregateErrorsOption = unknown[] | undefined
+
+type GetAggregateErrorsOption<
+  PluginsArg extends Plugins,
+  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+> = InstanceOptionsArg['errors']
+
+type AggregateErrorsProp<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ErrorsArg extends MainInstanceOptions['errors'],
-> = ErrorsArg extends NonNullable<MainInstanceOptions['errors']>
+  AggregateErrorsArg extends MainInstanceOptions['errors'],
+> = AggregateErrorsArg extends NonNullable<MainInstanceOptions['errors']>
   ? {
       errors: {
-        [Key in keyof ErrorsArg]: NormalizeError<
+        [Key in keyof AggregateErrorsArg]: NormalizeError<
           PluginsArg,
           ErrorPropsArg,
-          ErrorsArg[Key]
+          AggregateErrorsArg[Key]
         >
       }
     }
@@ -338,15 +345,11 @@ type BaseError<
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+  AggregateErrorsArg extends AggregateErrorsOption,
 > = Error &
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<
-    AggregateErrors<
-      PluginsArg,
-      ErrorPropsArg,
-      SpecificInstanceOptionsArg['errors']
-    >
+    AggregateErrorsProp<PluginsArg, ErrorPropsArg, AggregateErrorsArg>
   > &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<
@@ -370,7 +373,7 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   ErrorProps,
   CustomAttributes,
   ErrorName,
-  SpecificInstanceOptions<PluginsArg>
+  AggregateErrorsOption
 >
 
 type ErrorConstructor<PluginsArg extends Plugins> = new (
@@ -420,14 +423,14 @@ type ErrorSubclass<
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     CustomAttributesArg,
     ErrorNameArg,
-    InstanceOptionsArg
+    GetAggregateErrorsOption<PluginsArg, InstanceOptionsArg>
   >
   readonly prototype: BaseError<
     PluginsArg,
     ErrorPropsArg,
     CustomAttributesArg,
     ErrorNameArg,
-    SpecificInstanceOptions<PluginsArg>
+    AggregateErrorsOption
   >
   readonly subclass: CreateSubclass<
     PluginsArg,
@@ -498,7 +501,7 @@ type AnyErrorInstance<
   ErrorPropsArg,
   GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<ErrorArg>,
-  SpecificInstanceOptionsArg
+  GetAggregateErrorsOption<PluginsArg, SpecificInstanceOptionsArg>
 >
 
 type NormalizeError<
@@ -547,7 +550,7 @@ type SpecificAnyErrorClass<
     ErrorPropsArg,
     {},
     ErrorName,
-    SpecificInstanceOptions<PluginsArg>
+    AggregateErrorsOption
   >
 
   /**
