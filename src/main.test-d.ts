@@ -621,14 +621,14 @@ AnyError.subclass('TestError', {
     }
   },
 })
-AnyError.subclass('TestError', {
+PAnyError.subclass('TestError', {
   custom: class extends PAnyError {
     constructor(message: string, options?: InstanceOptions) {
       super(message, options)
     }
   },
 })
-AnyError.subclass('TestError', {
+PAnyError.subclass('TestError', {
   custom: class extends PAnyError {
     constructor(message: string, options?: InstanceOptions<[typeof plugin]>) {
       super(message, options)
@@ -718,32 +718,32 @@ expectError(
   },
 )
 
-const OneError = AnyError.subclass('OneError', {
+const OneError = PAnyError.subclass('OneError', {
   custom: class extends PAnyError {
     property = true as const
   },
 })
 expectType<true>(new OneError('').property)
-const TwoError = AnyError.subclass('TwoError', {
+const TwoError = PAnyError.subclass('TwoError', {
   custom: class extends PAnyError {
     instanceMethod = (arg: 'arg') => arg
   },
 })
 expectType<'arg'>(new TwoError('').instanceMethod('arg'))
-const ThreeError = AnyError.subclass('ThreeError', {
+const ThreeError = PAnyError.subclass('ThreeError', {
   custom: class extends PAnyError {
     static staticMethod(arg: 'arg') {
       return arg
     }
   },
 })
-const FourError = AnyError.subclass('FourError', {
+expectError(ThreeError.staticMethod('arg'))
+const FourError = PAnyError.subclass('FourError', {
   custom: class extends PAnyError {
     static staticMethod = (arg: 'arg') => arg
   },
 })
-expectType<'arg'>(ThreeError.staticMethod('arg'))
-expectType<'arg'>(FourError.staticMethod('arg'))
+expectError(FourError.staticMethod('arg'))
 
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
