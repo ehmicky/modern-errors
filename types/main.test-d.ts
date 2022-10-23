@@ -23,6 +23,7 @@ import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/global.test-d.js'
 import './options/instance.test-d.js'
+import './options/plugins.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
 import './plugins/properties.test-d.js'
@@ -305,37 +306,6 @@ modernErrors([])
 modernErrors([], {})
 modernErrors([plugin], {})
 expectError(modernErrors(true))
-modernErrors([plugin], { test: true })
-PAnyError.subclass('TestError', { test: true })
-new PAnyError('', { test: true })
-new PSError('', { test: true })
-expectAssignable<GlobalOptions<[typeof plugin]>>({ test: true })
-expectAssignable<ClassOptions<[typeof plugin]>>({ test: true })
-expectAssignable<InstanceOptions<[typeof plugin]>>({ test: true })
-expectAssignable<MethodOptions<typeof plugin>>(true)
-
-expectError(modernErrors([plugin], { test: 'true' }))
-expectError(PAnyError.subclass('TestError', { test: 'true' }))
-expectError(new PAnyError('', { test: 'true' }))
-expectError(new PSError('', { test: 'true' }))
-expectNotAssignable<GlobalOptions<[typeof plugin]>>({ test: 'true' })
-expectNotAssignable<ClassOptions<[typeof plugin]>>({ test: 'true' })
-expectNotAssignable<InstanceOptions<[typeof plugin]>>({ test: 'true' })
-expectNotAssignable<MethodOptions<typeof plugin>>('true')
-
-expectError(modernErrors([], { other: true }))
-expectError(modernErrors([plugin as Plugin], { other: true }))
-expectError(modernErrors([{ ...plugin, name: '' as string }], { other: true }))
-expectError(new PAnyError('', { cause: '', other: true }))
-expectError(new PSError('', { other: true }))
-expectError(new PSError('', { cause: '', other: true }))
-expectNotAssignable<GlobalOptions>({ other: true })
-expectNotAssignable<ClassOptions>({ other: true })
-expectNotAssignable<InstanceOptions>({ other: true })
-
-expectError(
-  modernErrors([plugin as Omit<typeof plugin, 'getOptions'>], { test: true }),
-)
 
 expectAssignable<Plugin>(plugin)
 expectAssignable<Plugin>({ name })
