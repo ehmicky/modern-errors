@@ -24,6 +24,7 @@ import './options/class.test-d.js'
 import './options/global.test-d.js'
 import './options/instance.test-d.js'
 import './plugins/info.test-d.js'
+import './plugins/instance.test-d.js'
 
 const exception = {} as unknown
 
@@ -373,24 +374,6 @@ expectNotAssignable<Plugin>({
   ...plugin,
   properties: (info: Info['properties']) => [],
 })
-
-expectType<'arg'>(paError.instanceMethod('arg'))
-expectType<'arg'>(psError.instanceMethod('arg'))
-expectType<'arg'>(paError.instanceMethod('arg', true))
-expectType<'arg'>(psError.instanceMethod('arg', true))
-expectError(paError.instanceMethod({} as Info['instanceMethods'], 'arg'))
-expectError(psError.instanceMethod({} as Info['instanceMethods'], 'arg'))
-expectError(paError.instanceMethod('arg', false))
-expectError(psError.instanceMethod('arg', false))
-expectError(paError.instanceMethod(true))
-expectError(psError.instanceMethod(true))
-expectError(paError.otherMethod())
-expectError(psError.otherMethod())
-expectError(gpaError.otherMethod())
-expectError(gpsError.otherMethod())
-if (exception instanceof PSError) {
-  expectType<'arg'>(exception.instanceMethod('arg'))
-}
 
 expectType<'arg'>(PAnyError.staticMethod('arg'))
 expectType<'arg'>(PAnyError.staticMethod('arg', true))
