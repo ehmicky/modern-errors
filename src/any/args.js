@@ -1,6 +1,7 @@
 import { excludeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
+import { setNonEnumProp } from '../descriptors.js'
 import { deepClone } from '../plugins/clone.js'
 
 // Set `error.constructorArgs` so plugins like `modern-errors-serialize` can
@@ -44,11 +45,5 @@ const mergeConstructorArgs = function ({ opts, args, cause, isAnyError }) {
 }
 
 export const setConstructorArgs = function (error, constructorArgs) {
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(error, 'constructorArgs', {
-    value: [error.message, ...constructorArgs],
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  setNonEnumProp(error, 'constructorArgs', [error.message, ...constructorArgs])
 }

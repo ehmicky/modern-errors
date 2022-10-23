@@ -2,6 +2,8 @@ import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
+import { setNonEnumProp } from '../descriptors.js'
+
 import { getPluginsMethodNames } from './instance/add.js'
 
 // `plugin.properties()` returns an object of properties to set.
@@ -22,13 +24,7 @@ export const assignError = function (
   plugins,
 ) {
   if (stack !== undefined) {
-    // eslint-disable-next-line fp/no-mutating-methods
-    Object.defineProperty(error, 'stack', {
-      value: stack,
-      enumerable: false,
-      writable: true,
-      configurable: true,
-    })
+    setNonEnumProp(error, 'stack', stack)
   }
 
   if (message !== undefined) {

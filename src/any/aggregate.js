@@ -1,3 +1,5 @@
+import { setNonEnumProp } from '../descriptors.js'
+
 // Array of `errors` can be set using an option.
 // This is like `AggregateError` except:
 //  - This is available in any class, removing the need to create separate
@@ -16,13 +18,7 @@ export const setAggregateErrors = function (error, { errors }) {
     throw new TypeError(`"errors" option must be an array: ${errors}`)
   }
 
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(error, 'errors', {
-    value: errors,
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  setNonEnumProp(error, 'errors', errors)
 }
 
 export const normalizeAggregateErrors = function (error, AnyError) {
@@ -31,11 +27,5 @@ export const normalizeAggregateErrors = function (error, AnyError) {
   }
 
   const errorsA = error.errors.map(AnyError.normalize)
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(error, 'errors', {
-    value: errorsA,
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  setNonEnumProp(error, 'errors', errorsA)
 }

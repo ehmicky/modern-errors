@@ -1,3 +1,4 @@
+import { setNonEnumProp } from '../../descriptors.js'
 import { ANY_ERROR_STATIC_METHODS } from '../../subclass/inherited.js'
 import { validateDuplicatePlugin } from '../duplicate.js'
 
@@ -81,9 +82,10 @@ const addStaticMethod = function (
   [methodName, methodFunc],
 ) {
   validateMethodName(methodName, plugin, plugins)
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(AnyError, methodName, {
-    value: callStaticMethod.bind(undefined, {
+  setNonEnumProp(
+    AnyError,
+    methodName,
+    callStaticMethod.bind(undefined, {
       methodFunc,
       plugin,
       plugins,
@@ -92,10 +94,7 @@ const addStaticMethod = function (
       errorData,
       AnyError,
     }),
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  )
 }
 
 const validateMethodName = function (methodName, plugin, plugins) {

@@ -1,3 +1,5 @@
+import { setNonEnumProp } from '../descriptors.js'
+
 // We do not pass `ErrorClass` to plugins' `staticMethods` because:
 //  - If the constructor is `custom`, it cannot be called safely since its
 //    signature is not known
@@ -66,13 +68,11 @@ const setInheritedMethod = function ({
     )
   }
 
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(ErrorClass, inheritedMethod, {
-    value: throwOnInheritedMethod.bind(undefined, inheritedMethod, className),
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  setNonEnumProp(
+    ErrorClass,
+    inheritedMethod,
+    throwOnInheritedMethod.bind(undefined, inheritedMethod, className),
+  )
 }
 
 const { hasOwnProperty: hasOwn } = Object.prototype

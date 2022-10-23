@@ -1,3 +1,4 @@
+import { setNonEnumProp } from '../descriptors.js'
 import { getClassOpts } from '../plugins/class_opts.js'
 
 import { getErrorClass } from './custom.js'
@@ -26,18 +27,16 @@ export const createSubclass = function (
     classOpts,
   })
   const ErrorClass = getErrorClass({ ParentError, className, custom, plugins })
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(ErrorClass, 'subclass', {
-    value: createSubclass.bind(undefined, {
+  setNonEnumProp(
+    ErrorClass,
+    'subclass',
+    createSubclass.bind(undefined, {
       parentOpts: classOptsA,
       ParentError: ErrorClass,
       ErrorClasses,
       plugins,
     }),
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  )
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
   return ErrorClass

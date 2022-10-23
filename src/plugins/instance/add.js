@@ -1,3 +1,4 @@
+import { setNonEnumProp } from '../../descriptors.js'
 import { validateDuplicatePlugin } from '../duplicate.js'
 
 import { callInstanceMethod } from './call.js'
@@ -38,11 +39,12 @@ const addInstanceMethod = function (
   [methodName, methodFunc],
 ) {
   validateMethodName(methodName, plugin, plugins)
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(AnyError.prototype, methodName, {
-    value(...args) {
+  setNonEnumProp(
+    AnyError.prototype,
+    methodName,
+    function boundInstanceMethod(...args) {
       return callInstanceMethod({
-        // eslint-disable-next-line fp/no-this
+        // eslint-disable-next-line fp/no-this, no-invalid-this
         error: this,
         methodFunc,
         methodName,
@@ -54,10 +56,7 @@ const addInstanceMethod = function (
         args,
       })
     },
-    enumerable: false,
-    writable: true,
-    configurable: true,
-  })
+  )
 }
 
 const validateMethodName = function (methodName, plugin, plugins) {
