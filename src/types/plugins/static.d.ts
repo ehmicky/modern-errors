@@ -1,4 +1,4 @@
-import type { MethodOptions } from '../options/main.js'
+import type { MethodOptions } from '../options/method.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './main.js'
 import type { Info } from './plugin_info.js'

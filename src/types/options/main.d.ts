@@ -3,7 +3,7 @@ import type { ErrorProps } from '../props.js'
 
 type LiteralString<T extends string> = string extends T ? never : T
 
-type ExternalPluginOptions<PluginArg extends Plugin> =
+export type ExternalPluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
     ? Parameters<PluginArg['getOptions']>[0]
     : never
@@ -13,12 +13,6 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
     PluginArg['name']
   >]?: ExternalPluginOptions<PluginArg>
 }
-
-/**
- *
- */
-export type MethodOptions<PluginArg extends Plugin> =
-  ExternalPluginOptions<PluginArg>
 
 export interface CorePluginsOptions {
   /**
