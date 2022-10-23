@@ -19,6 +19,7 @@ import modernErrors, {
 
 import './any/aggregate.test-d.js'
 import './any/main.test-d.js'
+import './any/modify.test-d.js'
 import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/plugins.test-d.js'
@@ -250,22 +251,7 @@ const GPSError = GPAnyError.subclass('GPSError')
 
 const paError = new PAnyError('', { cause: '' })
 const psError = new PSError('')
-const gpaError = new GPAnyError('', { cause: '' })
 const gpsError = new GPSError('')
-type PErrorInstance = ErrorInstance<[typeof plugin]>
-
-expectAssignable<Error>(paError)
-expectAssignable<ErrorInstance>(paError)
-expectAssignable<PErrorInstance>(paError)
-expectAssignable<Error>(psError)
-expectAssignable<ErrorInstance>(psError)
-expectAssignable<PErrorInstance>(psError)
-expectAssignable<Error>(gpaError)
-expectAssignable<ErrorInstance>(gpaError)
-expectNotAssignable<PErrorInstance>(gpaError)
-expectAssignable<Error>(gpsError)
-expectAssignable<ErrorInstance>(gpsError)
-expectNotAssignable<PErrorInstance>(gpsError)
 
 type PUnknownInstance = typeof paError
 
