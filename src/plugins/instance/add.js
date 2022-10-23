@@ -71,3 +71,12 @@ const validateMethodName = function (methodName, plugin, plugins) {
   const prefix = 'error'
   validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
 }
+
+// Retrieve the name of all instance methods
+export const getPluginsMethodNames = function (plugins) {
+  return plugins.flatMap(getPluginMethodNames)
+}
+
+const getPluginMethodNames = function ({ instanceMethods }) {
+  return Object.keys(instanceMethods)
+}

@@ -2,11 +2,17 @@ import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 
+import { getPluginsMethodNames } from './instance/add.js'
+
 // `plugin.properties()` returns an object of properties to set.
 // `undefined` values delete properties.
 // Those are shallowly merged.
 // Error core properties are ignored except for `message` and `stack`.
-export const assignError = function (error, { message, stack, ...newProps }) {
+export const assignError = function (
+  error,
+  { message, stack, ...newProps },
+  plugins,
+) {
   if (stack !== undefined) {
     // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(error, 'stack', {
@@ -21,9 +27,15 @@ export const assignError = function (error, { message, stack, ...newProps }) {
     setErrorMessage(error, message)
   }
 
-  if (Reflect.ownKeys(newProps).length !== 0) {
-    setErrorProps(error, excludeKeys(newProps, OMITTED_PROPS))
+  if (Reflect.ownKeys(newProps).length === 0) {
+    return
   }
+
+  const keys = excludeKeys(newProps, [
+    ...OMITTED_PROPS,
+    ...getPluginsMethodNames(plugins),
+  ])
+  setErrorProps(error, keys)
 }
 
 // Reserved top-level properties do not throw: they are silently omitted instead

@@ -24,7 +24,7 @@ export const setPluginsProperties = function ({
   )
   const newProps = Object.assign({}, ...allNewProps)
   const previousValues = getPreviousValues(newProps, error)
-  assignError(error, newProps)
+  assignError(error, newProps, plugins)
   return getAllValues(previousValues, error)
 }
 

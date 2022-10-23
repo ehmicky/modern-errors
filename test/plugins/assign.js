@@ -41,7 +41,7 @@ each(['one', Symbol('one')], ({ title }, key) => {
 })
 
 each(
-  ['wrap', 'constructorArgs', 'name', 'cause', 'errors'],
+  ['wrap', 'constructorArgs', 'name', 'cause', 'errors', 'getInstance'],
   ({ title }, key) => {
     test(`plugin.properties() cannot set forbidden properties | ${title}`, (t) => {
       t.not(
