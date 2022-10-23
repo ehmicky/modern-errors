@@ -1,7 +1,7 @@
 import type { Plugin, Plugins } from './plugins/main.js'
 import type { Info } from './plugins/info.js'
 import type { AnyErrorClass, SpecificAnyErrorClass } from './any/main.js'
-import type { ErrorClass } from './subclass.js'
+import type { ErrorClass } from './subclass/main.js'
 import type { ErrorInstance } from './instance.js'
 import type { PluginsOptions } from './options/plugins.js'
 import type { MethodOptions } from './options/method.js'

@@ -1,17 +1,17 @@
 import type { ErrorName } from 'error-custom-class'
-import type { Plugins } from './plugins/main.js'
-import type { GetAggregateErrorsOption } from './any/aggregate.js'
-import type { ErrorProps, MergeErrorProps } from './core_plugins/props.js'
+import type { Plugins } from '../plugins/main.js'
+import type { GetAggregateErrorsOption } from '../any/aggregate.js'
+import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
 import type {
   CustomAttributes,
   AddCustomAttributes,
   CustomStaticAttributes,
-} from './attributes.js'
-import type { SpecificInstanceOptions } from './options/instance.js'
-import type { SpecificClassOptions } from './options/class.js'
-import type { ErrorInstance, BaseError } from './instance.js'
-import type { NoAdditionalProps } from './utils.js'
-import type { SpecificAnyErrorClass } from './any/main.js'
+} from '../attributes.js'
+import type { SpecificInstanceOptions } from '../options/instance.js'
+import type { SpecificClassOptions } from '../options/class.js'
+import type { ErrorInstance, BaseError } from '../instance.js'
+import type { NoAdditionalProps } from '../utils.js'
+import type { SpecificAnyErrorClass } from '../any/main.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
