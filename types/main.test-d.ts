@@ -235,22 +235,11 @@ expectAssignable<InstanceOptions>({ cause: '' })
 expectNotAssignable<GlobalOptions>({ cause: '' })
 expectNotAssignable<ClassOptions>({ cause: '' })
 
-const name = 'test'
-const getOptions = (input: true, full: boolean) => input
-const isOptions = (input: unknown) => input === true
-const instanceMethod = (info: Info['instanceMethods'], arg: 'arg') => arg
-const instanceMethods = { instanceMethod }
+const name = 'test' as const
 const staticMethod = (info: Info['staticMethods'], arg: 'arg') => arg
 const staticMethods = { staticMethod }
-const properties = (info: Info['properties']) => ({ property: true as const })
-const plugin = {
-  name,
-  getOptions,
-  isOptions,
-  instanceMethods,
-  staticMethods,
-  properties,
-} as const
+const properties = (info: Info['properties']) => ({ property: true } as const)
+const plugin = { name, staticMethods, properties } as const
 
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
@@ -281,8 +270,6 @@ const psError = new PSError('')
 const gpaError = new GPAnyError('', { cause: '' })
 const gpsError = new GPSError('')
 type PErrorInstance = ErrorInstance<[typeof plugin]>
-type PUnknownInstance = typeof paError
-expectType<'UnknownError'>('' as PUnknownInstance['name'])
 
 expectAssignable<Error>(paError)
 expectAssignable<ErrorInstance>(paError)
@@ -297,6 +284,9 @@ expectAssignable<Error>(gpsError)
 expectAssignable<ErrorInstance>(gpsError)
 expectNotAssignable<PErrorInstance>(gpsError)
 
+type PUnknownInstance = typeof paError
+
+expectType<'UnknownError'>('' as PUnknownInstance['name'])
 expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
 expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
 
@@ -313,7 +303,7 @@ if (exception instanceof GPSError) {
 
 modernErrors([])
 modernErrors([], {})
-modernErrors([plugin], {})
+modernErrors([{ name }], {})
 expectError(modernErrors(true))
 
 expectError(AnyError.subclass())
