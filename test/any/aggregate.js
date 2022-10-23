@@ -9,15 +9,6 @@ test('error.errors can be set', (t) => {
   t.deepEqual(new TestError('test', { errors: [] }).errors, [])
 })
 
-test('error.errors are not enumerable', (t) => {
-  t.false(
-    Object.getOwnPropertyDescriptor(
-      new TestError('test', { errors: [] }),
-      'errors',
-    ).enumerable,
-  )
-})
-
 each([undefined, {}, { errors: undefined }], ({ title }, opts) => {
   test(`error.errors is not set by default | ${title}`, (t) => {
     t.false('errors' in new TestError('test', opts))
