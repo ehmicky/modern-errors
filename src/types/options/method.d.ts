@@ -1,4 +1,4 @@
-import type { Plugin } from '../plugins/main.js'
+import type { Plugin } from '../plugins/shape.js'
 import type { ExternalPluginOptions } from './plugins.js'
 
 /**

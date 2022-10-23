@@ -1,5 +1,5 @@
 import type { UnionToIntersection } from '../utils.js'
-import type { Plugin, Plugins } from './main.js'
+import type { Plugin, Plugins } from './shape.js'
 import type { Info } from './info.js'
 
 interface AddedProperties {

@@ -1,5 +1,5 @@
 import type { ErrorName } from 'error-custom-class'
-import type { Plugins } from '../plugins/main.js'
+import type { Plugins } from '../plugins/shape.js'
 import type { PluginsStaticMethods } from '../plugins/static.js'
 import type { GetAggregateErrorsOption } from './aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'

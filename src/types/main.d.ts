@@ -36,7 +36,7 @@
 //    applied on errors coming from another `modernErrors()` call, even though
 //    it should (as opposed to errors coming from the same `modernErrors()`
 //    call)
-import type { Plugin, Plugins } from './plugins/main.js'
+import type { Plugin, Plugins } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
 import type { AnyErrorClass, SpecificAnyErrorClass } from './any/main.js'
 import type { ErrorClass } from './subclass/main.js'

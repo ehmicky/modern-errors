@@ -1,4 +1,4 @@
-import type { Plugins } from '../plugins/main.js'
+import type { Plugins } from '../plugins/shape.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { ErrorInstance } from '../any/modify.js'
 

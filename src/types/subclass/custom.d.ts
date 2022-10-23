@@ -1,4 +1,4 @@
-import type { Plugins } from '../plugins/main.js'
+import type { Plugins } from '../plugins/shape.js'
 import type { ErrorConstructor } from './parent.js'
 
 export type CustomAttributes = object

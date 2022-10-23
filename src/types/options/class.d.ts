@@ -1,5 +1,5 @@
 import type { ErrorName } from 'error-custom-class'
-import type { Plugins } from '../plugins/main.js'
+import type { Plugins } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props.js'
 import type { CustomAttributes } from '../subclass/custom.js'
 import type { ErrorSubclass } from '../subclass/main.js'

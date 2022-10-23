@@ -1,4 +1,4 @@
-import type { Plugins, Plugin } from '../plugins/main.js'
+import type { Plugins, Plugin } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props.js'
 
 export type ExternalPluginOptions<PluginArg extends Plugin> =
