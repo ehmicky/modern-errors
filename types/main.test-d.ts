@@ -586,33 +586,6 @@ expectType<never>(CCError.subclass('AnyError'))
 expectError(AnyError.subclass('Test'))
 expectError(PAnyError.subclass('Test'))
 expectError(CCError.subclass('Test'))
-expectError(AnyError.subclass('TestError', true))
-expectError(PAnyError.subclass('TestError', true))
-expectError(CCError.subclass('TestError', true))
-expectError(AnyError.subclass('TestError', { other: true }))
-expectError(PAnyError.subclass('TestError', { other: true }))
-expectError(CCError.subclass('TestError', { other: true }))
-expectError(AnyError.subclass('TestError', { custom: true }))
-expectError(PAnyError.subclass('TestError', { custom: true }))
-expectError(CCError.subclass('TestError', { custom: true }))
-expectNotAssignable<ClassOptions>({ custom: true })
-
-expectError(AnyError.subclass('TestError', { custom: class {} }))
-expectError(PAnyError.subclass('TestError', { custom: class {} }))
-expectError(CCError.subclass('TestError', { custom: class {} }))
-expectError(AnyError.subclass('TestError', { custom: class extends Object {} }))
-expectError(
-  PAnyError.subclass('TestError', { custom: class extends Object {} }),
-)
-expectError(CCError.subclass('TestError', { custom: class extends Object {} }))
-expectError(AnyError.subclass('TestError', { custom: class extends Error {} }))
-expectError(PAnyError.subclass('TestError', { custom: class extends Error {} }))
-expectError(CCError.subclass('TestError', { custom: class extends Error {} }))
-expectError(CError.subclass('TestError', { custom: class extends AnyError {} }))
-expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
-expectError(
-  AnyError.subclass('UnknownError', { custom: class extends AnyError {} }),
-)
 
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
