@@ -9,7 +9,7 @@ import type {
 } from './custom.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { SpecificClassOptions } from '../options/class.js'
-import type { ErrorInstance, BaseError } from '../instance.js'
+import type { ErrorInstance, BaseError } from '../any/modify.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { SpecificAnyErrorClass } from '../any/main.js'
 
