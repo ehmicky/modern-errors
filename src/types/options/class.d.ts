@@ -2,7 +2,8 @@ import type { ErrorName } from 'error-custom-class'
 import type { Plugins } from '../plugins/main.js'
 import type { ErrorProps } from '../core_plugins/props.js'
 import type { CustomAttributes } from '../subclass/custom.js'
-import type { ErrorConstructor, ErrorSubclass } from '../subclass/main.js'
+import type { ErrorSubclass } from '../subclass/main.js'
+import type { ErrorConstructor } from '../subclass/validate.js'
 import type { PluginsOptions } from './plugins.js'
 
 type BareConstructor = new (...args: any[]) => any

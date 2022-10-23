@@ -1,5 +1,5 @@
 import type { Plugins } from '../plugins/main.js'
-import type { ErrorConstructor } from './main.js'
+import type { ErrorConstructor } from './validate.js'
 
 export type CustomAttributes = object
 

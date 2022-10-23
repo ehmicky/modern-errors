@@ -5,36 +5,17 @@ import type { GetAggregateErrorsOption } from '../any/aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
 import type { CustomAttributes, AddCustomAttributes } from './custom.js'
 import type { CustomStaticAttributes } from './inherited.js'
-import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { SpecificClassOptions } from '../options/class.js'
-import type { ErrorInstance, BaseError } from '../any/modify.js'
+import type { BaseError } from '../any/modify.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { SpecificAnyErrorClass } from '../any/main.js'
 
 import type { IsForbiddenClassName } from './name.js'
-
-export type ErrorConstructor<PluginsArg extends Plugins> = new (
-  message: string,
-  options?: SpecificInstanceOptions<PluginsArg>,
-  ...extra: any[]
-) => ErrorInstance<PluginsArg>
-
-type ParentInstanceOptions<
-  PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = ConstructorParameters<ParentErrorClass>[1] &
-  SpecificInstanceOptions<PluginsArg>
-
-type ParentExtra<
-  PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = ConstructorParameters<ParentErrorClass> extends [
-  unknown,
-  unknown?,
-  ...infer Extra,
-]
-  ? Extra
-  : never
+import type {
+  ErrorConstructor,
+  ParentInstanceOptions,
+  ParentExtra,
+} from './validate.js'
 
 export type ErrorSubclass<
   PluginsArg extends Plugins,
@@ -74,6 +55,7 @@ export type ErrorSubclass<
       ErrorNameArg
     >
   >
+
   /**
    *
    */
