@@ -25,6 +25,7 @@ import './options/global.test-d.js'
 import './options/instance.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
+import './plugins/properties.test-d.js'
 import './plugins/static.test-d.js'
 
 const exception = {} as unknown
@@ -375,16 +376,6 @@ expectNotAssignable<Plugin>({
   ...plugin,
   properties: (info: Info['properties']) => [],
 })
-
-expectType<true>(paError.property)
-expectType<true>(psError.property)
-expectError(paError.otherProperty)
-expectError(psError.otherProperty)
-expectError(gpaError.otherProperty)
-expectError(gpsError.otherProperty)
-if (exception instanceof PSError) {
-  expectType<true>(exception.property)
-}
 
 expectType<'GPSError'>(gpsError.name)
 expectAssignable<InstanceType<typeof GPSError>>(gpsError)
