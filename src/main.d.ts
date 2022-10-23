@@ -576,13 +576,13 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    are intersected using `&`, instead of the second one overriding the first.
 //    Therefore, the type of `plugin.properties()` that are not unique should
 //    currently be wide to avoid the `&` intersection resulting in `undefined`.
-//  - Type narrowing with `instanceof` with:
+//  - Type narrowing with `instanceof` does not work with:
 //     - Any error class with a `custom` option
 //     - `AnyError` if there are any plugins with static methods
 //    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
-//  - `new AnyError()` should require a second argument as an object with a
-//    `cause` property
+//  - `new AnyError()` should fail if the second argument is not an object with
+//    a `cause` property
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
 //    method `methodName(...) { ... }`.
@@ -602,7 +602,7 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //  - Plugins should not be allowed to define static or instance methods already
 //    defined by other plugins
 //  - When wrapping an error from another `modernErrors()` call, the resulting
-//    error `name` should be `UnknownError`.
+//    error `name` should be `UnknownError`
 /**
  * Creates and returns `AnyError`.
  *
