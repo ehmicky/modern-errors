@@ -1,6 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
 import type { AnyErrorClass } from '../any.js'
-import type { ErrorClass } from '../class.js'
+import type { ErrorClass } from '../subclass.js'
 import type { ErrorInstance } from '../instance.js'
 import type { Plugins } from './main.js'
 

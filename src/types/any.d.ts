@@ -7,7 +7,7 @@ import type { CustomInstanceAttributes } from './attributes.js'
 import type { SpecificInstanceOptions } from './options/instance.js'
 import type { ErrorInstance, BaseError } from './instance.js'
 import type { NoAdditionalProps } from './utils.js'
-import type { CreateSubclass } from './class.js'
+import type { CreateSubclass } from './subclass.js'
 
 type NormalizedErrorName<ErrorArg extends unknown> = unknown extends ErrorArg
   ? ErrorName
