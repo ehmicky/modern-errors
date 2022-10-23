@@ -2,11 +2,8 @@ import type { ErrorName } from 'error-custom-class'
 import type { Plugins } from '../plugins/main.js'
 import type { GetAggregateErrorsOption } from '../any/aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
-import type {
-  CustomAttributes,
-  AddCustomAttributes,
-  CustomStaticAttributes,
-} from './custom.js'
+import type { CustomAttributes, AddCustomAttributes } from './custom.js'
+import type { CustomStaticAttributes } from './inherited.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { SpecificClassOptions } from '../options/class.js'
 import type { ErrorInstance, BaseError } from '../any/modify.js'
