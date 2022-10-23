@@ -574,9 +574,7 @@ if (exception instanceof GPSError) {
   expectAssignable<InstanceType<typeof GPSError>>(exception)
 }
 
-expectAssignable<ClassOptions>({})
 expectAssignable<InstanceOptions>({})
-expectNotAssignable<ClassOptions>(true)
 expectNotAssignable<InstanceOptions>(true)
 
 expectError(AnyError.subclass())
