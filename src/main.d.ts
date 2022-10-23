@@ -542,12 +542,14 @@ type ErrorSubclass<
     ErrorNameArg,
     GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
   >
-  readonly prototype: BaseError<
-    PluginsArg,
-    ErrorPropsArg,
-    CustomAttributesArg,
-    ErrorNameArg,
-    AggregateErrorsOption
+  readonly prototype: InstanceType<
+    ErrorSubclass<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg,
+      ErrorNameArg
+    >
   >
   /**
    *
