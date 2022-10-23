@@ -20,6 +20,7 @@ import modernErrors, {
 import './any/aggregate.test-d.js'
 import './any/main.test-d.js'
 import './any/modify.test-d.js'
+import './any/normalize.test-d.js'
 import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/plugins.test-d.js'
@@ -56,29 +57,6 @@ expectType<'SError'>(sError.name)
 expectError(SError.normalize(''))
 if (exception instanceof SError) {
   expectType<SInstance>(exception)
-}
-
-const unknownError = new AnyError('', { cause: '' })
-type UnknownInstance = typeof unknownError
-
-expectAssignable<AnyInstance>(unknownError)
-expectAssignable<ErrorInstance>(unknownError)
-expectAssignable<Error>(unknownError)
-expectAssignable<UnknownInstance>(unknownError)
-expectType<'UnknownError'>('' as UnknownInstance['name'])
-expectType<'UnknownError'>(unknownError.name)
-expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
-expectNotAssignable<UnknownInstance>(new AnyError('', { cause: sError }))
-expectAssignable<SInstance>(AnyError.normalize(sError))
-expectAssignable<UnknownInstance>(new AnyError('', { cause: unknownError }))
-expectAssignable<UnknownInstance>(AnyError.normalize(unknownError))
-expectAssignable<UnknownInstance>(new AnyError('', { cause: new Error('') }))
-expectAssignable<UnknownInstance>(AnyError.normalize(new Error('')))
-expectAssignable<UnknownInstance>(new AnyError('', { cause: undefined }))
-expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
-expectAssignable<UnknownInstance>(AnyError.normalize(''))
-if (unknownError instanceof AnyError) {
-  expectAssignable<UnknownInstance>(unknownError)
 }
 
 const anyError = new AnyError('', { cause: sError })
