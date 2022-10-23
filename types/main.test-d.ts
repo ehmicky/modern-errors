@@ -13,7 +13,6 @@ import modernErrors, {
   GlobalOptions,
   ClassOptions,
   InstanceOptions,
-  Plugin,
   Info,
 } from './main.js'
 
@@ -418,67 +417,6 @@ expectType<false>(new ChildPropsError('').one)
 //     one = ''
 //   },
 // )
-
-const MessageMethodAnyError = modernErrors([
-  { name, instanceMethods: { message: () => {} } },
-])
-expectType<Error['message']>(
-  new MessageMethodAnyError('', { cause: '' }).message,
-)
-const CorePropsAnyError = modernErrors([
-  {
-    name,
-    properties: () =>
-      ({
-        name: 'test',
-        message: 'test',
-        stack: 'test',
-        cause: 'test',
-        errors: ['test'],
-        two: 'test',
-        three: 'test',
-      } as const),
-    instanceMethods: { one: () => {}, two: () => {} },
-  },
-])
-const CorePropsError = CorePropsAnyError.subclass('CorePropsError')
-const corePropsError = new CorePropsError('')
-expectType<'test'>(corePropsError.message)
-expectType<'test'>(corePropsError.stack)
-expectType<'CorePropsError'>(corePropsError.name)
-expectType<Error['cause']>(corePropsError.cause)
-expectError(corePropsError.errors)
-expectNotAssignable<string>(corePropsError.two)
-expectNotAssignable<string>(
-  new CorePropsError('', { props: { one: '' as const } }).one,
-)
-expectType<never>(new CorePropsError('', { props: { three: '' as const } }))
-expectType<'test'>(
-  new CorePropsError('', { props: { three: 'test' as const } }).three,
-)
-expectType<'test'>(
-  new SError('', { props: { message: 'test' as const } }).message,
-)
-expectType<never>(new SError('', { props: { message: true as const } }))
-expectType<'test'>(new SError('', { props: { stack: 'test' as const } }).stack)
-expectType<never>(new SError('', { props: { stack: true as const } }))
-expectType<'SError'>(new SError('', { props: { name: 'test' as const } }).name)
-expectType<Error['cause']>(
-  new SError('', { props: { cause: 'test' as const } }).cause,
-)
-expectError(new SError('', { props: { errors: ['test'] } }).errors)
-const DuplicateProppertiesAnyError = modernErrors([
-  { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
-  { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
-])
-expectType<undefined>(new DuplicateProppertiesAnyError('', { cause: '' }).prop)
-
-expectError(new SError('', { cause: new CError('') }).prop)
-expectError(new SError('', { cause: new PAnyError('') }).property)
-expectError(new SError('', { cause: new PAnyError('') }).instanceMethod)
-expectError(
-  new SError('', { cause: new SError('', { props: { prop: true } }) }).prop,
-)
 
 if (cError instanceof SError) {
   expectType<never>(cError)
