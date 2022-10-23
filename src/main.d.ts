@@ -135,7 +135,7 @@ type UnionToIntersection<T> = (
   ? U
   : never
 
-type SliceFirst<tuple extends unknown[]> = tuple extends [
+type SliceFirst<Tuple extends unknown[]> = Tuple extends [
   unknown,
   ...infer Rest,
 ]
