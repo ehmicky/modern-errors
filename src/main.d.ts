@@ -315,16 +315,16 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 type AggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>['errors'],
-> = SpecificInstanceOptionsArg extends NonNullable<
-  SpecificInstanceOptions<PluginsArg>['errors']
->
+  ErrorsArg extends MainInstanceOptions['errors'],
+> = ErrorsArg extends NonNullable<MainInstanceOptions['errors']>
   ? {
-      errors: NormalizeErrors<
-        PluginsArg,
-        ErrorPropsArg,
-        SpecificInstanceOptionsArg
-      >
+      errors: {
+        [Key in keyof ErrorsArg]: NormalizeError<
+          PluginsArg,
+          ErrorPropsArg,
+          ErrorsArg[Key]
+        >
+      }
     }
   : {}
 
@@ -511,18 +511,6 @@ type NormalizeError<
   ErrorArg,
   SpecificInstanceOptions<PluginsArg>
 >
-
-type NormalizeErrors<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  ErrorArgs extends unknown[],
-> = {
-  [Key in keyof ErrorArgs]: NormalizeError<
-    PluginsArg,
-    ErrorPropsArg,
-    ErrorArgs[Key]
-  >
-}
 
 /**
  * Base error class.
