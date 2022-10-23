@@ -7,7 +7,7 @@ import type {
   AggregateErrorsProp,
 } from './any/aggregate.js'
 import type { ErrorProps } from './core_plugins/props.js'
-import type { CustomAttributes } from './attributes.js'
+import type { CustomAttributes } from './subclass/custom.js'
 import type { Intersect } from './utils.js'
 
 type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }

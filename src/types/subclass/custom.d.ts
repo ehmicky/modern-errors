@@ -1,6 +1,6 @@
-import type { Plugins } from './plugins/main.js'
-import type { ErrorConstructor } from './subclass/main.js'
-import type { Intersect } from './utils.js'
+import type { Plugins } from '../plugins/main.js'
+import type { ErrorConstructor } from './main.js'
+import type { Intersect } from '../utils.js'
 
 export type CustomAttributes = object
 

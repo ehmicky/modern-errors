@@ -6,7 +6,7 @@ import type {
   CustomAttributes,
   AddCustomAttributes,
   CustomStaticAttributes,
-} from '../attributes.js'
+} from './custom.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { SpecificClassOptions } from '../options/class.js'
 import type { ErrorInstance, BaseError } from '../instance.js'
