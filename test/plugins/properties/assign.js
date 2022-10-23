@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { defineClassOpts } from '../../helpers/main.js'
+import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
 const { TestError, AnyError } = defineClassOpts()
 

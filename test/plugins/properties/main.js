@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { defineClassOpts, defineGlobalOpts } from '../../helpers/main.js'
+import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
 each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   test(`Object instance options are shallowly merged to class and global options | ${title}`, (t) => {
