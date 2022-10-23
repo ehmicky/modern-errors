@@ -81,7 +81,15 @@ const getChangedDescriptor = function (descriptors, key) {
 }
 
 // When an error is wrapped, undo its `plugin.properties()` before merging it to
-// the parent
+// the parent.
+// This includes `props`.
+// This excludes properties:
+//  - Which are either:
+//     - Set after instantiation
+//     - Of unknown errors
+//     - Set as `custom` instance properties
+//  - This allows using the above cases when the user needs to set a property
+//    that should not be restored when the error is wrapped with another class
 export const restorePreviousValues = function (cause, errorData) {
   if (cause !== undefined) {
     restoreValues(cause, errorData.get(cause).previousValues)

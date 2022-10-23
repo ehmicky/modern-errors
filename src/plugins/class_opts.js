@@ -84,6 +84,9 @@ const getClassOptsFull = function (className, { properties }) {
 //  - This ensures its constructor does not throw
 //  - This discourages instantiating UnknownError directly, encouraging creating
 //    a separate error class for known system errors instead
+//  - This prevents `custom` instance properties, or properties set in the
+//    constructor, since those would be kept, even if the `UnknownError` is
+//    only used temporarily as part of `AnyError.normalize()`
 // We discourage extending or instantiating UnknownError but do not forbid it
 // since:
 //  - Users might not know instantiating would throw until runtime, which is

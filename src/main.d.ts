@@ -588,6 +588,14 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    method `methodName(...) { ... }`.
 //    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
+//  - When wrapping an error as `cause`:
+//     - The following are ignored, which is expected:
+//        - Error core properties
+//        - Class-specific properties: `custom` methods, instance methods,
+//          `plugin.properties()` and `props`
+//     - However, the following should be kept and are currently not:
+//        - Properties set after instantiation
+//        - `custom` instance properties
 // Minor limitations:
 //  - Plugin static methods should not be allowed to override `Error.*`
 //    (e.g. `prepareStackTrace()`)
