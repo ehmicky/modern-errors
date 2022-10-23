@@ -1,6 +1,7 @@
 import type { MethodOptions } from '../options.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
-import type { Plugin, Plugins, Info } from './main.js'
+import type { Plugin, Plugins } from './main.js'
+import type { Info } from './info.js'
 
 type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
 
