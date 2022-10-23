@@ -103,7 +103,7 @@ if (exception instanceof SSError) {
 class BCError extends AnyError {
   constructor(
     message: string,
-    options?: ConstructorParameters<typeof AnyError>[1] & { cProp?: true },
+    options?: InstanceOptions & { cProp?: true },
     extra?: true,
   ) {
     super(message, options, extra)
@@ -156,7 +156,7 @@ expectError(SCError.normalize(''))
 class BCSError extends SError {
   constructor(
     message: string,
-    options?: ConstructorParameters<typeof SError>[1] & { cProp?: true },
+    options?: InstanceOptions & { cProp?: true },
     extra?: true,
   ) {
     super(message, options, extra)
@@ -188,7 +188,7 @@ expectError(CSError.normalize(''))
 class BCCError extends CError {
   constructor(
     message: string,
-    options?: ConstructorParameters<typeof CError>[1] & { ccProp?: true },
+    options?: InstanceOptions & { cProp?: true; ccProp?: true },
     extra?: boolean,
   ) {
     super(message, options, true)
@@ -599,6 +599,16 @@ expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
     constructor(
+      message: ConstructorParameters<typeof AnyError>[0],
+      options?: InstanceOptions,
+    ) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends AnyError {
+    constructor(
       message: string,
       options?: ConstructorParameters<typeof AnyError>[1],
     ) {
@@ -630,16 +640,6 @@ AnyError.subclass('TestError', {
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
     constructor(message: string, options?: object) {
-      super(message, options)
-    }
-  },
-})
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
-    constructor(
-      message: ConstructorParameters<typeof AnyError>[0],
-      options?: InstanceOptions,
-    ) {
       super(message, options)
     }
   },
@@ -676,7 +676,7 @@ expectError(
     custom: class extends AnyError {
       constructor(
         message: string,
-        options?: ConstructorParameters<typeof AnyError>[1] & { cause?: true },
+        options?: InstanceOptions & { cause?: true },
       ) {
         super(message, options)
       }
@@ -685,10 +685,7 @@ expectError(
 )
 AnyError.subclass('TestError', {
   custom: class extends CError {
-    constructor(
-      message: string,
-      options?: ConstructorParameters<typeof AnyError>[1],
-    ) {
+    constructor(message: string, options?: InstanceOptions) {
       super(message, options)
     }
   },
@@ -698,8 +695,8 @@ expectError(
     custom: class extends CError {
       constructor(
         message: string,
-        options?: ConstructorParameters<typeof CError>[1] & { cProp?: false },
-        extra?: ConstructorParameters<typeof CError>[2],
+        options?: InstanceOptions & { cProp?: false },
+        extra?: true,
       ) {
         super(message, options, extra)
       }
@@ -709,11 +706,7 @@ expectError(
 expectError(
   CError.subclass('TestError', {
     custom: class extends CError {
-      constructor(
-        message: string,
-        options?: ConstructorParameters<typeof CError>[1],
-        extra?: false,
-      ) {
+      constructor(message: string, options?: InstanceOptions, extra?: false) {
         super(message, options, true)
       }
     },
