@@ -2,9 +2,8 @@ import type { ErrorName } from 'error-custom-class'
 import type { AnyErrorClass } from '../any.js'
 import type { ErrorClass } from '../class.js'
 import type { ErrorInstance } from '../instance.js'
-import type { MethodOptions } from '../options.js'
-import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { StaticMethods } from './static.js'
+import type { InstanceMethods } from './instance.js'
 
 /**
  *
@@ -74,14 +73,9 @@ export interface Info {
 }
 
 type GetOptions = (input: never, full: boolean) => unknown
+
 type IsOptions = (input: unknown) => boolean
-type InstanceMethod = (
-  info: Info['instanceMethods'],
-  ...args: never[]
-) => unknown
-interface InstanceMethods {
-  readonly [MethodName: string]: InstanceMethod
-}
+
 export type GetProperties = (info: Info['properties']) => {
   [PropName: string]: unknown
 }
@@ -130,34 +124,3 @@ export interface Plugin {
 }
 
 export type Plugins = readonly Plugin[]
-
-type ErrorInstanceMethod<
-  InstanceMethodArg extends InstanceMethod,
-  MethodOptionsArg extends MethodOptions<Plugin>,
-> = (
-  ...args: readonly [
-    ...SliceFirst<Parameters<InstanceMethodArg>>,
-    MethodOptionsArg?,
-  ]
-) => ReturnType<InstanceMethodArg>
-
-type ErrorInstanceMethods<
-  InstanceMethodsArg extends InstanceMethods,
-  MethodOptionsArg extends MethodOptions<Plugin>,
-> = {
-  readonly [MethodName in keyof InstanceMethodsArg]: ErrorInstanceMethod<
-    InstanceMethodsArg[MethodName],
-    MethodOptionsArg
-  >
-}
-
-type PluginInstanceMethods<PluginArg extends Plugin> =
-  PluginArg['instanceMethods'] extends InstanceMethods
-    ? ErrorInstanceMethods<
-        PluginArg['instanceMethods'],
-        MethodOptions<PluginArg>
-      >
-    : {}
-
-export type PluginsInstanceMethods<PluginsArg extends Plugins> =
-  UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>
