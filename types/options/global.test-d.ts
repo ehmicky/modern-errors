@@ -1,6 +1,10 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import { GlobalOptions } from '../main.js'
+import modernErrors, { GlobalOptions } from '../main.js'
+
+const AnyError = modernErrors()
 
 expectAssignable<GlobalOptions>({})
 expectNotAssignable<GlobalOptions>(true)
+
+expectNotAssignable<GlobalOptions>({ custom: AnyError })

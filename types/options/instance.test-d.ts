@@ -1,6 +1,10 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import { InstanceOptions } from '../main.js'
+import modernErrors, { InstanceOptions } from '../main.js'
+
+const AnyError = modernErrors()
 
 expectAssignable<InstanceOptions>({})
 expectNotAssignable<InstanceOptions>(true)
+
+expectNotAssignable<InstanceOptions>({ custom: AnyError })

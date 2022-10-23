@@ -597,10 +597,6 @@ expectError(PAnyError.subclass('TestError', { custom: true }))
 expectError(CCError.subclass('TestError', { custom: true }))
 expectNotAssignable<ClassOptions>({ custom: true })
 
-expectAssignable<ClassOptions>({ custom: AnyError })
-expectNotAssignable<GlobalOptions>({ custom: AnyError })
-expectNotAssignable<InstanceOptions>({ custom: AnyError })
-
 expectError(AnyError.subclass('TestError', { custom: class {} }))
 expectError(PAnyError.subclass('TestError', { custom: class {} }))
 expectError(CCError.subclass('TestError', { custom: class {} }))
