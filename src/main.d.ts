@@ -1,22 +1,66 @@
 import type { ErrorName } from 'error-custom-class'
 
+/**
+ *
+ */
 interface CommonInfo {
+  /**
+   *
+   */
   error: ErrorInstance
+
+  /**
+   *
+   */
   readonly options: never
+
+  /**
+   *
+   */
   readonly showStack: boolean
+
+  /**
+   *
+   */
   readonly AnyError: AnyErrorClass<Plugins>
+
+  /**
+   *
+   */
   readonly ErrorClasses: {
     AnyError: never
     UnknownError: ErrorClass
     [name: ErrorName]: ErrorClass
   }
+
+  /**
+   *
+   */
   readonly errorInfo: (error: unknown) => Info['errorInfo']
 }
 
+/**
+ *
+ */
 export interface Info {
+  /**
+   *
+   */
   readonly properties: CommonInfo
+
+  /**
+   *
+   */
   readonly instanceMethods: CommonInfo
+
+  /**
+   *
+   */
   readonly staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
+
+  /**
+   *
+   */
   readonly errorInfo: Omit<
     CommonInfo,
     'AnyError' | 'ErrorClasses' | 'errorInfo'
@@ -52,11 +96,34 @@ type GetProperties = (info: Info['properties']) => {
  * ```
  */
 export interface Plugin {
+  /**
+   *
+   */
   readonly name: string
+
+  /**
+   *
+   */
   readonly getOptions?: GetOptions
+
+  /**
+   *
+   */
   readonly isOptions?: IsOptions
+
+  /**
+   *
+   */
   readonly instanceMethods?: InstanceMethods
+
+  /**
+   *
+   */
   readonly staticMethods?: StaticMethods
+
+  /**
+   *
+   */
   readonly properties?: GetProperties
 }
 
@@ -164,6 +231,9 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
   >]?: ExternalPluginOptions<PluginArg>
 }
 
+/**
+ *
+ */
 export type MethodOptions<PluginArg extends Plugin> =
   ExternalPluginOptions<PluginArg>
 
@@ -214,6 +284,9 @@ type MergeErrorProps<
 > = MergeProps<Props, GetPropsOption<CorePluginsOptionsArg>>
 
 interface CorePluginsOptions {
+  /**
+   *
+   */
   readonly props?: ErrorProps
 }
 
@@ -223,13 +296,23 @@ type PluginsOptions<PluginsArg extends Plugins> =
     : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
 
 interface MainInstanceOptions {
+  /**
+   *
+   */
   readonly cause?: unknown
+
+  /**
+   *
+   */
   readonly errors?: AggregateErrorsOption
 }
 
 type SpecificInstanceOptions<PluginsArg extends Plugins> = MainInstanceOptions &
   PluginsOptions<PluginsArg>
 
+/**
+ *
+ */
 export type InstanceOptions<PluginsArg extends Plugins = []> =
   SpecificInstanceOptions<PluginsArg>
 
@@ -294,6 +377,9 @@ type SpecificClassOptions<
   >
 } & PluginsOptions<PluginsArg>
 
+/**
+ *
+ */
 export type ClassOptions<PluginsArg extends Plugins = []> =
   SpecificClassOptions<
     PluginsArg,
@@ -305,6 +391,9 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
 type SpecificGlobalOptions<PluginsArg extends Plugins> =
   PluginsOptions<PluginsArg>
 
+/**
+ *
+ */
 export type GlobalOptions<PluginsArg extends Plugins = []> =
   SpecificGlobalOptions<PluginsArg>
 
@@ -388,6 +477,9 @@ type BaseError<
     >
   >
 
+/**
+ *
+ */
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
   ErrorProps,
@@ -426,6 +518,9 @@ type ErrorSubclass<
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
 > = {
+  /**
+   *
+   */
   new <
     InstanceOptionsArg extends ParentInstanceOptions<
       PluginsArg,
@@ -452,6 +547,9 @@ type ErrorSubclass<
     ErrorNameArg,
     AggregateErrorsOption
   >
+  /**
+   *
+   */
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
@@ -460,6 +558,9 @@ type ErrorSubclass<
   >
 } & CustomStaticAttributes<PluginsArg, ParentErrorClass>
 
+/**
+ *
+ */
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
   ErrorProps,
@@ -541,23 +642,23 @@ type NormalizeError<
       SpecificInstanceOptions<PluginsArg>
     >
 
-/**
- * Base error class.
- *
- * @example
- * ```js
- * try {
- *   throw new AuthError('...')
- * } catch (cause) {
- *   // Still an AuthError
- *   throw new AnyError('...', { cause })
- * }
- * ```
- */
 type SpecificAnyErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
 > = {
+  /**
+   * Base error class.
+   *
+   * @example
+   * ```js
+   * try {
+   *   throw new AuthError('...')
+   * } catch (cause) {
+   *   // Still an AuthError
+   *   throw new AnyError('...', { cause })
+   * }
+   * ```
+   */
   new <InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg> = {}>(
     message: string,
     options?: NoAdditionalProps<
@@ -615,6 +716,9 @@ type SpecificAnyErrorClass<
   ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
 } & PluginsStaticMethods<PluginsArg>
 
+/**
+ *
+ */
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
   SpecificAnyErrorClass<PluginsArg, ErrorProps>
 
