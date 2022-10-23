@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { getErrorPluginInfo } from '../plugin_info.js'
+import { getErrorPluginInfo } from '../info/main.js'
 
 import { assignError } from './assign.js'
 import { getAllValues } from './previous.js'

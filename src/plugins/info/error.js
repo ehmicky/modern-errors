@@ -1,5 +1,5 @@
-import { mergeClassOpts } from '../options/merge.js'
-import { finalizePluginsOpts } from '../options/plugins.js'
+import { mergeClassOpts } from '../../options/merge.js'
+import { finalizePluginsOpts } from '../../options/plugins.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
 // `options` and `showStack`.

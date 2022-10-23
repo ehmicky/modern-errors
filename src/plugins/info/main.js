@@ -1,4 +1,4 @@
-import { getErrorInfo } from './error_info.js'
+import { getErrorInfo } from './error.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
 // `staticMethods` since it does not have access to an error.
