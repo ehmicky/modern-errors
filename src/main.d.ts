@@ -315,15 +315,15 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 type AggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = SpecificInstanceOptionsArg['errors'] extends NonNullable<
+  SpecificInstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>['errors'],
+> = SpecificInstanceOptionsArg extends NonNullable<
   SpecificInstanceOptions<PluginsArg>['errors']
 >
   ? {
       errors: NormalizeErrors<
         PluginsArg,
         ErrorPropsArg,
-        SpecificInstanceOptionsArg['errors']
+        SpecificInstanceOptionsArg
       >
     }
   : {}
@@ -342,7 +342,11 @@ type BaseError<
 > = Error &
   SpecificErrorName<ErrorNameArg> &
   SimplifyEmptyObject<
-    AggregateErrors<PluginsArg, ErrorPropsArg, SpecificInstanceOptionsArg>
+    AggregateErrors<
+      PluginsArg,
+      ErrorPropsArg,
+      SpecificInstanceOptionsArg['errors']
+    >
   > &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<
