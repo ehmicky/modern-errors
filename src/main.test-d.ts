@@ -720,28 +720,32 @@ expectError(
   },
 )
 
-AnyError.subclass('TestError', {
+const OneError = AnyError.subclass('OneError', {
   custom: class extends PAnyError {
     property = true as const
   },
 })
-AnyError.subclass('TestError', {
+expectType<true>(new OneError('').property)
+const TwoError = AnyError.subclass('TwoError', {
   custom: class extends PAnyError {
     instanceMethod = (arg: 'arg') => arg
   },
 })
-AnyError.subclass('TestError', {
+expectType<'arg'>(new TwoError('').instanceMethod('arg'))
+const ThreeError = AnyError.subclass('ThreeError', {
   custom: class extends PAnyError {
     static staticMethod(arg: 'arg') {
       return arg
     }
   },
 })
-AnyError.subclass('TestError', {
+const FourError = AnyError.subclass('FourError', {
   custom: class extends PAnyError {
     static staticMethod = (arg: 'arg') => arg
   },
 })
+expectType<'arg'>(ThreeError.staticMethod('arg'))
+expectType<'arg'>(FourError.staticMethod('arg'))
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines
 // expectError(
