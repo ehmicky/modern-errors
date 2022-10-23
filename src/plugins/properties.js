@@ -4,7 +4,9 @@ import { assignError } from './assign.js'
 import { getErrorPluginInfo } from './plugin_info.js'
 import { getAllValues } from './previous.js'
 
-// Set each `plugin.properties()`
+// Set each `plugin.properties()`.
+// A `reduce()` function is used so that plugins can override the same
+// properties, e.g. `message` or `stack`.
 export const setPluginsProperties = function ({
   error,
   AnyError,
@@ -13,27 +15,39 @@ export const setPluginsProperties = function ({
   plugins,
 }) {
   const previousDescriptors = Object.getOwnPropertyDescriptors(error)
-  const allNewProps = plugins.filter(pluginHasProperties).map((plugin) =>
-    getPluginProperties({
-      error,
-      AnyError,
-      ErrorClasses,
-      errorData,
-      plugin,
-      plugins,
-    }),
-  )
-  const newProps = Object.assign({}, ...allNewProps)
-  assignError(error, newProps, plugins)
-  const newDescriptors = Object.getOwnPropertyDescriptors(error)
+  const errorA = applyPluginsProperties({
+    error,
+    AnyError,
+    ErrorClasses,
+    errorData,
+    plugins,
+  })
+  const newDescriptors = Object.getOwnPropertyDescriptors(errorA)
   return getAllValues(previousDescriptors, newDescriptors)
 }
 
-const pluginHasProperties = function ({ properties }) {
-  return properties !== undefined
+const applyPluginsProperties = function ({
+  error,
+  AnyError,
+  ErrorClasses,
+  errorData,
+  plugins,
+}) {
+  return plugins.reduce(
+    (errorA, plugin) =>
+      applyPluginProperties({
+        error: errorA,
+        AnyError,
+        ErrorClasses,
+        errorData,
+        plugin,
+        plugins,
+      }),
+    error,
+  )
 }
 
-const getPluginProperties = function ({
+const applyPluginProperties = function ({
   error,
   AnyError,
   ErrorClasses,
@@ -42,6 +56,10 @@ const getPluginProperties = function ({
   plugin: { properties, fullName },
   plugins,
 }) {
+  if (properties === undefined) {
+    return error
+  }
+
   const info = getErrorPluginInfo({
     error,
     errorData,
@@ -58,5 +76,6 @@ const getPluginProperties = function ({
     )
   }
 
-  return newProps
+  assignError(error, newProps, plugins)
+  return error
 }

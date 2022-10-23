@@ -7,7 +7,15 @@ import { getPluginsMethodNames } from './instance/add.js'
 // `plugin.properties()` returns an object of properties to set.
 // `undefined` values delete properties.
 // Those are shallowly merged.
-// Error core properties are ignored except for `message` and `stack`.
+// Many properties are ignored:
+//  - error core properties (except for `message` and `stack`)
+//  - reserved top-level properties like `constructorArgs`
+//  - instance methods
+// Setting those does not throw since:
+//  - `plugin.properties()`'s return value might be dynamically generated
+//    making it cumbersome for user to filter those.
+//  - Throwing errors at runtime should be done with care since this would
+//    happen during error handling time
 export const assignError = function (
   error,
   { message, stack, ...newProps },
@@ -38,7 +46,4 @@ export const assignError = function (
   setErrorProps(error, keys)
 }
 
-// Reserved top-level properties do not throw: they are silently omitted instead
-// since `newProps` might be dynamically generated making it cumbersome for user
-// to filter those.
 const OMITTED_PROPS = ['wrap', 'constructorArgs']

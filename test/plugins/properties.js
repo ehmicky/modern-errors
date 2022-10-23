@@ -22,7 +22,7 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
 })
 
 test('plugin.properties() is optional', (t) => {
-  const { TestError } = defineClassOpts({}, {}, [
+  const { TestError } = defineGlobalOpts({}, [
     { ...TEST_PLUGIN, properties: undefined },
   ])
   t.false('properties' in new TestError('test'))
@@ -34,7 +34,7 @@ each(
     test(`plugin.properties() can wrap error itself | ${title}`, (t) => {
       const prefix = 'prefix: '
       const message = 'test'
-      const { TestError } = defineClassOpts({}, {}, [
+      const { TestError } = defineGlobalOpts({}, [
         {
           ...TEST_PLUGIN,
           properties({ error, ...info }) {
@@ -50,3 +50,14 @@ each(
     })
   },
 )
+
+test('plugin.properties() can modify the same properties', (t) => {
+  const names = ['one', 'two']
+  const plugins = names.map((name) => ({
+    name,
+    properties: ({ error }) => ({ message: `${error.message}${name}` }),
+  }))
+  const { TestError } = defineGlobalOpts({}, plugins)
+  t.is(new TestError('').message, names.join(''))
+  t.true(new TestError('').stack.includes(names.join('')))
+})
