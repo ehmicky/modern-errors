@@ -319,26 +319,32 @@ type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = InstanceOptionsArg['errors'] extends DefinedAggregateErrorsOption
+> = ConcatAggregateErrors<
+  PluginsArg,
+  InstanceOptionsArg
+> extends DefinedAggregateErrorsOption
   ? NormalizeAggregateErrors<
       PluginsArg,
       ErrorPropsArg,
-      'errors' extends keyof InstanceOptionsArg['cause']
-        ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-          ? [
-              ...InstanceOptionsArg['cause']['errors'],
-              ...InstanceOptionsArg['errors'],
-            ]
-          : InstanceOptionsArg['errors']
-        : InstanceOptionsArg['errors']
+      ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
     >
+  : ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
+
+type ConcatAggregateErrors<
+  PluginsArg extends Plugins,
+  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+> = InstanceOptionsArg['errors'] extends DefinedAggregateErrorsOption
+  ? 'errors' extends keyof InstanceOptionsArg['cause']
+    ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
+      ? [
+          ...InstanceOptionsArg['cause']['errors'],
+          ...InstanceOptionsArg['errors'],
+        ]
+      : InstanceOptionsArg['errors']
+    : InstanceOptionsArg['errors']
   : 'errors' extends keyof InstanceOptionsArg['cause']
   ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-    ? NormalizeAggregateErrors<
-        PluginsArg,
-        ErrorPropsArg,
-        InstanceOptionsArg['cause']['errors']
-      >
+    ? InstanceOptionsArg['cause']['errors']
     : undefined
   : undefined
 
