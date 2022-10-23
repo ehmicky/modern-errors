@@ -1,9 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
-import type {
-  Plugins,
-  PluginsInstanceMethods,
-  PluginsProperties,
-} from './plugins/main.js'
+import type { Plugins, PluginsInstanceMethods } from './plugins/main.js'
+import type { PluginsProperties } from './plugins/properties.js'
 import type { AggregateErrorsOption, AggregateErrorsProp } from './aggregate.js'
 import type { ErrorProps } from './props.js'
 import type { CustomAttributes } from './attributes.js'

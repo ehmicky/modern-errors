@@ -85,7 +85,7 @@ type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
 interface StaticMethods {
   readonly [MethodName: string]: StaticMethod
 }
-type GetProperties = (info: Info['properties']) => {
+export type GetProperties = (info: Info['properties']) => {
   [PropName: string]: unknown
 }
 
@@ -192,13 +192,3 @@ type PluginStaticMethods<PluginArg extends Plugin> =
 
 export type PluginsStaticMethods<PluginsArg extends Plugins> =
   UnionToIntersection<PluginStaticMethods<PluginsArg[number]>>
-
-type PluginProperties<PluginArg extends Plugin> = PluginArg extends Plugin
-  ? PluginArg['properties'] extends GetProperties
-    ? ReturnType<PluginArg['properties']>
-    : {}
-  : {}
-
-export type PluginsProperties<PluginsArg extends Plugins> = UnionToIntersection<
-  PluginProperties<PluginsArg[number]>
->
