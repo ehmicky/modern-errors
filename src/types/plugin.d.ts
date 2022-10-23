@@ -3,6 +3,7 @@ import type { AnyErrorClass } from './any.js'
 import type { ErrorClass } from './class.js'
 import type { ErrorInstance } from './instance.js'
 import type { MethodOptions } from './options.js'
+import type { SliceFirst, UnionToIntersection } from './utils.js'
 
 /**
  *
@@ -132,19 +133,6 @@ export interface Plugin {
 }
 
 export type Plugins = readonly Plugin[]
-
-type UnionToIntersection<T> = (
-  T extends any ? (arg: T) => any : never
-) extends (arg: infer U) => any
-  ? U
-  : never
-
-type SliceFirst<Tuple extends unknown[]> = Tuple extends [
-  unknown,
-  ...infer Rest,
-]
-  ? Rest
-  : []
 
 type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
