@@ -12,6 +12,12 @@ import type {
   AggregateErrorsProp,
 } from './aggregate.js'
 import type { ErrorProps, MergeErrorProps } from './props.js'
+import type {
+  CustomAttributes,
+  CustomInstanceAttributes,
+  AddCustomAttributes,
+  CustomStaticAttributes,
+} from './attributes.js'
 
 type NoAdditionalProps<
   T extends object,
@@ -36,43 +42,6 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
  */
 export type MethodOptions<PluginArg extends Plugin> =
   ExternalPluginOptions<PluginArg>
-
-type CustomAttributes = object
-
-type OmitCustomName<CustomAttributesArg extends CustomAttributes> =
-  'name' extends keyof CustomAttributesArg
-    ? Omit<CustomAttributesArg, 'name'>
-    : CustomAttributesArg
-
-type CustomInstanceAttributes<
-  Parent extends CustomAttributes,
-  Child extends unknown,
-> = Child extends Parent
-  ? {
-      [ChildKey in keyof Child as ChildKey extends keyof Parent
-        ? Parent[ChildKey] extends Child[ChildKey]
-          ? never
-          : ChildKey
-        : ChildKey]: Child[ChildKey]
-    }
-  : {}
-
-type AddCustomAttributes<
-  PluginsArg extends Plugins,
-  ParentAnyErrorClass extends ErrorConstructor<PluginsArg>,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = OmitCustomName<
-  CustomInstanceAttributes<
-    InstanceType<ParentAnyErrorClass>,
-    InstanceType<ParentErrorClass>
-  >
->
-
-type CustomStaticAttributes<
-  PluginsArg extends Plugins,
-  ParentAnyErrorClass extends ErrorConstructor<PluginsArg>,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = Intersect<{}, ParentErrorClass, keyof ParentAnyErrorClass>
 
 export interface CorePluginsOptions {
   /**
@@ -193,7 +162,7 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 type CoreErrorProps = keyof Error | 'errors'
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
 
-type Intersect<
+export type Intersect<
   Source extends object,
   Target extends unknown,
   OmittedKeys extends PropertyKey,
@@ -240,7 +209,7 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   AggregateErrorsOption
 >
 
-type ErrorConstructor<PluginsArg extends Plugins> = new (
+export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
   options?: SpecificInstanceOptions<PluginsArg>,
   ...extra: any[]
