@@ -312,14 +312,15 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 
 type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
-type AggregateErrorsOption = unknown[] | undefined
+type DefinedAggregateErrorsOption = unknown[]
+type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
 
 type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = InstanceOptionsArg['errors'] extends NonNullable<AggregateErrorsOption>
+> = InstanceOptionsArg['errors'] extends DefinedAggregateErrorsOption
   ? 'errors' extends keyof InstanceOptionsArg['cause']
-    ? InstanceOptionsArg['cause']['errors'] extends NonNullable<AggregateErrorsOption>
+    ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
       ? [
           ...InstanceOptionsArg['cause']['errors'],
           ...InstanceOptionsArg['errors'],
@@ -327,7 +328,7 @@ type GetAggregateErrorsOption<
       : InstanceOptionsArg['errors']
     : InstanceOptionsArg['errors']
   : 'errors' extends keyof InstanceOptionsArg['cause']
-  ? InstanceOptionsArg['cause']['errors'] extends NonNullable<AggregateErrorsOption>
+  ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
     ? InstanceOptionsArg['cause']['errors']
     : undefined
   : undefined
