@@ -599,6 +599,16 @@ expectError(CCError.subclass('TestError', { custom: class extends CError {} }))
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
     constructor(
+      message: string,
+      options?: ConstructorParameters<typeof AnyError>[1],
+    ) {
+      super(message, options)
+    }
+  },
+})
+AnyError.subclass('TestError', {
+  custom: class extends AnyError {
+    constructor(
       message: ConstructorParameters<typeof AnyError>[0],
       options?: ConstructorParameters<typeof AnyError>[1],
     ) {
