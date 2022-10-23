@@ -312,13 +312,12 @@ export type GlobalOptions<PluginsArg extends Plugins = []> =
 
 type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
-type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> = {
-  [ErrorsKey in 'errors' as MainInstanceOptionsArg['errors'] extends NonNullable<
+type AggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> =
+  MainInstanceOptionsArg['errors'] extends NonNullable<
     MainInstanceOptions['errors']
   >
-    ? ErrorsKey
-    : never]: MainInstanceOptionsArg['errors']
-}
+    ? { errors: MainInstanceOptionsArg['errors'] }
+    : {}
 
 type SimplifyEmptyObject<T extends unknown> = keyof T extends never ? {} : T
 
