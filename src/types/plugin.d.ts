@@ -4,7 +4,7 @@ import type {
   ErrorClass,
   ErrorInstance,
   MethodOptions,
-} from './main.js'
+} from './to_sort.js'
 
 /**
  *

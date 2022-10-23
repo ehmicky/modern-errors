@@ -3,7 +3,7 @@ import type {
   ErrorProps,
   NormalizeError,
   SpecificInstanceOptions,
-} from './main.js'
+} from './to_sort.js'
 
 type DefinedAggregateErrorsOption = unknown[]
 export type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
