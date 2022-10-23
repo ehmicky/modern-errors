@@ -412,7 +412,7 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
   ErrorProps,
   ErrorConstructor<PluginsArg>,
-  ErrorInstance<PluginsArg>,
+  CustomAttributes,
   ErrorName
 >
 
