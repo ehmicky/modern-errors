@@ -189,6 +189,13 @@ type GetCustomAttributes<
     }
   : {}
 
+type CustomStaticAttributes<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor,
+> = SimplifyEmptyObject<
+  Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorProps>>
+>
+
 type ErrorProps = object
 
 type MergeProps<
@@ -383,9 +390,7 @@ type ErrorSubclass<
     ParentErrorClass,
     CustomAttributesArg
   >
-} & SimplifyEmptyObject<
-  Omit<ParentErrorClass, keyof SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>
->
+} & CustomStaticAttributes<PluginsArg, ParentErrorClass>
 
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
