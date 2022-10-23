@@ -128,12 +128,3 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
     ErrorConstructor<PluginsArg>,
     CustomAttributes
   >
-
-type SpecificGlobalOptions<PluginsArg extends Plugins> =
-  PluginsOptions<PluginsArg>
-
-/**
- *
- */
-export type GlobalOptions<PluginsArg extends Plugins = []> =
-  SpecificGlobalOptions<PluginsArg>
