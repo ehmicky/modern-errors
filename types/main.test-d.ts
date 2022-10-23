@@ -18,6 +18,8 @@ import modernErrors, {
   Info,
 } from './main.js'
 
+import './any/aggregate.test-d.js'
+import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
 import './options/global.test-d.js'
 import './options/instance.test-d.js'
@@ -229,77 +231,6 @@ expectType<true>(new AnyError('', { cause }).prop)
 expectAssignable<InstanceOptions>({ cause: '' })
 expectNotAssignable<GlobalOptions>({ cause: '' })
 expectNotAssignable<ClassOptions>({ cause: '' })
-
-modernErrors([], { props: {} })
-AnyError.subclass('TestError', { props: {} })
-SError.subclass('TestError', { props: {} })
-new AnyError('', { cause: '', props: {} })
-new CCError('', { cause: '', props: {} })
-expectAssignable<GlobalOptions>({ props: {} })
-expectAssignable<ClassOptions>({ props: {} })
-expectAssignable<InstanceOptions>({ props: {} })
-expectError(modernErrors([], { props: true }))
-expectError(AnyError.subclass('TestError', { props: true }))
-expectError(SError.subclass('TestError', { props: true }))
-expectError(new AnyError('', { cause: '', props: true }))
-expectError(new CCError('', { props: true }))
-expectNotAssignable<GlobalOptions>({ props: true })
-expectNotAssignable<ClassOptions>({ props: true })
-expectNotAssignable<InstanceOptions>({ props: true })
-const QAnyError = modernErrors([], {
-  props: { one: true as const, three: false as const },
-})
-const SQAError = QAnyError.subclass('SQAError')
-const SSQAError = SQAError.subclass('SSQAError')
-const QError = AnyError.subclass('QError', {
-  props: { one: true as const, three: false as const },
-})
-const SQError = QError.subclass('SQError')
-const QSError = SError.subclass('QSError', {
-  props: { one: true as const, three: false as const },
-})
-const MQAError = QAnyError.subclass('MQAError', {
-  props: { two: true as const, three: true as const },
-})
-const MSQAError = SQAError.subclass('MSQAError', {
-  props: { two: true as const, three: true as const },
-})
-const MQError = QError.subclass('MQError', {
-  props: { two: true as const, three: true as const },
-})
-expectType<true>(new QAnyError('', { cause: '' }).one)
-expectType<true>(new SQAError('', { cause: '' }).one)
-expectType<true>(new SSQAError('', { cause: '' }).one)
-expectType<true>(new QError('', { cause: '' }).one)
-expectType<true>(new SQError('', { cause: '' }).one)
-expectType<true>(new QSError('', { cause: '' }).one)
-expectType<true>(
-  new AnyError('', { cause: '', props: { one: true as const } }).one,
-)
-expectType<true>(new CCError('', { props: { one: true as const } }).one)
-expectAssignable<{ one: true; two: true; three: true }>(new MQAError(''))
-expectAssignable<{ one: true; two: true; three: true }>(new MSQAError(''))
-expectAssignable<{ one: true; two: true; three: true }>(
-  new QAnyError('', {
-    cause: '',
-    props: { two: true as const, three: true as const },
-  }),
-)
-expectAssignable<{ one: true; two: true; three: true }>(new MQError(''))
-expectAssignable<{ one: true; two: true; three: true }>(
-  new QError('', { props: { two: true as const, three: true as const } }),
-)
-expectAssignable<{ one: true; two: true; three: true }>(
-  new QSError('', { props: { two: true as const, three: true as const } }),
-)
-expectAssignable<{ one: true; two: true; three: true }>(
-  new AnyError('', {
-    cause: new SError('', {
-      props: { two: true as const, three: false as const },
-    }),
-    props: { one: true as const, three: true as const },
-  }),
-)
 
 const name = 'test'
 const getOptions = (input: true, full: boolean) => input
