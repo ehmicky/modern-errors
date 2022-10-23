@@ -1,5 +1,6 @@
 import type { Plugins } from './plugin.js'
-import type { NormalizeError, SpecificInstanceOptions } from './to_sort.js'
+import type { NormalizeError } from './to_sort.js'
+import type { SpecificInstanceOptions } from './options.js'
 import type { ErrorProps } from './props.js'
 
 type DefinedAggregateErrorsOption = unknown[]

@@ -1,4 +1,4 @@
-import type { CorePluginsOptions } from './to_sort.js'
+import type { CorePluginsOptions } from './options.js'
 
 export type ErrorProps = object
 

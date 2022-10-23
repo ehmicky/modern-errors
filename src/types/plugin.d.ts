@@ -1,10 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
-import type {
-  AnyErrorClass,
-  ErrorClass,
-  ErrorInstance,
-  MethodOptions,
-} from './to_sort.js'
+import type { AnyErrorClass, ErrorClass, ErrorInstance } from './to_sort.js'
+import type { MethodOptions } from './options.js'
 
 /**
  *

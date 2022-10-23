@@ -1,15 +1,17 @@
 import type { Plugin, Plugins, Info } from './plugin.js'
 import type {
+  ErrorInstance,
+  ErrorClass,
+  AnyErrorClass,
+  SpecificAnyErrorClass,
+} from './to_sort.js'
+import type {
   MethodOptions,
   InstanceOptions,
   ClassOptions,
   GlobalOptions,
-  ErrorInstance,
-  ErrorClass,
-  AnyErrorClass,
   PluginsOptions,
-  SpecificAnyErrorClass,
-} from './to_sort.js'
+} from './options.js'
 import type { GetPropsOption } from './props.js'
 
 export type {
