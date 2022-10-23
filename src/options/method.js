@@ -1,4 +1,4 @@
-import { mergePluginsOpts } from '../plugins/merge.js'
+import { mergePluginsOpts } from './merge.js'
 
 // We return `true` by default to enforce defining `plugin.isOptions()` to be
 // able to use any `static|instanceMethods` with arguments

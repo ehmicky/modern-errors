@@ -1,9 +1,9 @@
 import isPlainObj from 'is-plain-obj'
 
 import { deepClone } from '../plugins/clone.js'
-import { mergePluginsOpts } from '../plugins/merge.js'
 import { validatePluginsOptsNames } from '../plugins/name.js'
 
+import { mergePluginsOpts } from './merge.js'
 import { getPluginOpts } from './plugins.js'
 
 // Validate and compute class options when `modernErrors()` is called so this
