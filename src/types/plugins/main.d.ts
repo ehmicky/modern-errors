@@ -1,6 +1,6 @@
 import type { StaticMethods } from './static.js'
 import type { InstanceMethods } from './instance.js'
-import type { GetOptions, IsOptions } from './options.js'
+import type { GetOptions, IsOptions } from './get.js'
 import type { GetProperties } from './properties.js'
 
 /**
