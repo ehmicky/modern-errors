@@ -244,7 +244,7 @@ type OmitCustomName<CustomAttributesArg extends CustomAttributes> =
     ? Omit<CustomAttributesArg, 'name'>
     : CustomAttributesArg
 
-type GetCustomAttributes<
+type CustomInstanceAttributes<
   Parent extends CustomAttributes,
   Child extends unknown,
 > = Child extends Parent
@@ -259,19 +259,19 @@ type GetCustomAttributes<
 
 type AddCustomAttributes<
   PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  CustomClass extends ErrorConstructor<PluginsArg>,
+  ParentAnyErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = OmitCustomName<
-  GetCustomAttributes<
-    InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
-    InstanceType<CustomClass>
+  CustomInstanceAttributes<
+    InstanceType<ParentAnyErrorClass>,
+    InstanceType<ParentErrorClass>
   >
 >
 
 type CustomStaticAttributes<
   PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   ParentAnyErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = Intersect<{}, ParentErrorClass, keyof ParentAnyErrorClass>
 
 type ErrorProps = object
@@ -580,8 +580,8 @@ type ErrorSubclass<
   >
 } & CustomStaticAttributes<
   PluginsArg,
-  ParentErrorClass,
-  SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
+  SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+  ParentErrorClass
 >
 
 /**
@@ -616,7 +616,11 @@ type CreateSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
-      AddCustomAttributes<PluginsArg, ErrorPropsArg, ClassOptionsArg['custom']>,
+      AddCustomAttributes<
+        PluginsArg,
+        SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+        ClassOptionsArg['custom']
+      >,
       ErrorNameArg
     >
   : ErrorSubclass<
@@ -641,7 +645,7 @@ type AnyErrorInstance<
 > = BaseError<
   PluginsArg,
   ErrorPropsArg,
-  GetCustomAttributes<Error, ErrorArg>,
+  CustomInstanceAttributes<Error, ErrorArg>,
   NormalizedErrorName<ErrorArg>,
   GetAggregateErrorsOption<
     PluginsArg,
