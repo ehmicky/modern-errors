@@ -674,12 +674,8 @@ type SpecificAnyErrorClass<
     InstanceOptionsArg['cause'],
     InstanceOptionsArg
   >
-  readonly prototype: BaseError<
-    PluginsArg,
-    ErrorPropsArg,
-    {},
-    ErrorName,
-    AggregateErrorsOption
+  readonly prototype: InstanceType<
+    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
   >
 
   /**
