@@ -4,8 +4,16 @@ import modernErrors, { ClassOptions } from '../main.js'
 
 const AnyError = modernErrors()
 const PAnyError = modernErrors([{ name: 'test' as const }])
-const SError = AnyError.subclass('SError')
-const SSError = SError.subclass('SSError')
+const SError = AnyError.subclass('SError', {
+  custom: class extends AnyError {
+    prop = true
+  },
+})
+const SSError = SError.subclass('SSError', {
+  custom: class extends SError {
+    otherProp = true
+  },
+})
 
 expectAssignable<ClassOptions>({})
 expectNotAssignable<ClassOptions>(true)
