@@ -1,6 +1,6 @@
 export type Intersect<
   Source extends object,
-  Target extends unknown,
+  Target extends object,
   OmittedKeys extends PropertyKey,
 > = keyof Target extends OmittedKeys
   ? Source
