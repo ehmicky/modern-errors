@@ -9,10 +9,6 @@ import {
 } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-test('Cannot pass global "custom"', (t) => {
-  t.throws(defineGlobalOpts.bind(undefined, { custom: true }))
-})
-
 each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   test(`Validate invalid global and class options | ${title}`, (t) => {
     t.throws(defineOpts.bind(undefined, true))
@@ -34,10 +30,6 @@ each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
   test(`Cannot pass unknown options | ${title}`, (t) => {
     t.throws(defineOpts.bind(undefined, { one: true }))
   })
-})
-
-test('plugin.getOptions() full is false for global options', (t) => {
-  t.throws(defineGlobalOpts.bind(undefined, { prop: 'partial' }))
 })
 
 test('plugin.getOptions() full is false for class options', (t) => {
