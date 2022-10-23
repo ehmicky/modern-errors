@@ -235,6 +235,14 @@ type SpecificInstanceOptions<PluginsArg extends Plugins> = MainInstanceOptions &
 export type InstanceOptions<PluginsArg extends Plugins = []> =
   SpecificInstanceOptions<PluginsArg>
 
+type BareConstructor = new (...args: any[]) => any
+
+type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
+  new (
+    ...args: ConstructorParameters<ConstructorArg>
+  ): InstanceType<ConstructorArg>
+} & { [Key in keyof ConstructorArg]: ConstructorArg[Key] }
+
 /**
  * Class-specific options
  */
@@ -277,12 +285,14 @@ type SpecificClassOptions<
    * console.log(error.isUserInput())
    * ```
    */
-  readonly custom?: ErrorSubclass<
-    PluginsArg,
-    ErrorPropsArg,
-    ParentErrorClass,
-    CustomAttributesArg,
-    ErrorName
+  readonly custom?: NonGenericConstructor<
+    ErrorSubclass<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg,
+      ErrorName
+    >
   >
 } & PluginsOptions<PluginsArg>
 
