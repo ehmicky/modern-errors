@@ -28,7 +28,9 @@ import './plugins/instance.test-d.js'
 import './plugins/properties.test-d.js'
 import './plugins/shape.test-d.js'
 import './plugins/static.test-d.js'
+import './subclass/inherited.test-d.js'
 import './subclass/main.test-d.js'
+import './subclass/name.test-d.js'
 
 const exception = {} as unknown
 
@@ -225,9 +227,6 @@ expectError(CCError.subclass())
 expectError(AnyError.subclass({}))
 expectError(PAnyError.subclass({}))
 expectError(CCError.subclass({}))
-expectType<never>(AnyError.subclass('AnyError'))
-expectType<never>(PAnyError.subclass('AnyError'))
-expectType<never>(CCError.subclass('AnyError'))
 expectError(AnyError.subclass('Test'))
 expectError(PAnyError.subclass('Test'))
 expectError(CCError.subclass('Test'))
