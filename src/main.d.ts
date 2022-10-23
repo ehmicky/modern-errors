@@ -552,6 +552,25 @@ type SpecificAnyErrorClass<
 export type AnyErrorClass<PluginsArg extends Plugins = []> =
   SpecificAnyErrorClass<PluginsArg, ErrorProps>
 
+// Known limitations of current types:
+//  - Plugin methods cannot be generic
+//  - If two `plugin.properties()` return the same property, they are
+//    intersected using `&`, instead of the second one overriding the first.
+//    Therefore, the type of `plugin.properties()` that are not unique should
+//    currently be wide to avoid the `&` intersection resulting in `never`.
+//  - Type narrowing with `instanceof` does not always work due to:
+//      https://github.com/microsoft/TypeScript/issues/50844
+//    This applies:
+//     - With `AnyError` if there are any plugins with static methods
+//     - With any error class with a `custom` option
+//  - `AnyError` does not always respect proper inheritance, i.e. it sometimes
+//    has stronger constraints than its subclasses, resulting in the following
+//    runtime behavior which cannot be typed:
+//     - `new AnyError()` should require a second argument as an object with a
+//       `cause` property
+//  - `new ErrorClass('...', { cause })` (as opposed to
+//    `new AnyError('...', { cause })`) should delete `props` set by `cause`.
+//    At the moment, those are kept.
 /**
  * Creates and returns `AnyError`.
  *
