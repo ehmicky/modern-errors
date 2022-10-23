@@ -21,6 +21,7 @@ import type {
   SpecificClassOptions,
   SpecificInstanceOptions,
 } from './options.js'
+import type { Intersect } from './utils.js'
 
 type NoAdditionalProps<
   T extends object,
@@ -31,14 +32,6 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 
 type CoreErrorProps = keyof Error | 'errors'
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
-
-export type Intersect<
-  Source extends object,
-  Target extends unknown,
-  OmittedKeys extends PropertyKey,
-> = keyof Target extends OmittedKeys
-  ? Source
-  : Source & Omit<Target, OmittedKeys>
 
 type BaseError<
   PluginsArg extends Plugins,
