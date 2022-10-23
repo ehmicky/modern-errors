@@ -239,6 +239,18 @@ expectAssignable<[UnknownInstance]>(
 expectAssignable<[UnknownInstance]>(
   new CCError('', { cause: new CCError('', { errors: unknownErrors }) }).errors,
 )
+expectAssignable<[UnknownInstance, CCInstance]>(
+  new AnyError('', {
+    cause: new CCError('', { errors: unknownErrors }),
+    errors: knownErrors,
+  }).errors,
+)
+expectAssignable<[UnknownInstance, CCInstance]>(
+  new CCError('', {
+    cause: new CCError('', { errors: unknownErrors }),
+    errors: knownErrors,
+  }).errors,
+)
 expectError(new AnyError('', { cause: '' }).errors)
 expectError(new CCError('').errors)
 expectError(new AnyError('', { cause: '', errors: true }))
