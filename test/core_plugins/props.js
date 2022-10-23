@@ -65,3 +65,12 @@ test('"props" cannot unset "message"', (t) => {
   const error = new TestError(message, { cause })
   t.is(error.message, message)
 })
+
+test('"props" have less priority than other plugin.properties()', (t) => {
+  t.true(
+    new TestError('message', {
+      prop: { toSet: { prop: true } },
+      props: { prop: false },
+    }).prop,
+  )
+})

@@ -12,10 +12,11 @@ export const normalizePlugins = function (plugins = []) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
-  return [...plugins, ...CORE_PLUGINS].map(normalizePlugin)
+  return [...CORE_PLUGINS, ...plugins].map(normalizePlugin)
 }
 
-// Plugins included by default
+// Plugins included by default.
+// Order is significant, since last plugins `properties()` have priority.
 const CORE_PLUGINS = [PROPS_PLUGIN]
 
 const normalizePlugin = function (plugin) {
