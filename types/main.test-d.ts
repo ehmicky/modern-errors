@@ -54,7 +54,6 @@ expectAssignable<AnyInstance>(sError)
 expectAssignable<ErrorInstance>(sError)
 expectAssignable<Error>(sError)
 expectType<'SError'>(sError.name)
-expectError(SError.normalize(''))
 if (exception instanceof SError) {
   expectType<SInstance>(exception)
 }
@@ -68,8 +67,6 @@ expectAssignable<SInstance>(anyError)
 expectAssignable<ErrorInstance>(anyError)
 expectAssignable<Error>(anyError)
 expectType<'SError'>(anyError.name)
-expectAssignable<SInstance>(AnyError.normalize(sError))
-expectError(AnyError.normalize('', true))
 if (exception instanceof AnyError) {
   expectAssignable<AnyInstance>(exception)
 }
@@ -85,7 +82,6 @@ expectAssignable<AnyInstance>(ssError)
 expectAssignable<ErrorInstance>(ssError)
 expectAssignable<Error>(ssError)
 expectType<'SSError'>(ssError.name)
-expectError(SSError.normalize(''))
 if (exception instanceof SSError) {
   expectType<SSInstance>(exception)
 }
@@ -120,7 +116,6 @@ expectAssignable<Error>(cError)
 expectType<true>(cError.prop)
 expectType<true>(CError.staticProp)
 expectType<'CError'>(cError.name)
-expectError(CError.normalize(''))
 
 const SCError = CError.subclass('SCError')
 type SCInstance = typeof SCError['prototype']
@@ -141,7 +136,6 @@ expectAssignable<Error>(scError)
 expectType<true>(scError.prop)
 expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
-expectError(SCError.normalize(''))
 
 class BCSError extends SError {
   constructor(
@@ -173,7 +167,6 @@ expectAssignable<Error>(csError)
 expectType<true>(csError.prop)
 expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
-expectError(CSError.normalize(''))
 
 class BCCError extends CError {
   constructor(
@@ -208,7 +201,6 @@ expectType<true>(ccError.deepProp)
 expectType<true>(CCError.staticProp)
 expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
-expectError(CCError.normalize(''))
 
 const cause = {} as Error & { prop: true }
 expectType<true>(new AnyError('', { cause }).prop)
@@ -222,18 +214,6 @@ const staticMethods = { staticMethod }
 const plugin = { name, staticMethods } as const
 
 const PAnyError = modernErrors([plugin])
-const PSError = PAnyError.subclass('PSError')
-const GPAnyError = modernErrors([{} as Plugin])
-
-const paError = new PAnyError('', { cause: '' })
-const psError = new PSError('')
-
-type PUnknownInstance = typeof paError
-type GPAErrorInstance = InstanceType<typeof GPAnyError>
-
-expectNotAssignable<PUnknownInstance>(new PAnyError('', { cause: psError }))
-expectNotAssignable<PUnknownInstance>(PAnyError.normalize(psError))
-expectAssignable<GPAErrorInstance>(GPAnyError.normalize(''))
 
 modernErrors([])
 modernErrors([], {})
