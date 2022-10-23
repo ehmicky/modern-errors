@@ -572,10 +572,10 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 
 // Known limitations of current types:
 //  - Plugin methods cannot be generic
-//  - If two `plugin.properties()` return the same property, they are
-//    intersected using `&`, instead of the second one overriding the first.
+//  - If two `plugin.properties()` (or `props`) return the same property, they
+//    are intersected using `&`, instead of the second one overriding the first.
 //    Therefore, the type of `plugin.properties()` that are not unique should
-//    currently be wide to avoid the `&` intersection resulting in `never`.
+//    currently be wide to avoid the `&` intersection resulting in `undefined`.
 //  - Type narrowing with `instanceof` with:
 //     - Any error class with a `custom` option
 //     - `AnyError` if there are any plugins with static methods

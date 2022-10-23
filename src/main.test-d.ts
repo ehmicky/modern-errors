@@ -793,6 +793,11 @@ expectType<Error['cause']>(
   new SError('', { props: { cause: 'test' as const } }).cause,
 )
 expectError(new SError('', { props: { errors: ['test'] } }).errors)
+const DuplicateProppertiesAnyError = modernErrors([
+  { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
+  { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
+])
+expectType<undefined>(new DuplicateProppertiesAnyError('', { cause: '' }).prop)
 
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
