@@ -588,6 +588,9 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //    method `methodName(...) { ... }`.
 //    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
+//  - When a `custom` class overrides a core error property, a plugin's
+//    `properties()` or `instanceMethods`, or `props`, it should work even if
+//    it is not a subtype of it
 //  - When wrapping an error as `cause`:
 //     - The following are ignored, which is expected:
 //        - Error core properties

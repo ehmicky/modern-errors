@@ -744,6 +744,19 @@ const FourError = PAnyError.subclass('FourError', {
   },
 })
 expectError(FourError.staticMethod('arg'))
+const FiveError = AnyError.subclass('FiveError', {
+  custom: class extends AnyError {
+    message = 'test' as const
+  },
+})
+expectType<'test'>(new FiveError('').message)
+const PropsError = AnyError.subclass('PropsError', { props: { one: true } })
+const ChildPropsError = PropsError.subclass('ChildPropsError', {
+  custom: class extends PropsError {
+    one = false as const
+  },
+})
+expectType<false>(new ChildPropsError('').one)
 
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
@@ -760,6 +773,16 @@ expectError(FourError.staticMethod('arg'))
 // expectError(
 //   class extends PAnyError {
 //     static staticMethod = (arg: string) => arg
+//   },
+// )
+// expectError(
+//   class extends AnyError {
+//     message = true
+//   },
+// )
+// expectError(
+//   class extends PropsError {
+//     one = ''
 //   },
 // )
 
