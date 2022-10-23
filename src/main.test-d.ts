@@ -761,7 +761,9 @@ const CorePropsAnyError = modernErrors([
         stack: 'test',
         cause: 'test',
         errors: ['test'],
+        two: 'test',
       } as const),
+    instanceMethods: { one: () => {}, two: () => {} },
   },
 ])
 const corePropsError = new CorePropsAnyError('', { cause: '' })
@@ -770,6 +772,10 @@ expectType<'test'>(corePropsError.stack)
 expectType<'UnknownError'>(corePropsError.name)
 expectType<Error['cause']>(corePropsError.cause)
 expectError(corePropsError.errors)
+expectNotAssignable<string>(corePropsError.two)
+expectNotAssignable<string>(
+  new CorePropsAnyError('', { cause: '', props: { one: '' } }).one,
+)
 expectType<'test'>(
   new SError('', { props: { message: 'test' as const } }).message,
 )
