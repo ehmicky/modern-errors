@@ -1,4 +1,5 @@
 import type { ErrorName } from 'error-custom-class'
+
 import type { Plugins } from '../plugins/main.js'
 import type { GetAggregateErrorsOption } from '../any/aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
@@ -9,6 +10,8 @@ import type { SpecificClassOptions } from '../options/class.js'
 import type { ErrorInstance, BaseError } from '../any/modify.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { SpecificAnyErrorClass } from '../any/main.js'
+
+import type { IsForbiddenClassName } from './name.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
@@ -113,7 +116,7 @@ export type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => ErrorNameArg extends 'AnyError'
+) => IsForbiddenClassName<ErrorNameArg> extends true
   ? never
   : ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
   ? ErrorSubclass<
