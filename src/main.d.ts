@@ -577,6 +577,10 @@ export type AnyErrorClass<PluginsArg extends Plugins = []> =
 //  - `new ErrorClass('...', { cause })` (as opposed to
 //    `new AnyError('...', { cause })`) should delete `props` set by `cause`.
 //    At the moment, those are kept.
+//  - When a `custom` class overrides a plugin's instance method, it must be
+//    set as a class property `methodName = (...) => ...` instead of as a
+//    method `methodName(...) { ... }`. This is due to the following bug:
+//      https://github.com/microsoft/TypeScript/issues/48125
 /**
  * Creates and returns `AnyError`.
  *
