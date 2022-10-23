@@ -10,8 +10,6 @@ import modernErrors, {
   AnyErrorClass,
   ErrorClass,
   ErrorInstance,
-  GlobalOptions,
-  ClassOptions,
   InstanceOptions,
 } from './main.js'
 
@@ -21,6 +19,7 @@ import './any/modify.test-d.js'
 import './any/normalize.test-d.js'
 import './core_plugins/props.test-d.js'
 import './options/class.test-d.js'
+import './options/instance.test-d.js'
 import './options/plugins.test-d.js'
 import './plugins/info.test-d.js'
 import './plugins/instance.test-d.js'
@@ -203,10 +202,6 @@ expectType<true>(ccError.deepProp)
 expectType<true>(CCError.staticProp)
 expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
-
-expectAssignable<InstanceOptions>({ cause: '' })
-expectNotAssignable<GlobalOptions>({ cause: '' })
-expectNotAssignable<ClassOptions>({ cause: '' })
 
 modernErrors([])
 modernErrors([], {})

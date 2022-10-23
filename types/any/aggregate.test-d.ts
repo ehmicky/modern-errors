@@ -1,10 +1,6 @@
-import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
+import { expectAssignable, expectError } from 'tsd'
 
-import modernErrors, {
-  ClassOptions,
-  InstanceOptions,
-  GlobalOptions,
-} from '../main.js'
+import modernErrors from '../main.js'
 
 const AnyError = modernErrors()
 const UnknownError = AnyError.subclass('UnknownError')
@@ -14,11 +10,6 @@ type SInstance = InstanceType<typeof SError>
 
 const unknownErrors = [true] as [true]
 const knownErrors = [new SError('')] as [SInstance]
-
-expectAssignable<InstanceOptions>({ errors: [''] })
-expectNotAssignable<ClassOptions>({ errors: [''] })
-expectNotAssignable<GlobalOptions>({ errors: [''] })
-expectNotAssignable<InstanceOptions>({ errors: '' })
 
 expectError(new AnyError('', { cause: '' }).errors)
 expectError(new SError('').errors)
