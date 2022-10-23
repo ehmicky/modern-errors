@@ -113,7 +113,9 @@ export type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+) => ErrorNameArg extends 'AnyError'
+  ? never
+  : ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
   ? ErrorSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
