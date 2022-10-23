@@ -1,5 +1,9 @@
 import type { UnionToIntersection } from '../utils.js'
-import type { Plugin, Plugins, GetProperties } from './main.js'
+import type { Plugin, Plugins, Info } from './main.js'
+
+type GetProperties = (info: Info['properties']) => {
+  [PropName: string]: unknown
+}
 
 type PluginProperties<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg['properties'] extends GetProperties

@@ -4,6 +4,8 @@ import type { ErrorClass } from '../class.js'
 import type { ErrorInstance } from '../instance.js'
 import type { StaticMethods } from './static.js'
 import type { InstanceMethods } from './instance.js'
+import type { GetOptions, IsOptions } from './options.js'
+import type { GetProperties } from './properties.js'
 
 /**
  *
@@ -70,14 +72,6 @@ export interface Info {
     CommonInfo,
     'AnyError' | 'ErrorClasses' | 'errorInfo'
   >
-}
-
-type GetOptions = (input: never, full: boolean) => unknown
-
-type IsOptions = (input: unknown) => boolean
-
-export type GetProperties = (info: Info['properties']) => {
-  [PropName: string]: unknown
 }
 
 /**
