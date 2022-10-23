@@ -315,20 +315,16 @@ type SpecificErrorName<ErrorNameArg extends ErrorName> = { name: ErrorNameArg }
 type DefinedAggregateErrorsOption = unknown[]
 type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
 
-type GetAggregateErrorsOption<
+type NormalizeAggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = ConcatAggregateErrors<
-  PluginsArg,
-  InstanceOptionsArg
-> extends DefinedAggregateErrorsOption
-  ? NormalizeAggregateErrors<
-      PluginsArg,
-      ErrorPropsArg,
-      ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
-    >
-  : ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
+  AggregateErrorsArg extends DefinedAggregateErrorsOption,
+> = AggregateErrorsArg extends [infer AggregateErrorArg, ...infer Rest]
+  ? [
+      NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
+      ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
+    ]
+  : AggregateErrorsArg
 
 type ConcatAggregateErrors<
   PluginsArg extends Plugins,
@@ -348,16 +344,20 @@ type ConcatAggregateErrors<
     : undefined
   : undefined
 
-type NormalizeAggregateErrors<
+type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  AggregateErrorsArg extends DefinedAggregateErrorsOption,
-> = AggregateErrorsArg extends [infer AggregateErrorArg, ...infer Rest]
-  ? [
-      NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
-      ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
-    ]
-  : AggregateErrorsArg
+  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+> = ConcatAggregateErrors<
+  PluginsArg,
+  InstanceOptionsArg
+> extends DefinedAggregateErrorsOption
+  ? NormalizeAggregateErrors<
+      PluginsArg,
+      ErrorPropsArg,
+      ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
+    >
+  : ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
 
 type AggregateErrorsProp<AggregateErrorsArg extends AggregateErrorsOption> =
   AggregateErrorsArg extends DefinedAggregateErrorsOption
