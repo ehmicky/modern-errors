@@ -7,10 +7,8 @@ import type {
   AddCustomAttributes,
   CustomStaticAttributes,
 } from './attributes.js'
-import type {
-  SpecificClassOptions,
-  SpecificInstanceOptions,
-} from './options/main.js'
+import type { SpecificInstanceOptions } from './options/main.js'
+import type { SpecificClassOptions } from './options/class.js'
 import type { ErrorInstance, BaseError } from './instance.js'
 import type { NoAdditionalProps } from './utils.js'
 import type { SpecificAnyErrorClass } from './any.js'

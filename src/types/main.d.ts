@@ -6,9 +6,9 @@ import type { ErrorInstance } from './instance.js'
 import type {
   MethodOptions,
   InstanceOptions,
-  ClassOptions,
   PluginsOptions,
 } from './options/main.js'
+import type { ClassOptions } from './options/class.js'
 import type { GlobalOptions } from './options/global.js'
 import type { GetPropsOption } from './props.js'
 
