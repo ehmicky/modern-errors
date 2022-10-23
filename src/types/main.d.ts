@@ -1,27 +1,3 @@
-import type { Plugin, Plugins } from './plugins/main.js'
-import type { Info } from './plugins/info.js'
-import type { AnyErrorClass, SpecificAnyErrorClass } from './any/main.js'
-import type { ErrorClass } from './subclass/main.js'
-import type { ErrorInstance } from './any/modify.js'
-import type { PluginsOptions } from './options/plugins.js'
-import type { MethodOptions } from './options/method.js'
-import type { InstanceOptions } from './options/instance.js'
-import type { ClassOptions } from './options/class.js'
-import type { GlobalOptions } from './options/global.js'
-import type { GetPropsOption } from './core_plugins/props.js'
-
-export type {
-  Plugin,
-  Info,
-  MethodOptions,
-  InstanceOptions,
-  ClassOptions,
-  GlobalOptions,
-  ErrorInstance,
-  ErrorClass,
-  AnyErrorClass,
-}
-
 // Known limitations of current types:
 //  - Plugin methods cannot be generic
 //  - If two `plugin.properties()` (or `props`) return the same property, they
@@ -60,6 +36,30 @@ export type {
 //    applied on errors coming from another `modernErrors()` call, even though
 //    it should (as opposed to errors coming from the same `modernErrors()`
 //    call)
+import type { Plugin, Plugins } from './plugins/main.js'
+import type { Info } from './plugins/info.js'
+import type { AnyErrorClass, SpecificAnyErrorClass } from './any/main.js'
+import type { ErrorClass } from './subclass/main.js'
+import type { ErrorInstance } from './any/modify.js'
+import type { PluginsOptions } from './options/plugins.js'
+import type { MethodOptions } from './options/method.js'
+import type { InstanceOptions } from './options/instance.js'
+import type { ClassOptions } from './options/class.js'
+import type { GlobalOptions } from './options/global.js'
+import type { GetPropsOption } from './core_plugins/props.js'
+
+export type {
+  Plugin,
+  Info,
+  MethodOptions,
+  InstanceOptions,
+  ClassOptions,
+  GlobalOptions,
+  ErrorInstance,
+  ErrorClass,
+  AnyErrorClass,
+}
+
 /**
  * Creates and returns `AnyError`.
  *
