@@ -7,9 +7,6 @@ const PAnyError = modernErrors([{ name: 'test' as const }])
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
 
-expectAssignable<ClassOptions>({})
-expectNotAssignable<ClassOptions>(true)
-
 expectAssignable<ClassOptions>({ custom: AnyError })
 
 expectError(AnyError.subclass('TestError', true))

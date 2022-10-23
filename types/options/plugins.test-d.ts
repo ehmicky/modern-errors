@@ -43,3 +43,11 @@ expectError(new PSError('', { cause: '', other: true }))
 expectNotAssignable<GlobalOptions>({ other: true })
 expectNotAssignable<ClassOptions>({ other: true })
 expectNotAssignable<InstanceOptions>({ other: true })
+
+expectAssignable<InstanceOptions>({})
+expectAssignable<GlobalOptions>({})
+expectAssignable<ClassOptions>({})
+
+expectNotAssignable<InstanceOptions>(true)
+expectNotAssignable<GlobalOptions>(true)
+expectNotAssignable<ClassOptions>(true)
