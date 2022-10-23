@@ -317,37 +317,46 @@ type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
 
 type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
   InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
 > = InstanceOptionsArg['errors'] extends DefinedAggregateErrorsOption
-  ? 'errors' extends keyof InstanceOptionsArg['cause']
-    ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-      ? [
-          ...InstanceOptionsArg['cause']['errors'],
-          ...InstanceOptionsArg['errors'],
-        ]
-      : InstanceOptionsArg['errors']
-    : InstanceOptionsArg['errors']
+  ? NormalizeAggregateErrors<
+      PluginsArg,
+      ErrorPropsArg,
+      'errors' extends keyof InstanceOptionsArg['cause']
+        ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
+          ? [
+              ...InstanceOptionsArg['cause']['errors'],
+              ...InstanceOptionsArg['errors'],
+            ]
+          : InstanceOptionsArg['errors']
+        : InstanceOptionsArg['errors']
+    >
   : 'errors' extends keyof InstanceOptionsArg['cause']
   ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-    ? InstanceOptionsArg['cause']['errors']
+    ? NormalizeAggregateErrors<
+        PluginsArg,
+        ErrorPropsArg,
+        InstanceOptionsArg['cause']['errors']
+      >
     : undefined
   : undefined
 
-type AggregateErrorsProp<
+type NormalizeAggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  AggregateErrorsArg extends MainInstanceOptions['errors'],
-> = AggregateErrorsArg extends NonNullable<MainInstanceOptions['errors']>
-  ? {
-      errors: {
-        [Key in keyof AggregateErrorsArg]: NormalizeError<
-          PluginsArg,
-          ErrorPropsArg,
-          AggregateErrorsArg[Key]
-        >
-      }
-    }
-  : {}
+  AggregateErrorsArg extends DefinedAggregateErrorsOption,
+> = AggregateErrorsArg extends [infer AggregateErrorArg, ...infer Rest]
+  ? [
+      NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
+      ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
+    ]
+  : AggregateErrorsArg
+
+type AggregateErrorsProp<AggregateErrorsArg extends AggregateErrorsOption> =
+  AggregateErrorsArg extends DefinedAggregateErrorsOption
+    ? { errors: AggregateErrorsArg }
+    : {}
 
 type CoreErrorProps = keyof Error | 'errors'
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
@@ -362,9 +371,7 @@ type BaseError<
   AggregateErrorsArg extends AggregateErrorsOption,
 > = Error &
   SpecificErrorName<ErrorNameArg> &
-  SimplifyEmptyObject<
-    AggregateErrorsProp<PluginsArg, ErrorPropsArg, AggregateErrorsArg>
-  > &
+  SimplifyEmptyObject<AggregateErrorsProp<AggregateErrorsArg>> &
   SimplifyEmptyObject<CustomAttributesArg> &
   SimplifyEmptyObject<
     Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps>
@@ -437,7 +444,7 @@ type ErrorSubclass<
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     CustomAttributesArg,
     ErrorNameArg,
-    GetAggregateErrorsOption<PluginsArg, InstanceOptionsArg>
+    GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
   >
   readonly prototype: BaseError<
     PluginsArg,
@@ -515,7 +522,11 @@ type AnyErrorInstance<
   ErrorPropsArg,
   GetCustomAttributes<Error, ErrorArg>,
   NormalizedErrorName<ErrorArg>,
-  GetAggregateErrorsOption<PluginsArg, SpecificInstanceOptionsArg>
+  GetAggregateErrorsOption<
+    PluginsArg,
+    ErrorPropsArg,
+    SpecificInstanceOptionsArg
+  >
 >
 
 type NormalizeError<
