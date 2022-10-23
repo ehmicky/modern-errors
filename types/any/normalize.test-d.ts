@@ -1,12 +1,7 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable, expectError } from 'tsd'
 import type { ErrorName } from 'error-custom-class'
 
-import modernErrors, { Info, Plugin, ErrorInstance } from '../main.js'
+import modernErrors, { Plugin, ErrorInstance } from '../main.js'
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
@@ -57,3 +52,7 @@ expectAssignable<PInstance>(GPAnyError.normalize(psError))
 if (unknownError instanceof AnyError) {
   expectAssignable<UnknownInstance>(unknownError)
 }
+
+const cause = {} as Error & { prop: true }
+expectType<true>(new AnyError('', { cause }).prop)
+expectType<true>(AnyError.normalize(cause).prop)

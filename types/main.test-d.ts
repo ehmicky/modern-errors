@@ -204,8 +204,6 @@ expectType<true>(CCError.staticProp)
 expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 
-const cause = {} as Error & { prop: true }
-expectType<true>(new AnyError('', { cause }).prop)
 expectAssignable<InstanceOptions>({ cause: '' })
 expectNotAssignable<GlobalOptions>({ cause: '' })
 expectNotAssignable<ClassOptions>({ cause: '' })
