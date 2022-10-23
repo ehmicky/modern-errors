@@ -618,6 +618,15 @@ expectError(
 expectError(
   AnyError.subclass('TestError', {
     custom: class extends AnyError {
+      constructor() {
+        super()
+      }
+    },
+  }),
+)
+expectError(
+  AnyError.subclass('TestError', {
+    custom: class extends AnyError {
       constructor(
         message: ConstructorParameters<typeof AnyError>[0],
         options?: true,
