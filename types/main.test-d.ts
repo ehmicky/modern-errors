@@ -27,6 +27,7 @@ import './plugins/instance.test-d.js'
 import './plugins/properties.test-d.js'
 import './plugins/shape.test-d.js'
 import './plugins/static.test-d.js'
+import './subclass/main.test-d.js'
 
 const exception = {} as unknown
 
@@ -246,16 +247,6 @@ const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
 const GPAnyError = modernErrors([{} as Plugin])
 const GPSError = GPAnyError.subclass('GPSError')
-type PErrorClass = ErrorClass<[typeof plugin]>
-
-expectAssignable<ErrorClass>(PAnyError)
-expectAssignable<PErrorClass>(PAnyError)
-expectAssignable<ErrorClass>(PSError)
-expectAssignable<PErrorClass>(PSError)
-expectAssignable<ErrorClass>(GPAnyError)
-expectNotAssignable<PErrorClass>(GPAnyError)
-expectAssignable<ErrorClass>(GPSError)
-expectNotAssignable<PErrorClass>(GPSError)
 
 const paError = new PAnyError('', { cause: '' })
 const psError = new PSError('')

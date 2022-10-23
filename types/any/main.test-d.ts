@@ -2,8 +2,10 @@ import { expectAssignable, expectNotAssignable } from 'tsd'
 
 import modernErrors, { Plugin, AnyErrorClass } from '../main.js'
 
-const name = 'test' as const
-const plugin = { name, staticMethods: { staticMethod: () => '' } }
+const plugin = {
+  name: 'test' as const,
+  staticMethods: { staticMethod: () => '' },
+}
 
 const PAnyError = modernErrors([plugin])
 const PSError = PAnyError.subclass('PSError')
