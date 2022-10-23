@@ -95,8 +95,6 @@ class BCError extends AnyError {
   ) {
     super(message, options, extra)
   }
-  prop = true as const
-  static staticProp = true as const
 }
 const CError = AnyError.subclass('CError', { custom: BCError })
 type CInstance = typeof CError['prototype']
@@ -114,8 +112,6 @@ expectAssignable<CInstance>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<ErrorInstance>(cError)
 expectAssignable<Error>(cError)
-expectType<true>(cError.prop)
-expectType<true>(CError.staticProp)
 expectType<'CError'>(cError.name)
 
 const SCError = CError.subclass('SCError')
@@ -134,8 +130,6 @@ expectAssignable<SCInstance>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<ErrorInstance>(scError)
 expectAssignable<Error>(scError)
-expectType<true>(scError.prop)
-expectType<true>(SCError.staticProp)
 expectType<'SCError'>(scError.name)
 
 class BCSError extends SError {
@@ -146,8 +140,6 @@ class BCSError extends SError {
   ) {
     super(message, options, extra)
   }
-  prop = true as const
-  static staticProp = true as const
 }
 const CSError = SError.subclass('CSError', { custom: BCSError })
 type CSInstance = typeof CSError['prototype']
@@ -165,8 +157,6 @@ expectAssignable<CSInstance>(csError)
 expectAssignable<AnyInstance>(csError)
 expectAssignable<ErrorInstance>(csError)
 expectAssignable<Error>(csError)
-expectType<true>(csError.prop)
-expectType<true>(CSError.staticProp)
 expectType<'CSError'>(csError.name)
 
 class BCCError extends CError {
@@ -177,8 +167,6 @@ class BCCError extends CError {
   ) {
     super(message, options, true)
   }
-  deepProp = true as const
-  static deepStaticProp = true as const
 }
 const CCError = CError.subclass('CCError', { custom: BCCError })
 type CCInstance = typeof CCError['prototype']
@@ -197,10 +185,6 @@ expectAssignable<CCInstance>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<ErrorInstance>(ccError)
 expectAssignable<Error>(ccError)
-expectType<true>(ccError.prop)
-expectType<true>(ccError.deepProp)
-expectType<true>(CCError.staticProp)
-expectType<true>(CCError.deepStaticProp)
 expectType<'CCError'>(ccError.name)
 
 modernErrors([])
