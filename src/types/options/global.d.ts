@@ -1,5 +1,5 @@
 import type { Plugins } from '../plugins/main.js'
-import type { PluginsOptions } from './main.js'
+import type { PluginsOptions } from './plugins.js'
 
 type SpecificGlobalOptions<PluginsArg extends Plugins> =
   PluginsOptions<PluginsArg>

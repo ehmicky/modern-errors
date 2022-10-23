@@ -1,6 +1,6 @@
 import type { Plugins } from '../plugins/main.js'
 import type { AggregateErrorsOption } from '../aggregate.js'
-import type { PluginsOptions } from './main.js'
+import type { PluginsOptions } from './plugins.js'
 
 interface MainInstanceOptions {
   /**

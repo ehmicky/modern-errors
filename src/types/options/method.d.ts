@@ -1,5 +1,5 @@
 import type { Plugin } from '../plugins/main.js'
-import type { ExternalPluginOptions } from './main.js'
+import type { ExternalPluginOptions } from './plugins.js'
 
 /**
  *
