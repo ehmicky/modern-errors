@@ -241,7 +241,7 @@ export type InstanceOptions<PluginsArg extends Plugins = []> =
 type SpecificClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
 > = {
   /**
@@ -290,7 +290,7 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
   SpecificClassOptions<
     PluginsArg,
     ErrorProps,
-    ErrorConstructor,
+    ErrorConstructor<PluginsArg>,
     CustomAttributes
   >
 
@@ -334,27 +334,33 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   MainInstanceOptions
 >
 
-type ErrorConstructor = new (...extra: any[]) => ErrorInstance
+type ErrorConstructor<PluginsArg extends Plugins> = new (
+  message: string,
+  options?: SpecificInstanceOptions<PluginsArg>,
+  ...extra: any[]
+) => ErrorInstance<PluginsArg>
 
 type ParentInstanceOptions<
   PluginsArg extends Plugins,
-  ParentErrorClass extends ErrorConstructor,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
 > = ConstructorParameters<ParentErrorClass>[1] &
   SpecificInstanceOptions<PluginsArg>
 
-type ParentExtra<ParentErrorClass extends ErrorConstructor> =
-  ConstructorParameters<ParentErrorClass> extends [
-    unknown,
-    unknown?,
-    ...infer Extra,
-  ]
-    ? Extra
-    : never
+type ParentExtra<
+  PluginsArg extends Plugins,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+> = ConstructorParameters<ParentErrorClass> extends [
+  unknown,
+  unknown?,
+  ...infer Extra,
+]
+  ? Extra
+  : never
 
 type ErrorSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
 > = {
@@ -369,7 +375,7 @@ type ErrorSubclass<
       InstanceOptionsArg,
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
-    ...extra: ParentExtra<ParentErrorClass>
+    ...extra: ParentExtra<PluginsArg, ParentErrorClass>
   ): BaseError<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
@@ -395,7 +401,7 @@ type ErrorSubclass<
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
   ErrorProps,
-  ErrorConstructor,
+  ErrorConstructor<PluginsArg>,
   ErrorInstance<PluginsArg>,
   ErrorName
 >
@@ -403,7 +409,7 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
 type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
 > = <
   ErrorNameArg extends ErrorName,
@@ -416,7 +422,7 @@ type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => ClassOptionsArg['custom'] extends ErrorConstructor
+) => ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
   ? ErrorSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
