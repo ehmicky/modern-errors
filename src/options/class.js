@@ -3,8 +3,8 @@ import isPlainObj from 'is-plain-obj'
 import { validatePluginsOptsNames } from '../plugins/shape/name.js'
 import { deepClone } from '../utils/clone.js'
 
+import { getPluginOpts } from './get.js'
 import { mergePluginsOpts } from './merge.js'
-import { getPluginOpts } from './plugins.js'
 
 // Validate and compute class options when `modernErrors()` is called so this
 // throws at load time instead of at runtime.

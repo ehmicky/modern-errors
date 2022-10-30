@@ -1,4 +1,4 @@
-import type { GetOptions, IsOptions } from '../options/plugins.js'
+import type { GetOptions, IsOptions } from '../options/get.js'
 import type { StaticMethods } from './static.js'
 import type { InstanceMethods } from './instance.js'
 import type { GetProperties } from './properties.js'

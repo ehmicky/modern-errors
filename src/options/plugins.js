@@ -1,27 +1,7 @@
-import { mergeSpecificCause } from '../any/merge.js'
 import { deepClone } from '../utils/clone.js'
 
+import { getPluginOpts } from './get.js'
 import { mergeMethodOpts } from './method.js'
-
-// `options` is `undefined` unless `plugin.getOptions()` is defined
-//  - This encourages using `plugin.getOptions()`
-export const normalizeGetOptions = function ({
-  plugin,
-  plugin: {
-    fullName,
-    getOptions = defaultGetOptions.bind(undefined, fullName),
-  },
-}) {
-  return { ...plugin, getOptions }
-}
-
-const defaultGetOptions = function (fullName, options) {
-  if (options !== undefined) {
-    throw new Error(
-      `The plugin "${fullName}" does not have any options: ${options}`,
-    )
-  }
-}
 
 // Retrieve, validate and normalize all options for a given plugin.
 // Those are passed to `plugin.properties|instanceMethods.*`.
@@ -69,16 +49,4 @@ export const finalizePluginsOpts = function ({
     full: true,
   })
   return options
-}
-
-export const getPluginOpts = function ({
-  pluginsOpts,
-  plugin: { name, getOptions },
-  full,
-}) {
-  try {
-    return getOptions(pluginsOpts[name], full)
-  } catch (cause) {
-    throw mergeSpecificCause(new Error(`Invalid "${name}" options:`), cause)
-  }
 }

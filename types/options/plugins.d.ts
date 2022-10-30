@@ -25,7 +25,3 @@ export type PluginsOptions<PluginsArg extends Plugins> =
   keyof ExternalPluginsOptions<PluginsArg> extends never
     ? CorePluginsOptions
     : CorePluginsOptions & ExternalPluginsOptions<PluginsArg>
-
-export type GetOptions = (input: never, full: boolean) => unknown
-
-export type IsOptions = (input: unknown) => boolean

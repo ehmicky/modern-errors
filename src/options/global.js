@@ -3,7 +3,7 @@ import isPlainObj from 'is-plain-obj'
 import { validatePluginsOptsNames } from '../plugins/shape/name.js'
 import { deepClone } from '../utils/clone.js'
 
-import { getPluginOpts } from './plugins.js'
+import { getPluginOpts } from './get.js'
 
 // The second argument to `modernErrors()` are global options applied to all
 // classes.
