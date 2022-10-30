@@ -464,20 +464,20 @@ const testPlugin: Plugin = plugin
 Plugins can either be kept private or be published on npm. When public, we
 recommend the following conventions:
 
-- [] The npm package name should be `[@scope/]modern-errors-${plugin.name}`
-- [] The repository name should match the npm package name
-- [] `"modern-errors"` and `"modern-errors-plugin"` should be added as both
-  [`package.json` `keywords`](https://www.npmjs.com/search?q=keywords:modern-errors-plugin)
-  and [GitHub topics](https://github.com/topics/modern-errors-plugin)
-- [] `"modern-errors"` should be added in the `package.json`'s
-  [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies),
-  not in the production `dependencies`, `devDependencies` nor
-  `bundledDependencies`. Its semver range should start with `^`. Also,
-  [`peerDependenciesMeta.modern-errors.optional`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependenciesmeta)
-  should not be used.
-- [] The plugin should export its [types](#typescript) for TypeScript users
-- [] Please create an issue on the `modern-errors` repository so we can add the
-  plugin to the [list of available ones](../README.md#plugins)! 🎉
+- [ ] The npm package name should be `[@scope/]modern-errors-${plugin.name}`
+- [ ] The repository name should match the npm package name
+- [ ] `"modern-errors"` and `"modern-errors-plugin"` should be added as both
+      [`package.json` `keywords`](https://www.npmjs.com/search?q=keywords:modern-errors-plugin)
+      and [GitHub topics](https://github.com/topics/modern-errors-plugin)
+- [ ] `"modern-errors"` should be added in the `package.json`'s
+      [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies),
+      not in the production `dependencies`, `devDependencies` nor
+      `bundledDependencies`. Its semver range should start with `^`. Also,
+      [`peerDependenciesMeta.modern-errors.optional`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependenciesmeta)
+      should not be used.
+- [ ] The plugin should export its [types](#typescript) for TypeScript users
+- [ ] Please create an issue on the `modern-errors` repository so we can add the
+      plugin to the [list of available ones](../README.md#plugins)! 🎉
 
 ## Best practices
 
