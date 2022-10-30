@@ -4,8 +4,9 @@ import modernErrors from '../main.js'
 
 const AnyError = modernErrors()
 const UnknownError = AnyError.subclass('UnknownError')
-type UnknownInstance = InstanceType<typeof UnknownError>
 const SError = AnyError.subclass('SError')
+
+type UnknownInstance = InstanceType<typeof UnknownError>
 type SInstance = InstanceType<typeof SError>
 
 const unknownErrors = [true] as [true]

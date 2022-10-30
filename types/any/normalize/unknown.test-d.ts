@@ -1,7 +1,7 @@
-import { expectType, expectAssignable, expectError } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 import type { ErrorName } from 'error-custom-class'
 
-import modernErrors, { Plugin, ErrorInstance } from '../main.js'
+import modernErrors, { ErrorInstance } from '../../main.js'
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
@@ -26,33 +26,3 @@ expectAssignable<UnknownInstance>(AnyError.normalize(''))
 expectType<'UnknownError'>(unknownError.name)
 expectType<'UnknownError'>('' as UnknownInstance['name'])
 expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])
-
-expectError(AnyError.normalize('', true))
-
-const SError = AnyError.subclass('SError')
-const sError = new SError('')
-type SInstance = typeof SError['prototype']
-
-expectAssignable<SInstance>(new AnyError('', { cause: sError }))
-expectAssignable<SInstance>(AnyError.normalize(sError))
-
-const PAnyError = modernErrors([{ name: 'test' as const }])
-const PSError = PAnyError.subclass('PSError')
-const psError = new PSError('')
-type PInstance = typeof PSError['prototype']
-
-expectAssignable<PInstance>(new PAnyError('', { cause: psError }))
-expectAssignable<PInstance>(PAnyError.normalize(psError))
-
-const GPAnyError = modernErrors([{} as Plugin])
-
-expectAssignable<PInstance>(new GPAnyError('', { cause: psError }))
-expectAssignable<PInstance>(GPAnyError.normalize(psError))
-
-if (unknownError instanceof AnyError) {
-  expectAssignable<UnknownInstance>(unknownError)
-}
-
-const cause = {} as Error & { prop: true }
-expectType<true>(new AnyError('', { cause }).prop)
-expectType<true>(AnyError.normalize(cause).prop)

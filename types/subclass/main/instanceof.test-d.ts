@@ -8,6 +8,7 @@ type AnyInstance = InstanceType<typeof AnyError>
 const CError = AnyError.subclass('CError')
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
+const unknownError = new AnyError('', { cause: '' })
 const sError = new SError('')
 const ssError = new SSError('')
 
@@ -38,6 +39,9 @@ if (sError instanceof AnyError) {
 }
 if (ssError instanceof AnyError) {
   expectType<typeof ssError>(ssError)
+}
+if (unknownError instanceof AnyError) {
+  expectType<typeof unknownError>(unknownError)
 }
 if (sError instanceof Error) {
   expectType<typeof sError>(sError)
