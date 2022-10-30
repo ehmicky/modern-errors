@@ -1,9 +1,9 @@
-import type { Plugins } from '../plugins/shape.js'
-import type { GetAggregateErrorsOption } from './aggregate.js'
-import type { ErrorProps } from '../core_plugins/props.js'
-import type { CustomInstanceAttributes } from '../subclass/custom.js'
-import type { SpecificInstanceOptions } from '../options/instance.js'
-import type { ErrorInstance, BaseError } from './modify/main.js'
+import type { Plugins } from '../../plugins/shape.js'
+import type { GetAggregateErrorsOption } from '../aggregate.js'
+import type { ErrorProps } from '../../core_plugins/props.js'
+import type { CustomInstanceAttributes } from '../../subclass/custom.js'
+import type { SpecificInstanceOptions } from '../../options/instance.js'
+import type { ErrorInstance, BaseError } from '../modify/main.js'
 
 export type AnyErrorInstance<
   PluginsArg extends Plugins,

@@ -5,7 +5,7 @@ import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { CreateSubclass } from '../subclass/main.js'
 
-import type { AnyErrorInstance, NormalizeError } from './normalize.js'
+import type { AnyErrorInstance, NormalizeError } from './normalize/main.js'
 
 interface AnyErrorClassCore<
   PluginsArg extends Plugins,
