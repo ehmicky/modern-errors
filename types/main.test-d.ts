@@ -28,12 +28,13 @@ const CError = AnyError.subclass('CError')
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
 const sError = new SError('')
+const ssError = new SSError('')
 
 expectAssignable<Error>({} as ErrorInstance)
 expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
 
 const anyError = new AnyError('', { cause: sError })
-expectAssignable<typeof sError>(anyError)
+expectType<typeof sError>(anyError)
 
 modernErrors([])
 modernErrors([], {})
@@ -41,24 +42,36 @@ modernErrors([{ name: 'test' as const }], {})
 expectError(modernErrors(true))
 
 const exception = {} as unknown
+if (exception instanceof AnyError) {
+  expectType<AnyInstance>(exception)
+}
 if (exception instanceof SError) {
   expectType<typeof SError['prototype']>(exception)
 }
 if (exception instanceof SSError) {
   expectType<typeof SSError['prototype']>(exception)
 }
-if (exception instanceof AnyError) {
-  expectAssignable<AnyInstance>(exception)
-}
 if (sError instanceof CError) {
   expectType<never>(sError)
 }
-if (sError instanceof CError) {
-  expectAssignable<typeof sError>(sError)
+if (ssError instanceof CError) {
+  expectType<never>(ssError)
+}
+if (sError instanceof SError) {
+  expectType<typeof sError>(sError)
+}
+if (ssError instanceof SSError) {
+  expectType<typeof ssError>(ssError)
 }
 if (sError instanceof AnyError) {
-  expectAssignable<typeof sError>(sError)
+  expectType<typeof sError>(sError)
+}
+if (ssError instanceof AnyError) {
+  expectType<typeof ssError>(ssError)
 }
 if (sError instanceof Error) {
-  expectAssignable<typeof sError>(sError)
+  expectType<typeof sError>(sError)
+}
+if (ssError instanceof Error) {
+  expectType<typeof ssError>(ssError)
 }

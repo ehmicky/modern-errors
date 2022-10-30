@@ -54,6 +54,8 @@ export default function modernErrors<
 //  - Type narrowing with `instanceof` does not work with:
 //     - Any error class with a `custom` option
 //     - `AnyError` if there are any plugins with static methods
+//     - Any error class checked against its parent class (except for
+//      `AnyError`)
 //    This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
 //  - `new AnyError()` should fail if the second argument is not an object with
