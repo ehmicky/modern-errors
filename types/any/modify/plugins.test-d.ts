@@ -1,4 +1,4 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 import modernErrors, { Plugin, ErrorInstance } from '../../main.js'
 
@@ -14,9 +14,13 @@ const paError = new PAnyError('', { cause: '' })
 expectAssignable<Error>(paError)
 expectAssignable<ErrorInstance>(paError)
 expectAssignable<BErrorInstance>(paError)
-expectAssignable<PErrorInstance>(paError)
+expectType<PErrorInstance>(paError)
 
-const PSError = PAnyError.subclass('PSError')
+const PSError = PAnyError.subclass('PSError', {
+  custom: class extends PAnyError {
+    prop = true
+  },
+})
 const psError = new PSError('')
 
 expectAssignable<Error>(psError)
@@ -28,18 +32,22 @@ const GPAnyError = modernErrors([{} as Plugin])
 const gpaError = new GPAnyError('', { cause: '' })
 type GPAErrorInstance = InstanceType<typeof GPAnyError>
 
-expectAssignable<Error>(gpaError)
-expectAssignable<ErrorInstance>(gpaError)
-expectAssignable<BErrorInstance>(gpaError)
+expectType<Error>(gpaError)
+expectType<ErrorInstance>(gpaError)
+expectType<BErrorInstance>(gpaError)
 expectNotAssignable<PErrorInstance>(gpaError)
-expectAssignable<GPAErrorInstance>(gpaError)
+expectType<GPAErrorInstance>(gpaError)
 
 const exception = {} as unknown
 if (exception instanceof GPAnyError) {
-  expectAssignable<GPAErrorInstance>(exception)
+  expectType<GPAErrorInstance>(exception)
 }
 
-const GPSError = GPAnyError.subclass('GPSError')
+const GPSError = GPAnyError.subclass('GPSError', {
+  custom: class extends GPAnyError {
+    prop = true
+  },
+})
 const gpsError = new GPSError('')
 type GPSErrorInstance = InstanceType<typeof GPSError>
 
@@ -48,8 +56,8 @@ expectAssignable<ErrorInstance>(gpsError)
 expectAssignable<BErrorInstance>(gpsError)
 expectNotAssignable<PErrorInstance>(gpsError)
 expectAssignable<GPAErrorInstance>(gpsError)
-expectAssignable<GPSErrorInstance>(gpsError)
+expectType<GPSErrorInstance>(gpsError)
 
 if (exception instanceof GPSError) {
-  expectAssignable<GPSErrorInstance>(exception)
+  expectType<GPSErrorInstance>(exception)
 }

@@ -1,4 +1,4 @@
-import { expectType } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../../main.js'
 
@@ -8,11 +8,21 @@ type AnyInstance = InstanceType<typeof AnyError>
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
 const CError = AnyError.subclass('CError', {
-  custom: class extends AnyError {},
+  custom: class extends AnyError {
+    prop = true
+  },
 })
 const SCError = CError.subclass('SCError')
-const CSError = SError.subclass('CSError', { custom: class extends SError {} })
-const CCError = CError.subclass('CCError', { custom: class extends CError {} })
+const CSError = SError.subclass('CSError', {
+  custom: class extends SError {
+    prop = true
+  },
+})
+const CCError = CError.subclass('CCError', {
+  custom: class extends CError {
+    propTwo = true
+  },
+})
 
 const wideError = {} as any as AnyInstance
 const sError = new SError('')
@@ -25,26 +35,26 @@ const ccError = new CCError('')
 expectType<Error>(wideError)
 expectType<Error>(sError)
 expectType<Error>(ssError)
-expectType<Error>(cError)
-expectType<Error>(scError)
-expectType<Error>(csError)
-expectType<Error>(ccError)
+expectAssignable<Error>(cError)
+expectAssignable<Error>(scError)
+expectAssignable<Error>(csError)
+expectAssignable<Error>(ccError)
 
 expectType<ErrorInstance>(wideError)
 expectType<ErrorInstance>(sError)
 expectType<ErrorInstance>(ssError)
-expectType<ErrorInstance>(cError)
-expectType<ErrorInstance>(scError)
-expectType<ErrorInstance>(csError)
-expectType<ErrorInstance>(ccError)
+expectAssignable<ErrorInstance>(cError)
+expectAssignable<ErrorInstance>(scError)
+expectAssignable<ErrorInstance>(csError)
+expectAssignable<ErrorInstance>(ccError)
 
 expectType<AnyInstance>(wideError)
 expectType<AnyInstance>(sError)
 expectType<AnyInstance>(ssError)
-expectType<AnyInstance>(cError)
-expectType<AnyInstance>(scError)
-expectType<AnyInstance>(csError)
-expectType<AnyInstance>(ccError)
+expectAssignable<AnyInstance>(cError)
+expectAssignable<AnyInstance>(scError)
+expectAssignable<AnyInstance>(csError)
+expectAssignable<AnyInstance>(ccError)
 
 expectType<typeof AnyError['prototype']>(wideError)
 expectType<typeof SError['prototype']>(sError)

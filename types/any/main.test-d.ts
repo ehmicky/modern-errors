@@ -14,7 +14,11 @@ expectAssignable<AnyErrorClass>(PAnyError)
 expectAssignable<BAnyErrorClass>(PAnyError)
 expectAssignable<PAnyErrorClass>(PAnyError)
 
-const PSError = PAnyError.subclass('PSError')
+const PSError = PAnyError.subclass('PSError', {
+  custom: class extends PAnyError {
+    prop = true
+  },
+})
 
 expectNotAssignable<AnyErrorClass>(PSError)
 expectNotAssignable<BAnyErrorClass>(PSError)
@@ -26,7 +30,11 @@ expectAssignable<AnyErrorClass>(GPAnyError)
 expectAssignable<BAnyErrorClass>(GPAnyError)
 expectNotAssignable<PAnyErrorClass>(GPAnyError)
 
-const GPSError = GPAnyError.subclass('GPSError')
+const GPSError = GPAnyError.subclass('GPSError', {
+  custom: class extends GPAnyError {
+    prop = true
+  },
+})
 
 expectNotAssignable<AnyErrorClass>(GPSError)
 expectNotAssignable<BAnyErrorClass>(GPSError)
