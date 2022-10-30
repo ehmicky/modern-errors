@@ -596,7 +596,8 @@ Plugin options can apply to (in priority order):
 export const AnyError = modernErrors(plugins, options)
 ```
 
-- Any error of multiple classes: using `ErrorClass.subclass()`
+- Any error of multiple classes: using
+  [`ErrorClass.subclass()`](#anyerrorsubclassname-options)
 
 ```js
 export const SharedError = AnyError.subclass('SharedError', options)
