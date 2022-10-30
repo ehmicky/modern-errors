@@ -24,6 +24,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - Separate known and [unknown errors](#unknown-errors)
 - Normalize [invalid errors](#invalid-errors) (not an `Error` instance, missing
   `stack`, etc.)
+- Strict [TypeScript types](#typescript)
 - Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
   [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
@@ -630,6 +631,106 @@ error[methodName](...args, options[pluginName])
 
 Please see the [following documentation](docs/plugins.md) to create your own
 plugin.
+
+## TypeScript
+
+For TypeScript users, the API is fully typed.
+
+### Error properties and methods
+
+Error [classes](#error-classes) and [instances](#simple-errors) include any
+[`props`](#error-instance-properties), [`custom`](#class-custom-logic)
+methods/properties and aggregate [`errors`](#aggregate-errors).
+
+```ts
+const InputError = AnyError.subclass('InputError', {
+  custom: class extends AnyError {
+    isUserInput() {
+      return true as const
+    }
+  },
+})
+const error = new InputError('Wrong user name', {
+  props: { userId: 5 as const },
+})
+const { userId } = error // Inferred type: `5`
+const result = error.isUserInput() // Inferred type: `true`
+```
+
+### Plugins
+
+Plugin methods, properties and [options](#plugin-options) are fully typed.
+
+```ts
+import modernErrorsHttp from 'modern-errors-http'
+
+const AnyError = modernErrors([modernErrorsHttp])
+
+const UnknownError = AnyError.subclass('UnknownError')
+const InputError = AnyError.subclass('InputError')
+
+const inputError = new InputError('Wrong user name', {
+  http: { title: false }, // Type error: title must be a string
+})
+const httpResponse = inputError.httpResponse() // Inferred type: response object
+```
+
+### Narrowing
+
+Types can be narrowed using [`instanceof ErrorClass`](#check-error-classes).
+
+```ts
+const InputError = AnyError.subclass('InputError', {
+  props: { isUserError: true as const },
+})
+
+try {
+  // ...
+} catch (error) {
+  // Narrows type to `InputError`
+  if (error instanceof InputError) {
+    const { isUserError } = error // Inferred type: `true`
+  }
+}
+```
+
+### Type inference
+
+Types are automatically inferred: no explicit type declaration is needed.
+`typeof`, `ReturnType`, etc. can be used to retrieve the type of a variable or
+method.
+
+```ts
+const InputError = AnyError.subclass('InputError')
+
+const printErrorClass = function (
+  ErrorClass: ReturnType<typeof AnyError.subclass>,
+) {
+  // ...
+}
+
+printErrorClass(InputError)
+```
+
+### Wide types
+
+The following types are exported:
+[`ErrorInstance`](#new-anyerrormessage-options), [`ErrorClass`](#error-classes),
+[`AnyErrorClass`](#anyerror), [`GlobalOptions`](#modernerrorsplugins-options),
+[`ClassOptions`](#anyerrorsubclassname-options),
+[`InstanceOptions`](#new-anyerrormessage-options),
+[`MethodOptions`](#plugin-options), [`Plugin`](#plugins-1).
+
+Those types are wide: they do not include any information about specific
+[`props`](#error-instance-properties), [`custom`](#class-custom-logic)
+methods/properties, aggregate [`errors`](#aggregate-errors). Therefore they
+should only be used to type unknown error instances or classes, when no variable
+nor type inference is available. For example, those wide types are useful when
+creating [plugins](docs/plugins.md).
+
+However, they can include the methods, properties and options of specific
+plugins by passing those as a generic parameter, e.g.
+`ErrorClass<[typeof plugin]>`.
 
 # Modules
 

@@ -89,7 +89,7 @@ interface ErrorSubclassCore<
 }
 
 /**
- * Error class, excluding `AnyError`, with specific `props`, `custom`, etc.
+ * Error class, including `AnyError`, with specific `props`, `custom`, etc.
  */
 export type ErrorSubclass<
   PluginsArg extends Plugins,
@@ -109,7 +109,7 @@ export type ErrorSubclass<
   >
 
 /**
- * Error class, excluding `AnyError`
+ * Error class, including `AnyError`
  */
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
