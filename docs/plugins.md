@@ -17,6 +17,8 @@ Plugins can add:
 
 ## Examples
 
+The [following directory](../examples/plugin) contains examples of a plugin.
+
 [Existing plugins](../README.md#plugins) can be used for inspiration.
 
 ## API
