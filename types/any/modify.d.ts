@@ -22,10 +22,10 @@ export type BaseError<
         CustomAttributesArg,
         CoreErrorProps
       >,
-      PluginsInstanceMethods<PluginsArg> & object,
+      PluginsInstanceMethods<PluginsArg>,
       CoreErrorProps
     >,
-    PluginsProperties<PluginsArg> & object,
+    PluginsProperties<PluginsArg>,
     ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
   >,
   ErrorPropsArg,
