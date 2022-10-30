@@ -436,8 +436,27 @@ plugin's options.
 // Any `{ example }` plugin option passed by users will be validated as boolean
 const plugin = {
   name: 'example' as const,
-  getOptions(options: boolean) {
+  getOptions(options: boolean): boolean {
     // ...
+  },
+}
+```
+
+### `properties`, `instanceMethods` and `staticMethods`
+
+The types of [`properties()`](#properties),
+[`instanceMethods`](#instancemethodsmethodname) and
+[`staticMethods`](#staticmethodsmethodname) are also exposed to plugin users.
+Please note
+[generics](https://www.typescriptlang.org/docs/handbook/2/generics.html) are
+currently ignored.
+
+```ts
+// Any `error.exampleMethod(input)` call will be validated
+const plugin = {
+  // ...
+  instanceMethods: {
+    exampleMethod(input: boolean): void {},
   },
 }
 ```
