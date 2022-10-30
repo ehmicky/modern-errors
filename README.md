@@ -15,17 +15,17 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-- Create [error classes](#create-error-classes) (including with
+- 🦺 Create [error classes](#create-error-classes) (including with
   [custom logic](#custom-logic))
-- Set properties on [individual errors](#error-instance-properties) or on
+- 🖊️ Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
-- Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
+- 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
   [properties](#wrap-error-options)
-- Separate known and [unknown errors](#unknown-errors)
-- Normalize [invalid errors](#invalid-errors) (not an `Error` instance, missing
-  `stack`, etc.)
-- Strict [TypeScript types](docs/typescript.md)
-- Based on standard JavaScript: [`throw`](#throw-errors),
+- 🐞 Separate known and [unknown errors](#unknown-errors)
+- 🚨 Normalize [invalid errors](#invalid-errors) (not an `Error` instance,
+  missing `stack`, etc.)
+- 🤓 Strict [TypeScript types](docs/typescript.md)
+- 📖 Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
   [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
   [`class`](#custom-logic),
