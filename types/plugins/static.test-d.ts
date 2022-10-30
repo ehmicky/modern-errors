@@ -8,35 +8,48 @@ import {
 import modernErrors, { Info, Plugin } from '../main.js'
 
 const name = 'test' as const
-const plugin = {
+const barePlugin = {
   name,
-  getOptions: (input: true) => input,
   staticMethods: {
     staticMethod: (info: Info['staticMethods'], arg: '') => arg,
   },
 }
+const fullPlugin = {
+  ...barePlugin,
+  getOptions: (input: true) => input,
+}
 
-const AnyError = modernErrors([plugin])
-const ChildError = AnyError.subclass('ChildError')
+const BareAnyError = modernErrors([barePlugin])
+const FullAnyError = modernErrors([fullPlugin])
+const BareChildError = BareAnyError.subclass('BareChildError')
+const FullChildError = FullAnyError.subclass('FullChildError')
 
-expectType<''>(AnyError.staticMethod(''))
-expectError(expectType<''>(AnyError.staticMethod(true)))
+expectType<''>(BareAnyError.staticMethod(''))
+expectType<''>(FullAnyError.staticMethod(''))
+expectError(expectType<''>(BareAnyError.staticMethod(true)))
+expectError(expectType<''>(FullAnyError.staticMethod(true)))
 
-expectType<''>(AnyError.staticMethod('', true))
-expectError(expectType<''>(AnyError.staticMethod('', false)))
+expectType<''>(FullAnyError.staticMethod('', true))
+expectError(BareAnyError.staticMethod('', true))
+expectError(FullAnyError.staticMethod('', false))
+expectError(FullAnyError.staticMethod('', true, undefined))
 
 const info = {} as Info['staticMethods']
-expectError(expectType<''>(AnyError.staticMethod(info, '')))
+expectError(BareAnyError.staticMethod(info))
+expectError(FullAnyError.staticMethod(info, ''))
 
 const WideAnyError = modernErrors([{} as Plugin])
 const ChildWideError = WideAnyError.subclass('ChildWideError')
 
-expectError(AnyError.otherMethod())
+expectError(BareAnyError.otherMethod())
+expectError(FullAnyError.otherMethod())
 expectError(WideAnyError.otherMethod())
-expectError(ChildError.otherMethod())
+expectError(BareChildError.otherMethod())
+expectError(FullChildError.otherMethod())
 expectError(ChildWideError.otherMethod())
 
-expectError(ChildError.staticMethod())
+expectError(BareChildError.staticMethod())
+expectError(FullChildError.staticMethod())
 expectError(ChildWideError.staticMethod())
 
 expectAssignable<Plugin>({

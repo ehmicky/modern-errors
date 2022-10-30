@@ -19,16 +19,23 @@ export interface StaticMethods {
 }
 
 /**
+ * Bound static method parameters
+ */
+type ErrorStaticMethodParams<
+  StaticMethodArg extends StaticMethod,
+  MethodOptionsArg extends MethodOptions<Plugin>,
+> = [MethodOptionsArg] extends [never]
+  ? SliceFirst<Parameters<StaticMethodArg>>
+  : readonly [...SliceFirst<Parameters<StaticMethodArg>>, MethodOptionsArg?]
+
+/**
  * Bound static method of a plugin
  */
 type ErrorStaticMethod<
   StaticMethodArg extends StaticMethod,
   MethodOptionsArg extends MethodOptions<Plugin>,
 > = (
-  ...args: readonly [
-    ...SliceFirst<Parameters<StaticMethodArg>>,
-    MethodOptionsArg?,
-  ]
+  ...args: ErrorStaticMethodParams<StaticMethodArg, MethodOptionsArg>
 ) => ReturnType<StaticMethodArg>
 
 /**

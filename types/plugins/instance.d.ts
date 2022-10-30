@@ -19,16 +19,23 @@ export interface InstanceMethods {
 }
 
 /**
+ * Bound instance method parameters
+ */
+type ErrorInstanceMethodParams<
+  InstanceMethodArg extends InstanceMethod,
+  MethodOptionsArg extends MethodOptions<Plugin>,
+> = [MethodOptionsArg] extends [never]
+  ? SliceFirst<Parameters<InstanceMethodArg>>
+  : readonly [...SliceFirst<Parameters<InstanceMethodArg>>, MethodOptionsArg?]
+
+/**
  * Bound instance method of a plugin
  */
 type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
   MethodOptionsArg extends MethodOptions<Plugin>,
 > = (
-  ...args: readonly [
-    ...SliceFirst<Parameters<InstanceMethodArg>>,
-    MethodOptionsArg?,
-  ]
+  ...args: ErrorInstanceMethodParams<InstanceMethodArg, MethodOptionsArg>
 ) => ReturnType<InstanceMethodArg>
 
 /**
