@@ -398,7 +398,7 @@ plugin's options.
 
 ```ts
 // Any `{ example }` plugin option passed by users will be validated as boolean
-const plugin = {
+export default {
   name: 'example' as const,
   getOptions(options: boolean): object {
     // ...
@@ -412,7 +412,7 @@ The [`name`](#name) property should be typed `as const` so it can be used to
 validate the plugin's options.
 
 ```ts
-const plugin = {
+export default {
   name: 'example' as const,
   // ...
 }
@@ -429,7 +429,7 @@ currently ignored.
 
 ```ts
 // Any `error.exampleMethod(input)` call will be validated
-const plugin = {
+export default {
   // ...
   instanceMethods: {
     exampleMethod(info: Info['instanceMethods'], input: boolean): void {},
@@ -445,7 +445,7 @@ The [`info`](#info) parameter can be typed with `Info['properties']`,
 ```ts
 import type { Info } from 'modern-errors'
 
-const plugin = {
+export default {
   // ...
   properties(info: Info['properties']) {
     // ...
@@ -463,7 +463,7 @@ removing any specific types declared by that plugin.
 ```ts
 import type { Plugin } from 'modern-errors'
 
-export const plugin = {
+export default {
   // ...
 } satisfies Plugin
 ```

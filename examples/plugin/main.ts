@@ -1,4 +1,4 @@
-// import type { Info } from 'modern-errors'
+import type { Info, Plugin } from 'modern-errors'
 
 // /**
 //  * Options of `modern-errors-example`
@@ -65,4 +65,4 @@ export default {
   // isOptions(options: Options): boolean {
   //   return typeof options === 'boolean'
   // },
-}
+} satisfies Plugin
