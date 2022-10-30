@@ -4,10 +4,7 @@ import type { PluginsProperties } from '../../plugins/properties.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomAttributes } from '../../subclass/custom/main.js'
 import type { OmitKeys } from '../../utils.js'
-import type {
-  AggregateErrorsOption,
-  AggregateErrorsProp,
-} from '../aggregate.js'
+import type { AggregateErrors } from '../aggregate.js'
 
 /**
  * Core `Error` properties which cannot be redefined by `plugin.properties()`,
@@ -31,9 +28,9 @@ export type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
-  AggregateErrorsArg extends AggregateErrorsOption,
+  AggregateErrorsArg extends AggregateErrors,
 > = Error &
-  OmitKeys<AggregateErrorsProp<AggregateErrorsArg>, never> &
+  AggregateErrorsArg &
   OmitKeys<CustomAttributesArg, CoreErrorProps> &
   OmitKeys<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
   OmitKeys<
@@ -52,5 +49,5 @@ export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,
   ErrorProps,
   CustomAttributes,
-  AggregateErrorsOption
+  AggregateErrors
 >

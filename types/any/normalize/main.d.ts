@@ -1,5 +1,5 @@
 import type { Plugins } from '../../plugins/shape.js'
-import type { GetAggregateErrorsOption } from '../aggregate.js'
+import type { GetAggregateErrors } from '../aggregate.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomInstanceAttributes } from '../../subclass/custom/main.js'
 import type { MainInstanceOptions } from '../../options/instance.js'
@@ -17,7 +17,7 @@ export type AnyErrorInstance<
   PluginsArg,
   ErrorPropsArg,
   CustomInstanceAttributes<Error, ErrorArg>,
-  GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, MainInstanceOptionsArg>
+  GetAggregateErrors<PluginsArg, ErrorPropsArg, MainInstanceOptionsArg>
 >
 
 /**

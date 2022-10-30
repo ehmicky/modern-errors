@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 
 import type { Plugins } from '../../plugins/shape.js'
-import type { GetAggregateErrorsOption } from '../../any/aggregate.js'
+import type { GetAggregateErrors } from '../../any/aggregate.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -52,7 +52,7 @@ interface ErrorSubclassCore<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     CustomAttributesArg,
-    GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
+    GetAggregateErrors<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
   >
 
   readonly prototype: InstanceType<

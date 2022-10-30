@@ -6,17 +6,19 @@ import type { ErrorProps } from '../core_plugins/props/main.js'
 /**
  * Single aggregate error
  */
-type DefinedAggregateErrorOption = unknown
+type AggregateErrorOption = unknown
 
 /**
- * Aggregate `errors`
+ * Aggregate `errors` option
  */
-type DefinedAggregateErrorsOption = readonly DefinedAggregateErrorOption[]
+export type AggregateErrorsOption = readonly AggregateErrorOption[]
 
 /**
- * Aggregate `errors` option, if defined
+ * Aggregate errors object set to `error`
  */
-export type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
+export interface AggregateErrors {
+  readonly errors?: AggregateErrorsOption
+}
 
 /**
  * Apply `AnyError.normalize()` on the `errors` option
@@ -26,8 +28,8 @@ type NormalizeAggregateErrors<
   ErrorPropsArg extends ErrorProps,
   AggregateErrorsArg extends AggregateErrorsOption,
 > = AggregateErrorsArg extends readonly [
-  infer AggregateErrorArg extends DefinedAggregateErrorOption,
-  ...infer Rest extends DefinedAggregateErrorsOption,
+  infer AggregateErrorArg extends AggregateErrorOption,
+  ...infer Rest extends AggregateErrorsOption,
 ]
   ? [
       NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
@@ -38,37 +40,35 @@ type NormalizeAggregateErrors<
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined
  */
-type ConcatAggregateErrors<MainOptionsArg extends MainInstanceOptions> =
-  MainOptionsArg['errors'] extends DefinedAggregateErrorsOption
-    ? 'errors' extends keyof MainOptionsArg['cause']
-      ? MainOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-        ? [...MainOptionsArg['cause']['errors'], ...MainOptionsArg['errors']]
-        : MainOptionsArg['errors']
-      : MainOptionsArg['errors']
-    : 'errors' extends keyof MainOptionsArg['cause']
-    ? MainOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-      ? MainOptionsArg['cause']['errors']
-      : AggregateErrorsOption
-    : AggregateErrorsOption
+type ConcatAggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> =
+  MainInstanceOptionsArg['errors'] extends AggregateErrorsOption
+    ? 'errors' extends keyof MainInstanceOptionsArg['cause']
+      ? MainInstanceOptionsArg['cause']['errors'] extends AggregateErrorsOption
+        ? [
+            ...MainInstanceOptionsArg['cause']['errors'],
+            ...MainInstanceOptionsArg['errors'],
+          ]
+        : MainInstanceOptionsArg['errors']
+      : MainInstanceOptionsArg['errors']
+    : 'errors' extends keyof MainInstanceOptionsArg['cause']
+    ? MainInstanceOptionsArg['cause']['errors'] extends AggregateErrorsOption
+      ? MainInstanceOptionsArg['cause']['errors']
+      : never
+    : never
 
 /**
  * Retrieve the aggregate errors from the `errors` option
  */
-export type GetAggregateErrorsOption<
+export type GetAggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  MainOptionsArg extends MainInstanceOptions,
-> = NormalizeAggregateErrors<
-  PluginsArg,
-  ErrorPropsArg,
-  ConcatAggregateErrors<MainOptionsArg>
->
-
-/**
- * Aggregate errors object to set as `error.errors`, if defined
- */
-export type AggregateErrorsProp<
-  AggregateErrorsArg extends AggregateErrorsOption,
-> = AggregateErrorsArg extends DefinedAggregateErrorsOption
-  ? { errors: AggregateErrorsArg }
-  : {}
+  MainInstanceOptionsArg extends MainInstanceOptions,
+> = ConcatAggregateErrors<MainInstanceOptionsArg> extends never
+  ? {}
+  : {
+      errors: NormalizeAggregateErrors<
+        PluginsArg,
+        ErrorPropsArg,
+        ConcatAggregateErrors<MainInstanceOptionsArg>
+      >
+    }
