@@ -56,9 +56,7 @@ and options between classes.
 ```js
 const SharedError = AnyError.subclass('SharedError', {
   custom: class extends AnyError {
-    isUserInput() {
-      return this.message.includes('user')
-    }
+    // ...
   },
 })
 
@@ -92,7 +90,7 @@ export const AuthError = SharedError.subclass('AuthError')
 Or to a specific error.
 
 ```js
-throw new InputError('Could not read the file.', options)
+throw new InputError('...', options)
 ```
 
 Or to a specific plugin method call, passing only that plugin's options.
@@ -119,7 +117,7 @@ error class [`AnyError`](README.md#anyerror).
 
 [`AnyError.subclass(name)`](README.md#anyerrorsubclassname-options) must be used
 to create each error class. The first one must now be named
-[`UnknownError`](README.md#unknown-errors).
+[`UnknownError`](README.md#-unknown-errors).
 
 Before:
 
@@ -170,8 +168,8 @@ const normalizedError = AnyError.normalize(error)
 ### Custom classes
 
 Error classes can now be fully customized using the
-[`custom` option](README.md#custom): constructors, methods, etc. This replaces
-the previous `onCreate` option.
+[`custom` option](README.md#-custom-logic): constructors, methods, etc. This
+replaces the previous `onCreate` option.
 
 Before:
 
@@ -214,22 +212,19 @@ export const InputError = AnyError.subclass('InputError', {
 ### Error properties
 
 Error properties must now be set using
-[`props.{propName}`](README.md#error-properties) instead of `{propName}`.
+[`props.{propName}`](README.md#error-instance-properties) instead of
+`{propName}`.
 
 Before:
 
 ```js
-throw new InputError('Could not read the file.', {
-  filePath: '/path',
-})
+throw new InputError('...', { filePath: '/path' })
 ```
 
 After:
 
 ```js
-throw new InputError('Could not read the file.', {
-  props: { filePath: '/path' },
-})
+throw new InputError('...', { props: { filePath: '/path' } })
 ```
 
 ### Bug reports
@@ -245,7 +240,7 @@ A few bug fixes related to using the `bugs` option twice have also been fixed.
 Before:
 
 ```js
-throw new InputError('Could not read the file.', {
+throw new InputError('...', {
   bugsUrl: 'https://github.com/my-name/my-project/issues',
 })
 ```
@@ -253,7 +248,7 @@ throw new InputError('Could not read the file.', {
 After:
 
 ```js
-throw new InputError('Could not read the file.', {
+throw new InputError('...', {
   bugs: 'https://github.com/my-name/my-project/issues',
 })
 ```
@@ -294,7 +289,7 @@ const error = AnyError.parse(errorObject)
 
 To wrap an error without changing its class, [`AnyError`](README.md#anyerror)
 must now be used instead of `Error`. When wrapping an error, its `cause` and
-`bugs` are now [merged right away](README.md#re-throw-errors), instead of when
+`bugs` are now [merged right away](README.md#wrap-inner-error), instead of when
 `AnyError.normalize()` is called.
 
 Before:
@@ -312,7 +307,7 @@ throw new AnyError('Could not read the file.', { cause })
 ### Checking error classes
 
 We now recommend using `instanceof` instead of `error.name` to
-[check error classes](README.md#check-error-class).
+[check error classes](README.md#check-error-classes).
 
 Before:
 
@@ -331,7 +326,7 @@ if (error instanceof InputError) {
 ```
 
 [`AnyError`](README.md#anyerror) can now be used to check for
-[any errors](README.md#check-error-class) from a specific library.
+[any errors](README.md#check-error-classes) from a specific library.
 
 ```js
 if (error instanceof AnyError) {
@@ -371,7 +366,7 @@ Switch to MIT license.
 ## Breaking changes
 
 - The `InternalError` type has been renamed to
-  [`UnknownError`](README.md#unknown-errors)
+  [`UnknownError`](README.md#-unknown-errors)
 
 # 2.0.2
 
