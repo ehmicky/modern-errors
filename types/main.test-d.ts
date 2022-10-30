@@ -1,16 +1,7 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable, expectError } from 'tsd'
 import type { ErrorName } from 'error-custom-class'
 
-import modernErrors, {
-  AnyErrorClass,
-  ErrorClass,
-  ErrorInstance,
-} from './main.js'
+import modernErrors, { ErrorClass, ErrorInstance } from './main.js'
 
 import './any/aggregate.test-d.js'
 import './any/main.test-d.js'
@@ -36,8 +27,6 @@ const exception = {} as unknown
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 const wideError = {} as any as AnyInstance
-expectAssignable<AnyErrorClass>(AnyError)
-expectAssignable<ErrorClass>(AnyError)
 expectAssignable<ErrorInstance>(wideError)
 expectAssignable<Error>(wideError)
 expectType<ErrorName>(wideError.name)
@@ -46,8 +35,6 @@ expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
 
 const SError = AnyError.subclass('SError')
 const sError = new SError('')
-expectNotAssignable<AnyErrorClass>(SError)
-expectAssignable<ErrorClass>(SError)
 expectAssignable<typeof SError['prototype']>(sError)
 expectAssignable<AnyInstance>(sError)
 expectAssignable<ErrorInstance>(sError)
@@ -59,8 +46,6 @@ if (exception instanceof SError) {
 
 const SSError = SError.subclass('SSError')
 const ssError = new SSError('')
-expectNotAssignable<AnyErrorClass>(SSError)
-expectAssignable<ErrorClass>(SSError)
 expectAssignable<typeof SSError['prototype']>(ssError)
 expectAssignable<AnyInstance>(ssError)
 expectAssignable<ErrorInstance>(ssError)
@@ -74,8 +59,6 @@ const CError = AnyError.subclass('CError', {
   custom: class extends AnyError {},
 })
 const cError = new CError('')
-expectNotAssignable<AnyErrorClass>(CError)
-expectAssignable<ErrorClass>(CError)
 expectAssignable<typeof CError['prototype']>(cError)
 expectAssignable<AnyInstance>(cError)
 expectAssignable<ErrorInstance>(cError)
@@ -84,8 +67,6 @@ expectType<'CError'>(cError.name)
 
 const SCError = CError.subclass('SCError')
 const scError = new SCError('')
-expectNotAssignable<AnyErrorClass>(SCError)
-expectAssignable<ErrorClass>(SCError)
 expectAssignable<typeof SCError['prototype']>(scError)
 expectAssignable<AnyInstance>(scError)
 expectAssignable<ErrorInstance>(scError)
@@ -94,8 +75,6 @@ expectType<'SCError'>(scError.name)
 
 const CSError = SError.subclass('CSError', { custom: class extends SError {} })
 const csError = new CSError('')
-expectNotAssignable<AnyErrorClass>(CSError)
-expectAssignable<ErrorClass>(CSError)
 expectAssignable<typeof CSError['prototype']>(csError)
 expectAssignable<AnyInstance>(csError)
 expectAssignable<ErrorInstance>(csError)
@@ -104,8 +83,6 @@ expectType<'CSError'>(csError.name)
 
 const CCError = CError.subclass('CCError', { custom: class extends CError {} })
 const ccError = new CCError('')
-expectNotAssignable<AnyErrorClass>(CCError)
-expectAssignable<ErrorClass>(CCError)
 expectAssignable<typeof CCError['prototype']>(ccError)
 expectAssignable<AnyInstance>(ccError)
 expectAssignable<ErrorInstance>(ccError)
