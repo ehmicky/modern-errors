@@ -47,19 +47,22 @@ export default function modernErrors<
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
-//  - When wrapping an error as `cause`:
-//     - The following are ignored, which is expected:
+//  - When wrapping an error as `cause` without `AnyError`:
+//     - The following properties of `cause` are ignored, which is expected:
 //        - Error core properties
 //        - Class-specific properties: `custom` methods, instance methods,
 //          `plugin.properties()` and `props`
 //     - However, the following should be kept and are currently not:
 //        - Properties set after instantiation
 //        - `custom` instance properties
+// Medium limitations:
 //  - If two `plugin.properties()` (or `props`) return the same property, they
 //    are intersected using `&`, instead of the second one overriding the first.
-//    Therefore, the type of `plugin.properties()` that are not unique should
-//    currently be wide to avoid the `&` intersection resulting in `undefined`.
-// Medium limitations:
+//     - Therefore, the type of `plugin.properties()` that are not unique should
+//       currently be wide to avoid the `&` intersection resulting in
+//       `undefined`
+//     - This problem does not apply to error core properties (`message` and
+//       `stack`) which are always kept correct
 //  - Type narrowing with `instanceof AnyError` does not work if there are any
 //    plugins with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
