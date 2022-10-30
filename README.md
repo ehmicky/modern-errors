@@ -38,8 +38,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - [`modern-errors-bugs`](docs/plugins/bugs.md): Print where to report bugs
 - [`modern-errors-serialize`](docs/plugins/serialize.md): Serialize/parse errors
 - [`modern-errors-stack`](docs/plugins/stack.md): Clean stack traces
-- [`modern-errors-http`](docs/plugins/http.md): Convert errors to HTTP response
-  objects
+- [`modern-errors-http`](docs/plugins/http.md): Create HTTP error responses
 - [`modern-errors-winston`](docs/plugins/winston.md): Log errors with Winston
 - Create your [own plugin](#custom-plugins)
 
