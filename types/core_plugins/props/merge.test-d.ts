@@ -1,36 +1,8 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors, {
-  ClassOptions,
-  InstanceOptions,
-  GlobalOptions,
-} from '../main.js'
+import modernErrors from '../../main.js'
 
 const AnyError = modernErrors()
-const ZError = AnyError.subclass('ZError')
-
-modernErrors([], { props: {} })
-AnyError.subclass('TestError', { props: {} })
-ZError.subclass('TestError', { props: {} })
-new AnyError('', { cause: '', props: {} })
-new ZError('', { props: {} })
-expectAssignable<GlobalOptions>({ props: {} })
-expectAssignable<ClassOptions>({ props: {} })
-expectAssignable<InstanceOptions>({ props: {} })
-
-expectError(modernErrors([], { props: true }))
-expectError(AnyError.subclass('TestError', { props: true }))
-expectError(ZError.subclass('TestError', { props: true }))
-expectError(new AnyError('', { cause: '', props: true }))
-expectError(new ZError('', { props: true }))
-expectNotAssignable<GlobalOptions>({ props: true })
-expectNotAssignable<ClassOptions>({ props: true })
-expectNotAssignable<InstanceOptions>({ props: true })
 
 expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
