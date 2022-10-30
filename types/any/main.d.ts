@@ -32,7 +32,7 @@ interface AnyErrorClassCore<
       InstanceOptionsArg,
       SpecificInstanceOptions<PluginsArg>
     >,
-    ...extra: any[]
+    ...extra: readonly any[]
   ): AnyErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
