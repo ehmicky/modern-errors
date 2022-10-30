@@ -329,7 +329,8 @@ export default {
 
 _Type_: `typeof AnyError`
 
-Reference to [`AnyError`](../README.md#anyerror). This can be used to call
+Reference to [`AnyError`](../README.md#anyerror). This can be used to
+[wrap errors](../README.md#wrap-error-class) or to call
 [`AnyError.normalize()`](../README.md#anyerrornormalizeanyexception) or
 [`error instanceof AnyError`](../README.md#check-error-classes).
 
