@@ -31,23 +31,33 @@ export default {
   name: 'example',
 
   // Set error properties
-  properties() {},
-
-  // Add error instance methods like `error.exampleMethod()`
-  instanceMethods: {
-    exampleMethod() {},
+  properties(info) {
+    return {}
   },
 
-  // Add `AnyError` static methods like `AnyError.staticMethod()`
+  // Add error instance methods like `error.exampleMethod(...args)`
+  instanceMethods: {
+    exampleMethod(info, ...args) {
+      // ...
+    },
+  },
+
+  // Add `AnyError` static methods like `AnyError.staticMethod(...args)`
   staticMethods: {
-    staticMethod() {},
+    staticMethod(info, ...args) {
+      // ...
+    },
   },
 
   // Validate and normalize options
-  getOptions() {},
+  getOptions(options, full) {
+    return options
+  },
 
   // Determine if a value is plugin's options
-  isOptions() {},
+  isOptions(options) {
+    return typeof options === 'boolean'
+  },
 }
 ```
 
