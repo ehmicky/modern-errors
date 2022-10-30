@@ -5,7 +5,7 @@ import type { Info } from './info.js'
 
 type InstanceMethod = (
   info: Info['instanceMethods'],
-  ...args: never[]
+  ...args: readonly never[]
 ) => unknown
 
 export interface InstanceMethods {

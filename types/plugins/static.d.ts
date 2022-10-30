@@ -3,7 +3,10 @@ import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './shape.js'
 import type { Info } from './info.js'
 
-type StaticMethod = (info: Info['staticMethods'], ...args: never[]) => unknown
+type StaticMethod = (
+  info: Info['staticMethods'],
+  ...args: readonly never[]
+) => unknown
 
 export interface StaticMethods {
   readonly [MethodName: string]: StaticMethod
