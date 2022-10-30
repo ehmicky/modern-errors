@@ -3,15 +3,24 @@ import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './shape.js'
 import type { Info } from './info.js'
 
+/**
+ * Unbound instance method of a plugin
+ */
 type InstanceMethod = (
   info: Info['instanceMethods'],
   ...args: readonly never[]
 ) => unknown
 
+/**
+ * Unbound instance methods of a plugin
+ */
 export interface InstanceMethods {
   readonly [MethodName: string]: InstanceMethod
 }
 
+/**
+ * Bound instance method of a plugin
+ */
 type ErrorInstanceMethod<
   InstanceMethodArg extends InstanceMethod,
   MethodOptionsArg extends MethodOptions<Plugin>,
@@ -22,6 +31,9 @@ type ErrorInstanceMethod<
   ]
 ) => ReturnType<InstanceMethodArg>
 
+/**
+ * Bound instance methods of a plugin, always defined
+ */
 type ErrorInstanceMethods<
   InstanceMethodsArg extends InstanceMethods,
   MethodOptionsArg extends MethodOptions<Plugin>,
@@ -32,6 +44,9 @@ type ErrorInstanceMethods<
   >
 }
 
+/**
+ * Bound instance methods of a plugin, if defined
+ */
 type PluginInstanceMethods<PluginArg extends Plugin> =
   PluginArg['instanceMethods'] extends InstanceMethods
     ? ErrorInstanceMethods<
@@ -40,5 +55,8 @@ type PluginInstanceMethods<PluginArg extends Plugin> =
       >
     : {}
 
+/**
+ * Bound instance methods of all plugins
+ */
 export type PluginsInstanceMethods<PluginsArg extends Plugins> =
   UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>

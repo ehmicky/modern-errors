@@ -15,7 +15,6 @@ import type { SpecificClassOptions } from '../../options/class.js'
 import type { BaseError } from '../../any/modify/main.js'
 import type { NoAdditionalProps } from '../../utils.js'
 import type { SpecificAnyErrorClass } from '../../any/main.js'
-
 import type { IsForbiddenClassName } from '../name.js'
 import type {
   ErrorConstructor,
@@ -30,7 +29,12 @@ interface ErrorSubclassCore<
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
+   * Error subclass
    *
+   * @example
+   * ```js
+   * throw new InputError('Missing file path.')
+   * ```
    */
   new <
     InstanceOptionsArg extends ParentInstanceOptions<
@@ -61,7 +65,20 @@ interface ErrorSubclassCore<
   >
 
   /**
+   * Creates and returns an error subclass, to share logic between error
+   * classes.
    *
+   * @example
+   * ```js
+   * const SharedError = AnyError.subclass('SharedError', {
+   *   custom: class extends AnyError {
+   *     // ...
+   *   },
+   * })
+   *
+   * export const InputError = SharedError.subclass('InputError')
+   * export const AuthError = SharedError.subclass('AuthError')
+   * ```
    */
   readonly subclass: CreateSubclass<
     PluginsArg,
@@ -71,6 +88,9 @@ interface ErrorSubclassCore<
   >
 }
 
+/**
+ * Error class, excluding `AnyError`, with specific `props`, `custom`, etc.
+ */
 export type ErrorSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -89,7 +109,7 @@ export type ErrorSubclass<
   >
 
 /**
- *
+ * Error class, excluding `AnyError`
  */
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
@@ -98,6 +118,9 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   CustomAttributes
 >
 
+/**
+ * `AnyError.subclass()` or `ErrorClass.subclass()`
+ */
 export type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,

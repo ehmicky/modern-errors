@@ -9,9 +9,24 @@ import type {
   AggregateErrorsProp,
 } from '../aggregate.js'
 
+/**
+ * Core `Error` properties which cannot be redefined by `plugin.properties()`,
+ * `props`, instance methods or the `custom` option
+ */
 type CoreErrorProps = keyof Error | 'errors'
+
+/**
+ * Core `Error` properties which cannot be redefined by `plugin.properties()`
+ * or `props`
+ */
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
 
+/**
+ * Error instance object, used internally with additional generics.
+ * This mixes: `Error`, aggregate errors, plugin instance methods,
+ * `plugin.properties()` and `props`, while ensuring those do not overlap each
+ * other.
+ */
 export type BaseError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -36,7 +51,7 @@ export type BaseError<
 >
 
 /**
- *
+ * Error instance object
  */
 export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
   PluginsArg,

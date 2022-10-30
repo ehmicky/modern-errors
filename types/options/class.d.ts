@@ -6,14 +6,26 @@ import type { ErrorSubclass } from '../subclass/main/main.js'
 import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { PluginsOptions } from './plugins.js'
 
+/**
+ * Matches any class passed to the `custom` option
+ */
 type BareConstructor = new (...args: any[]) => any
 
+/**
+ * When any class extends from its parent, TypeScript instantiates the generics
+ * of its parent `constructor` with their default types.
+ * This implements the same logic so that the `custom` option can match the
+ * class passed to it.
+ */
 type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
   new (
     ...args: ConstructorParameters<ConstructorArg>
   ): InstanceType<ConstructorArg>
 } & { [Key in keyof ConstructorArg]: ConstructorArg[Key] }
 
+/**
+ * Class-specific options, excluding plugin options and `UnknownError` options
+ */
 interface CustomOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -63,6 +75,9 @@ interface CustomOption<
   >
 }
 
+/**
+ * Class-specific options, excluding plugin options
+ */
 type KnownClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -79,7 +94,7 @@ type KnownClassOptions<
     >
 
 /**
- * Class-specific options
+ * Class-specific options, used internally only with additional generics
  */
 export type SpecificClassOptions<
   PluginsArg extends Plugins,
@@ -97,7 +112,8 @@ export type SpecificClassOptions<
   PluginsOptions<PluginsArg>
 
 /**
- *
+ * Class-specific options passed to `AnyError.subclass('ErrorName', options)` or
+ * `ErrorClass.subclass('ErrorName', options)`
  */
 export type ClassOptions<PluginsArg extends Plugins = []> =
   SpecificClassOptions<
