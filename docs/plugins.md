@@ -395,6 +395,18 @@ const plugin = {
 }
 ```
 
+### `name`
+
+The [`name`](#name) property should be typed `as const` so it can be used to
+validate the plugin's options.
+
+```ts
+const plugin = {
+  name: 'example' as const,
+  // ...
+}
+```
+
 ### `properties`, `instanceMethods` and `staticMethods`
 
 The types of [`properties()`](#properties),
@@ -447,18 +459,6 @@ export const plugin = {
 // This statement only validates the plugin's types.
 // Unlike `export const plugin: Plugin = ...`, it does not widen any types.
 const testPlugin: Plugin = plugin
-```
-
-### `name`
-
-The [`name`](#name) property should be typed `as const` so it can be used to
-validate the plugin's options.
-
-```ts
-const plugin = {
-  name: 'example' as const,
-  // ...
-}
 ```
 
 ## Publishing
