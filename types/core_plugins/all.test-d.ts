@@ -1,13 +1,13 @@
+import bugsPlugin from 'modern-errors-bugs'
 import cliPlugin from 'modern-errors-cli'
+import httpPlugin from 'modern-errors-http'
+import processPlugin from 'modern-errors-process'
+import serializePlugin from 'modern-errors-serialize'
+import stackPlugin from 'modern-errors-stack'
+import winstonPlugin from 'modern-errors-winston'
 import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../main.js'
-import bugsPlugin from './bugs.js'
-import httpPlugin from './http.js'
-import processPlugin from './process.js'
-import serializePlugin from './serialize.js'
-import stackPlugin from './stack.js'
-import winstonPlugin from './winston.js'
 
 const plugins = [
   bugsPlugin,

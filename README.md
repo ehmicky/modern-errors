@@ -34,12 +34,18 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli): Handle
   errors in CLI modules
-- [`modern-errors-process`](docs/plugins/process.md): Handle process errors
-- [`modern-errors-bugs`](docs/plugins/bugs.md): Print where to report bugs
-- [`modern-errors-serialize`](docs/plugins/serialize.md): Serialize/parse errors
-- [`modern-errors-stack`](docs/plugins/stack.md): Clean stack traces
-- [`modern-errors-http`](docs/plugins/http.md): Create HTTP error responses
-- [`modern-errors-winston`](docs/plugins/winston.md): Log errors with Winston
+- [`modern-errors-process`](https://github.com/ehmicky/modern-errors-process):
+  Handle process errors
+- [`modern-errors-bugs`](https://github.com/ehmicky/modern-errors-bugs): Print
+  where to report bugs
+- [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize):
+  Serialize/parse errors
+- [`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack): Clean
+  stack traces
+- [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http): Create
+  HTTP error responses
+- [`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston):
+  Log errors with Winston
 - Create your [own plugin](#custom-plugins)
 
 # Example
