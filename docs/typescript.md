@@ -95,7 +95,7 @@ The following types are exported:
 [`ClassOptions`](../README.md#anyerrorsubclassname-options),
 [`InstanceOptions`](../README.md#new-anyerrormessage-options),
 [`MethodOptions`](../README.md#plugin-options),
-[`Plugin`](../README.md#plugins-1).
+[`Plugin`](../README.md#plugins-1) and [`Info`](plugins.md#info-1).
 
 Those types are wide: they do not include any information about specific
 [`props`](../README.md#error-instance-properties), aggregate

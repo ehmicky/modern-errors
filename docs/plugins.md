@@ -375,6 +375,57 @@ export default {
 }
 ```
 
+## TypeScript
+
+`modern-errors` [exports its types](typescript.md) for TypeScript users.
+
+### `Info`
+
+The `Info` type refers to the [`info`](#info) parameter. It can be
+`Info['properties']`, `Info['instanceMethods']`, `Info['staticMethods']` or
+`Info['errorInfo']`.
+
+```ts
+import type { Info } from 'modern-errors'
+
+const plugin = {
+  // ...
+  properties(info: Info['properties']) {
+    // ...
+  },
+}
+```
+
+### `Plugin`
+
+A `Plugin` type is also available. It should be used to validate the plugin's
+shape. However, it should not be used for the exported type since this would
+widen the plugin's types and remove any specific types declared by that plugin.
+
+```ts
+import type { Plugin } from 'modern-errors'
+
+export const plugin = {
+  // ...
+}
+
+// This statement only validates plugin's types.
+// Unlike `export const plugin: Plugin = ...`, it does not widen types.
+const testPlugin: Plugin = plugin
+```
+
+### `name`
+
+The [`name`](#name) property should be typed `as const` so it can be used to
+validate the plugin's options.
+
+```ts
+const plugin = {
+  name: 'example' as const,
+  // ...
+}
+```
+
 ## Publishing
 
 Plugins can either be kept private or be published on npm. When public, we
@@ -386,6 +437,8 @@ recommend the following conventions to help users find plugins:
   `modern-errors-plugin`
 - Please create an issue on the `modern-errors` repository so we can add the
   plugin to the [list of available ones](../README.md#plugins)! 🎉
+
+We also recommend declaring some [types](#typescript) for TypeScript users.
 
 ## Best practices
 
