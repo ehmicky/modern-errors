@@ -45,15 +45,17 @@ type NormalizeAggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   AggregateErrorsArg extends AggregateErrorsArray,
-> = AggregateErrorsArg extends readonly [
-  infer AggregateErrorArg extends AggregateErrorOption,
-  ...infer Rest extends AggregateErrorsArray,
-]
+> = AggregateErrorsArg extends never[]
+  ? []
+  : AggregateErrorsArg extends readonly [
+      infer AggregateErrorArg extends AggregateErrorOption,
+      ...infer Rest extends AggregateErrorsArray,
+    ]
   ? [
       NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
       ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
     ]
-  : AggregateErrorsArg
+  : NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorsArg[number]>[]
 
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined

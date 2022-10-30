@@ -9,9 +9,16 @@ const ChildError = AnyError.subclass('ChildError')
 type UnknownInstance = typeof UnknownError['prototype']
 type ChildInstance = typeof ChildError['prototype']
 
-const unknownErrors = [true] as const
+const unknownErrorsArray = [true] as readonly true[]
+const unknownErrors = [true] as readonly [true]
 const knownErrors = [new ChildError('')] as const
 
+expectType<UnknownInstance[]>(
+  new AnyError('', { cause: '', errors: unknownErrorsArray }).errors,
+)
+expectType<UnknownInstance[]>(
+  new ChildError('', { errors: unknownErrorsArray }).errors,
+)
 expectType<[UnknownInstance]>(
   new AnyError('', { cause: '', errors: unknownErrors }).errors,
 )
@@ -22,6 +29,16 @@ expectType<[ChildInstance]>(
   new AnyError('', { cause: '', errors: knownErrors }).errors,
 )
 expectType<[ChildInstance]>(new ChildError('', { errors: knownErrors }).errors)
+expectType<UnknownInstance[]>(
+  new AnyError('', {
+    cause: new ChildError('', { errors: unknownErrorsArray }),
+  }).errors,
+)
+expectType<UnknownInstance[]>(
+  new ChildError('', {
+    cause: new ChildError('', { errors: unknownErrorsArray }),
+  }).errors,
+)
 expectType<[UnknownInstance]>(
   new AnyError('', { cause: new ChildError('', { errors: unknownErrors }) })
     .errors,
