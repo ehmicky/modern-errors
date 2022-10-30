@@ -28,7 +28,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
 - Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
   [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
-  [`class`](#custom-logic), [`toJSON()`](docs/plugins/serialize.md)
+  [`class`](#custom-logic),
+  [`toJSON()`](https://github.com/ehmicky/modern-errors-serialize#errortojson)
 
 # Plugins
 
