@@ -11,7 +11,7 @@ import winstonPlugin from './winston.js'
 
 const plugins = [
   bugsPlugin,
-  // cliPlugin,
+  cliPlugin,
   httpPlugin,
   processPlugin,
   serializePlugin,
@@ -23,7 +23,7 @@ const error = new AnyError('', { cause: '' })
 
 modernErrors(plugins, {
   bugs: 'https://example.com',
-  // cli: { silent: true },
+  cli: { silent: true },
   http: { type: '' },
   process: { exit: true },
   winston: { stack: true },
@@ -38,7 +38,7 @@ expectType<string | undefined>(error.stack)
 error.httpResponse({ type: '' })
 const errorObject = error.toJSON()
 
-// AnyError.exit({ silent: true })
+AnyError.exit({ silent: true })
 AnyError.logProcess({ exit: true })
 AnyError.parse(errorObject)
 AnyError.fullFormat({ stack: true })
