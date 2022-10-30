@@ -46,7 +46,7 @@ declare const plugin: {
     staticMethod: (info: Info['staticMethods'], arg: unknown) => unknown
   }
 
-  getOptions: (input: Options) => Options
+  getOptions: (input: Options, full: boolean) => Options
 
   isOptions: (input: Options) => boolean
 }

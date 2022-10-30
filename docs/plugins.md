@@ -481,12 +481,12 @@ If the plugin is published on npm, we recommend the following conventions:
       `bundledDependencies`. Its semver range should start with `^`. Also,
       [`peerDependenciesMeta.modern-errors.optional`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependenciesmeta)
       should not be used.
-- [ ] The plugin should export its [types](#typescript) for TypeScript users
 - [ ] The `README` should document how to:
   - [ ] Add the plugin to `modern-errors`
         ([example](https://github.com/ehmicky/modern-errors-cli#example))
-  - [ ] Configure options, if there are some
+  - [ ] Configure options, if there are any
         ([example](https://github.com/ehmicky/modern-errors-cli#configuration))
+- [ ] The plugin should export its [types](#typescript) for TypeScript users
 - [ ] Please create an issue on the `modern-errors` repository so we can add the
       plugin to the [list of available ones](../README.md#plugins)! 🎉
 
