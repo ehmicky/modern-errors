@@ -56,10 +56,11 @@ type ErrorStaticMethods<
 /**
  * Bound static methods of a plugin, if defined
  */
-type PluginStaticMethods<PluginArg extends Plugin> =
-  PluginArg['staticMethods'] extends StaticMethods
-    ? ErrorStaticMethods<PluginArg['staticMethods'], MethodOptions<PluginArg>>
-    : {}
+type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends {
+  staticMethods: StaticMethods
+}
+  ? ErrorStaticMethods<PluginArg['staticMethods'], MethodOptions<PluginArg>>
+  : {}
 
 /**
  * Bound static methods of all plugins

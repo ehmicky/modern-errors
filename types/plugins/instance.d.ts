@@ -59,13 +59,11 @@ type ErrorInstanceMethods<
 /**
  * Bound instance methods of a plugin, if defined
  */
-type PluginInstanceMethods<PluginArg extends Plugin> =
-  PluginArg['instanceMethods'] extends InstanceMethods
-    ? ErrorInstanceMethods<
-        PluginArg['instanceMethods'],
-        MethodOptions<PluginArg>
-      >
-    : {}
+type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends {
+  instanceMethods: InstanceMethods
+}
+  ? ErrorInstanceMethods<PluginArg['instanceMethods'], MethodOptions<PluginArg>>
+  : {}
 
 /**
  * Bound instance methods of all plugins
