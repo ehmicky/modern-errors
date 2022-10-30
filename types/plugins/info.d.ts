@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 import type { AnyErrorClass } from '../any/main.js'
 import type { ErrorClass } from '../subclass/main.js'
-import type { ErrorInstance } from '../any/modify.js'
+import type { ErrorInstance } from '../any/modify/main.js'
 import type { Plugins } from './shape.js'
 
 /**

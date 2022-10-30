@@ -6,7 +6,7 @@ import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
 import type { CustomAttributes, CustomInstanceAttributes } from './custom.js'
 import type { CustomStaticAttributes } from './inherited.js'
 import type { SpecificClassOptions } from '../options/class.js'
-import type { BaseError } from '../any/modify.js'
+import type { BaseError } from '../any/modify/main.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { SpecificAnyErrorClass } from '../any/main.js'
 

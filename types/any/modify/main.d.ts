@@ -1,10 +1,13 @@
-import type { Plugins } from '../plugins/shape.js'
-import type { PluginsInstanceMethods } from '../plugins/instance.js'
-import type { PluginsProperties } from '../plugins/properties.js'
-import type { AggregateErrorsOption, AggregateErrorsProp } from './aggregate.js'
-import type { ErrorProps } from '../core_plugins/props.js'
-import type { CustomAttributes } from '../subclass/custom.js'
-import type { Intersect } from '../utils.js'
+import type { Plugins } from '../../plugins/shape.js'
+import type { PluginsInstanceMethods } from '../../plugins/instance.js'
+import type { PluginsProperties } from '../../plugins/properties.js'
+import type { ErrorProps } from '../../core_plugins/props.js'
+import type { CustomAttributes } from '../../subclass/custom.js'
+import type { Intersect } from '../../utils.js'
+import type {
+  AggregateErrorsOption,
+  AggregateErrorsProp,
+} from '../aggregate.js'
 
 type CoreErrorProps = keyof Error | 'errors'
 type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
