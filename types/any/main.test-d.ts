@@ -1,4 +1,4 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 import modernErrors, { Plugin, AnyErrorClass } from '../main.js'
 
