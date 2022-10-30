@@ -33,7 +33,9 @@ export type BaseError<
   > &
   OmitKeys<
     ErrorPropsArg,
-    CoreErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+    | CoreErrorProps
+    | keyof PluginsInstanceMethods<PluginsArg>
+    | keyof PluginsProperties<PluginsArg>
   >
 
 /**

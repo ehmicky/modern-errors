@@ -82,8 +82,8 @@ const PropertyError = modernErrors([
 expectType<'test'>(
   new PropertyError('', { cause: '', props: { prop: 'test' as const } }).prop,
 )
-expectType<never>(
-  new PropertyError('', { cause: '', props: { prop: '' as const } }),
+expectType<'test'>(
+  new PropertyError('', { cause: '', props: { prop: '' as const } }).prop,
 )
 expectError(new ChildError('', { cause: new PropertyError('') }).prop)
 
