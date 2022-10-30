@@ -399,9 +399,9 @@ const plugin = {
 
 ### `Plugin`
 
-A `Plugin` type is also available. It should be used to validate the plugin's
-shape. However, it should not be used on the exported type since this would
-widen it and remove any specific types declared by that plugin.
+A `Plugin` type is available to validate the plugin's shape. However, it should
+not be used on the exported type since this would widen it and remove any
+specific types declared by that plugin.
 
 ```ts
 import type { Plugin } from 'modern-errors'
@@ -410,8 +410,8 @@ export const plugin = {
   // ...
 }
 
-// This statement only validates plugin's types.
-// Unlike `export const plugin: Plugin = ...`, it does not widen types.
+// This statement only validates the plugin's types.
+// Unlike `export const plugin: Plugin = ...`, it does not widen any types.
 const testPlugin: Plugin = plugin
 ```
 
@@ -424,6 +424,21 @@ validate the plugin's options.
 const plugin = {
   name: 'example' as const,
   // ...
+}
+```
+
+### `getOptions`
+
+The types of [`getOptions()`](#getoptions)'s parameters are used to validate the
+plugin's options.
+
+```ts
+// Any `{ example }` plugin option passed by users will be validated as boolean
+const plugin = {
+  name: 'example' as const,
+  getOptions(options: boolean) {
+    // ...
+  },
 }
 ```
 
