@@ -54,4 +54,4 @@ expectError(ChildError.subclass({}))
 expectError(AnyError.subclass('Test'))
 expectError(ChildError.subclass('Test'))
 
-expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
+expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)

@@ -29,7 +29,7 @@ modernErrors(plugins, {
   winston: { stack: true },
 })
 
-expectType<ErrorInstance<typeof plugins>>(error)
+expectAssignable<ErrorInstance<typeof plugins>>(error)
 expectAssignable<Error>(error)
 
 expectType<string>(error.message)

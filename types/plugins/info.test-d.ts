@@ -4,7 +4,7 @@ import modernErrors, { Info, AnyErrorClass, ErrorInstance } from '../main.js'
 
 const instanceMethodsInfo = {} as Info['instanceMethods']
 expectError(instanceMethodsInfo.other)
-expectType<Error>(instanceMethodsInfo.error)
+expectAssignable<Error>(instanceMethodsInfo.error)
 expectAssignable<boolean>(instanceMethodsInfo.options)
 expectType<boolean>(instanceMethodsInfo.showStack)
 expectAssignable<AnyErrorClass>(instanceMethodsInfo.AnyError)
@@ -12,7 +12,9 @@ expectAssignable<AnyErrorClass>(instanceMethodsInfo.AnyError)
 expectAssignable<object>(instanceMethodsInfo.ErrorClasses)
 expectError(instanceMethodsInfo.ErrorClasses.other)
 expectType<never>(instanceMethodsInfo.ErrorClasses.AnyError)
-expectType<ErrorInstance>(new instanceMethodsInfo.ErrorClasses.UnknownError(''))
+expectAssignable<ErrorInstance>(
+  new instanceMethodsInfo.ErrorClasses.UnknownError(''),
+)
 expectAssignable<Function | undefined>(instanceMethodsInfo.ErrorClasses.SError)
 
 const AnyError = modernErrors()

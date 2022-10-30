@@ -1,4 +1,4 @@
-import { expectType } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../../main.js'
 
@@ -9,7 +9,7 @@ const unknownError = new AnyError('', { cause: '' })
 type UnknownInstance = typeof unknownError
 
 expectType<Error>(unknownError)
-expectType<ErrorInstance>(unknownError)
+expectAssignable<ErrorInstance>(unknownError)
 expectType<AnyInstance>(unknownError)
 expectType<UnknownInstance>(unknownError)
 

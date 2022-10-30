@@ -14,7 +14,7 @@ const unknownError = new AnyError('', { cause: '' })
 expectAssignable<Error>(unknownError)
 expectAssignable<ErrorInstance>(unknownError)
 expectAssignable<BareErrorInstance>(unknownError)
-expectType<FullErrorInstance>(unknownError)
+expectAssignable<FullErrorInstance>(unknownError)
 
 const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
@@ -33,8 +33,8 @@ const wideError = new WideError('', { cause: '' })
 type WideErrorInstance = InstanceType<typeof WideError>
 
 expectType<Error>(wideError)
-expectType<ErrorInstance>(wideError)
-expectType<BareErrorInstance>(wideError)
+expectAssignable<ErrorInstance>(wideError)
+expectAssignable<BareErrorInstance>(wideError)
 expectNotAssignable<FullErrorInstance>(wideError)
 expectType<WideErrorInstance>(wideError)
 
