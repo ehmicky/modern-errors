@@ -46,6 +46,7 @@
   },
   "author": "ehmicky <ehmicky@gmail.com> (https://github.com/ehmicky)",
   "directories": {
+    "example": "examples",
     "lib": "src",
     "test": "test"
   },
