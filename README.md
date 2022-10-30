@@ -572,6 +572,7 @@ import modernErrorsBugs from 'modern-errors-bugs'
 import modernErrorsSerialize from 'modern-errors-serialize'
 
 export const AnyError = modernErrors([modernErrorsBugs, modernErrorsSerialize])
+// ...
 ```
 
 ### Plugin options
