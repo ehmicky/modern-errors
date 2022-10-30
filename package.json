@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.97",
-    "modern-errors-cli": "^1.0.0",
+    "modern-errors-cli": "^1.0.1",
     "sinon": "^14.0.1",
     "test-each": "^5.4.0",
     "through2": "^4.0.2",
