@@ -68,7 +68,7 @@
     "modern-errors-http": "^1.2.0",
     "modern-errors-process": "^1.2.0",
     "modern-errors-serialize": "^1.2.0",
-    "modern-errors-stack": "^1.1.0",
+    "modern-errors-stack": "^1.2.0",
     "modern-errors-winston": "^1.1.0",
     "test-each": "^5.4.0"
   },
