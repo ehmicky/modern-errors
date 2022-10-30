@@ -468,6 +468,9 @@ recommend the following conventions to help users find plugins:
 
 - The npm package name should be `[@scope/]modern-errors-${plugin.name}`
 - The repository name should match the npm package name
+- `"modern-errors"` should be added as a
+  [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies)
+  in `package.json`
 - The `package.json` `keywords` should include `modern-errors` and
   `modern-errors-plugin`
 - Please create an issue on the `modern-errors` repository so we can add the
