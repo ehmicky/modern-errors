@@ -1,6 +1,7 @@
 # TypeScript
 
-The [API](../README.md#api) is fully typed for TypeScript users.
+The [API](../README.md#api) is fully typed for TypeScript users
+([>= 4.7](https://devblogs.microsoft.com/typescript/announcing-typescript-4-7)).
 
 ## Error properties and methods
 
