@@ -12,15 +12,18 @@ export type ExternalPluginOptions<PluginArg extends Plugin> =
 /**
  * Exclude plugins with a `name` that is not typed `as const`
  */
-type LiteralString<T extends string> = string extends T ? never : T
+type PluginOptionName<PluginArg extends Plugin> =
+  string extends PluginArg['name']
+    ? never
+    : ExternalPluginOptions<PluginArg> extends never
+    ? never
+    : PluginArg['name']
 
 /**
  * Options of all non-core plugins
  */
 type ExternalPluginsOptions<PluginsArg extends Plugins> = {
-  readonly [PluginArg in PluginsArg[number] as LiteralString<
-    PluginArg['name']
-  >]?: ExternalPluginOptions<PluginArg>
+  readonly [PluginArg in PluginsArg[number] as PluginOptionName<PluginArg>]?: ExternalPluginOptions<PluginArg>
 }
 
 /**
