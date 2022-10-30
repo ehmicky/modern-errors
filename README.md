@@ -17,7 +17,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 - ⛑️ Create [error classes](#create-error-classes) (including with
   [custom logic](#custom-logic))
-- 🖊️ Set properties on [individual errors](#error-instance-properties) or on
+- 🏷️ Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
   [properties](#wrap-error-options)
