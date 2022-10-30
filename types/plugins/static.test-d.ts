@@ -31,7 +31,9 @@ expectError(expectType<''>(FullAnyError.staticMethod(true)))
 
 expectType<''>(FullAnyError.staticMethod('', true))
 expectError(BareAnyError.staticMethod('', true))
+expectError(BareAnyError.staticMethod('', undefined))
 expectError(FullAnyError.staticMethod('', false))
+expectError(FullAnyError.staticMethod('', undefined))
 expectError(FullAnyError.staticMethod('', true, undefined))
 
 const info = {} as Info['staticMethods']
