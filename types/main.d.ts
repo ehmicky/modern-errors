@@ -47,10 +47,6 @@ export default function modernErrors<
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
-//  - If two `plugin.properties()` (or `props`) return the same property, they
-//    are intersected using `&`, instead of the second one overriding the first.
-//    Therefore, the type of `plugin.properties()` that are not unique should
-//    currently be wide to avoid the `&` intersection resulting in `undefined`.
 //  - When wrapping an error as `cause`:
 //     - The following are ignored, which is expected:
 //        - Error core properties
@@ -59,6 +55,10 @@ export default function modernErrors<
 //     - However, the following should be kept and are currently not:
 //        - Properties set after instantiation
 //        - `custom` instance properties
+//  - If two `plugin.properties()` (or `props`) return the same property, they
+//    are intersected using `&`, instead of the second one overriding the first.
+//    Therefore, the type of `plugin.properties()` that are not unique should
+//    currently be wide to avoid the `&` intersection resulting in `undefined`.
 // Medium limitations:
 //  - Type narrowing with `instanceof AnyError` does not work if there are any
 //    plugins with static methods. This is due to the following bug:
@@ -70,12 +70,19 @@ export default function modernErrors<
 //    method `methodName(...) { ... }`. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
 //  - When a `custom` class overrides a core error property, a plugin's
-//    `properties()` or `instanceMethods`, or `props`, it should work even if
-//    it is not a subtype of it
+//    `instanceMethods`, `properties()` or `props`, it should work even if it is
+//    not a subtype of it
 //  - Error normalization (`AnyError.normalize()` and aggregate `errors`) is not
 //    applied on errors coming from another `modernErrors()` call, even though
 //    it should (as opposed to errors coming from the same `modernErrors()`
 //    call)
+//  - `ErrorClass.subclass(..., { custom })`:
+//     - Currently fails if `custom` is not an `AnyError` child, which is
+//       expected
+//     - Fails if `custom` is extending from a parent type of `ErrorClass`, but
+//       only if that parent type has a `custom` option itself
+//     - Should always fail if `custom` is extending from a child type of
+//       `ErrorClass` (as opposed to `ErrorClass` itself)
 // Minor limitations:
 //  - Plugin static methods should not be allowed to override `Error.*`
 //    (e.g. `prepareStackTrace()`)
