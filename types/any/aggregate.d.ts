@@ -3,14 +3,18 @@ import type { NormalizeError } from './normalize.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { ErrorProps } from '../core_plugins/props.js'
 
-type DefinedAggregateErrorsOption = readonly unknown[]
+type DefinedAggregateErrorOption = unknown
+type DefinedAggregateErrorsOption = readonly DefinedAggregateErrorOption[]
 export type AggregateErrorsOption = DefinedAggregateErrorsOption | undefined
 
 type NormalizeAggregateErrors<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   AggregateErrorsArg extends AggregateErrorsOption,
-> = AggregateErrorsArg extends readonly [infer AggregateErrorArg, ...infer Rest]
+> = AggregateErrorsArg extends readonly [
+  infer AggregateErrorArg extends DefinedAggregateErrorOption,
+  ...infer Rest extends DefinedAggregateErrorsOption,
+]
   ? [
       NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
       ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
