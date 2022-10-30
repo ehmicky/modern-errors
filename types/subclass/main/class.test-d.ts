@@ -1,6 +1,15 @@
-import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError,
+} from 'tsd'
 
-import modernErrors, { AnyErrorClass, ErrorClass } from '../../main.js'
+import modernErrors, {
+  AnyErrorClass,
+  ErrorClass,
+  ErrorInstance,
+} from '../../main.js'
 
 const AnyError = modernErrors()
 const SError = AnyError.subclass('SError')
@@ -34,3 +43,5 @@ expectError(AnyError.subclass({}))
 expectError(SError.subclass({}))
 expectError(AnyError.subclass('Test'))
 expectError(SError.subclass('Test'))
+
+expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
