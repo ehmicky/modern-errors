@@ -104,4 +104,4 @@ as a generic parameter, such as `ErrorClass<[typeof plugin]>`.
 
 They should only be used to type unknown error instances and classes, when no
 variable nor [type inference](#type-inference) is available. For example, they
-can be useful when [creating plugins](plugins.md#typescript).
+can be useful when [creating plugins](plugins.md#-typescript).
