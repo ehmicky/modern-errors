@@ -380,6 +380,8 @@ export default {
 `modern-errors` [exports its types](typescript.md#wide-types) for TypeScript
 users.
 
+Any plugin's types are exposed to its users.
+
 ### `getOptions`
 
 The types of [`getOptions()`](#getoptions)'s parameters are used to validate the
