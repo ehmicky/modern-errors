@@ -4,6 +4,85 @@ import modernErrors, { InstanceOptions } from '../main.js'
 
 const AnyError = modernErrors()
 
+const SError = AnyError.subclass('SError')
+const sError = new SError('')
+
+new AnyError('', { cause: sError })
+expectError(new AnyError())
+expectError(new AnyError(true))
+expectError(new AnyError('', true))
+expectError(new AnyError('', { cause: '', other: true }))
+
+const SSError = SError.subclass('SSError')
+new SSError('')
+
+const CError = AnyError.subclass('CError', {
+  custom: class extends AnyError {
+    constructor(
+      message: string,
+      options?: InstanceOptions & { prop?: true },
+      extra?: true,
+    ) {
+      super(message, options, extra)
+    }
+  },
+})
+new CError('', { prop: true })
+expectError(new CError())
+expectError(new CError(true))
+expectError(new CError('', true))
+expectError(new CError('', { other: true }))
+expectError(new CError('', { cause: '', other: true }))
+expectError(new CError('', { prop: false }))
+
+const SCError = CError.subclass('SCError')
+new SCError('', { prop: true })
+expectError(new SCError())
+expectError(new SCError(true))
+expectError(new SCError('', true))
+expectError(new SCError('', { other: true }))
+expectError(new SCError('', { cause: '', other: true }))
+expectError(new SCError('', { prop: false }))
+
+const CSError = SError.subclass('CSError', {
+  custom: class extends SError {
+    constructor(
+      message: string,
+      options?: InstanceOptions & { prop?: true },
+      extra?: true,
+    ) {
+      super(message, options, extra)
+    }
+  },
+})
+new CSError('', { prop: true })
+expectError(new CSError())
+expectError(new CSError(true))
+expectError(new CSError('', true))
+expectError(new CSError('', { other: true }))
+expectError(new CSError('', { cause: '', other: true }))
+expectError(new CSError('', { prop: false }))
+
+const CCError = CError.subclass('CCError', {
+  custom: class extends CError {
+    constructor(
+      message: string,
+      options?: InstanceOptions & { prop?: true; propTwo?: true },
+      extra?: boolean,
+    ) {
+      super(message, options, true)
+    }
+  },
+})
+new CCError('', { prop: true, propTwo: true })
+expectError(new CCError())
+expectError(new CCError(true))
+expectError(new CCError('', true))
+expectError(new CCError('', { other: true }))
+expectError(new CCError('', { cause: '', other: true }))
+expectError(new CCError('', { prop: false }))
+expectError(new CCError('', { propTwo: false }))
+
 AnyError.subclass('TestError', {
   custom: class extends AnyError {
     constructor(message: string, options?: InstanceOptions) {
@@ -84,18 +163,6 @@ expectError(
     },
   }),
 )
-
-const CError = AnyError.subclass('CError', {
-  custom: class extends AnyError {
-    constructor(
-      message: string,
-      options?: InstanceOptions & { prop?: true },
-      extra?: true,
-    ) {
-      super(message, options, extra)
-    }
-  },
-})
 
 CError.subclass('TestError', {
   custom: class extends CError {

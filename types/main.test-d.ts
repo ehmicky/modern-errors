@@ -60,10 +60,6 @@ if (exception instanceof SError) {
 }
 
 const anyError = new AnyError('', { cause: sError })
-expectError(new AnyError())
-expectError(new AnyError(true))
-expectError(new AnyError('', true))
-expectError(new AnyError('', { cause: '', other: true }))
 expectAssignable<SInstance>(anyError)
 expectAssignable<ErrorInstance>(anyError)
 expectAssignable<Error>(anyError)
@@ -87,25 +83,12 @@ if (exception instanceof SSError) {
   expectType<SSInstance>(exception)
 }
 
-class BCError extends AnyError {
-  constructor(
-    message: string,
-    options?: InstanceOptions & { cProp?: true },
-    extra?: true,
-  ) {
-    super(message, options, extra)
-  }
-}
-const CError = AnyError.subclass('CError', { custom: BCError })
+const CError = AnyError.subclass('CError', {
+  custom: class extends AnyError {},
+})
 type CInstance = typeof CError['prototype']
 
-const cError = new CError('', { cProp: true })
-expectError(new CError())
-expectError(new CError(true))
-expectError(new CError('', true))
-expectError(new CError('', { other: true }))
-expectError(new CError('', { cause: '', other: true }))
-expectError(new CError('', { cProp: false }))
+const cError = new CError('')
 expectNotAssignable<AnyErrorClass>(CError)
 expectAssignable<ErrorClass>(CError)
 expectAssignable<CInstance>(cError)
@@ -117,13 +100,7 @@ expectType<'CError'>(cError.name)
 const SCError = CError.subclass('SCError')
 type SCInstance = typeof SCError['prototype']
 
-const scError = new SCError('', { cProp: true })
-expectError(new SCError())
-expectError(new SCError(true))
-expectError(new SCError('', true))
-expectError(new SCError('', { other: true }))
-expectError(new SCError('', { cause: '', other: true }))
-expectError(new SCError('', { cProp: false }))
+const scError = new SCError('')
 expectNotAssignable<AnyErrorClass>(SCError)
 expectAssignable<ErrorClass>(SCError)
 expectAssignable<SCInstance>(scError)
@@ -132,25 +109,10 @@ expectAssignable<ErrorInstance>(scError)
 expectAssignable<Error>(scError)
 expectType<'SCError'>(scError.name)
 
-class BCSError extends SError {
-  constructor(
-    message: string,
-    options?: InstanceOptions & { cProp?: true },
-    extra?: true,
-  ) {
-    super(message, options, extra)
-  }
-}
-const CSError = SError.subclass('CSError', { custom: BCSError })
+const CSError = SError.subclass('CSError', { custom: class extends SError {} })
 type CSInstance = typeof CSError['prototype']
 
-const csError = new CSError('', { cProp: true })
-expectError(new CSError())
-expectError(new CSError(true))
-expectError(new CSError('', true))
-expectError(new CSError('', { other: true }))
-expectError(new CSError('', { cause: '', other: true }))
-expectError(new CSError('', { cProp: false }))
+const csError = new CSError('')
 expectNotAssignable<AnyErrorClass>(CSError)
 expectAssignable<ErrorClass>(CSError)
 expectAssignable<CSInstance>(csError)
@@ -159,26 +121,10 @@ expectAssignable<ErrorInstance>(csError)
 expectAssignable<Error>(csError)
 expectType<'CSError'>(csError.name)
 
-class BCCError extends CError {
-  constructor(
-    message: string,
-    options?: InstanceOptions & { cProp?: true; ccProp?: true },
-    extra?: boolean,
-  ) {
-    super(message, options, true)
-  }
-}
-const CCError = CError.subclass('CCError', { custom: BCCError })
+const CCError = CError.subclass('CCError', { custom: class extends CError {} })
 type CCInstance = typeof CCError['prototype']
 
-const ccError = new CCError('', { cProp: true, ccProp: true })
-expectError(new CCError())
-expectError(new CCError(true))
-expectError(new CCError('', true))
-expectError(new CCError('', { other: true }))
-expectError(new CCError('', { cause: '', other: true }))
-expectError(new CCError('', { cProp: false }))
-expectError(new CCError('', { ccProp: false }))
+const ccError = new CCError('')
 expectNotAssignable<AnyErrorClass>(CCError)
 expectAssignable<ErrorClass>(CCError)
 expectAssignable<CCInstance>(ccError)
