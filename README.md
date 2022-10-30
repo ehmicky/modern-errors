@@ -9,7 +9,7 @@
 [![Twitter](https://img.shields.io/badge/%E2%80%8B-twitter-brightgreen.svg?logo=twitter)](https://twitter.com/intent/follow?screen_name=ehmicky)
 [![Medium](https://img.shields.io/badge/%E2%80%8B-medium-brightgreen.svg?logo=medium)](https://medium.com/@ehmicky)
 
-Handle errors like it's 2022 🔮
+Handle errors like it's 2023 🔮
 
 Error handling framework that is pluggable, minimalist yet featureful.
 
