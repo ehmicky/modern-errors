@@ -21,9 +21,9 @@ Error handling framework that is pluggable, minimalist yet featureful.
   [all errors of the same class](#error-class-properties)
 - 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
   [properties](#wrap-error-options)
-- 🐞 Separate known and [unknown errors](#unknown-errors)
 - 🚨 Normalize [invalid errors](#invalid-errors) (not an `Error` instance,
   missing `stack`, etc.)
+- 🐞 Separate known and [unknown errors](#unknown-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
 - 📖 Based on standard JavaScript: [`throw`](#throw-errors),
   [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
@@ -47,7 +47,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
   HTTP error responses
 - [`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston):
   Log errors with Winston
-- Create your [own plugin](#custom-plugins)
+- 🧩 Create your [own plugin](#custom-plugins)
 
 # Example
 
@@ -189,7 +189,7 @@ Options:
 
 # Usage
 
-## Error classes
+## ⛑️ Error classes
 
 ### Create error classes
 
@@ -229,7 +229,7 @@ if (error instanceof AnyError) {
 }
 ```
 
-## Throw errors
+## 🏷️ Throw errors
 
 ### Simple errors
 
@@ -272,7 +272,7 @@ throw new InputError('...', { errors: [databaseError, authError] })
 // }
 ```
 
-## Wrap errors
+## 🎀 Wrap errors
 
 ### Wrap inner error
 
@@ -372,7 +372,7 @@ try {
 }
 ```
 
-## Normalize errors
+## 🚨 Normalize errors
 
 ### Wrapped errors
 
@@ -439,9 +439,9 @@ export const main = function () {
 }
 ```
 
-### Unknown errors
+## 🐞 Unknown errors
 
-#### Normalizing unknown errors
+### Normalizing unknown errors
 
 An error is _unknown_ if its class was not created by
 [`AnyError.subclass()`](#anyerrorsubclassname-options). This indicates an
@@ -460,7 +460,7 @@ try {
 }
 ```
 
-#### Handling unknown errors
+### Handling unknown errors
 
 _Unknown_ errors should be handled in a `try {} catch {}` block and
 [wrapped](#wrap-error-class) with a [_known_ class](#create-error-classes)
@@ -478,7 +478,7 @@ try {
 }
 ```
 
-#### Using plugins with unknown errors
+### Using plugins with unknown errors
 
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) is required for
 [_unknown_ errors](#unknown-errors) to use [plugins](#plugins-1).
@@ -496,7 +496,7 @@ try {
 }
 ```
 
-## Custom logic
+## 🔧 Custom logic
 
 ### Class custom logic
 
@@ -553,7 +553,7 @@ export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
 ```
 
-## Plugins
+## 🧩 Plugins
 
 ### List of plugins
 
@@ -641,7 +641,7 @@ error[methodName](...args, options[pluginName])
 Please see the [following documentation](docs/plugins.md) to create your own
 plugin.
 
-## TypeScript
+## 🤓 TypeScript
 
 Please see the [following documentation](docs/typescript.md) for information
 about TypeScript types.
