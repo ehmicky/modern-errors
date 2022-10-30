@@ -3,7 +3,7 @@ import type { PluginsInstanceMethods } from '../../plugins/instance.js'
 import type { PluginsProperties } from '../../plugins/properties.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomAttributes } from '../../subclass/custom/main.js'
-import type { Intersect } from '../../utils.js'
+import type { OmitKeys } from '../../utils.js'
 import type {
   AggregateErrorsOption,
   AggregateErrorsProp,
@@ -32,23 +32,18 @@ export type BaseError<
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
   AggregateErrorsArg extends AggregateErrorsOption,
-> = Intersect<
-  Intersect<
-    Intersect<
-      Intersect<
-        Intersect<Error, AggregateErrorsProp<AggregateErrorsArg>, never>,
-        CustomAttributesArg,
-        CoreErrorProps
-      >,
-      PluginsInstanceMethods<PluginsArg>,
-      CoreErrorProps
-    >,
+> = Error &
+  OmitKeys<AggregateErrorsProp<AggregateErrorsArg>, never> &
+  OmitKeys<CustomAttributesArg, CoreErrorProps> &
+  OmitKeys<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
+  OmitKeys<
     PluginsProperties<PluginsArg>,
     ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
-  >,
-  ErrorPropsArg,
-  ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
->
+  > &
+  OmitKeys<
+    ErrorPropsArg,
+    ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+  >
 
 /**
  * Error instance object

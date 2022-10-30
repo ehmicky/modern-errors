@@ -1,14 +1,11 @@
 /**
- * Like `Source & Omit<Target, OmittedKeys>` except it reduces `Source & {}`
- * to just `Source` for simpler debugging.
+ * Like `Omit<Target, OmittedKeys>` except it reduces empty `{}` for simpler
+ * debugging.
  */
-export type Intersect<
-  Source extends object,
-  Target extends unknown,
+export type OmitKeys<
+  Source extends unknown,
   OmittedKeys extends PropertyKey,
-> = keyof Target extends OmittedKeys
-  ? Source
-  : Source & Omit<Target, OmittedKeys>
+> = keyof Source extends OmittedKeys ? {} : Omit<Source, OmittedKeys>
 
 /**
  * Forbid `Source` from having keys not present in `Forbidden`
