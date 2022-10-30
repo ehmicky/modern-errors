@@ -5,7 +5,7 @@ import type { ErrorInstance } from '../any/modify.js'
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
   options?: SpecificInstanceOptions<PluginsArg>,
-  ...extra: any[]
+  ...extra: readonly any[]
 ) => ErrorInstance<PluginsArg>
 
 export type ParentInstanceOptions<
@@ -17,10 +17,10 @@ export type ParentInstanceOptions<
 export type ParentExtra<
   PluginsArg extends Plugins,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = ConstructorParameters<ParentErrorClass> extends [
+> = ConstructorParameters<ParentErrorClass> extends readonly [
   unknown,
   unknown?,
-  ...infer Extra,
+  ...infer Extra extends readonly unknown[],
 ]
   ? Extra
-  : never
+  : readonly never[]
