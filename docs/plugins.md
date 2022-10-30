@@ -420,17 +420,15 @@ currently ignored.
 const plugin = {
   // ...
   instanceMethods: {
-    exampleMethod(input: boolean): void {},
+    exampleMethod(info: Info['instanceMethods'], input: boolean): void {},
   },
 }
 ```
 
 ### `Info`
 
-`modern-errors`'s [exported types](typescript.md#wide-types) can be used. In
-particular, the `Info` type refers to the [`info`](#info) parameter. It can be
-`Info['properties']`, `Info['instanceMethods']`, `Info['staticMethods']` or
-`Info['errorInfo']`.
+The [`info`](#info) parameter can be typed with `Info['properties']`,
+`Info['instanceMethods']`, `Info['staticMethods']` or `Info['errorInfo']`.
 
 ```ts
 import type { Info } from 'modern-errors'
@@ -464,20 +462,22 @@ const testPlugin: Plugin = plugin
 ## Publishing
 
 Plugins can either be kept private or be published on npm. When public, we
-recommend the following conventions to help users find plugins:
+recommend the following conventions:
 
-- The npm package name should be `[@scope/]modern-errors-${plugin.name}`
-- The repository name should match the npm package name
-- `"modern-errors"` should be added as a
-  [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies)
-  in `package.json`
-- `"modern-errors"` and `"modern-errors-plugin"` should be added as both
+- [] The npm package name should be `[@scope/]modern-errors-${plugin.name}`
+- [] The repository name should match the npm package name
+- [] `"modern-errors"` and `"modern-errors-plugin"` should be added as both
   [`package.json` `keywords`](https://www.npmjs.com/search?q=keywords:modern-errors-plugin)
   and [GitHub topics](https://github.com/topics/modern-errors-plugin)
-- Please create an issue on the `modern-errors` repository so we can add the
+- [] `"modern-errors"` should be added in the `package.json`'s
+  [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies),
+  not in the production `dependencies`, `devDependencies` nor
+  `bundledDependencies`. Its semver range should start with `^`. Also,
+  [`peerDependenciesMeta.modern-errors.optional`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependenciesmeta)
+  should not be used.
+- [] The plugin should export its [types](#typescript) for TypeScript users
+- [] Please create an issue on the `modern-errors` repository so we can add the
   plugin to the [list of available ones](../README.md#plugins)! 🎉
-
-We also recommend declaring some [types](#typescript) for TypeScript users.
 
 ## Best practices
 
