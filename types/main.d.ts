@@ -51,16 +51,14 @@ export default function modernErrors<
 //    are intersected using `&`, instead of the second one overriding the first.
 //    Therefore, the type of `plugin.properties()` that are not unique should
 //    currently be wide to avoid the `&` intersection resulting in `undefined`.
-//  - Type narrowing with `instanceof` does not work with:
-//     - `AnyError` if there are any plugins with static methods
-//    This is due to the following bug:
+//  - Type narrowing with `instanceof AnyError` does not work if there are any
+//    plugins with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
 //  - `new AnyError()` should fail if the second argument is not an object with
 //    a `cause` property
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
-//    method `methodName(...) { ... }`.
-//    This is due to the following bug:
+//    method `methodName(...) { ... }`. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/48125
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `properties()` or `instanceMethods`, or `props`, it should work even if

@@ -2,8 +2,14 @@ import { expectType } from 'tsd'
 
 import modernErrors from '../../main.js'
 
-const AnyError = modernErrors()
-type AnyInstance = InstanceType<typeof AnyError>
+const NoPluginsAnyError = modernErrors()
+const AnyError = modernErrors([
+  {
+    name: 'test' as const,
+    instanceMethods: { instanceMethod: () => {} },
+    staticMethods: { staticMethod: () => {} },
+  },
+])
 
 const ChildError = AnyError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
@@ -32,8 +38,8 @@ const childCustomError = new ChildCustomError('')
 const deepCustomError = new DeepCustomError('')
 
 const exception = {} as unknown
-if (exception instanceof AnyError) {
-  expectType<AnyInstance>(exception)
+if (exception instanceof NoPluginsAnyError) {
+  expectType<typeof NoPluginsAnyError['prototype']>(exception)
 }
 if (exception instanceof ChildError) {
   expectType<typeof ChildError['prototype']>(exception)
