@@ -40,5 +40,5 @@ const errorObject = error.toJSON()
 
 AnyError.exit({ silent: true })
 AnyError.logProcess({ exit: true })
-AnyError.parse(errorObject)
+expectAssignable<ErrorInstance>(AnyError.parse(errorObject))
 AnyError.fullFormat({ stack: true })
