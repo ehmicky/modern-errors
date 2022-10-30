@@ -1,4 +1,4 @@
-import { expectAssignable, expectError } from 'tsd'
+import { expectType, expectError } from 'tsd'
 
 import modernErrors from '../main.js'
 
@@ -6,42 +6,40 @@ const AnyError = modernErrors()
 const UnknownError = AnyError.subclass('UnknownError')
 const SError = AnyError.subclass('SError')
 
-type UnknownInstance = InstanceType<typeof UnknownError>
-type SInstance = InstanceType<typeof SError>
+type UnknownInstance = typeof UnknownError['prototype']
+type SInstance = typeof SError['prototype']
 
-const unknownErrors = [true] as [true]
-const knownErrors = [new SError('')] as [SInstance]
+const unknownErrors = [true] as const
+const knownErrors = [new SError('')] as const
 
-expectError(new AnyError('', { cause: '' }).errors)
-expectError(new SError('').errors)
-expectError(new AnyError('', { cause: '', errors: true }))
-expectError(new SError('', { errors: true }))
-
-expectAssignable<[UnknownInstance]>(
+expectType<[UnknownInstance]>(
   new AnyError('', { cause: '', errors: unknownErrors }).errors,
 )
-expectAssignable<[UnknownInstance]>(
-  new SError('', { errors: unknownErrors }).errors,
-)
-expectAssignable<[SInstance]>(
+expectType<[UnknownInstance]>(new SError('', { errors: unknownErrors }).errors)
+expectType<[SInstance]>(
   new AnyError('', { cause: '', errors: knownErrors }).errors,
 )
-expectAssignable<[SInstance]>(new SError('', { errors: knownErrors }).errors)
-expectAssignable<[UnknownInstance]>(
+expectType<[SInstance]>(new SError('', { errors: knownErrors }).errors)
+expectType<[UnknownInstance]>(
   new AnyError('', { cause: new SError('', { errors: unknownErrors }) }).errors,
 )
-expectAssignable<[UnknownInstance]>(
+expectType<[UnknownInstance]>(
   new SError('', { cause: new SError('', { errors: unknownErrors }) }).errors,
 )
-expectAssignable<[UnknownInstance, SInstance]>(
+expectType<[UnknownInstance, SInstance]>(
   new AnyError('', {
     cause: new SError('', { errors: unknownErrors }),
     errors: knownErrors,
   }).errors,
 )
-expectAssignable<[UnknownInstance, SInstance]>(
+expectType<[UnknownInstance, SInstance]>(
   new SError('', {
     cause: new SError('', { errors: unknownErrors }),
     errors: knownErrors,
   }).errors,
 )
+
+expectError(new AnyError('', { cause: '' }).errors)
+expectError(new SError('').errors)
+expectError(new AnyError('', { cause: '', errors: true }))
+expectError(new SError('', { errors: true }))
