@@ -1,15 +1,11 @@
 import type { MethodOptions } from '../options/method.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './shape.js'
-import type { Info } from './info.js'
 
 /**
  * Unbound static method of a plugin
  */
-type StaticMethod = (
-  info: Info['staticMethods'],
-  ...args: readonly never[]
-) => unknown
+type StaticMethod = (info: never, ...args: readonly never[]) => unknown
 
 /**
  * Unbound static methods of a plugin

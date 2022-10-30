@@ -1,6 +1,5 @@
 import type { UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './shape.js'
-import type { Info } from './info.js'
 
 /**
  * Unbound added properties of a plugin
@@ -12,7 +11,7 @@ interface AddedProperties {
 /**
  * Bound added properties of a plugin, always defined
  */
-type GetProperties = (info: Info['properties']) => AddedProperties
+type GetProperties = (info: never) => AddedProperties
 
 /**
  * Bound added properties of a plugin, if defined

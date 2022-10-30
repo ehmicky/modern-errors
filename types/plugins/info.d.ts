@@ -4,6 +4,26 @@ import type { ErrorClass } from '../subclass/main/main.js'
 import type { ErrorInstance } from '../any/modify/main.js'
 import type { Plugins } from './shape.js'
 
+// `Info` is exposed as a type so that plugins can:
+//  - Use it if the plugin is written in TypeScript
+//  - Optionally export it as part of the parameters of
+//    `plugin.properties|instanceMethods|staticMethods()`
+// However, the `info` parameter of those methods is left untyped because:
+//  - TypeScript has some bugs related to identical types not being assignable
+//    to themselves
+//     - https://github.com/microsoft/TypeScript/issues/49653
+//     - https://github.com/microsoft/TypeScript/issues/51399
+//  - Identical types happen when two copies of `modern-errors` are installed:
+//    the main one, and the one used by the plugin for typing purpose
+//  - The TypeScript bugs only happen with complex generic functions,
+//    i.e. leaving `info` untyped in `properties|instanceMethods|staticMethods`
+//    fixes this problem
+// This solution:
+//  - Works well with all package managers
+//  - Is mostly internal-only and let plugins use `Info` as a regular type
+//  - Does not require complex setup for plugins in their `package.json`
+//    (such as a combination of `devDependencies` and `optional`
+//    `peerDependencies`)
 /**
  * Properties shared by all `info` objects.
  */

@@ -75,7 +75,3 @@ expectAssignable<Plugin>({
 expectAssignable<Plugin>({ name, staticMethods: {} })
 expectNotAssignable<Plugin>({ name, staticMethods: true })
 expectNotAssignable<Plugin>({ name, staticMethods: { staticMethod: true } })
-expectNotAssignable<Plugin>({
-  name,
-  staticMethods: { staticMethod: (info: true) => '' },
-})

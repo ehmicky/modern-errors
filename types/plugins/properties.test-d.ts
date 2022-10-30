@@ -50,7 +50,6 @@ if (exception instanceof MixChildError) {
 
 expectAssignable<Plugin>(fullPlugin)
 expectNotAssignable<Plugin>({ name, properties: true })
-expectNotAssignable<Plugin>({ name, properties: (info: true) => ({}) })
 expectNotAssignable<Plugin>({
   name,
   properties: (info: Info['properties'], arg: true) => ({}),
