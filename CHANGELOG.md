@@ -19,27 +19,31 @@ export const AnyError = modernErrors([modernErrorsBugs, modernErrorsCli])
 
 ### CLI plugin
 
-The [`modern-errors-cli` plugin](README.md#cli-errors) handles CLI errors.
+The [`modern-errors-cli` plugin](https://github.com/ehmicky/modern-errors-cli)
+handles CLI errors.
 
 ### Process errors
 
-The [`modern-errors-process` plugin](README.md#process-errors) handles process
-errors.
+The
+[`modern-errors-process` plugin](https://github.com/ehmicky/modern-errors-process)
+handles process errors.
 
 ### Clean stack traces
 
-The [`modern-errors-stack` plugin](README.md#clean-stack-traces) automatically
-cleans up stack traces.
+The
+[`modern-errors-stack` plugin](https://github.com/ehmicky/modern-errors-stack)
+automatically cleans up stack traces.
 
 ### HTTP responses
 
-The [`modern-errors-http` plugin](README.md#http-responses) converts errors to
-plain objects to use in an HTTP response.
+The [`modern-errors-http` plugin](https://github.com/ehmicky/modern-errors-http)
+converts errors to plain objects to use in an HTTP response.
 
 ### Error logging (Winston)
 
-The [`modern-errors-winston` plugin](README.md#error-logging-winston) logs
-errors with Winston.
+The
+[`modern-errors-winston` plugin](https://github.com/ehmicky/modern-errors-winston)
+logs errors with Winston.
 
 ### Subclasses
 
@@ -230,8 +234,10 @@ throw new InputError('Could not read the file.', {
 
 ### Bug reports
 
-The `bugsUrl` option has been renamed to [`bugs`](README.md#bug-reports). It
-cannot be a function anymore. It also requires adding the `modern-errors-bugs`
+The `bugsUrl` option has been renamed to
+[`bugs`](https://github.com/ehmicky/modern-errors-bugs). It cannot be a function
+anymore. It also requires adding the
+[`modern-errors-bugs`](https://github.com/ehmicky/modern-errors-bugs)
 [plugin](README.md#adding-plugins).
 
 A few bug fixes related to using the `bugs` option twice have also been fixed.
@@ -254,12 +260,15 @@ throw new InputError('Could not read the file.', {
 
 ### Serialization/parsing
 
-`parse()` has been renamed to [`AnyError.parse()`](README.md#parse).
+`parse()` has been renamed to
+[`AnyError.parse()`](https://github.com/ehmicky/modern-errors-serialize#anyerrorparseerrorobject).
 `AnyError.parse()` and `error.toJSON()` also require adding the
-`modern-errors-serialize` [plugin](README.md#adding-plugins).
+[`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
+[plugin](README.md#adding-plugins).
 
 Serialization and parsing now
-[recurse deeply](README.md#deep-serializationparsing) over objects and arrays.
+[recurse deeply](https://github.com/ehmicky/modern-errors-serialize#deep-serializationparsing)
+over objects and arrays.
 
 Before:
 
