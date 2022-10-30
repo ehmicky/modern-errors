@@ -63,6 +63,21 @@ interface CustomOption<
   >
 }
 
+type KnownClassOptions<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
+  ErrorNameArg extends ErrorName,
+> = ErrorNameArg extends 'UnknownError'
+  ? {}
+  : CustomOption<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >
+
 /**
  * Class-specific options
  */
@@ -72,14 +87,13 @@ export type SpecificClassOptions<
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
-> = (ErrorNameArg extends 'UnknownError'
-  ? {}
-  : CustomOption<
-      PluginsArg,
-      ErrorPropsArg,
-      ParentErrorClass,
-      CustomAttributesArg
-    >) &
+> = KnownClassOptions<
+  PluginsArg,
+  ErrorPropsArg,
+  ParentErrorClass,
+  CustomAttributesArg,
+  ErrorNameArg
+> &
   PluginsOptions<PluginsArg>
 
 /**
