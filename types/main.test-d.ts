@@ -23,16 +23,8 @@ import './subclass/main/plugins.test-d.js'
 import './subclass/name.test-d.js'
 import './subclass/parent.test-d.js'
 
-const AnyError = modernErrors()
-
-const SError = AnyError.subclass('SError')
-const sError = new SError('')
-
 expectAssignable<Error>({} as ErrorInstance)
 expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
-
-const anyError = new AnyError('', { cause: sError })
-expectType<typeof sError>(anyError)
 
 modernErrors([])
 modernErrors([], {})
