@@ -45,12 +45,21 @@ export default function modernErrors<
   options?: GlobalOptionsArg,
 ): SpecificAnyErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
 
-// Known limitations of current types:
+// Major limitations of current types:
 //  - Plugin methods cannot be generic
 //  - If two `plugin.properties()` (or `props`) return the same property, they
 //    are intersected using `&`, instead of the second one overriding the first.
 //    Therefore, the type of `plugin.properties()` that are not unique should
 //    currently be wide to avoid the `&` intersection resulting in `undefined`.
+//  - When wrapping an error as `cause`:
+//     - The following are ignored, which is expected:
+//        - Error core properties
+//        - Class-specific properties: `custom` methods, instance methods,
+//          `plugin.properties()` and `props`
+//     - However, the following should be kept and are currently not:
+//        - Properties set after instantiation
+//        - `custom` instance properties
+// Medium limitations:
 //  - Type narrowing with `instanceof AnyError` does not work if there are any
 //    plugins with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
@@ -63,20 +72,12 @@ export default function modernErrors<
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `properties()` or `instanceMethods`, or `props`, it should work even if
 //    it is not a subtype of it
-//  - When wrapping an error as `cause`:
-//     - The following are ignored, which is expected:
-//        - Error core properties
-//        - Class-specific properties: `custom` methods, instance methods,
-//          `plugin.properties()` and `props`
-//     - However, the following should be kept and are currently not:
-//        - Properties set after instantiation
-//        - `custom` instance properties
+//  - Error normalization (`AnyError.normalize()` and aggregate `errors`) is not
+//    applied on errors coming from another `modernErrors()` call, even though
+//    it should (as opposed to errors coming from the same `modernErrors()`
+//    call)
 // Minor limitations:
 //  - Plugin static methods should not be allowed to override `Error.*`
 //    (e.g. `prepareStackTrace()`)
 //  - Plugins should not be allowed to define static or instance methods already
 //    defined by other plugins
-//  - Error normalization (`AnyError.normalize()` and aggregate `errors`) is not
-//    applied on errors coming from another `modernErrors()` call, even though
-//    it should (as opposed to errors coming from the same `modernErrors()`
-//    call)
