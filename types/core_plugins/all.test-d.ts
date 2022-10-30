@@ -1,10 +1,10 @@
 import bugsPlugin from 'modern-errors-bugs'
 import cliPlugin from 'modern-errors-cli'
-import httpPlugin from 'modern-errors-http'
+import httpPlugin, { HttpResponse } from 'modern-errors-http'
 import processPlugin from 'modern-errors-process'
-import serializePlugin from 'modern-errors-serialize'
+import serializePlugin, { ErrorObject } from 'modern-errors-serialize'
 import stackPlugin from 'modern-errors-stack'
-import winstonPlugin from 'modern-errors-winston'
+import winstonPlugin, { Format } from 'modern-errors-winston'
 import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../main.js'
@@ -30,15 +30,18 @@ modernErrors(plugins, {
 })
 
 expectAssignable<ErrorInstance<typeof plugins>>(error)
+expectAssignable<ErrorInstance>(error)
 expectAssignable<Error>(error)
 
-expectType<string>(error.message)
-expectType<string | undefined>(error.stack)
+expectType<Error['message']>(error.message)
+expectType<Error['stack']>(error.stack)
 
-error.httpResponse({ type: '' })
+expectType<HttpResponse>(error.httpResponse({ type: '' }))
 const errorObject = error.toJSON()
+expectType<ErrorObject>(errorObject)
 
-AnyError.exit({ silent: true })
-AnyError.logProcess({ exit: true })
-expectAssignable<ErrorInstance>(AnyError.parse(errorObject))
-AnyError.fullFormat({ stack: true })
+expectType<void>(AnyError.exit({ silent: true }))
+const restore = AnyError.logProcess({ exit: true })
+expectType<void>(restore())
+expectType<ErrorInstance>(AnyError.parse(errorObject))
+expectType<Format>(AnyError.fullFormat({ stack: true }))
