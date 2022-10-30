@@ -140,7 +140,7 @@ export type CreateSubclass<
   options?: ClassOptionsArg,
 ) => IsForbiddenClassName<ErrorNameArg> extends true
   ? never
-  : ClassOptionsArg['custom'] extends ErrorConstructor<PluginsArg>
+  : ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
   ? ErrorSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,

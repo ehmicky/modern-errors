@@ -5,8 +5,10 @@ import type { ErrorProps } from '../core_plugins/props/main.js'
  * Options of a plugin
  */
 export type ExternalPluginOptions<PluginArg extends Plugin> =
-  PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
-    ? Parameters<PluginArg['getOptions']>[0]
+  PluginArg extends Plugin
+    ? PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
+      ? Parameters<PluginArg['getOptions']>[0]
+      : never
     : never
 
 /**
