@@ -471,8 +471,9 @@ recommend the following conventions to help users find plugins:
 - `"modern-errors"` should be added as a
   [`peerDependencies`](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies)
   in `package.json`
-- The `package.json` `keywords` should include `modern-errors` and
-  `modern-errors-plugin`
+- `"modern-errors"` and `"modern-errors-plugin"` should be added as both
+  [`package.json` `keywords`](https://www.npmjs.com/search?q=keywords:modern-errors-plugin)
+  and [GitHub topics](https://github.com/topics/modern-errors-plugin)
 - Please create an issue on the `modern-errors` repository so we can add the
   plugin to the [list of available ones](../README.md#plugins)! 🎉
 
