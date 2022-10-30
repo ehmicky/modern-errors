@@ -3,7 +3,7 @@
 This document explains how to create a plugin for `modern-errors`. To learn how
 to [install](../README.md#adding-plugins), [use](../README.md#adding-plugins)
 and [configure](../README.md#plugin-options) plugins, please refer to the
-[main documentation](../README.md#plugins-1) instead.
+[main documentation](../README.md#-plugins) instead.
 
 ## Features
 
@@ -267,7 +267,7 @@ Its members are readonly and should not be mutated, except for
 
 _Type_: `Error`
 
-[Normalized](../README.md#normalize-errors) error instance.
+[Normalized](../README.md#-normalize-errors) error instance.
 
 ```js
 export default {
@@ -303,8 +303,8 @@ _Type_: `boolean`
 
 Hints whether `error.stack` should be printed or not.
 
-This is `true` if the error (or one of its [inner](../README.md#wrap-errors)
-errors) is [_unknown_](../README.md#unknown-errors), and `false` otherwise.
+This is `true` if the error (or one of its [inner](../README.md#-wrap-errors)
+errors) is [_unknown_](../README.md#-unknown-errors), and `false` otherwise.
 
 If a plugin prints `error.stack` optionally, `showStack` can be used as the
 default value of a `stack` boolean option. This allows users to decide whether

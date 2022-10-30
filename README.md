@@ -16,19 +16,19 @@ Error handling framework that is pluggable, minimalist yet featureful.
 # Features
 
 - ⛑️ Create [error classes](#create-error-classes) (including with
-  [custom logic](#custom-logic))
+  [custom logic](#-custom-logic))
 - 🏷️ Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
   [properties](#wrap-error-options)
 - 🚨 Normalize [invalid errors](#invalid-errors) (not an `Error` instance,
   missing `stack`, etc.)
-- 🐞 Separate known and [unknown errors](#unknown-errors)
+- 🐞 Separate known and [unknown errors](#-unknown-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
-- 📖 Based on standard JavaScript: [`throw`](#throw-errors),
-  [`try/catch`](#wrap-errors), [`new Error()`](#throw-errors),
-  [`error.cause`](#wrap-errors), [`instanceof`](#check-error-classes),
-  [`class`](#custom-logic),
+- 📖 Based on standard JavaScript: [`throw`](#%EF%B8%8F-throw-errors),
+  [`try/catch`](#-wrap-errors), [`new Error()`](#%EF%B8%8F-throw-errors),
+  [`error.cause`](#-wrap-errors), [`instanceof`](#check-error-classes),
+  [`class`](#-custom-logic),
   [`toJSON()`](https://github.com/ehmicky/modern-errors-serialize#errortojson)
 
 # Plugins
@@ -51,7 +51,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Example
 
-Create [error classes](#error-classes).
+Create [error classes](#%EF%B8%8F-error-classes).
 
 ```js
 import modernErrors from 'modern-errors'
@@ -65,13 +65,13 @@ export const AuthError = AnyError.subclass('AuthError')
 export const DatabaseError = AnyError.subclass('DatabaseError')
 ```
 
-[Throw](#throw-errors) errors.
+[Throw](#%EF%B8%8F-throw-errors) errors.
 
 ```js
 throw new InputError('Missing file path.')
 ```
 
-[Wrap](#wrap-errors) errors.
+[Wrap](#-wrap-errors) errors.
 
 ```js
 try {
@@ -81,7 +81,7 @@ try {
 }
 ```
 
-[Normalize](#normalize-errors) errors.
+[Normalize](#-normalize-errors) errors.
 
 <!-- eslint-disable no-throw-literal -->
 
@@ -94,7 +94,7 @@ try {
 }
 ```
 
-Use [plugins](#plugins-1).
+Use [plugins](#-plugins).
 
 ```js
 import modernErrors from 'modern-errors'
@@ -117,7 +117,7 @@ const identicalError = AnyError.parse(JSON.parse(errorString))
 npm install modern-errors
 ```
 
-If any [plugin](#plugins-1) is used, it must also be installed.
+If any [plugin](#-plugins) is used, it must also be installed.
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -131,7 +131,7 @@ not `require()`.
 
 ## modernErrors(plugins?, options?)
 
-`plugins`: [`Plugin[]?`](#plugins-1)\
+`plugins`: [`Plugin[]?`](#-plugins)\
 `options`: `object?`
 
 Creates and returns [`AnyError`](#anyerror).
@@ -152,7 +152,7 @@ Base error class.
 _Return value_: `class extends AnyError {}`
 
 Creates and returns an error subclass. The first one must be named
-[`UnknownError`](#unknown-errors).
+[`UnknownError`](#-unknown-errors).
 
 Subclasses can [also call](#shared-custom-logic) `ErrorClass.subclass()`
 themselves.
@@ -161,7 +161,7 @@ Options:
 
 - any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
-- `custom`: [custom class](#custom-logic) to add any methods, `constructor` or
+- `custom`: [custom class](#-custom-logic) to add any methods, `constructor` or
   properties
 
 ### AnyError.normalize(anyException)
@@ -170,7 +170,7 @@ Options:
 _Return value_: `AnyError`
 
 Normalizes [invalid errors](#invalid-errors) and assigns the `UnknownError`
-class to [_unknown_ errors](#unknown-errors).
+class to [_unknown_ errors](#-unknown-errors).
 
 ### new AnyError(message, options?)
 
@@ -182,7 +182,7 @@ Options:
 
 - any [plugin options](#plugin-options)
 - `props`: [error properties](#error-instance-properties)
-- `cause`: inner error being [wrapped](#wrap-errors). Required with
+- `cause`: inner error being [wrapped](#-wrap-errors). Required with
   [`AnyError`](#anyerror), optional with its
   [subclasses](#anyerrorsubclassname-options).
 - `errors`: array of errors being [aggregated](#aggregate-errors)
@@ -207,7 +207,7 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 ### Export error classes
 
 Exporting and documenting error classes (including [`AnyError`](#anyerror) and
-[`UnknownError`](#unknown-errors)) allows consumers to check them. This also
+[`UnknownError`](#-unknown-errors)) allows consumers to check them. This also
 enables sharing error classes between modules.
 
 ### Check error classes
@@ -377,7 +377,7 @@ try {
 ### Wrapped errors
 
 Any error can be directly passed to the [`cause` option](#wrap-inner-error),
-even if it is [invalid](#invalid-errors), [unknown](#unknown-errors) or not
+even if it is [invalid](#invalid-errors), [unknown](#-unknown-errors) or not
 [normalized](#anyerrornormalizeanyexception).
 
 ```js
@@ -427,7 +427,7 @@ Wrapping a module's main functions with
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) ensures every error
 being thrown is [valid](#invalid-errors), applies
 [plugins](#using-plugins-with-unknown-errors), and has a class that is either
-[_known_](#create-error-classes) or [`UnknownError`](#unknown-errors).
+[_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
 
 ```js
 export const main = function () {
@@ -481,7 +481,7 @@ try {
 ### Using plugins with unknown errors
 
 [`AnyError.normalize()`](#anyerrornormalizeanyexception) is required for
-[_unknown_ errors](#unknown-errors) to use [plugins](#plugins-1).
+[_unknown_ errors](#-unknown-errors) to use [plugins](#-plugins).
 
 <!-- eslint-skip -->
 
