@@ -4,7 +4,7 @@
   "type": "module",
   "exports": "./build/src/main.js",
   "main": "./build/src/main.js",
-  "types": "./build/types/main.d.ts",
+  "types": "./build/src/main.d.ts",
   "files": [
     "build/src/**/*.{js,json}",
     "build/types/**/*.d.ts"
