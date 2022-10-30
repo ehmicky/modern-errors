@@ -15,11 +15,21 @@ const AnyError = modernErrors()
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
 const CError = AnyError.subclass('CError', {
-  custom: class extends AnyError {},
+  custom: class extends AnyError {
+    prop = true
+  },
 })
 const SCError = CError.subclass('SCError')
-const CSError = SError.subclass('CSError', { custom: class extends SError {} })
-const CCError = CError.subclass('CCError', { custom: class extends CError {} })
+const CSError = SError.subclass('CSError', {
+  custom: class extends SError {
+    prop = true
+  },
+})
+const CCError = CError.subclass('CCError', {
+  custom: class extends CError {
+    propTwo = true
+  },
+})
 
 expectAssignable<ErrorClass>(AnyError)
 expectAssignable<ErrorClass>(SError)
