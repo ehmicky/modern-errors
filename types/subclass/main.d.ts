@@ -3,7 +3,10 @@ import type { ErrorName } from 'error-custom-class'
 import type { Plugins } from '../plugins/shape.js'
 import type { GetAggregateErrorsOption } from '../any/aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
-import type { CustomAttributes, CustomInstanceAttributes } from './custom.js'
+import type {
+  CustomAttributes,
+  CustomInstanceAttributes,
+} from './custom/main.js'
 import type { CustomStaticAttributes } from './inherited.js'
 import type { SpecificClassOptions } from '../options/class.js'
 import type { BaseError } from '../any/modify/main.js'
