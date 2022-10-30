@@ -1,11 +1,15 @@
 import type { MethodOptions } from '../options/method.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
 import type { Plugin, Plugins } from './shape.js'
+import type { InfoParameter } from './info.js'
 
 /**
  * Unbound instance method of a plugin
  */
-type InstanceMethod = (info: never, ...args: readonly never[]) => unknown
+type InstanceMethod = (
+  info: InfoParameter['instanceMethods'],
+  ...args: readonly never[]
+) => unknown
 
 /**
  * Unbound instance methods of a plugin
