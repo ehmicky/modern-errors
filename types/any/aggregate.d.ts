@@ -1,7 +1,7 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { NormalizeError } from './normalize/main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
-import type { ErrorProps } from '../core_plugins/props.js'
+import type { ErrorProps } from '../core_plugins/props/main.js'
 
 type DefinedAggregateErrorOption = unknown
 type DefinedAggregateErrorsOption = readonly DefinedAggregateErrorOption[]

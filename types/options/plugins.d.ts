@@ -1,5 +1,5 @@
 import type { Plugins, Plugin } from '../plugins/shape.js'
-import type { ErrorProps } from '../core_plugins/props.js'
+import type { ErrorProps } from '../core_plugins/props/main.js'
 
 export type ExternalPluginOptions<PluginArg extends Plugin> =
   PluginArg['getOptions'] extends NonNullable<Plugin['getOptions']>
