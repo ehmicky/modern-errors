@@ -20,20 +20,22 @@ expectType<Error['message']>(new MessageFuncError('', { cause: '' }).message)
 const MessagePropertyError = modernErrors([
   { name, properties: () => ({ message: 'test' as const }) },
 ])
-expectType<'test'>(new MessagePropertyError('', { cause: '' }).message)
-expectType<'test'>(
+expectType<string>(new MessagePropertyError('', { cause: '' }).message)
+expectType<string>(
   new ChildError('', { props: { message: 'test' as const } }).message,
 )
-expectType<never>(new ChildError('', { props: { message: true } }))
+expectType<string>(new ChildError('', { props: { message: true } }).message)
 
 const StackPropertyError = modernErrors([
   { name, properties: () => ({ stack: 'test' as const }) },
 ])
-expectType<'test'>(new StackPropertyError('', { cause: '' }).stack)
-expectType<'test'>(
+expectType<string | undefined>(new StackPropertyError('', { cause: '' }).stack)
+expectType<string | undefined>(
   new ChildError('', { props: { stack: 'test' as const } }).stack,
 )
-expectType<never>(new ChildError('', { props: { stack: true } }))
+expectType<string | undefined>(
+  new ChildError('', { props: { stack: true } }).stack,
+)
 
 const NamePropertyError = modernErrors([
   { name, properties: () => ({ name: 'test' }) },

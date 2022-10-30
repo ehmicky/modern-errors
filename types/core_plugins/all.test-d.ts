@@ -33,7 +33,7 @@ expectAssignable<ErrorInstance<typeof plugins>>(error)
 expectAssignable<Error>(error)
 
 expectType<string>(error.message)
-expectType<string>(error.stack)
+expectType<string | undefined>(error.stack)
 
 error.httpResponse({ type: '' })
 const errorObject = error.toJSON()

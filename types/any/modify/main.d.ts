@@ -13,12 +13,6 @@ import type { AggregateErrors } from '../aggregate.js'
 type CoreErrorProps = keyof Error | 'errors'
 
 /**
- * Core `Error` properties which cannot be redefined by `plugin.properties()`
- * or `props`
- */
-type ConstErrorProps = Exclude<CoreErrorProps, 'message' | 'stack'>
-
-/**
  * Error instance object, used internally with additional generics.
  * This mixes: `Error`, aggregate errors, plugin instance methods,
  * `plugin.properties()` and `props`, while ensuring those do not overlap each
@@ -35,11 +29,11 @@ export type BaseError<
   OmitKeys<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
   OmitKeys<
     PluginsProperties<PluginsArg>,
-    ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+    CoreErrorProps | keyof PluginsInstanceMethods<PluginsArg>
   > &
   OmitKeys<
     ErrorPropsArg,
-    ConstErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+    CoreErrorProps | keyof PluginsInstanceMethods<PluginsArg>
   >
 
 /**

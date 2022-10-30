@@ -8,4 +8,4 @@ const error = new AnyError('', { cause: '' })
 
 expectError(modernErrors([plugin], { stack: undefined }))
 
-expectType<string>(error.stack)
+expectType<string | undefined>(error.stack)
