@@ -1,5 +1,4 @@
-import { expectType, expectAssignable } from 'tsd'
-import type { ErrorName } from 'error-custom-class'
+import { expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../../main.js'
 
@@ -22,7 +21,3 @@ expectAssignable<UnknownInstance>(new AnyError('', { cause: undefined }))
 expectAssignable<UnknownInstance>(AnyError.normalize(undefined))
 expectAssignable<UnknownInstance>(new AnyError('', { cause: '' }))
 expectAssignable<UnknownInstance>(AnyError.normalize(''))
-
-expectType<'UnknownError'>(unknownError.name)
-expectType<'UnknownError'>('' as UnknownInstance['name'])
-expectType<ErrorName>({} as ReturnType<typeof AnyError.normalize>['name'])

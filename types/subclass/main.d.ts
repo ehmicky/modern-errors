@@ -3,7 +3,7 @@ import type { ErrorName } from 'error-custom-class'
 import type { Plugins } from '../plugins/shape.js'
 import type { GetAggregateErrorsOption } from '../any/aggregate.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props.js'
-import type { CustomAttributes, AddCustomAttributes } from './custom.js'
+import type { CustomAttributes, CustomInstanceAttributes } from './custom.js'
 import type { CustomStaticAttributes } from './inherited.js'
 import type { SpecificClassOptions } from '../options/class.js'
 import type { BaseError } from '../any/modify.js'
@@ -22,7 +22,6 @@ interface ErrorSubclassCore<
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
-  ErrorNameArg extends ErrorName,
 > {
   /**
    *
@@ -43,7 +42,6 @@ interface ErrorSubclassCore<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     CustomAttributesArg,
-    ErrorNameArg,
     GetAggregateErrorsOption<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
   >
 
@@ -52,8 +50,7 @@ interface ErrorSubclassCore<
       PluginsArg,
       ErrorPropsArg,
       ParentErrorClass,
-      CustomAttributesArg,
-      ErrorNameArg
+      CustomAttributesArg
     >
   >
 
@@ -64,7 +61,6 @@ interface ErrorSubclassCore<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    ErrorNameArg,
     CustomAttributesArg
   >
 }
@@ -74,13 +70,11 @@ export type ErrorSubclass<
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
-  ErrorNameArg extends ErrorName,
 > = ErrorSubclassCore<
   PluginsArg,
   ErrorPropsArg,
   ParentErrorClass,
-  CustomAttributesArg,
-  ErrorNameArg
+  CustomAttributesArg
 > &
   CustomStaticAttributes<
     PluginsArg,
@@ -95,15 +89,13 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
   ErrorProps,
   ErrorConstructor<PluginsArg>,
-  CustomAttributes,
-  ErrorName
+  CustomAttributes
 >
 
 export type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ParentName extends ErrorName,
   CustomAttributesArg extends CustomAttributes,
 > = <
   ErrorNameArg extends ErrorName,
@@ -111,7 +103,6 @@ export type CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
-    ParentName,
     CustomAttributesArg,
     ErrorNameArg
   >,
@@ -125,17 +116,14 @@ export type CreateSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
-      AddCustomAttributes<
-        PluginsArg,
-        SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
-        ClassOptionsArg['custom']
-      >,
-      ErrorNameArg
+      CustomInstanceAttributes<
+        InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
+        InstanceType<ClassOptionsArg['custom']>
+      >
     >
   : ErrorSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ParentErrorClass,
-      CustomAttributesArg,
-      ErrorNameArg
+      CustomAttributesArg
     >

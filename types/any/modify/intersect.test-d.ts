@@ -34,8 +34,8 @@ const AnyThreeError = modernErrors([
   { name, properties: () => ({ name: 'test' }) },
 ])
 const ThreeError = AnyThreeError.subclass('ThreeError')
-expectType<'ThreeError'>(new ThreeError('').name)
-expectType<'SError'>(new SError('', { props: { name: 'test' } }).name)
+expectType<string>(new ThreeError('').name)
+expectType<string>(new SError('', { props: { name: 'test' } }).name)
 
 const AnyFourError = modernErrors([{ name, properties: () => ({ cause: '' }) }])
 const FourError = AnyFourError.subclass('FourError')

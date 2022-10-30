@@ -1,5 +1,4 @@
-import { expectType, expectAssignable } from 'tsd'
-import type { ErrorName } from 'error-custom-class'
+import { expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../../main.js'
 
@@ -54,13 +53,5 @@ expectAssignable<typeof CError['prototype']>(cError)
 expectAssignable<typeof SCError['prototype']>(scError)
 expectAssignable<typeof CSError['prototype']>(csError)
 expectAssignable<typeof CCError['prototype']>(ccError)
-
-expectType<ErrorName>(wideError.name)
-expectType<'SError'>(sError.name)
-expectType<'SSError'>(ssError.name)
-expectType<'CError'>(cError.name)
-expectType<'SCError'>(scError.name)
-expectType<'CSError'>(csError.name)
-expectType<'CCError'>(ccError.name)
 
 expectAssignable<Error>({} as ErrorInstance)

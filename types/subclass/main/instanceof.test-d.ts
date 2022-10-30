@@ -5,8 +5,16 @@ import modernErrors from '../../main.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
-const CError = AnyError.subclass('CError')
-const SError = AnyError.subclass('SError')
+const CError = AnyError.subclass('CError', {
+  custom: class extends AnyError {
+    prop = true as const
+  },
+})
+const SError = AnyError.subclass('SError', {
+  custom: class extends AnyError {
+    prop = false as const
+  },
+})
 const SSError = SError.subclass('SSError')
 const unknownError = new AnyError('', { cause: '' })
 const sError = new SError('')

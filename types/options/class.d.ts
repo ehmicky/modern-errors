@@ -18,7 +18,6 @@ interface CustomOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ParentName extends ErrorName,
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
@@ -59,8 +58,7 @@ interface CustomOption<
       PluginsArg,
       ErrorPropsArg,
       ParentErrorClass,
-      CustomAttributesArg,
-      ParentName
+      CustomAttributesArg
     >
   >
 }
@@ -72,7 +70,6 @@ export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  ParentName extends ErrorName,
   CustomAttributesArg extends CustomAttributes,
   ErrorNameArg extends ErrorName,
 > = (ErrorNameArg extends 'UnknownError'
@@ -81,7 +78,6 @@ export type SpecificClassOptions<
       PluginsArg,
       ErrorPropsArg,
       ParentErrorClass,
-      ParentName,
       CustomAttributesArg
     >) &
   PluginsOptions<PluginsArg>
@@ -94,7 +90,6 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
     PluginsArg,
     ErrorProps,
     ErrorConstructor<PluginsArg>,
-    ErrorName,
     CustomAttributes,
     ErrorName
   >

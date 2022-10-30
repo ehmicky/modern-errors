@@ -8,8 +8,16 @@ import modernErrors, {
 
 const AnyError = modernErrors()
 const PAnyError = modernErrors([{ name: 'test' as const }])
-const SError = AnyError.subclass('SError')
-const SSError = SError.subclass('SSError')
+const SError = AnyError.subclass('SError', {
+  custom: class extends AnyError {
+    one = true
+  },
+})
+const SSError = SError.subclass('SSError', {
+  custom: class extends SError {
+    two = true
+  },
+})
 
 expectError(AnyError.subclass('TestError', true))
 expectError(PAnyError.subclass('TestError', true))
@@ -39,7 +47,6 @@ expectError(PAnyError.subclass('TestError', { custom: class extends Error {} }))
 expectError(SError.subclass('TestError', { custom: class extends Error {} }))
 
 expectError(SError.subclass('TestError', { custom: class extends AnyError {} }))
-expectError(SError.subclass('TestError', { custom: class extends SSError {} }))
 expectError(
   SSError.subclass('TestError', { custom: class extends AnyError {} }),
 )
