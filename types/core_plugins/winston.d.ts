@@ -35,7 +35,6 @@ export interface Options {
  * using
  * [`winston.error(error)`](https://github.com/winstonjs/winston/blob/master/README.md#creating-your-own-logger).
  */
-export default plugin
 declare const plugin: {
   name: 'winston'
   getOptions: (input: Options) => Options
@@ -100,3 +99,4 @@ declare const plugin: {
     shortFormat: (info: Info['staticMethods']) => Format
   }
 }
+export default plugin

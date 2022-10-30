@@ -55,11 +55,31 @@ export interface HttpResponse extends Options {
 /**
  * `modern-errors-http` plugin
  */
-export default plugin
 declare const plugin: {
   name: 'http'
   getOptions: (input: Options) => Options
   instanceMethods: {
+    /**
+     * Converts `error` to a plain object to use in an HTTP response.
+     * Its shape follows [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807)
+     * ("problem details").
+     *
+     * @example
+     * ```js
+     * const object = error.httpResponse()
+     * // {
+     * //   type: 'https://example.com/probs/auth',
+     * //   status: 401,
+     * //   title: 'AuthError',
+     * //   detail: 'Could not authenticate.',
+     * //   instance: '/users/62',
+     * //   stack: `AuthError: Could not authenticate.
+     * //     at ...`,
+     * //   extra: { userId: 62 },
+     * // }
+     * ```
+     */
     httpResponse: (info: Info['staticMethods']) => HttpResponse
   }
 }
+export default plugin
