@@ -47,7 +47,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
   HTTP error responses
 - [`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston):
   Log errors with Winston
-- 🔌 Create your [own plugin](#custom-plugins)
+- 🔌 Create your [own plugin](docs/plugins.md)
 
 # Example
 
@@ -553,7 +553,7 @@ export const InputError = SharedError.subclass('InputError')
 export const AuthError = SharedError.subclass('AuthError')
 ```
 
-## 🧩 Plugins
+## 🔌 Plugins
 
 ### List of plugins
 
