@@ -8,7 +8,7 @@ const AnyError = modernErrors()
 const PropertyAnyError = modernErrors([
   { name, properties: () => ({ property: true as boolean }) },
 ])
-const PropertyError = PropertyAnyError.subclass('OneError', {
+const PropertyError = PropertyAnyError.subclass('PropertyError', {
   custom: class extends PropertyAnyError {
     property = true as const
   },
@@ -24,11 +24,14 @@ const InstanceMethodAnyError = modernErrors([
     },
   },
 ])
-const InstanceMethodError = InstanceMethodAnyError.subclass('TwoError', {
-  custom: class extends InstanceMethodAnyError {
-    instanceMethod = (arg: boolean) => true as const
+const InstanceMethodError = InstanceMethodAnyError.subclass(
+  'InstanceMethodError',
+  {
+    custom: class extends InstanceMethodAnyError {
+      instanceMethod = (arg: boolean) => true as const
+    },
   },
-})
+)
 expectType<true>(new InstanceMethodError('').instanceMethod(true))
 
 const StaticMethodAnyError = modernErrors([
@@ -39,7 +42,7 @@ const StaticMethodAnyError = modernErrors([
     },
   },
 ])
-const StaticMethodError = StaticMethodAnyError.subclass('ThreeError', {
+const StaticMethodError = StaticMethodAnyError.subclass('StaticMethodError', {
   custom: class extends StaticMethodAnyError {
     static staticMethod(arg: boolean) {
       return true as const
@@ -47,15 +50,18 @@ const StaticMethodError = StaticMethodAnyError.subclass('ThreeError', {
   },
 })
 expectError(StaticMethodError.staticMethod(true))
-const StaticMethodArrowError = StaticMethodAnyError.subclass('FourError', {
-  custom: class extends StaticMethodAnyError {
-    static staticMethod = (arg: boolean) => true as const
+const StaticMethodArrowError = StaticMethodAnyError.subclass(
+  'StaticMethodArrowError',
+  {
+    custom: class extends StaticMethodAnyError {
+      static staticMethod = (arg: boolean) => true as const
+    },
   },
-})
+)
 expectError(StaticMethodArrowError.staticMethod(true))
 
 const PropsAnyError = modernErrors([], { props: { prop: true as boolean } })
-const PropsError = PropsAnyError.subclass('FiveError', {
+const PropsError = PropsAnyError.subclass('PropsError', {
   custom: class extends PropsAnyError {
     prop = true as const
   },

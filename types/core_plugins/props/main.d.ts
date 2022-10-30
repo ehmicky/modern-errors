@@ -6,7 +6,8 @@ import type { CorePluginsOptions } from '../../options/plugins.js'
 export type ErrorProps = object
 
 /**
- * Merge error `props` together
+ * Merge error `props` from the global options, class options and instance
+ * options
  */
 type MergeProps<
   PropsOne extends ErrorProps,
