@@ -377,7 +377,8 @@ export default {
 
 ## TypeScript
 
-`modern-errors` [exports its types](typescript.md) for TypeScript users.
+`modern-errors` [exports its types](typescript.md#wide-types) for TypeScript
+users.
 
 ### `Info`
 
@@ -399,8 +400,8 @@ const plugin = {
 ### `Plugin`
 
 A `Plugin` type is also available. It should be used to validate the plugin's
-shape. However, it should not be used for the exported type since this would
-widen the plugin's types and remove any specific types declared by that plugin.
+shape. However, it should not be used on the exported type since this would
+widen it and remove any specific types declared by that plugin.
 
 ```ts
 import type { Plugin } from 'modern-errors'
