@@ -3,31 +3,31 @@ import { expectAssignable, expectNotAssignable } from 'tsd'
 import modernErrors, { Plugin, ErrorClass } from '../../main.js'
 
 const barePlugin = { name: 'test' as const }
-const plugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
+const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 
-type BErrorClass = ErrorClass<[typeof barePlugin]>
-type PErrorClass = ErrorClass<[typeof plugin]>
+type BareErrorClass = ErrorClass<[typeof barePlugin]>
+type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
-const PAnyError = modernErrors([plugin])
+const AnyError = modernErrors([fullPlugin])
 
-expectAssignable<ErrorClass>(PAnyError)
-expectAssignable<BErrorClass>(PAnyError)
-expectAssignable<PErrorClass>(PAnyError)
+expectAssignable<ErrorClass>(AnyError)
+expectAssignable<BareErrorClass>(AnyError)
+expectAssignable<FullErrorClass>(AnyError)
 
-const PSError = PAnyError.subclass('PSError')
+const ChildError = AnyError.subclass('ChildError')
 
-expectAssignable<ErrorClass>(PSError)
-expectAssignable<BErrorClass>(PSError)
-expectAssignable<PErrorClass>(PSError)
+expectAssignable<ErrorClass>(ChildError)
+expectAssignable<BareErrorClass>(ChildError)
+expectAssignable<FullErrorClass>(ChildError)
 
-const GPAnyError = modernErrors([{} as Plugin])
+const WideAnyError = modernErrors([{} as Plugin])
 
-expectAssignable<ErrorClass>(GPAnyError)
-expectAssignable<BErrorClass>(GPAnyError)
-expectNotAssignable<PErrorClass>(GPAnyError)
+expectAssignable<ErrorClass>(WideAnyError)
+expectAssignable<BareErrorClass>(WideAnyError)
+expectNotAssignable<FullErrorClass>(WideAnyError)
 
-const GPSError = GPAnyError.subclass('GPSError')
+const WideError = WideAnyError.subclass('WideError')
 
-expectAssignable<ErrorClass>(GPSError)
-expectAssignable<BErrorClass>(GPSError)
-expectNotAssignable<PErrorClass>(GPSError)
+expectAssignable<ErrorClass>(WideError)
+expectAssignable<BareErrorClass>(WideError)
+expectNotAssignable<FullErrorClass>(WideError)

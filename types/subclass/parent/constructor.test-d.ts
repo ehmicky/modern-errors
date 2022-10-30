@@ -85,7 +85,7 @@ expectError(
   }),
 )
 
-const CError = AnyError.subclass('CError', {
+const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
     constructor(
       message: string,
@@ -96,8 +96,8 @@ const CError = AnyError.subclass('CError', {
     }
   },
 })
-CError.subclass('TestError', {
-  custom: class extends CError {
+CustomError.subclass('TestError', {
+  custom: class extends CustomError {
     constructor(message: string, options?: InstanceOptions, extra?: true) {
       super(message, options, true)
     }
@@ -105,8 +105,8 @@ CError.subclass('TestError', {
 })
 
 expectError(
-  CError.subclass('TestError', {
-    custom: class extends CError {
+  CustomError.subclass('TestError', {
+    custom: class extends CustomError {
       constructor(
         message: string,
         options?: InstanceOptions & { prop?: false },
@@ -119,8 +119,8 @@ expectError(
 )
 
 expectError(
-  CError.subclass('TestError', {
-    custom: class extends CError {
+  CustomError.subclass('TestError', {
+    custom: class extends CustomError {
       constructor(message: string, options?: InstanceOptions, extra?: false) {
         super(message, options, true)
       }
@@ -129,7 +129,7 @@ expectError(
 )
 
 expectError(
-  class extends CError {
+  class extends CustomError {
     constructor() {
       super('', {}, false)
     }
@@ -137,18 +137,18 @@ expectError(
 )
 
 const plugins = [{ name: 'test' as const }]
-const PAnyError = modernErrors(plugins)
+const PluginAnyError = modernErrors(plugins)
 
-PAnyError.subclass('TestError', {
-  custom: class extends PAnyError {
+PluginAnyError.subclass('TestError', {
+  custom: class extends PluginAnyError {
     constructor(message: string, options?: InstanceOptions) {
       super(message, options)
     }
   },
 })
 
-PAnyError.subclass('TestError', {
-  custom: class extends PAnyError {
+PluginAnyError.subclass('TestError', {
+  custom: class extends PluginAnyError {
     constructor(message: string, options?: InstanceOptions<typeof plugins>) {
       super(message, options)
     }

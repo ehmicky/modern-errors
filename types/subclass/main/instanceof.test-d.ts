@@ -5,55 +5,55 @@ import modernErrors from '../../main.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
-const CError = AnyError.subclass('CError', {
+const CustomOneError = AnyError.subclass('CustomOneError', {
   custom: class extends AnyError {
     prop = true as const
   },
 })
-const SError = AnyError.subclass('SError', {
+const CustomTwoError = AnyError.subclass('CustomTwoError', {
   custom: class extends AnyError {
     prop = false as const
   },
 })
-const SSError = SError.subclass('SSError')
+const DeepCustomError = CustomTwoError.subclass('DeepCustomError')
 const unknownError = new AnyError('', { cause: '' })
-const sError = new SError('')
-const ssError = new SSError('')
+const customError = new CustomTwoError('')
+const deepCustomError = new DeepCustomError('')
 
 const exception = {} as unknown
 if (exception instanceof AnyError) {
   expectType<AnyInstance>(exception)
 }
-if (exception instanceof SError) {
-  expectType<typeof SError['prototype']>(exception)
+if (exception instanceof CustomTwoError) {
+  expectType<typeof CustomTwoError['prototype']>(exception)
 }
-if (exception instanceof SSError) {
-  expectType<typeof SSError['prototype']>(exception)
+if (exception instanceof DeepCustomError) {
+  expectType<typeof DeepCustomError['prototype']>(exception)
 }
-if (sError instanceof CError) {
-  expectType<never>(sError)
+if (customError instanceof CustomOneError) {
+  expectType<never>(customError)
 }
-if (ssError instanceof CError) {
-  expectType<never>(ssError)
+if (deepCustomError instanceof CustomOneError) {
+  expectType<never>(deepCustomError)
 }
-if (sError instanceof SError) {
-  expectType<typeof sError>(sError)
+if (customError instanceof CustomTwoError) {
+  expectType<typeof customError>(customError)
 }
-if (ssError instanceof SSError) {
-  expectType<typeof ssError>(ssError)
+if (deepCustomError instanceof DeepCustomError) {
+  expectType<typeof deepCustomError>(deepCustomError)
 }
-if (sError instanceof AnyError) {
-  expectType<typeof sError>(sError)
+if (customError instanceof AnyError) {
+  expectType<typeof customError>(customError)
 }
-if (ssError instanceof AnyError) {
-  expectType<typeof ssError>(ssError)
+if (deepCustomError instanceof AnyError) {
+  expectType<typeof deepCustomError>(deepCustomError)
 }
 if (unknownError instanceof AnyError) {
   expectType<typeof unknownError>(unknownError)
 }
-if (sError instanceof Error) {
-  expectType<typeof sError>(sError)
+if (customError instanceof Error) {
+  expectType<typeof customError>(customError)
 }
-if (ssError instanceof Error) {
-  expectType<typeof ssError>(ssError)
+if (deepCustomError instanceof Error) {
+  expectType<typeof deepCustomError>(deepCustomError)
 }

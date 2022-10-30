@@ -3,33 +3,37 @@ import { expectType, expectError } from 'tsd'
 import modernErrors, { Plugin } from '../../main.js'
 
 const AnyError = modernErrors()
-const SError = AnyError.subclass('SError', {
+const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
     prop = true
   },
 })
-const sError = new SError('')
-type SInstance = typeof SError['prototype']
+const customError = new CustomError('')
+type CustomInstance = typeof CustomError['prototype']
 
-expectType<SInstance>(new AnyError('', { cause: sError }))
-expectType<SInstance>(AnyError.normalize(sError))
+expectType<CustomInstance>(new AnyError('', { cause: customError }))
+expectType<CustomInstance>(AnyError.normalize(customError))
 
-const PAnyError = modernErrors([{ name: 'test' as const }])
-const PSError = PAnyError.subclass('PSError', {
-  custom: class extends PAnyError {
+const PluginAnyError = modernErrors([{ name: 'test' as const }])
+const PluginCustomError = PluginAnyError.subclass('PluginCustomError', {
+  custom: class extends PluginAnyError {
     prop = true
   },
 })
-const psError = new PSError('')
-type PInstance = typeof PSError['prototype']
+const pluginCustomError = new PluginCustomError('')
+type PluginCustomInstance = typeof PluginCustomError['prototype']
 
-expectType<PInstance>(new PAnyError('', { cause: psError }))
-expectType<PInstance>(PAnyError.normalize(psError))
+expectType<PluginCustomInstance>(
+  new PluginAnyError('', { cause: pluginCustomError }),
+)
+expectType<PluginCustomInstance>(PluginAnyError.normalize(pluginCustomError))
 
-const GPAnyError = modernErrors([{} as Plugin])
+const WideError = modernErrors([{} as Plugin])
 
-expectType<PInstance>(new GPAnyError('', { cause: psError }))
-expectType<PInstance>(GPAnyError.normalize(psError))
+expectType<PluginCustomInstance>(
+  new WideError('', { cause: pluginCustomError }),
+)
+expectType<PluginCustomInstance>(WideError.normalize(pluginCustomError))
 
 const cause = {} as Error & { prop: true }
 expectType<true>(new AnyError('', { cause }).prop)

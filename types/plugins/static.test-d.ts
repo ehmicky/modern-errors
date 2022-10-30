@@ -16,28 +16,28 @@ const plugin = {
   },
 }
 
-const PAnyError = modernErrors([plugin])
-const PSError = PAnyError.subclass('PSError')
+const AnyError = modernErrors([plugin])
+const ChildError = AnyError.subclass('ChildError')
 
-expectType<''>(PAnyError.staticMethod(''))
-expectError(expectType<''>(PAnyError.staticMethod(true)))
+expectType<''>(AnyError.staticMethod(''))
+expectError(expectType<''>(AnyError.staticMethod(true)))
 
-expectType<''>(PAnyError.staticMethod('', true))
-expectError(expectType<''>(PAnyError.staticMethod('', false)))
+expectType<''>(AnyError.staticMethod('', true))
+expectError(expectType<''>(AnyError.staticMethod('', false)))
 
 const info = {} as Info['staticMethods']
-expectError(expectType<''>(PAnyError.staticMethod(info, '')))
+expectError(expectType<''>(AnyError.staticMethod(info, '')))
 
-const GPAnyError = modernErrors([{} as Plugin])
-const GPSError = GPAnyError.subclass('GPSError')
+const WideAnyError = modernErrors([{} as Plugin])
+const ChildWideError = WideAnyError.subclass('ChildWideError')
 
-expectError(PAnyError.otherMethod())
-expectError(GPAnyError.otherMethod())
-expectError(PSError.otherMethod())
-expectError(GPSError.otherMethod())
+expectError(AnyError.otherMethod())
+expectError(WideAnyError.otherMethod())
+expectError(ChildError.otherMethod())
+expectError(ChildWideError.otherMethod())
 
-expectError(PSError.staticMethod())
-expectError(GPSError.staticMethod())
+expectError(ChildError.staticMethod())
+expectError(ChildWideError.staticMethod())
 
 expectAssignable<Plugin>({
   name,

@@ -4,9 +4,9 @@ import modernErrors, { InstanceOptions } from '../../main.js'
 
 const AnyError = modernErrors()
 
-const SError = AnyError.subclass('SError')
-const SSError = SError.subclass('SSError')
-const CError = AnyError.subclass('CError', {
+const ChildError = AnyError.subclass('ChildError')
+const DeepChildError = ChildError.subclass('DeepChildError')
+const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
     constructor(
       message: string,
@@ -17,9 +17,9 @@ const CError = AnyError.subclass('CError', {
     }
   },
 })
-const SCError = CError.subclass('SCError')
-const CSError = SError.subclass('CSError', {
-  custom: class extends SError {
+const ChildCustomError = CustomError.subclass('ChildCustomError')
+const CustomChildError = ChildError.subclass('CustomChildError', {
+  custom: class extends ChildError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true },
@@ -29,8 +29,8 @@ const CSError = SError.subclass('CSError', {
     }
   },
 })
-const CCError = CError.subclass('CCError', {
-  custom: class extends CError {
+const DeepCustomError = CustomError.subclass('DeepCustomError', {
+  custom: class extends CustomError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true; propTwo?: true },
@@ -42,64 +42,64 @@ const CCError = CError.subclass('CCError', {
 })
 
 new AnyError('', { cause: '' })
-new SError('')
-new SSError('')
-new CError('', { prop: true }, true)
-new SCError('', { prop: true }, true)
-new CSError('', { prop: true }, true)
-new CCError('', { prop: true, propTwo: true }, false)
+new ChildError('')
+new DeepChildError('')
+new CustomError('', { prop: true }, true)
+new ChildCustomError('', { prop: true }, true)
+new CustomChildError('', { prop: true }, true)
+new DeepCustomError('', { prop: true, propTwo: true }, false)
 
 expectError(new AnyError())
-expectError(new SError())
-expectError(new SSError())
-expectError(new CError())
-expectError(new SCError())
-expectError(new CSError())
-expectError(new CCError())
+expectError(new ChildError())
+expectError(new DeepChildError())
+expectError(new CustomError())
+expectError(new ChildCustomError())
+expectError(new CustomChildError())
+expectError(new DeepCustomError())
 
 expectError(new AnyError(true))
-expectError(new SError(true))
-expectError(new SSError(true))
-expectError(new CError(true))
-expectError(new SCError(true))
-expectError(new CSError(true))
-expectError(new CCError(true))
+expectError(new ChildError(true))
+expectError(new DeepChildError(true))
+expectError(new CustomError(true))
+expectError(new ChildCustomError(true))
+expectError(new CustomChildError(true))
+expectError(new DeepCustomError(true))
 
 expectError(new AnyError('', true))
-expectError(new SError('', true))
-expectError(new SSError('', true))
-expectError(new CError('', true))
-expectError(new SCError('', true))
-expectError(new CSError('', true))
-expectError(new CCError('', true))
+expectError(new ChildError('', true))
+expectError(new DeepChildError('', true))
+expectError(new CustomError('', true))
+expectError(new ChildCustomError('', true))
+expectError(new CustomChildError('', true))
+expectError(new DeepCustomError('', true))
 
-expectError(new SError('', { other: true }))
-expectError(new SSError('', { other: true }))
-expectError(new CError('', { other: true }))
-expectError(new SCError('', { other: true }))
-expectError(new CSError('', { other: true }))
-expectError(new CCError('', { other: true }))
+expectError(new ChildError('', { other: true }))
+expectError(new DeepChildError('', { other: true }))
+expectError(new CustomError('', { other: true }))
+expectError(new ChildCustomError('', { other: true }))
+expectError(new CustomChildError('', { other: true }))
+expectError(new DeepCustomError('', { other: true }))
 
 expectError(new AnyError('', { cause: '', other: true }))
-expectError(new SError('', { cause: '', other: true }))
-expectError(new SSError('', { cause: '', other: true }))
-expectError(new CError('', { cause: '', other: true }))
-expectError(new SCError('', { cause: '', other: true }))
-expectError(new CSError('', { cause: '', other: true }))
-expectError(new CCError('', { cause: '', other: true }))
+expectError(new ChildError('', { cause: '', other: true }))
+expectError(new DeepChildError('', { cause: '', other: true }))
+expectError(new CustomError('', { cause: '', other: true }))
+expectError(new ChildCustomError('', { cause: '', other: true }))
+expectError(new CustomChildError('', { cause: '', other: true }))
+expectError(new DeepCustomError('', { cause: '', other: true }))
 
-expectError(new CError('', { prop: false }))
-expectError(new SCError('', { prop: false }))
-expectError(new CSError('', { prop: false }))
-expectError(new CCError('', { prop: false }))
-expectError(new CCError('', { propTwo: false }))
+expectError(new CustomError('', { prop: false }))
+expectError(new ChildCustomError('', { prop: false }))
+expectError(new CustomChildError('', { prop: false }))
+expectError(new DeepCustomError('', { prop: false }))
+expectError(new DeepCustomError('', { propTwo: false }))
 
-expectError(new CError('', {}, false))
-expectError(new SCError('', {}, false))
-expectError(new CSError('', {}, false))
-expectError(new CCError('', {}, ''))
+expectError(new CustomError('', {}, false))
+expectError(new ChildCustomError('', {}, false))
+expectError(new CustomChildError('', {}, false))
+expectError(new DeepCustomError('', {}, ''))
 
-expectError(new CError('', {}, true, true))
-expectError(new SCError('', {}, true, true))
-expectError(new CSError('', {}, true, true))
-expectError(new CSError('', {}, true, true))
+expectError(new CustomError('', {}, true, true))
+expectError(new ChildCustomError('', {}, true, true))
+expectError(new CustomChildError('', {}, true, true))
+expectError(new CustomChildError('', {}, true, true))

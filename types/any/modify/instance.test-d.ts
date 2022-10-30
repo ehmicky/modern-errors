@@ -5,63 +5,63 @@ import modernErrors, { ErrorInstance } from '../../main.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
-const SError = AnyError.subclass('SError')
-const SSError = SError.subclass('SSError')
-const CError = AnyError.subclass('CError', {
+const ChildError = AnyError.subclass('ChildError')
+const DeepChildError = ChildError.subclass('DeepChildError')
+const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
     prop = true
   },
 })
-const SCError = CError.subclass('SCError')
-const CSError = SError.subclass('CSError', {
-  custom: class extends SError {
+const ChildCustomError = CustomError.subclass('ChildCustomError')
+const CustomChildError = ChildError.subclass('CustomChildError', {
+  custom: class extends ChildError {
     prop = true
   },
 })
-const CCError = CError.subclass('CCError', {
-  custom: class extends CError {
+const DeepCustomError = CustomError.subclass('DeepCustomError', {
+  custom: class extends CustomError {
     propTwo = true
   },
 })
 
-const wideError = {} as any as AnyInstance
-const sError = new SError('')
-const ssError = new SSError('')
-const cError = new CError('')
-const scError = new SCError('')
-const csError = new CSError('')
-const ccError = new CCError('')
+const generalError = {} as any as AnyInstance
+const childError = new ChildError('')
+const deepChildError = new DeepChildError('')
+const customError = new CustomError('')
+const childCustomError = new ChildCustomError('')
+const customChildError = new CustomChildError('')
+const deepCustomError = new DeepCustomError('')
 
-expectType<Error>(wideError)
-expectType<Error>(sError)
-expectType<Error>(ssError)
-expectAssignable<Error>(cError)
-expectAssignable<Error>(scError)
-expectAssignable<Error>(csError)
-expectAssignable<Error>(ccError)
+expectType<Error>(generalError)
+expectType<Error>(childError)
+expectType<Error>(deepChildError)
+expectAssignable<Error>(customError)
+expectAssignable<Error>(childCustomError)
+expectAssignable<Error>(customChildError)
+expectAssignable<Error>(deepCustomError)
 
-expectType<ErrorInstance>(wideError)
-expectType<ErrorInstance>(sError)
-expectType<ErrorInstance>(ssError)
-expectAssignable<ErrorInstance>(cError)
-expectAssignable<ErrorInstance>(scError)
-expectAssignable<ErrorInstance>(csError)
-expectAssignable<ErrorInstance>(ccError)
+expectType<ErrorInstance>(generalError)
+expectType<ErrorInstance>(childError)
+expectType<ErrorInstance>(deepChildError)
+expectAssignable<ErrorInstance>(customError)
+expectAssignable<ErrorInstance>(childCustomError)
+expectAssignable<ErrorInstance>(customChildError)
+expectAssignable<ErrorInstance>(deepCustomError)
 
-expectType<AnyInstance>(wideError)
-expectType<AnyInstance>(sError)
-expectType<AnyInstance>(ssError)
-expectAssignable<AnyInstance>(cError)
-expectAssignable<AnyInstance>(scError)
-expectAssignable<AnyInstance>(csError)
-expectAssignable<AnyInstance>(ccError)
+expectType<AnyInstance>(generalError)
+expectType<AnyInstance>(childError)
+expectType<AnyInstance>(deepChildError)
+expectAssignable<AnyInstance>(customError)
+expectAssignable<AnyInstance>(childCustomError)
+expectAssignable<AnyInstance>(customChildError)
+expectAssignable<AnyInstance>(deepCustomError)
 
-expectType<typeof AnyError['prototype']>(wideError)
-expectType<typeof SError['prototype']>(sError)
-expectType<typeof SSError['prototype']>(ssError)
-expectType<typeof CError['prototype']>(cError)
-expectType<typeof SCError['prototype']>(scError)
-expectType<typeof CSError['prototype']>(csError)
-expectType<typeof CCError['prototype']>(ccError)
+expectType<typeof AnyError['prototype']>(generalError)
+expectType<typeof ChildError['prototype']>(childError)
+expectType<typeof DeepChildError['prototype']>(deepChildError)
+expectType<typeof CustomError['prototype']>(customError)
+expectType<typeof ChildCustomError['prototype']>(childCustomError)
+expectType<typeof CustomChildError['prototype']>(customChildError)
+expectType<typeof DeepCustomError['prototype']>(deepCustomError)
 
 expectType<Error>({} as ErrorInstance)

@@ -14,64 +14,68 @@ expectAssignable<{ one: true; two: true }>(
   }),
 )
 
-const SError = AnyError.subclass('SError')
-expectType<true>(new SError('', { props: { one: true as const } }).one)
+const ChildError = AnyError.subclass('ChildError')
+expectType<true>(new ChildError('', { props: { one: true as const } }).one)
 expectAssignable<{ one: true; three: true }>(
-  new SError('', {
-    cause: new SError('', {
+  new ChildError('', {
+    cause: new ChildError('', {
       props: { two: true as const, three: false as const },
     }),
     props: { one: true as const, three: true as const },
   }),
 )
 
-const QError = AnyError.subclass('QError', {
+const PropsError = AnyError.subclass('PropsError', {
   props: { one: true as const, three: false as const },
 })
-expectType<true>(new QError('').one)
+expectType<true>(new PropsError('').one)
 expectAssignable<{ one: true; two: true; three: true }>(
-  new QError('', { props: { two: true as const, three: true as const } }),
+  new PropsError('', { props: { two: true as const, three: true as const } }),
 )
 
-const SQError = QError.subclass('SQError')
-expectType<true>(new SQError('').one)
+const ChildPropsError = PropsError.subclass('ChildPropsError')
+expectType<true>(new ChildPropsError('').one)
 
-const MQError = QError.subclass('MQError', {
+const DeepPropsError = PropsError.subclass('DeepPropsError', {
   props: { two: true as const, three: true as const },
 })
-expectAssignable<{ one: true; two: true; three: true }>(new MQError(''))
+expectAssignable<{ one: true; two: true; three: true }>(new DeepPropsError(''))
 
-const QSError = SError.subclass('QSError', {
+const PropsChildError = ChildError.subclass('PropsChildError', {
   props: { one: true as const, three: false as const },
 })
-expectType<true>(new QSError('').one)
+expectType<true>(new PropsChildError('').one)
 expectAssignable<{ one: true; two: true; three: true }>(
-  new QSError('', { props: { two: true as const, three: true as const } }),
+  new PropsChildError('', {
+    props: { two: true as const, three: true as const },
+  }),
 )
 
-const QAnyError = modernErrors([], {
+const BoundAnyError = modernErrors([], {
   props: { one: true as const, three: false as const },
 })
-expectType<true>(new QAnyError('', { cause: '' }).one)
+expectType<true>(new BoundAnyError('', { cause: '' }).one)
 expectAssignable<{ one: true; two: true; three: true }>(
-  new QAnyError('', {
+  new BoundAnyError('', {
     cause: '',
     props: { two: true as const, three: true as const },
   }),
 )
 
-const SQAError = QAnyError.subclass('SQAError')
-expectType<true>(new SQAError('').one)
+const ChildBoundError = BoundAnyError.subclass('ChildBoundError')
+expectType<true>(new ChildBoundError('').one)
 
-const SSQAError = SQAError.subclass('SSQAError')
-expectType<true>(new SSQAError('').one)
+const DeepChildBoundError = ChildBoundError.subclass('DeepChildBoundError')
+expectType<true>(new DeepChildBoundError('').one)
 
-const MQAError = QAnyError.subclass('MQAError', {
+const PropsBoundError = BoundAnyError.subclass('PropsBoundError', {
   props: { two: true as const, three: true as const },
 })
-expectAssignable<{ one: true; two: true; three: true }>(new MQAError(''))
+expectAssignable<{ one: true; two: true; three: true }>(new PropsBoundError(''))
 
-const MSQAError = SQAError.subclass('MSQAError', {
+const PropsChildBoundError = ChildBoundError.subclass('PropsChildBoundError', {
   props: { two: true as const, three: true as const },
 })
-expectAssignable<{ one: true; two: true; three: true }>(new MSQAError(''))
+expectAssignable<{ one: true; two: true; three: true }>(
+  new PropsChildBoundError(''),
+)

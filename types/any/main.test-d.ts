@@ -1,41 +1,41 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+import { expectAssignable, expectNotAssignable } from 'tsd'
 
 import modernErrors, { Plugin, AnyErrorClass } from '../main.js'
 
 const barePlugin = { name: 'test' as const }
-const plugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
+const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
 
-type BAnyErrorClass = AnyErrorClass<[typeof barePlugin]>
-type PAnyErrorClass = AnyErrorClass<[typeof plugin]>
+type BareAnyErrorClass = AnyErrorClass<[typeof barePlugin]>
+type FullAnyErrorClass = AnyErrorClass<[typeof fullPlugin]>
 
-const PAnyError = modernErrors([plugin])
+const AnyError = modernErrors([fullPlugin])
 
-expectAssignable<AnyErrorClass>(PAnyError)
-expectAssignable<BAnyErrorClass>(PAnyError)
-expectAssignable<PAnyErrorClass>(PAnyError)
+expectAssignable<AnyErrorClass>(AnyError)
+expectAssignable<BareAnyErrorClass>(AnyError)
+expectAssignable<FullAnyErrorClass>(AnyError)
 
-const PSError = PAnyError.subclass('PSError', {
-  custom: class extends PAnyError {
+const CustomError = AnyError.subclass('CustomError', {
+  custom: class extends AnyError {
     prop = true
   },
 })
 
-expectNotAssignable<AnyErrorClass>(PSError)
-expectNotAssignable<BAnyErrorClass>(PSError)
-expectNotAssignable<PAnyErrorClass>(PSError)
+expectNotAssignable<AnyErrorClass>(CustomError)
+expectNotAssignable<BareAnyErrorClass>(CustomError)
+expectNotAssignable<FullAnyErrorClass>(CustomError)
 
-const GPAnyError = modernErrors([{} as Plugin])
+const WideError = modernErrors([{} as Plugin])
 
-expectAssignable<AnyErrorClass>(GPAnyError)
-expectAssignable<BAnyErrorClass>(GPAnyError)
-expectNotAssignable<PAnyErrorClass>(GPAnyError)
+expectAssignable<AnyErrorClass>(WideError)
+expectAssignable<BareAnyErrorClass>(WideError)
+expectNotAssignable<FullAnyErrorClass>(WideError)
 
-const GPSError = GPAnyError.subclass('GPSError', {
-  custom: class extends GPAnyError {
+const CustomWideError = WideError.subclass('CustomWideError', {
+  custom: class extends WideError {
     prop = true
   },
 })
 
-expectNotAssignable<AnyErrorClass>(GPSError)
-expectNotAssignable<BAnyErrorClass>(GPSError)
-expectNotAssignable<PAnyErrorClass>(GPSError)
+expectNotAssignable<AnyErrorClass>(CustomWideError)
+expectNotAssignable<BareAnyErrorClass>(CustomWideError)
+expectNotAssignable<FullAnyErrorClass>(CustomWideError)

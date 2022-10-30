@@ -13,26 +13,26 @@ const plugin = {
   properties: (info: Info['properties']) => ({ property: true } as const),
 }
 
-const PAnyError = modernErrors([plugin])
-const PSError = PAnyError.subclass('PSError')
-const paError = new PAnyError('', { cause: '' })
-const psError = new PSError('')
+const AnyError = modernErrors([plugin])
+const ChildError = AnyError.subclass('ChildError')
+const unknownError = new AnyError('', { cause: '' })
+const childError = new ChildError('')
 
-expectType<true>(paError.property)
-expectType<true>(psError.property)
+expectType<true>(unknownError.property)
+expectType<true>(childError.property)
 
-const GPAnyError = modernErrors([{} as Plugin])
-const GPSError = GPAnyError.subclass('GPSError')
-const gpaError = new GPAnyError('', { cause: '' })
-const gpsError = new GPSError('')
+const WideAnyError = modernErrors([{} as Plugin])
+const ChildWideError = WideAnyError.subclass('ChildWideError')
+const unknownWideError = new WideAnyError('', { cause: '' })
+const childWideError = new ChildWideError('')
 
-expectError(paError.otherProperty)
-expectError(psError.otherProperty)
-expectError(gpaError.otherProperty)
-expectError(gpsError.otherProperty)
+expectError(unknownError.otherProperty)
+expectError(childError.otherProperty)
+expectError(unknownWideError.otherProperty)
+expectError(childWideError.otherProperty)
 
 const exception = {} as unknown
-if (exception instanceof PSError) {
+if (exception instanceof ChildError) {
   expectType<true>(exception.property)
 }
 

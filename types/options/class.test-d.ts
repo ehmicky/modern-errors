@@ -7,50 +7,60 @@ import modernErrors, {
 } from '../main.js'
 
 const AnyError = modernErrors()
-const PAnyError = modernErrors([{ name: 'test' as const }])
-const SError = AnyError.subclass('SError', {
+const PluginAnyError = modernErrors([{ name: 'test' as const }])
+const ChildError = AnyError.subclass('ChildError', {
   custom: class extends AnyError {
     one = true
   },
 })
-const SSError = SError.subclass('SSError', {
-  custom: class extends SError {
+const DeepChildError = ChildError.subclass('DeepChildError', {
+  custom: class extends ChildError {
     two = true
   },
 })
 
 expectError(AnyError.subclass('TestError', true))
-expectError(PAnyError.subclass('TestError', true))
-expectError(SError.subclass('TestError', true))
+expectError(PluginAnyError.subclass('TestError', true))
+expectError(ChildError.subclass('TestError', true))
 
 expectError(AnyError.subclass('TestError', { other: true }))
-expectError(PAnyError.subclass('TestError', { other: true }))
-expectError(SError.subclass('TestError', { other: true }))
+expectError(PluginAnyError.subclass('TestError', { other: true }))
+expectError(ChildError.subclass('TestError', { other: true }))
 
 expectError(AnyError.subclass('TestError', { custom: true }))
-expectError(PAnyError.subclass('TestError', { custom: true }))
-expectError(SError.subclass('TestError', { custom: true }))
+expectError(PluginAnyError.subclass('TestError', { custom: true }))
+expectError(ChildError.subclass('TestError', { custom: true }))
 expectNotAssignable<ClassOptions>({ custom: true })
 
 expectError(AnyError.subclass('TestError', { custom: class {} }))
-expectError(PAnyError.subclass('TestError', { custom: class {} }))
-expectError(SError.subclass('TestError', { custom: class {} }))
+expectError(PluginAnyError.subclass('TestError', { custom: class {} }))
+expectError(ChildError.subclass('TestError', { custom: class {} }))
 
 expectError(AnyError.subclass('TestError', { custom: class extends Object {} }))
 expectError(
-  PAnyError.subclass('TestError', { custom: class extends Object {} }),
+  PluginAnyError.subclass('TestError', { custom: class extends Object {} }),
 )
-expectError(SError.subclass('TestError', { custom: class extends Object {} }))
+expectError(
+  ChildError.subclass('TestError', { custom: class extends Object {} }),
+)
 
 expectError(AnyError.subclass('TestError', { custom: class extends Error {} }))
-expectError(PAnyError.subclass('TestError', { custom: class extends Error {} }))
-expectError(SError.subclass('TestError', { custom: class extends Error {} }))
-
-expectError(SError.subclass('TestError', { custom: class extends AnyError {} }))
 expectError(
-  SSError.subclass('TestError', { custom: class extends AnyError {} }),
+  PluginAnyError.subclass('TestError', { custom: class extends Error {} }),
 )
-expectError(SSError.subclass('TestError', { custom: class extends SError {} }))
+expectError(
+  ChildError.subclass('TestError', { custom: class extends Error {} }),
+)
+
+expectError(
+  ChildError.subclass('TestError', { custom: class extends AnyError {} }),
+)
+expectError(
+  DeepChildError.subclass('TestError', { custom: class extends AnyError {} }),
+)
+expectError(
+  DeepChildError.subclass('TestError', { custom: class extends ChildError {} }),
+)
 
 expectError(
   AnyError.subclass('UnknownError', { custom: class extends AnyError {} }),

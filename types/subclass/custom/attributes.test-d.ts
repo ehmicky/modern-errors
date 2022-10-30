@@ -4,26 +4,26 @@ import modernErrors from '../../main.js'
 
 const AnyError = modernErrors()
 
-const CError = AnyError.subclass('CError', {
+const CustomError = AnyError.subclass('CustomError', {
   custom: class extends AnyError {
     prop = true as const
   },
 })
-const SCError = CError.subclass('SCError')
-const CCError = CError.subclass('CCError', {
-  custom: class extends CError {
+const ChildCustomError = CustomError.subclass('ChildCustomError')
+const DeepCustomError = CustomError.subclass('DeepCustomError', {
+  custom: class extends CustomError {
     deepProp = true as const
   },
 })
-const SError = AnyError.subclass('SError')
-const CSError = SError.subclass('CSError', {
-  custom: class extends SError {
+const ChildError = AnyError.subclass('ChildError')
+const CustomChildError = ChildError.subclass('CustomChildError', {
+  custom: class extends ChildError {
     prop = true as const
   },
 })
 
-expectType<true>(new CError('').prop)
-expectType<true>(new SCError('').prop)
-expectType<true>(new CCError('').prop)
-expectType<true>(new CCError('').deepProp)
-expectType<true>(new CSError('').prop)
+expectType<true>(new CustomError('').prop)
+expectType<true>(new ChildCustomError('').prop)
+expectType<true>(new DeepCustomError('').prop)
+expectType<true>(new DeepCustomError('').deepProp)
+expectType<true>(new CustomChildError('').prop)

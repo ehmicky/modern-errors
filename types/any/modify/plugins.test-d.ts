@@ -3,61 +3,61 @@ import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 import modernErrors, { Plugin, ErrorInstance } from '../../main.js'
 
 const barePlugin = { name: 'test' as const }
-const plugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
+const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 
-type BErrorInstance = ErrorInstance<[typeof barePlugin]>
-type PErrorInstance = ErrorInstance<[typeof plugin]>
+type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
+type FullErrorInstance = ErrorInstance<[typeof fullPlugin]>
 
-const PAnyError = modernErrors([plugin])
-const paError = new PAnyError('', { cause: '' })
+const AnyError = modernErrors([fullPlugin])
+const unknownError = new AnyError('', { cause: '' })
 
-expectAssignable<Error>(paError)
-expectAssignable<ErrorInstance>(paError)
-expectAssignable<BErrorInstance>(paError)
-expectType<PErrorInstance>(paError)
+expectAssignable<Error>(unknownError)
+expectAssignable<ErrorInstance>(unknownError)
+expectAssignable<BareErrorInstance>(unknownError)
+expectType<FullErrorInstance>(unknownError)
 
-const PSError = PAnyError.subclass('PSError', {
-  custom: class extends PAnyError {
+const CustomError = AnyError.subclass('CustomError', {
+  custom: class extends AnyError {
     prop = true
   },
 })
-const psError = new PSError('')
+const customError = new CustomError('')
 
-expectAssignable<Error>(psError)
-expectAssignable<ErrorInstance>(psError)
-expectAssignable<BErrorInstance>(psError)
-expectAssignable<PErrorInstance>(psError)
+expectAssignable<Error>(customError)
+expectAssignable<ErrorInstance>(customError)
+expectAssignable<BareErrorInstance>(customError)
+expectAssignable<FullErrorInstance>(customError)
 
-const GPAnyError = modernErrors([{} as Plugin])
-const gpaError = new GPAnyError('', { cause: '' })
-type GPAErrorInstance = InstanceType<typeof GPAnyError>
+const WideError = modernErrors([{} as Plugin])
+const wideError = new WideError('', { cause: '' })
+type WideErrorInstance = InstanceType<typeof WideError>
 
-expectType<Error>(gpaError)
-expectType<ErrorInstance>(gpaError)
-expectType<BErrorInstance>(gpaError)
-expectNotAssignable<PErrorInstance>(gpaError)
-expectType<GPAErrorInstance>(gpaError)
+expectType<Error>(wideError)
+expectType<ErrorInstance>(wideError)
+expectType<BareErrorInstance>(wideError)
+expectNotAssignable<FullErrorInstance>(wideError)
+expectType<WideErrorInstance>(wideError)
 
 const exception = {} as unknown
-if (exception instanceof GPAnyError) {
-  expectType<GPAErrorInstance>(exception)
+if (exception instanceof WideError) {
+  expectType<WideErrorInstance>(exception)
 }
 
-const GPSError = GPAnyError.subclass('GPSError', {
-  custom: class extends GPAnyError {
+const CustomWideError = WideError.subclass('CustomWideError', {
+  custom: class extends WideError {
     prop = true
   },
 })
-const gpsError = new GPSError('')
-type GPSErrorInstance = InstanceType<typeof GPSError>
+const customWideError = new CustomWideError('')
+type CustomWideErrorInstance = InstanceType<typeof CustomWideError>
 
-expectAssignable<Error>(gpsError)
-expectAssignable<ErrorInstance>(gpsError)
-expectAssignable<BErrorInstance>(gpsError)
-expectNotAssignable<PErrorInstance>(gpsError)
-expectAssignable<GPAErrorInstance>(gpsError)
-expectType<GPSErrorInstance>(gpsError)
+expectAssignable<Error>(customWideError)
+expectAssignable<ErrorInstance>(customWideError)
+expectAssignable<BareErrorInstance>(customWideError)
+expectNotAssignable<FullErrorInstance>(customWideError)
+expectAssignable<WideErrorInstance>(customWideError)
+expectType<CustomWideErrorInstance>(customWideError)
 
-if (exception instanceof GPSError) {
-  expectType<GPSErrorInstance>(exception)
+if (exception instanceof CustomWideError) {
+  expectType<CustomWideErrorInstance>(exception)
 }

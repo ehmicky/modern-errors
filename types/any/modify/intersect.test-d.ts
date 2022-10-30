@@ -3,93 +3,90 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 import modernErrors from '../../main.js'
 
 const AnyError = modernErrors()
-const SError = AnyError.subclass('SError')
+const ChildError = AnyError.subclass('ChildError')
 
 const name = 'test' as const
 
-const MessageMethodAnyError = modernErrors([
+expectError(
+  new ChildError('', { cause: new ChildError('', { props: { prop: true } }) })
+    .prop,
+)
+
+const MessageFuncError = modernErrors([
   { name, instanceMethods: { message: () => {} } },
 ])
-expectType<Error['message']>(
-  new MessageMethodAnyError('', { cause: '' }).message,
-)
+expectType<Error['message']>(new MessageFuncError('', { cause: '' }).message)
 
-const AnyOneError = modernErrors([
+const MessagePropertyError = modernErrors([
   { name, properties: () => ({ message: 'test' as const }) },
 ])
-expectType<'test'>(new AnyOneError('', { cause: '' }).message)
+expectType<'test'>(new MessagePropertyError('', { cause: '' }).message)
 expectType<'test'>(
-  new SError('', { props: { message: 'test' as const } }).message,
+  new ChildError('', { props: { message: 'test' as const } }).message,
 )
-expectType<never>(new SError('', { props: { message: true } }))
+expectType<never>(new ChildError('', { props: { message: true } }))
 
-const AnyTwoError = modernErrors([
+const StackPropertyError = modernErrors([
   { name, properties: () => ({ stack: 'test' as const }) },
 ])
-expectType<'test'>(new AnyTwoError('', { cause: '' }).stack)
-expectType<'test'>(new SError('', { props: { stack: 'test' as const } }).stack)
-expectType<never>(new SError('', { props: { stack: true } }))
+expectType<'test'>(new StackPropertyError('', { cause: '' }).stack)
+expectType<'test'>(
+  new ChildError('', { props: { stack: 'test' as const } }).stack,
+)
+expectType<never>(new ChildError('', { props: { stack: true } }))
 
-const AnyThreeError = modernErrors([
+const NamePropertyError = modernErrors([
   { name, properties: () => ({ name: 'test' }) },
 ])
-const ThreeError = AnyThreeError.subclass('ThreeError')
+const ThreeError = NamePropertyError.subclass('ThreeError')
 expectType<string>(new ThreeError('').name)
-expectType<string>(new SError('', { props: { name: 'test' } }).name)
+expectType<string>(new ChildError('', { props: { name: 'test' } }).name)
 
-const AnyFourError = modernErrors([{ name, properties: () => ({ cause: '' }) }])
-const FourError = AnyFourError.subclass('FourError')
+const CausePropertyError = modernErrors([
+  { name, properties: () => ({ cause: '' }) },
+])
+const FourError = CausePropertyError.subclass('FourError')
 expectType<Error['cause']>(new FourError('').cause)
-expectType<Error['cause']>(new SError('', { props: { cause: '' } }).cause)
+expectType<Error['cause']>(new ChildError('', { props: { cause: '' } }).cause)
 
-const AnyFiveError = modernErrors([
+const AggregatePropertyError = modernErrors([
   { name, properties: () => ({ errors: [''] }) },
 ])
-expectError(new AnyFiveError('', { cause: '' }).errors)
-expectError(new SError('', { props: { errors: [''] } }).errors)
+expectError(new AggregatePropertyError('', { cause: '' }).errors)
+expectError(new ChildError('', { props: { errors: [''] } }).errors)
 
-const AnySixError = modernErrors([
+const InstanceMethodPropertyError = modernErrors([
   {
     name,
     properties: () => ({ prop: 'test' as const }),
     instanceMethods: { prop: () => {} },
   },
 ])
-expectAssignable<Function>(new AnySixError('', { cause: '' }).prop)
+expectAssignable<Function>(
+  new InstanceMethodPropertyError('', { cause: '' }).prop,
+)
 
-const AnySevenError = modernErrors([
+const InstanceMethodError = modernErrors([
   { name, instanceMethods: { prop: () => {} } },
 ])
 expectAssignable<Function>(
-  new AnySevenError('', { cause: '', props: { prop: '' } }).prop,
+  new InstanceMethodError('', { cause: '', props: { prop: '' } }).prop,
 )
+expectError(new ChildError('', { cause: new InstanceMethodError('') }).prop)
 
-const AnyEightError = modernErrors([
+const PropertyError = modernErrors([
   { name, properties: () => ({ prop: 'test' as const }) },
 ])
 expectType<'test'>(
-  new AnyEightError('', { cause: '', props: { prop: 'test' as const } }).prop,
+  new PropertyError('', { cause: '', props: { prop: 'test' as const } }).prop,
 )
 expectType<never>(
-  new AnyEightError('', { cause: '', props: { prop: '' as const } }),
+  new PropertyError('', { cause: '', props: { prop: '' as const } }),
 )
+expectError(new ChildError('', { cause: new PropertyError('') }).prop)
 
-const AnyNineError = modernErrors([
+const ConflictPropertyError = modernErrors([
   { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
   { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
 ])
-expectType<undefined>(new AnyNineError('', { cause: '' }).prop)
-
-expectError(
-  new SError('', { cause: new SError('', { props: { prop: true } }) }).prop,
-)
-
-const AnyTenError = modernErrors([
-  { name, properties: () => ({ prop: 'one' }) },
-])
-expectError(new SError('', { cause: new AnyTenError('') }).prop)
-
-const AnyElevenError = modernErrors([
-  { name, instanceMethods: { instanceMethod: () => {} } },
-])
-expectError(new SError('', { cause: new AnyElevenError('') }).instanceMethod)
+expectType<undefined>(new ConflictPropertyError('', { cause: '' }).prop)
