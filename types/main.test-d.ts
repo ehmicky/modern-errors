@@ -24,13 +24,10 @@ import './subclass/parent.test-d.js'
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>
 
+const CError = AnyError.subclass('CError')
 const SError = AnyError.subclass('SError')
 const SSError = SError.subclass('SSError')
 const sError = new SError('')
-const CError = AnyError.subclass('CError', {
-  custom: class extends AnyError {},
-})
-const cError = new CError('')
 
 expectAssignable<Error>({} as ErrorInstance)
 expectType<ErrorInstance>({} as InstanceType<ErrorClass>)
@@ -53,15 +50,15 @@ if (exception instanceof SSError) {
 if (exception instanceof AnyError) {
   expectAssignable<AnyInstance>(exception)
 }
-if (cError instanceof SError) {
-  expectType<never>(cError)
+if (sError instanceof CError) {
+  expectType<never>(sError)
 }
-if (cError instanceof CError) {
-  expectAssignable<typeof cError>(cError)
+if (sError instanceof CError) {
+  expectAssignable<typeof sError>(sError)
 }
-if (cError instanceof AnyError) {
-  expectAssignable<typeof cError>(cError)
+if (sError instanceof AnyError) {
+  expectAssignable<typeof sError>(sError)
 }
-if (cError instanceof Error) {
-  expectAssignable<typeof cError>(cError)
+if (sError instanceof Error) {
+  expectAssignable<typeof sError>(sError)
 }
