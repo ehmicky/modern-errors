@@ -8,8 +8,7 @@ import modernErrors, {
   MethodOptions,
 } from '../main.js'
 
-const name = 'test' as const
-const barePlugin = { name }
+const barePlugin = { name: 'test' as const }
 const plugin = { ...barePlugin, getOptions: (input: true) => input }
 
 const PAnyError = modernErrors([plugin])
