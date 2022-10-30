@@ -7,13 +7,10 @@ const AnyError = modernErrors()
 expectType<true>(
   new AnyError('', { cause: '', props: { one: true as const } }).one,
 )
-expectAssignable<{ one: true; two: true; three: true }>(
+expectAssignable<{ one: true; two: true }>(
   new AnyError('', {
-    cause: new AnyError('', {
-      cause: '',
-      props: { two: true as const, three: false as const },
-    }),
-    props: { one: true as const, three: true as const },
+    cause: new AnyError('', { cause: '', props: { two: true as const } }),
+    props: { one: true as const },
   }),
 )
 
