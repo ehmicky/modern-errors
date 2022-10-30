@@ -1,9 +1,4 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
 import modernErrors, {
   AnyErrorClass,
