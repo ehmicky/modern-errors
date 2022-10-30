@@ -32,7 +32,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Plugins
 
-- [`modern-errors-cli`](docs/plugins/cli.md): Handle errors in CLI modules
+- [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli): Handle
+  errors in CLI modules
 - [`modern-errors-process`](docs/plugins/process.md): Handle process errors
 - [`modern-errors-bugs`](docs/plugins/bugs.md): Print where to report bugs
 - [`modern-errors-serialize`](docs/plugins/serialize.md): Serialize/parse errors

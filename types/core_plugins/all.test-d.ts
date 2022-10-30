@@ -2,7 +2,8 @@ import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from '../main.js'
 import bugsPlugin from './bugs.js'
-import cliPlugin from './cli.js'
+// TODO: uncomment
+// import cliPlugin from './cli.js'
 import httpPlugin from './http.js'
 import processPlugin from './process.js'
 import serializePlugin from './serialize.js'
@@ -11,7 +12,8 @@ import winstonPlugin from './winston.js'
 
 const plugins = [
   bugsPlugin,
-  cliPlugin,
+  // TODO: uncomment
+  // cliPlugin,
   httpPlugin,
   processPlugin,
   serializePlugin,
@@ -38,7 +40,8 @@ expectType<string>(error.stack)
 error.httpResponse({ type: '' })
 const errorObject = error.toJSON()
 
-AnyError.exit({ silent: true })
+// TODO: uncomment
+// AnyError.exit({ silent: true })
 AnyError.logProcess({ exit: true })
 AnyError.parse(errorObject)
 AnyError.fullFormat({ stack: true })
