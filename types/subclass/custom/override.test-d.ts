@@ -1,39 +1,8 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors, { Info } from '../main.js'
+import modernErrors, { Info } from '../../main.js'
 
 const name = 'test' as const
-const AnyError = modernErrors()
-
-const CError = AnyError.subclass('CError', {
-  custom: class extends AnyError {
-    prop = true as const
-  },
-})
-const cError = new CError('')
-expectType<true>(cError.prop)
-
-const SCError = CError.subclass('SCError')
-const scError = new SCError('')
-expectType<true>(scError.prop)
-
-const CCError = CError.subclass('CCError', {
-  custom: class extends CError {
-    deepProp = true as const
-  },
-})
-const ccError = new CCError('')
-expectType<true>(ccError.prop)
-expectType<true>(ccError.deepProp)
-
-const SError = AnyError.subclass('SError')
-const CSError = SError.subclass('CSError', {
-  custom: class extends SError {
-    prop = true as const
-  },
-})
-const csError = new CSError('')
-expectType<true>(csError.prop)
 
 const AnyOneError = modernErrors([
   { name, properties: () => ({ property: true as boolean }) },
