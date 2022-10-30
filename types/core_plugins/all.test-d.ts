@@ -37,10 +37,10 @@ expectType<Error['message']>(error.message)
 expectType<Error['stack']>(error.stack)
 
 expectType<HttpResponse>(error.httpResponse({ type: '' }))
+expectType<void>(error.exit({ silent: true }))
 const errorObject = error.toJSON()
 expectType<ErrorObject>(errorObject)
 
-expectType<void>(AnyError.exit({ silent: true }))
 const restore = AnyError.logProcess({ exit: true })
 expectType<void>(restore())
 expectType<ErrorInstance>(AnyError.parse(errorObject))
