@@ -461,8 +461,7 @@ const testPlugin: Plugin = plugin
 
 ## Publishing
 
-Plugins can either be kept private or be published on npm. When public, we
-recommend the following conventions:
+If the plugin is published on npm, we recommend the following conventions:
 
 - [ ] The npm package name should be `[@scope/]modern-errors-${plugin.name}`
 - [ ] The repository name should match the npm package name
