@@ -588,7 +588,7 @@ the plugin.
 
 ```js
 const options = {
-  // `modern-error-bugs` options
+  // `modern-errors-bugs` options
   bugs: 'https://github.com/my-name/my-project/issues',
   // `props` can be configured and modified like plugin options
   props: { userId: 5 },
