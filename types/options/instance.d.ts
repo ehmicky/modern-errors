@@ -5,7 +5,7 @@ import type { PluginsOptions } from './plugins.js'
 /**
  * Options passed to error constructors, excluding any plugin options
  */
-interface MainInstanceOptions {
+export interface MainInstanceOptions {
   /**
    * Any error's message, class and options can be wrapped using the
    * [standard `cause` option](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).

@@ -1,6 +1,6 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { NormalizeError } from './normalize/main.js'
-import type { SpecificInstanceOptions } from '../options/instance.js'
+import type { MainInstanceOptions } from '../options/instance.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
 
 /**
@@ -38,23 +38,18 @@ type NormalizeAggregateErrors<
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined
  */
-type ConcatAggregateErrors<
-  PluginsArg extends Plugins,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
-> = InstanceOptionsArg['errors'] extends DefinedAggregateErrorsOption
-  ? 'errors' extends keyof InstanceOptionsArg['cause']
-    ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-      ? [
-          ...InstanceOptionsArg['cause']['errors'],
-          ...InstanceOptionsArg['errors'],
-        ]
-      : InstanceOptionsArg['errors']
-    : InstanceOptionsArg['errors']
-  : 'errors' extends keyof InstanceOptionsArg['cause']
-  ? InstanceOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
-    ? InstanceOptionsArg['cause']['errors']
+type ConcatAggregateErrors<MainOptionsArg extends MainInstanceOptions> =
+  MainOptionsArg['errors'] extends DefinedAggregateErrorsOption
+    ? 'errors' extends keyof MainOptionsArg['cause']
+      ? MainOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
+        ? [...MainOptionsArg['cause']['errors'], ...MainOptionsArg['errors']]
+        : MainOptionsArg['errors']
+      : MainOptionsArg['errors']
+    : 'errors' extends keyof MainOptionsArg['cause']
+    ? MainOptionsArg['cause']['errors'] extends DefinedAggregateErrorsOption
+      ? MainOptionsArg['cause']['errors']
+      : AggregateErrorsOption
     : AggregateErrorsOption
-  : AggregateErrorsOption
 
 /**
  * Retrieve the aggregate errors from the `errors` option
@@ -62,11 +57,11 @@ type ConcatAggregateErrors<
 export type GetAggregateErrorsOption<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg>,
+  MainOptionsArg extends MainInstanceOptions,
 > = NormalizeAggregateErrors<
   PluginsArg,
   ErrorPropsArg,
-  ConcatAggregateErrors<PluginsArg, InstanceOptionsArg>
+  ConcatAggregateErrors<MainOptionsArg>
 >
 
 /**
