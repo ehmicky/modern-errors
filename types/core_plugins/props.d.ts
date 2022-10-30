@@ -10,9 +10,7 @@ type MergeProps<
   : Omit<PropsOne, keyof PropsTwo> & PropsTwo
 
 export type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
-  unknown extends CorePluginsOptionsArg
-    ? {}
-    : CorePluginsOptionsArg['props'] extends ErrorProps
+  CorePluginsOptionsArg['props'] extends ErrorProps
     ? CorePluginsOptionsArg['props']
     : {}
 
