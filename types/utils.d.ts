@@ -17,9 +17,7 @@ export type UnionToIntersection<T> = (
   ? U
   : never
 
-export type SliceFirst<Tuple extends unknown[]> = Tuple extends [
-  unknown,
-  ...infer Rest,
-]
-  ? Rest
-  : []
+export type SliceFirst<Tuple extends readonly unknown[]> =
+  Tuple extends readonly [unknown, ...infer Rest extends readonly unknown[]]
+    ? Rest
+    : readonly never[]
