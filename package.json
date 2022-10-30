@@ -66,6 +66,7 @@
     "modern-errors-cli": "^1.1.0",
     "modern-errors-http": "^1.0.0",
     "modern-errors-process": "^1.0.0",
+    "modern-errors-stack": "^1.0.0",
     "test-each": "^5.4.0"
   },
   "engines": {
