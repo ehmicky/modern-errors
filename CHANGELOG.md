@@ -330,13 +330,15 @@ if (error instanceof AnyError) {
 }
 ```
 
+### TypeScript types
+
+TypeScript support has been greatly improved and is now fully tested. Most types
+have changed: if you were using them, please check the new documentation
+[here](docs/typescript.md).
+
 ### Exporting error classes
 
 Error classes should now be exported to be re-used across modules.
-
-### TypeScript types
-
-Most TypeScript types have been removed, except the top-level function.
 
 ### License
 
