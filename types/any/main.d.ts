@@ -3,7 +3,7 @@ import type { PluginsStaticMethods } from '../plugins/static.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
-import type { CreateSubclass } from '../subclass/main.js'
+import type { CreateSubclass } from '../subclass/main/main.js'
 
 import type { AnyErrorInstance, NormalizeError } from './normalize/main.js'
 
