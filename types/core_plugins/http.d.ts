@@ -7,31 +7,43 @@ export interface Options {
   /**
    * URI identifying and documenting the error class. Ideally, each error class
    * [should set one](https://github.com/ehmicky/modern-errors/README.md#plugin-options).
+   *
+   * @default undefined
    */
   readonly type?: string
 
   /**
    * HTTP status code.
+   *
+   * @default undefined
    */
   readonly status?: number
 
   /**
    * Error class name.
+   *
+   * @default error.name
    */
   readonly title?: string
 
   /**
    * Error description.
+   *
+   * @default error.message
    */
   readonly detail?: string
 
   /**
    * URI identifying the value which errored.
+   *
+   * @default undefined
    */
   readonly instance?: string
 
   /**
    * Error stack trace. Can be set to an empty string.
+   *
+   * @default error.stack
    */
   readonly stack?: string
 
@@ -39,6 +51,8 @@ export interface Options {
    * Additional information. This is always
    * [safe to serialize as JSON](https://github.com/ehmicky/safe-json-value).
    * Can be set to an empty object.
+   *
+   * @default any additional `error` properties
    */
   readonly extra?: object
 }

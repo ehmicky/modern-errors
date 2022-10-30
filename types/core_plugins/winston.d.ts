@@ -13,17 +13,19 @@ export type { Format }
 export interface Options {
   /**
    * Log [level](https://github.com/winstonjs/winston#logging-levels).
+   *
+   * @default 'error'
    */
   readonly level?: string
 
   /**
    * Whether to log the stack trace.
    *
-   * By default, this is `true` if the error (or one of its
+   * @default `true` if the error (or one of its
    * [inner](https://github.com/ehmicky/modern-errors/README.md#wrap-errors)
    * errors) is
    * [_unknown_](https://github.com/ehmicky/modern-errors/README.md#unknown-errors),
-   * and `false` otherwise.
+   * and `false` otherwise
    */
   readonly stack?: boolean
 }
