@@ -27,7 +27,8 @@ import './subclass/main/class.test-d.js'
 import './subclass/main/instanceof.test-d.js'
 import './subclass/main/plugins.test-d.js'
 import './subclass/name.test-d.js'
-import './subclass/parent.test-d.js'
+import './subclass/parent/args.test-d.js'
+import './subclass/parent/constructor.test-d.js'
 
 modernErrors([])
 modernErrors([], {})
