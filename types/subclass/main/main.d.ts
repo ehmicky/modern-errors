@@ -21,7 +21,7 @@ import type {
   ErrorConstructor,
   ParentInstanceOptions,
   ParentExtra,
-} from '../parent.js'
+} from '../parent/main.js'
 
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,

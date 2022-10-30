@@ -1,6 +1,6 @@
-import type { Plugins } from '../plugins/shape.js'
-import type { SpecificInstanceOptions } from '../options/instance.js'
-import type { ErrorInstance } from '../any/modify/main.js'
+import type { Plugins } from '../../plugins/shape.js'
+import type { SpecificInstanceOptions } from '../../options/instance.js'
+import type { ErrorInstance } from '../../any/modify/main.js'
 
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,

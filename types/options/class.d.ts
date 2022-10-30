@@ -3,7 +3,7 @@ import type { Plugins } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
 import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { ErrorSubclass } from '../subclass/main/main.js'
-import type { ErrorConstructor } from '../subclass/parent.js'
+import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { PluginsOptions } from './plugins.js'
 
 type BareConstructor = new (...args: any[]) => any
