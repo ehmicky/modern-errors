@@ -1,11 +1,11 @@
 import type { Plugins } from '../plugins/shape.js'
-import type { AggregateErrorsOption } from '../any/aggregate.js'
+import type { AggregateErrors } from '../any/aggregate.js'
 import type { PluginsOptions } from './plugins.js'
 
 /**
  * Options passed to error constructors, excluding any plugin options
  */
-export interface MainInstanceOptions {
+export type MainInstanceOptions = AggregateErrors & {
   /**
    * Any error's message, class and options can be wrapped using the
    * [standard `cause` option](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
@@ -29,26 +29,6 @@ export interface MainInstanceOptions {
    * ```
    */
   readonly cause?: unknown
-
-  /**
-   * The `errors` option aggregates multiple errors into one. This is like
-   * [`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
-   * except that it works with any error class.
-   *
-   * @example
-   * ```js
-   * const databaseError = new DatabaseError('...')
-   * const authError = new AuthError('...')
-   * throw new InputError('...', { errors: [databaseError, authError] })
-   * // InputError: ... {
-   * //   [errors]: [
-   * //     DatabaseError: ...
-   * //     AuthError: ...
-   * //   ]
-   * // }
-   * ```
-   */
-  readonly errors?: AggregateErrorsOption
 }
 
 /**
