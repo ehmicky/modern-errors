@@ -6,9 +6,9 @@ The [API](../README.md#api) is fully typed for TypeScript users.
 
 Error [classes](../README.md#error-classes) and
 [instances](../README.md#simple-errors) include any
-[`props`](../README.md#error-instance-properties),
-[`custom`](../README.md#class-custom-logic) methods/properties and aggregate
-[`errors`](../README.md#aggregate-errors).
+[`props`](../README.md#error-instance-properties), aggregate
+[`errors`](../README.md#aggregate-errors), and
+[`custom`](../README.md#class-custom-logic) methods and properties.
 
 ```ts
 const InputError = AnyError.subclass('InputError', {
