@@ -377,9 +377,7 @@ export default {
 
 ## TypeScript
 
-Any plugin's TypeScript types are automatically exposed to its users.
-`modern-errors` [exported types](typescript.md#wide-types) can be used when
-typing plugins.
+Any plugin's types are automatically exposed to its TypeScript users.
 
 ### `getOptions`
 
@@ -429,7 +427,8 @@ const plugin = {
 
 ### `Info`
 
-The `Info` type refers to the [`info`](#info) parameter. It can be
+`modern-errors`'s [exported types](typescript.md#wide-types) can be used. In
+particular, the `Info` type refers to the [`info`](#info) parameter. It can be
 `Info['properties']`, `Info['instanceMethods']`, `Info['staticMethods']` or
 `Info['errorInfo']`.
 
