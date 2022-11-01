@@ -377,10 +377,9 @@ export default {
 
 ## TypeScript
 
-`modern-errors` [exports its types](typescript.md#wide-types) for TypeScript
-users.
-
-Any plugin's types are exposed to its users.
+Any plugin's TypeScript types are automatically exposed to its users.
+`modern-errors` [exported types](typescript.md#wide-types) can be used when
+typing plugins.
 
 ### `getOptions`
 
