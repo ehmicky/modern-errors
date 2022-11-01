@@ -101,9 +101,9 @@ Those types are wide: they do not include any information about specific
 [`props`](../README.md#error-instance-properties), aggregate
 [`errors`](../README.md#aggregate-errors) nor
 [`custom`](../README.md#class-custom-logic) methods/properties. However, they
-can include the methods, properties and options of specific plugins by passing
-those as a generic parameter, e.g. `ErrorClass<[typeof plugin]>`.
+can include specific plugins' methods, properties and options by passing those
+as a generic parameter, such as `ErrorClass<[typeof plugin]>`.
 
 They should only be used to type unknown error instances and classes, when no
-variable nor type inference is available. For example, those wide types are
-useful when creating [plugins](plugins.md).
+variable nor type inference is available. For example, they can be useful when
+creating [plugins](plugins.md).
