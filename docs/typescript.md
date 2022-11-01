@@ -31,6 +31,7 @@ Plugin methods, properties and [options](../README.md#plugin-options) are fully
 typed.
 
 ```ts
+// This plugin adds an `error.httpResponse()` method
 import modernErrorsHttp from 'modern-errors-http'
 
 const AnyError = modernErrors([modernErrorsHttp])
@@ -39,15 +40,16 @@ const UnknownError = AnyError.subclass('UnknownError')
 const InputError = AnyError.subclass('InputError')
 
 const inputError = new InputError('Wrong user name', {
-  http: { title: false }, // Type error: title must be a string
+  http: { title: false }, // Type error: `title` must be a string
 })
 const httpResponse = inputError.httpResponse() // Inferred type: response object
 ```
 
 ## Narrowing
 
-Types can be narrowed using
-[`instanceof ErrorClass`](../README.md#check-error-classes).
+Types can be
+[narrowed](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing)
+using [`instanceof`](../README.md#check-error-classes).
 
 ```ts
 const InputError = AnyError.subclass('InputError', {
@@ -57,7 +59,7 @@ const InputError = AnyError.subclass('InputError', {
 try {
   // ...
 } catch (error) {
-  // Narrows type to `InputError`
+  // Narrows `error` type to `InputError`
   if (error instanceof InputError) {
     const { isUserError } = error // Inferred type: `true`
   }
@@ -67,8 +69,9 @@ try {
 ## Type inference
 
 Types are automatically inferred: no explicit type declaration is needed.
-`typeof`, `ReturnType`, etc. can be used to retrieve the type of a variable or
-method.
+[`typeof`](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html),
+[`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype),
+etc. can be used to retrieve the type of a variable or method.
 
 ```ts
 const InputError = AnyError.subclass('InputError')
@@ -95,13 +98,12 @@ The following types are exported:
 [`Plugin`](../README.md#plugins-1).
 
 Those types are wide: they do not include any information about specific
-[`props`](../README.md#error-instance-properties),
-[`custom`](../README.md#class-custom-logic) methods/properties, aggregate
-[`errors`](../README.md#aggregate-errors). Therefore they should only be used to
-type unknown error instances or classes, when no variable nor type inference is
-available. For example, those wide types are useful when creating
-[plugins](plugins.md).
+[`props`](../README.md#error-instance-properties), aggregate
+[`errors`](../README.md#aggregate-errors) nor
+[`custom`](../README.md#class-custom-logic) methods/properties. However, they
+can include the methods, properties and options of specific plugins by passing
+those as a generic parameter, e.g. `ErrorClass<[typeof plugin]>`.
 
-However, they can include the methods, properties and options of specific
-plugins by passing those as a generic parameter, e.g.
-`ErrorClass<[typeof plugin]>`.
+They should only be used to type unknown error instances and classes, when no
+variable nor type inference is available. For example, those wide types are
+useful when creating [plugins](plugins.md).
