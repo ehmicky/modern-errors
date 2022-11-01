@@ -388,7 +388,7 @@ plugin's options.
 // Any `{ example }` plugin option passed by users will be validated as boolean
 const plugin = {
   name: 'example' as const,
-  getOptions(options: boolean): boolean {
+  getOptions(options: boolean): object {
     // ...
   },
 }
