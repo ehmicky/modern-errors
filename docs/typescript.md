@@ -7,8 +7,8 @@ The [API](../README.md#api) is fully typed for TypeScript users.
 Error [classes'](../README.md#error-classes) and
 [instances'](../README.md#simple-errors)
 [`props`](../README.md#error-instance-properties), aggregate
-[`errors`](../README.md#aggregate-errors), and
-[`custom`](../README.md#class-custom-logic) methods and properties are typed.
+[`errors`](../README.md#aggregate-errors) and
+[`custom`](../README.md#class-custom-logic) methods/properties are typed.
 
 ```ts
 const InputError = AnyError.subclass('InputError', {
@@ -46,7 +46,7 @@ const httpResponse = inputError.httpResponse() // Inferred type: response object
 
 ## Narrowing
 
-Types can be
+When catching exceptions, their type can be
 [narrowed](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing)
 using [`instanceof`](../README.md#check-error-classes).
 
@@ -73,14 +73,13 @@ Types are automatically inferred: no explicit type declaration is needed.
 etc. can be used to retrieve the type of a variable or method.
 
 ```ts
-const InputError = AnyError.subclass('InputError')
-
 const printErrorClass = function (
   ErrorClass: ReturnType<typeof AnyError.subclass>,
 ) {
   // ...
 }
 
+const InputError = AnyError.subclass('InputError')
 printErrorClass(InputError)
 ```
 
