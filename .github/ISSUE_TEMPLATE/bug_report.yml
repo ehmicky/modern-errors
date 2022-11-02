@@ -1,5 +1,5 @@
 name: Bug report
-description: Create a report to help us improve
+description: Report a bug
 title: Please replace with a clear and descriptive title
 labels: [bug]
 body:
