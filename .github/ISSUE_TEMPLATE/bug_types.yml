@@ -1,0 +1,49 @@
+name: Bug report (TypeScript types)
+description: Report a bug about TypeScript types
+title: Please replace with a clear and descriptive title
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting this bug!
+  - type: checkboxes
+    attributes:
+      label: Guidelines
+      options:
+        - label:
+            Please search other issues to make sure this bug has not already
+            been reported.
+          required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      placeholder: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Please reproduce the bug using the [TypeScript playground](https://www.typescriptlang.org/play) or [Bug workbench](https://www.typescriptlang.org/dev/bug-workbench), then paste the URL here.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        Enter the following command in a terminal and copy/paste its output:
+        ```bash
+        npx envinfo --system --binaries --browsers --npmPackages template-name typescript --npmGlobalPackages typescript
+        ```
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description:
+        Pull requests are welcome! If you would like to help us fix this bug,
+        please check our [contributions
+        guidelines](../blob/main/CONTRIBUTING.md).
+      options:
+        - label: I can submit a pull request.
+          required: false
