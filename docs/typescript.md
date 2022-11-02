@@ -5,7 +5,7 @@ The [API](../README.md#api) is fully typed for TypeScript users.
 ## Error properties and methods
 
 Error [classes](../README.md#error-classes) and
-[instances](../README.md#simple-errors) include any
+[instances](../README.md#simple-errors) include the type of their
 [`props`](../README.md#error-instance-properties), aggregate
 [`errors`](../README.md#aggregate-errors), and
 [`custom`](../README.md#class-custom-logic) methods and properties.
