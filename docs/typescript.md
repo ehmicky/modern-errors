@@ -4,11 +4,11 @@ The [API](../README.md#api) is fully typed for TypeScript users.
 
 ## Error properties and methods
 
-Error [classes](../README.md#error-classes) and
-[instances](../README.md#simple-errors) include the type of their
+Error [classes'](../README.md#error-classes) and
+[instances'](../README.md#simple-errors)
 [`props`](../README.md#error-instance-properties), aggregate
 [`errors`](../README.md#aggregate-errors), and
-[`custom`](../README.md#class-custom-logic) methods and properties.
+[`custom`](../README.md#class-custom-logic) methods and properties are typed.
 
 ```ts
 const InputError = AnyError.subclass('InputError', {
@@ -27,8 +27,7 @@ const result = error.isUserInput() // Inferred type: `true`
 
 ## Plugins
 
-Plugin methods, properties and [options](../README.md#plugin-options) are fully
-typed.
+Plugin methods, properties and [options](../README.md#plugin-options) are typed.
 
 ```ts
 // This plugin adds an `error.httpResponse()` method
