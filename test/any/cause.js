@@ -3,14 +3,13 @@ import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
 import {
-  UnknownError,
-  AnyError,
   KnownErrorClasses,
-  UnknownErrorClasses,
-  getKnownErrors,
   getUnknownErrors,
-  getNativeErrors,
-  getNativeErrorInstances,
+  getUnknownErrorInstances,
+  AnyError,
+  TestError,
+  ChildTestError,
+  SiblingError,
 } from '../helpers/known.js'
 
 const getExpectedMessage = function (cause) {
@@ -22,77 +21,66 @@ const getExpectedMessage = function (cause) {
 }
 
 each(
-  [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
-  [...getNativeErrors(), () => new UnknownError('message')],
-  ({ title }, ParentErrorClass, getCause) => {
-    test(`Cause name is ignored if absent | ${title}`, (t) => {
-      const cause = getCause()
-      t.is(
-        getExpectedMessage(cause),
-        new ParentErrorClass('', { cause }).message,
-      )
+  KnownErrorClasses,
+  getUnknownErrors(),
+  ({ title }, ErrorClass, getUnknownError) => {
+    test(`Cause name is ignored if generic | ${title}`, (t) => {
+      const cause = getUnknownError()
+      t.is(getExpectedMessage(cause), new ErrorClass('', { cause }).message)
     })
 
     test(`Generated stacks are not used | ${title}`, (t) => {
-      const cause = getCause()
+      const cause = getUnknownError()
       t.false(
-        new ParentErrorClass('', { cause }).stack.includes(
-          'normalize-exception',
-        ),
+        new ErrorClass('', { cause }).stack.includes('normalize-exception'),
       )
     })
   },
 )
 
 each(
-  [AnyError, ...KnownErrorClasses, ...UnknownErrorClasses],
-  getNativeErrorInstances(),
+  KnownErrorClasses,
+  getUnknownErrorInstances(),
   ['', 'test: '],
   // eslint-disable-next-line max-params
-  ({ title }, ParentErrorClass, getError, message) => {
+  ({ title }, ErrorClass, getUnknownError, message) => {
     test(`Unknown cause name is kept | ${title}`, (t) => {
-      const error = getError()
+      const error = getUnknownError()
       error.name = 'NamedError'
       t.is(
-        new ParentErrorClass(message, { cause: error }).message,
+        new ErrorClass(message, { cause: error }).message,
         `${message}${error.name}: ${error.message}`,
       )
     })
   },
 )
 
-each(
-  [AnyError, ...KnownErrorClasses],
-  [...getKnownErrors(), ...getUnknownErrors()],
-  ({ title }, ErrorClass, getError) => {
-    test(`Known cause name is ignored without UnknownError | ${title}`, (t) => {
-      const cause = getError()
-      t.is(new ErrorClass('', { cause }).message, cause.message)
-    })
-  },
-)
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`Name of AnyError cause is ignored | ${title}`, (t) => {
+    const cause = new AnyError('causeMessage')
+    t.is(new ErrorClass('', { cause }).message, cause.message)
+  })
 
-each(
-  UnknownErrorClasses,
-  [...getKnownErrors(), ...getUnknownErrors()],
-  ({ title }, ParentErrorClass, getError) => {
-    test(`Known cause name is kept with UnknownError and empty message | ${title}`, (t) => {
-      const cause = getError()
-      t.is(
-        new ParentErrorClass('', { cause }).message,
-        cause.name === 'UnknownError'
-          ? cause.message
-          : `${cause.name}: ${cause.message}`,
-      )
-    })
+  test(`Name of cause with same class is ignored | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
+    t.is(new ErrorClass('', { cause }).message, cause.message)
+  })
+})
 
-    test(`Known cause name is ignored with UnknownError and non-empty message | ${title}`, (t) => {
-      const cause = getError()
-      const parentMessage = 'parentMessage'
-      t.is(
-        new ParentErrorClass(parentMessage, { cause }).message,
-        `${cause.message}\n${parentMessage}`,
-      )
-    })
-  },
-)
+test('Name of cause with subclass is ignored', (t) => {
+  const cause = new ChildTestError('causeMessage')
+  t.is(new TestError('', { cause }).message, cause.message)
+})
+
+test('Name of cause with superclass is kept', (t) => {
+  const cause = new TestError('causeMessage')
+  t.is(
+    new ChildTestError('', { cause }).message,
+    `${cause.name}: ${cause.message}`,
+  )
+})
+
+test('Name of cause with unrelated class is kept', (t) => {
+  const cause = new SiblingError('causeMessage')
+  t.is(new TestError('', { cause }).message, `${cause.name}: ${cause.message}`)
+})

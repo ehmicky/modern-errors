@@ -22,6 +22,13 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
     assertInstanceOf(t, error, cause.constructor)
     t.is(error, cause)
   })
+
+  test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
+    const error = new ErrorClass('message', { cause })
+    assertInstanceOf(t, error, ErrorClass)
+    t.is(error, cause)
+  })
 })
 
 each(
@@ -36,15 +43,6 @@ each(
     })
   },
 )
-
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
-  test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
-    const cause = new ErrorClass('causeMessage')
-    const error = new ErrorClass('message', { cause })
-    assertInstanceOf(t, error, ErrorClass)
-    t.is(error, cause)
-  })
-})
 
 test('ErrorClass with cause of subclass use child class and instance', (t) => {
   const cause = new ChildTestError('causeMessage')
