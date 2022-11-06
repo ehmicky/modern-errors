@@ -1,48 +1,56 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, createAnyError } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, UnknownError, AnyError } = defineClassOpts()
+const { AnyError, TestError } = defineClassOpts()
 
-test('AnyError.normalize() normalizes unknown errors', (t) => {
-  t.true(AnyError.normalize() instanceof Error)
-})
+each([AnyError, TestError], ({ title }, ErrorClass) => {
+  test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
+    t.true(ErrorClass.normalize() instanceof Error)
+  })
 
-test('AnyError.normalize() normalizes known errors', (t) => {
-  const error = new TestError('test')
-  error.name = 'TestError'
-  t.true(Object.getOwnPropertyDescriptor(error, 'name').enumerable)
-  error.message = true
-  const normalizedError = AnyError.normalize(error)
-  t.true(normalizedError instanceof TestError)
-  t.is(normalizedError.name, 'TestError')
-  t.false(Object.getOwnPropertyDescriptor(error, 'name').enumerable)
-  t.is(normalizedError.message, '')
-})
-
-each([TestError, UnknownError], ({ title }, ErrorClass) => {
-  test(`AnyError.normalize() keeps error class if known | ${title}`, (t) => {
+  test(`ErrorClass.normalize() normalizes known errors | ${title}`, (t) => {
     const error = new ErrorClass('test')
-    const sameError = AnyError.normalize(error)
-    t.is(error, sameError)
-    t.true(sameError instanceof ErrorClass)
+    const { name } = error
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.defineProperty(error, 'name', {
+      value: name,
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    })
+    error.message = true
+    const normalizedError = ErrorClass.normalize(error)
+    t.true(normalizedError instanceof ErrorClass)
+    t.is(normalizedError.name, name)
+    t.false(Object.getOwnPropertyDescriptor(error, 'name').enumerable)
+    t.is(normalizedError.message, '')
+  })
+
+  test(`ErrorClass.normalize() keeps error class if known | ${title}`, (t) => {
+    const error = new TestError('test')
+    const normalizedError = ErrorClass.normalize(error)
+    t.is(error, normalizedError)
+    t.true(normalizedError instanceof TestError)
+  })
+
+  test(`ErrorClass.normalize() prevents naming collisions | ${title}`, (t) => {
+    const { TestError: OtherTestError } = defineClassOpts()
+    const normalizedError = ErrorClass.normalize(new OtherTestError('test'))
+    t.is(normalizedError.constructor, ErrorClass)
   })
 })
 
-test('AnyError.normalize() uses UnknownError if unknown', (t) => {
-  const unknownError = new Error('test', { cause: '' })
-  const error = AnyError.normalize(unknownError)
-  t.true(error instanceof UnknownError)
-  t.is(error.message, unknownError.message)
+test('AnyError.normalize() keeps AnyError error class', (t) => {
+  const error = new AnyError('test')
+  t.is(AnyError.normalize(error).constructor, AnyError)
 })
 
-test('AnyError.normalize() prevents naming collisions', (t) => {
-  const { TestError: OtherTestError } = defineClassOpts()
-  t.true(AnyError.normalize(new OtherTestError('test')) instanceof UnknownError)
-})
-
-test('AnyError.normalize() cannot be called before AnyError.subclass()', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(TestAnyError.normalize)
+test('Non-AnyError.normalize() changes AnyError error class', (t) => {
+  const error = new AnyError('test')
+  const { message } = error
+  const normalizedError = TestError.normalize(error)
+  t.is(normalizedError.constructor, TestError)
+  t.is(normalizedError.message, message)
 })
