@@ -1,4 +1,3 @@
-import isErrorInstance from 'is-error-instance'
 import isPlainObj from 'is-plain-obj'
 
 // Unknown `Error` options are not validated, for compatibility with any
@@ -26,40 +25,5 @@ export const normalizeOpts = function (ErrorClass, message, opts = {}) {
     )
   }
 
-  // TODO: fix. This should work regardless of whether appended or prepended
-  // const messageA = hasSpecificName(opts.cause, ErrorClass)
-  //   ? `${opts.cause.name}: ${message}`
-  //   : message
   return { message, opts }
 }
-
-// If `cause` is not an `AnyError` instance, we convert it using
-// `AnyError.normalize()` to:
-//  - Keep its error `name` in the error `message`
-//  - Ensure `new AnyError()` return value's class is a child of `AnyError`
-// This applies regardless of parent class:
-//  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
-//  - With an empty message or not
-// `undefined` causes are ignored when the `cause` key is defined, for
-// consistency with:
-//  - `normalize-exception` and `merge-error-cause`
-//  - Other options (`errors` and plugin options)
-const hasSpecificName = function (cause, ErrorClass) {
-  return (
-    isErrorInstance(cause) &&
-    !(cause instanceof ErrorClass) &&
-    !GENERIC_NAMES.has(cause.name)
-  )
-}
-
-// The error name is not kept if generic
-const GENERIC_NAMES = new Set([
-  'Error',
-  'ReferenceError',
-  'TypeError',
-  'SyntaxError',
-  'RangeError',
-  'URIError',
-  'EvalError',
-  'AggregateError',
-])
