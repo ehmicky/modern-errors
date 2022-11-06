@@ -1,12 +1,15 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, defineGlobalOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
-  test(`Object instance options are shallowly merged to class and global options | ${title}`, (t) => {
-    const { TestError } = defineOpts({
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorClasses } = getClasses()
+
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`Object instance options are shallowly merged to class options | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', {
       prop: { one: false, two: { three: false }, five: false },
     })
     const error = new TestError('test', {
@@ -21,43 +24,39 @@ each([defineClassOpts, defineGlobalOpts], ({ title }, defineOpts) => {
   })
 })
 
-test('plugin.properties() is optional', (t) => {
-  const { TestError } = defineGlobalOpts({}, [
-    { ...TEST_PLUGIN, properties: undefined },
-  ])
-  t.false('properties' in new TestError('test'))
-})
-
-each(
-  [({ AnyError }) => AnyError, ({ ErrorClasses }) => ErrorClasses.TestError],
-  ({ title }, getClass) => {
-    test(`plugin.properties() can wrap error itself | ${title}`, (t) => {
-      const prefix = 'prefix: '
-      const message = 'test'
-      const { TestError } = defineGlobalOpts({}, [
-        {
-          ...TEST_PLUGIN,
-          properties({ error, ...info }) {
-            const ErrorClass = getClass(info)
-            const wrappedError = error.message.startsWith(prefix)
-              ? error
-              : new ErrorClass(prefix, { cause: error })
-            return { wrappedError }
-          },
-        },
-      ])
-      t.is(new TestError(message).wrappedError.message, `${prefix}${message}`)
+each(ErrorClasses, ({ title }, ErrorClass) => {
+  test(`plugin.properties() is optional | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', {
+      plugins: [{ ...TEST_PLUGIN, properties: undefined }],
     })
-  },
-)
+    t.false('properties' in new TestError('test'))
+  })
 
-test('plugin.properties() can modify the same properties', (t) => {
-  const names = ['one', 'two']
-  const plugins = names.map((name) => ({
-    name,
-    properties: ({ error }) => ({ message: `${error.message}${name}` }),
-  }))
-  const { TestError } = defineGlobalOpts({}, plugins)
-  t.is(new TestError('').message, names.join(''))
-  t.true(new TestError('').stack.includes(names.join('')))
+  test(`plugin.properties() can wrap error itself | ${title}`, (t) => {
+    const prefix = 'prefix: '
+    const message = 'test'
+    const plugin = {
+      ...TEST_PLUGIN,
+      properties({ error, ErrorClass: ErrorClassArg }) {
+        const wrappedError = error.message.startsWith(prefix)
+          ? error
+          : new ErrorClassArg(prefix, { cause: error })
+        return { wrappedError }
+      },
+    }
+    const TestError = ErrorClass.subclass('TestError', { plugins: [plugin] })
+    t.is(new TestError(message).wrappedError.message, `${prefix}${message}`)
+  })
+
+  test(`plugin.properties() can modify the same properties | ${title}`, (t) => {
+    const names = ['one', 'two']
+    const plugins = names.map((name) => ({
+      name,
+      properties: ({ error }) => ({ message: `${error.message}${name}` }),
+    }))
+    const TestError = ErrorClass.subclass('TestError', { plugins })
+    const { message, stack } = new TestError('')
+    t.is(message, names.join(''))
+    t.true(stack.includes(names.join('')))
+  })
 })
