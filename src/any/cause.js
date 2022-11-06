@@ -27,7 +27,7 @@ export const normalizeCause = function ({
   }
 
   const messageA = hasSpecificName(cause) ? `${cause.name}:` : message
-  return { message: messageA, opts: { ...opts, cause } }
+  return { message: messageA, opts }
 }
 
 const hasSpecificName = function (cause) {
