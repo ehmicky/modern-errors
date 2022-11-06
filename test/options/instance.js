@@ -61,11 +61,20 @@ each(
   },
 )
 
-test('Instance options has priority over class options', (t) => {
+test('Instance options have priority over class options', (t) => {
   const OtherAnyError = createAnyError({ prop: false })
   const cause = new OtherAnyError('causeMessage')
   t.true(
     new OtherAnyError('test', { cause, prop: true }).properties.options.prop,
+  )
+})
+
+test('Undefined instance options are ignored', (t) => {
+  const OtherAnyError = createAnyError({ prop: true })
+  const cause = new OtherAnyError('causeMessage')
+  t.true(
+    new OtherAnyError('test', { cause, prop: undefined }).properties.options
+      .prop,
   )
 })
 
