@@ -127,10 +127,7 @@ export interface Info {
   /**
    * `info` object returned by `errorInfo()`
    */
-  readonly errorInfo: Omit<
-    CommonInfo,
-    'ErrorClass' | 'ErrorClasses' | 'errorInfo'
-  >
+  readonly errorInfo: Omit<CommonInfo, 'errorInfo'>
 }
 
 // `Info` is exposed as a type so that plugins can:
