@@ -1,19 +1,23 @@
 import test from 'ava'
+import { each } from 'test-each'
 
+import {
+  KnownErrorClasses,
+  getUnknownErrors,
+  AnyError,
+} from '../helpers/known.js'
 import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineClassOpts()
-
-test('instanceof AnyError can be used with root errors', (t) => {
-  t.true(new AnyError('test') instanceof AnyError)
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`instanceof AnyError can be used with known errors | ${title}`, (t) => {
+    t.true(new ErrorClass('test') instanceof AnyError)
+  })
 })
 
-test('instanceof AnyError can be used with child errors', (t) => {
-  t.true(new TestError('test') instanceof AnyError)
-})
-
-test('instanceof AnyError can be used with other errors', (t) => {
-  t.false(new Error('test') instanceof AnyError)
+each(getUnknownErrors(), ({ title }, getUnknownError) => {
+  test(`instanceof AnyError can be used with known errors | ${title}`, (t) => {
+    t.false(getUnknownError() instanceof AnyError)
+  })
 })
 
 test('instanceof AnyError prevents naming collisions', (t) => {
