@@ -1,5 +1,5 @@
 import type { Plugins } from '../plugins/shape.js'
-import type { AggregateErrors } from '../any/aggregate.js'
+import type { AggregateErrors } from '../base/aggregate.js'
 import type { PluginsOptions } from './plugins.js'
 
 /**

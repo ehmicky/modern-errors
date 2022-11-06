@@ -1,6 +1,6 @@
 import type { Plugins } from '../../plugins/shape.js'
 import type { SpecificInstanceOptions } from '../../options/instance.js'
-import type { ErrorInstance } from '../../any/modify/main.js'
+import type { ErrorInstance } from '../../base/modify/main.js'
 
 /**
  * `constructor` of the `custom` option

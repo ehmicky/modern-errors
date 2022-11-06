@@ -1,7 +1,9 @@
 import type { ErrorName } from 'error-custom-class'
 
 import type { Plugins } from '../../plugins/shape.js'
-import type { GetAggregateErrors } from '../../any/aggregate.js'
+import type { GetAggregateErrors } from '../../base/aggregate.js'
+import type { BaseError } from '../../base/modify/main.js'
+import type { SpecificBaseErrorClass } from '../../base/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -12,9 +14,7 @@ import type {
 } from '../custom/main.js'
 import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
-import type { BaseError } from '../../any/modify/main.js'
 import type { NoAdditionalProps } from '../../utils.js'
-import type { SpecificBaseErrorClass } from '../../any/main.js'
 import type { IsForbiddenClassName } from '../name.js'
 import type {
   ErrorConstructor,
