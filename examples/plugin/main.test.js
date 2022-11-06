@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'node:assert'
 
 import modernErrors from 'modern-errors'
 import modernErrorsExample from 'modern-errors-example'
