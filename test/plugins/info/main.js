@@ -14,13 +14,13 @@ const { ErrorSubclasses: OtherSubclasses } = getPluginClasses()
 each(
   ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  ({ title }, ErrorClass, getValues) => {
+  ({ title }, ErrorClass, getInfo) => {
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClass | ${title}`, (t) => {
-      t.is(getValues(ErrorClass).ErrorClass, ErrorClass)
+      t.is(getInfo(ErrorClass).ErrorClass, ErrorClass)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
-      const { ErrorClasses: ErrorClassesInfo } = getValues(ErrorClass)
+      const { ErrorClasses: ErrorClassesInfo } = getInfo(ErrorClass)
       const { length } = ErrorClassesInfo
       // eslint-disable-next-line fp/no-mutating-methods
       ErrorClassesInfo.push(true)
@@ -29,21 +29,21 @@ each(
 
     test(`plugin.properties|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
       // eslint-disable-next-line fp/no-mutation, no-param-reassign
-      getValues(ErrorClass).options.prop = false
+      getInfo(ErrorClass).options.prop = false
       t.is(ErrorClass.getProp().options.prop, undefined)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
-      t.true(getValues(ErrorClass).options.full)
+      t.true(getInfo(ErrorClass).options.full)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods is passed errorInfo | ${title}`, (t) => {
-      t.is(typeof getValues(ErrorClass).errorInfo, 'function')
+      t.is(typeof getInfo(ErrorClass).errorInfo, 'function')
     })
 
     test(`plugin.properties|instanceMethods|staticMethods get the class options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: true })
-      t.true(getValues(TestError).options.prop)
+      t.true(getInfo(TestError).options.prop)
     })
   },
 )
@@ -51,9 +51,9 @@ each(
 each(
   OtherSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  ({ title }, ErrorClass, getValues) => {
+  ({ title }, ErrorClass, getInfo) => {
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-      t.deepEqual(getValues(ErrorClass).ErrorClasses, [
+      t.deepEqual(getInfo(ErrorClass).ErrorClasses, [
         ErrorClass,
         // eslint-disable-next-line max-nested-callbacks
         ...OtherSubclasses.filter((ErrorSubclass) =>
@@ -67,13 +67,13 @@ each(
 each(
   ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo],
-  ({ title }, ErrorClass, getValues) => {
+  ({ title }, ErrorClass, getInfo) => {
     test(`plugin.properties|instanceMethods gets the instance options | ${title}`, (t) => {
-      t.true(getValues(ErrorClass, { prop: true }).options.prop)
+      t.true(getInfo(ErrorClass, { prop: true }).options.prop)
     })
 
     test(`plugin.properties|instanceMethods gets the error | ${title}`, (t) => {
-      t.true(getValues(ErrorClass, { prop: true }).error instanceof Error)
+      t.true(getInfo(ErrorClass, { prop: true }).error instanceof Error)
     })
   },
 )
