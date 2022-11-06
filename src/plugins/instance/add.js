@@ -1,5 +1,4 @@
 import { setNonEnumProp } from '../../utils/descriptors.js'
-import { validateDuplicatePlugin } from '../shape/duplicate.js'
 
 import { callInstanceMethod } from './call.js'
 
@@ -38,7 +37,7 @@ const addInstanceMethod = function (
   { plugin, plugins, ErrorClasses, errorData, AnyError },
   [methodName, methodFunc],
 ) {
-  validateMethodName(methodName, plugin, plugins)
+  validateMethodName(methodName, plugin, AnyError)
   setNonEnumProp(
     AnyError.prototype,
     methodName,
@@ -59,16 +58,12 @@ const addInstanceMethod = function (
   )
 }
 
-const validateMethodName = function (methodName, plugin, plugins) {
-  if (methodName in Error.prototype) {
+const validateMethodName = function (methodName, plugin, AnyError) {
+  if (methodName in AnyError.prototype) {
     throw new Error(
       `Plugin "${plugin.fullName}" must not redefine "error.${methodName}()"`,
     )
   }
-
-  const propName = 'instanceMethods'
-  const prefix = 'error'
-  validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
 }
 
 // Retrieve the name of all instance methods

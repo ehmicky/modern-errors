@@ -3,7 +3,6 @@ import isPlainObj from 'is-plain-obj'
 import { getErrorPluginInfo } from '../info/main.js'
 
 import { assignError } from './assign.js'
-import { getAllValues } from './previous.js'
 
 // Set each `plugin.properties()`.
 // A `reduce()` function is used so that plugins can override the same
@@ -15,37 +14,16 @@ export const setPluginsProperties = function ({
   errorData,
   plugins,
 }) {
-  const previousDescriptors = Object.getOwnPropertyDescriptors(error)
-  const errorA = applyPluginsProperties({
-    error,
-    AnyError,
-    ErrorClasses,
-    errorData,
-    plugins,
+  return plugins.forEach((plugin) => {
+    applyPluginProperties({
+      error,
+      AnyError,
+      ErrorClasses,
+      errorData,
+      plugin,
+      plugins,
+    })
   })
-  const newDescriptors = Object.getOwnPropertyDescriptors(errorA)
-  return getAllValues(previousDescriptors, newDescriptors)
-}
-
-const applyPluginsProperties = function ({
-  error,
-  AnyError,
-  ErrorClasses,
-  errorData,
-  plugins,
-}) {
-  return plugins.reduce(
-    (errorA, plugin) =>
-      applyPluginProperties({
-        error: errorA,
-        AnyError,
-        ErrorClasses,
-        errorData,
-        plugin,
-        plugins,
-      }),
-    error,
-  )
 }
 
 const applyPluginProperties = function ({
@@ -58,7 +36,7 @@ const applyPluginProperties = function ({
   plugins,
 }) {
   if (properties === undefined) {
-    return error
+    return
   }
 
   const info = getErrorPluginInfo({
@@ -78,5 +56,4 @@ const applyPluginProperties = function ({
   }
 
   assignError(error, newProps, plugins)
-  return error
 }

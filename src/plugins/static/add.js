@@ -1,6 +1,4 @@
-import { ANY_ERROR_STATIC_METHODS } from '../../subclass/inherited.js'
 import { setNonEnumProp } from '../../utils/descriptors.js'
-import { validateDuplicatePlugin } from '../shape/duplicate.js'
 
 import { callStaticMethod } from './call.js'
 
@@ -39,7 +37,6 @@ import { callStaticMethod } from './call.js'
 //  - Instead, static methods that initialize should be used
 export const addAllStaticMethods = function ({
   plugins,
-  globalOpts,
   ErrorClasses,
   errorData,
   AnyError,
@@ -48,7 +45,6 @@ export const addAllStaticMethods = function ({
     addStaticMethods({
       plugin,
       plugins,
-      globalOpts,
       ErrorClasses,
       errorData,
       AnyError,
@@ -60,7 +56,6 @@ const addStaticMethods = function ({
   plugin,
   plugin: { staticMethods },
   plugins,
-  globalOpts,
   ErrorClasses,
   errorData,
   AnyError,
@@ -69,7 +64,6 @@ const addStaticMethods = function ({
     addStaticMethod.bind(undefined, {
       plugin,
       plugins,
-      globalOpts,
       ErrorClasses,
       errorData,
       AnyError,
@@ -78,10 +72,10 @@ const addStaticMethods = function ({
 }
 
 const addStaticMethod = function (
-  { plugin, plugins, globalOpts, ErrorClasses, errorData, AnyError },
+  { plugin, plugins, ErrorClasses, errorData, AnyError },
   [methodName, methodFunc],
 ) {
-  validateMethodName(methodName, plugin, plugins)
+  validateMethodName(methodName, plugin, AnyError)
   setNonEnumProp(
     AnyError,
     methodName,
@@ -89,22 +83,31 @@ const addStaticMethod = function (
       methodFunc,
       plugin,
       plugins,
-      globalOpts,
       ErrorClasses,
       errorData,
       AnyError,
     }),
+    function boundStaticMethod(...args) {
+      return callStaticMethod({
+        methodFunc,
+        methodName,
+        plugin,
+        plugins,
+        // eslint-disable-next-line fp/no-this, no-invalid-this
+        ErrorClass: this,
+        ErrorClasses,
+        errorData,
+        AnyError,
+        args,
+      })
+    },
   )
 }
 
-const validateMethodName = function (methodName, plugin, plugins) {
-  if (methodName in Error || ANY_ERROR_STATIC_METHODS.includes(methodName)) {
+const validateMethodName = function (methodName, plugin, AnyError) {
+  if (methodName in AnyError) {
     throw new Error(
       `Plugin "${plugin.fullName}" must not redefine "AnyError.${methodName}()"`,
     )
   }
-
-  const propName = 'staticMethods'
-  const prefix = 'AnyError'
-  validateDuplicatePlugin({ methodName, plugin, plugins, propName, prefix })
 }

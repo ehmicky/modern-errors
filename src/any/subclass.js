@@ -9,34 +9,14 @@
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `*Error.subclass()`
 //  - But was extended from either `AnyError` or a known class
-export const validateSubClass = function (
-  ChildError,
-  isAnyError,
-  ErrorClasses,
-) {
-  validateNonEmpty(ErrorClasses)
-  validateRegisteredClass(ChildError, isAnyError, ErrorClasses)
-}
+export const validateSubclass = function (ErrorClass, ErrorClasses) {
+  const { name } = ErrorClass
 
-export const validateNonEmpty = function (ErrorClasses) {
-  if (Object.keys(ErrorClasses).length === 0) {
-    throw new Error(`At least one error class must be created.
-This is done by calling "AnyError.subclass()".`)
-  }
-}
-
-const validateRegisteredClass = function (
-  ChildError,
-  isAnyError,
-  ErrorClasses,
-) {
-  const { name } = ChildError
-
-  if (isAnyError || ErrorClasses[name] !== undefined) {
+  if (ErrorClasses[name] !== undefined) {
     return
   }
 
-  const { name: parentName } = Object.getPrototypeOf(ChildError)
+  const { name: parentName } = Object.getPrototypeOf(ErrorClass)
   throw new Error(
     `"new ${name}()" must not be directly called.
 The following error class should be used instead:

@@ -1,10 +1,5 @@
 import mergeErrorCause from 'merge-error-cause'
 
-// Retrieve `error.cause` unless it is not normalized
-export const getCause = function ({ cause }, AnyError) {
-  return cause instanceof AnyError ? cause : undefined
-}
-
 // `error.cause` is merged as soon as the error is instantiated:
 //  - This is simpler as it avoids the error shape to change over its lifetime
 //    (before|after `AnyError.normalize()`)
@@ -20,13 +15,14 @@ export const getCause = function ({ cause }, AnyError) {
 //    sometimes be needed
 //     - However it usually indicates a catch block that is too wide, which
 //       is discouraged
-export const mergeCause = function (error, wrap) {
-  error.wrap = wrap
+export const mergeCause = function (error, ErrorClass) {
+  error.wrap = error.cause instanceof ErrorClass
   return mergeErrorCause(error)
 }
 
 // Like `mergeCause()` but run outside of `AnyError` constructor
 export const mergeSpecificCause = function (error, cause) {
   error.cause = cause
-  return mergeCause(error, true)
+  error.wrap = true
+  return mergeErrorCause(error)
 }

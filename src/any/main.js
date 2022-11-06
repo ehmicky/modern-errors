@@ -1,12 +1,15 @@
-import { setErrorName } from 'error-class-utils'
 import errorCustomClass from 'error-custom-class'
 
+import { validateGlobalOpts } from '../options/global.js'
+import { computePluginsOpts } from '../options/instance.js'
+import { setPluginsProperties } from '../plugins/properties/main.js'
 import { createSubclass } from '../subclass/main.js'
 
-import { modifyError } from './modify.js'
-import { normalize } from './normalize.js'
+import { setAggregateErrors, normalizeAggregateErrors } from './aggregate.js'
+import { setConstructorArgs } from './args.js'
+import { mergeCause } from './merge.js'
 import { normalizeOpts } from './options.js'
-import { validateSubClass } from './subclass.js'
+import { validateSubclass } from './subclass.js'
 
 const CoreError = errorCustomClass('CoreError')
 
@@ -38,31 +41,37 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-// eslint-disable-next-line max-lines-per-function
+
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
   plugins,
   globalOpts,
 }) {
+  validateGlobalOpts(globalOpts)
+  const AnyError = getAnyError(ErrorClasses, errorData, plugins)
+  return createSubclass({
+    ErrorClass: AnyError,
+    ErrorClasses,
+    AnyError,
+    className: 'AnyError',
+    parentOpts: {},
+    classOpts: globalOpts,
+    plugins,
+  })
+}
+
+const getAnyError = function (ErrorClasses, errorData, plugins) {
   /* eslint-disable fp/no-this */
-  class AnyError extends CoreError {
+  return class AnyError extends CoreError {
     constructor(message, opts, ...args) {
-      const isAnyError = new.target === AnyError
-      validateSubClass(new.target, isAnyError, ErrorClasses)
-      const isAnyNormalize = getIsAnyNormalize(
-        new.target,
-        ErrorClasses,
-        message,
-      )
-      const { message: messageA, opts: optsA } = normalizeOpts({
+      const ErrorClass = new.target
+      validateSubclass(ErrorClass, ErrorClasses)
+      const { message: messageA, opts: optsA } = normalizeOpts(
+        ErrorClass,
         message,
         opts,
-        args,
-        AnyError,
-        isAnyError,
-        isAnyNormalize,
-      })
+      )
       super(messageA, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
@@ -70,49 +79,40 @@ export const createAnyError = function ({
         currentError: this,
         opts: optsA,
         args,
+        ErrorClass,
         ErrorClasses,
         errorData,
         plugins,
         AnyError,
-        isAnyError,
       })
     }
     /* c8 ignore stop */
-
-    static subclass(className, classOpts) {
-      return createSubclass(
-        {
-          parentOpts: globalOpts,
-          ParentError: AnyError,
-          ErrorClasses,
-          plugins,
-        },
-        className,
-        classOpts,
-      )
-    }
-
-    static normalize(error) {
-      return normalize(error, AnyError, ErrorClasses)
-    }
   }
   /* eslint-enable fp/no-this */
-  setErrorName(AnyError, 'AnyError')
-  return AnyError
 }
 
-// Return whether this is a `AnyError.normalize()` call, which calls
-// `new UnknownError('', { cause })`.
-// Calling `new UnknownError('', { cause })` behaves as if
-// `AnyError.normalize()` was called, including child `UnknownError`.
-const getIsAnyNormalize = function (
-  NewTarget,
-  { UnknownError: { ErrorClass: UnknownError } },
-  message,
-) {
-  return (
-    (NewTarget === UnknownError ||
-      Object.prototype.isPrototypeOf.call(UnknownError, NewTarget)) &&
-    message === ''
+// Merge `error.cause` and set `plugin.properties()`.
+// Also compute and keep track of instance options and `constructorArgs`.
+const modifyError = function ({
+  currentError,
+  opts,
+  args,
+  ErrorClass,
+  ErrorClasses,
+  errorData,
+  plugins,
+  AnyError,
+}) {
+  const { opts: optsA, pluginsOpts } = computePluginsOpts(
+    opts,
+    errorData,
+    plugins,
   )
+  setAggregateErrors(currentError, optsA)
+  const error = mergeCause(currentError, ErrorClass)
+  errorData.set(error, { pluginsOpts })
+  normalizeAggregateErrors(error, AnyError)
+  setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
+  setPluginsProperties({ error, AnyError, ErrorClasses, errorData, plugins })
+  return error
 }

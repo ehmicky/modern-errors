@@ -1,10 +1,3 @@
-import isPlainObj from 'is-plain-obj'
-
-import { validatePluginsOptsNames } from '../plugins/shape/name.js'
-import { deepClone } from '../utils/clone.js'
-
-import { getPluginOpts } from './get.js'
-
 // The second argument to `modernErrors()` are global options applied to all
 // classes.
 // Those are validated right away, before merging to class options, since they
@@ -22,23 +15,10 @@ import { getPluginOpts } from './get.js'
 //      - To ensure:
 //         - A consistent, single way of configuring plugins
 //         - Options can be specified at different levels
-export const getGlobalOpts = function (plugins, globalOpts = {}) {
-  if (!isPlainObj(globalOpts)) {
+export const validateGlobalOpts = function (globalOpts) {
+  if (globalOpts?.custom !== undefined) {
     throw new TypeError(
-      `The second argument must be a plain object: ${globalOpts}`,
+      'Error option "custom" must be passed to "ErrorClass.subclass()", not to "modernErrors()".',
     )
   }
-
-  if (globalOpts.custom !== undefined) {
-    throw new TypeError(
-      'Error option "custom" must be passed to "AnyError.subclass()", not to "modernErrors()".',
-    )
-  }
-
-  const globalOptsA = deepClone(globalOpts)
-  validatePluginsOptsNames(globalOptsA, plugins)
-  plugins.forEach((plugin) => {
-    getPluginOpts({ pluginsOpts: globalOptsA, plugin, full: false })
-  })
-  return globalOptsA
 }

@@ -1,6 +1,5 @@
+import isErrorInstance from 'is-error-instance'
 import isPlainObj from 'is-plain-obj'
-
-import { normalizeCause } from './cause.js'
 
 // Unknown `Error` options are not validated, for compatibility with any
 // potential JavaScript platform, since `error` has many non-standard elements.
@@ -14,14 +13,7 @@ import { normalizeCause } from './cause.js'
 //     - More standard
 //     - More monomorphic
 //     - Safer against injections
-export const normalizeOpts = function ({
-  message,
-  opts = {},
-  args,
-  AnyError,
-  isAnyError,
-  isAnyNormalize,
-}) {
+export const normalizeOpts = function (ErrorClass, message, opts = {}) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
       `Error options must be a plain object or undefined: ${opts}`,
@@ -30,29 +22,44 @@ export const normalizeOpts = function ({
 
   if (opts.custom !== undefined) {
     throw new TypeError(
-      'Error option "custom" must be passed to "AnyError.subclass()", not to error constructors.',
+      `Error option "custom" must be passed to "${ErrorClass.name}.subclass()", not to error constructors.`,
     )
   }
 
-  validateAnyErrorArgs(isAnyError, args, opts)
-  return normalizeCause({ message, opts, AnyError, isAnyNormalize })
+  // TODO: fix. This should work regardless of whether appended or prepended
+  // const messageA = hasSpecificName(opts.cause, ErrorClass)
+  //   ? `${opts.cause.name}: ${message}`
+  //   : message
+  return { message, opts }
 }
 
-// `new AnyError()` does not make sense without a `cause`, so we validate it.
-const validateAnyErrorArgs = function (isAnyError, args, opts) {
-  if (!isAnyError) {
-    return
-  }
-
-  if (!('cause' in opts)) {
-    throw new Error(
-      '"cause" must be passed to the second argument of: new AnyError("message", { cause })',
-    )
-  }
-
-  if (args.length !== 0) {
-    throw new TypeError(
-      `new AnyError(...) cannot have more than two arguments: ${args[0]}`,
-    )
-  }
+// If `cause` is not an `AnyError` instance, we convert it using
+// `AnyError.normalize()` to:
+//  - Keep its error `name` in the error `message`
+//  - Ensure `new AnyError()` return value's class is a child of `AnyError`
+// This applies regardless of parent class:
+//  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
+//  - With an empty message or not
+// `undefined` causes are ignored when the `cause` key is defined, for
+// consistency with:
+//  - `normalize-exception` and `merge-error-cause`
+//  - Other options (`errors` and plugin options)
+const hasSpecificName = function (cause, ErrorClass) {
+  return (
+    isErrorInstance(cause) &&
+    !(cause instanceof ErrorClass) &&
+    !GENERIC_NAMES.has(cause.name)
+  )
 }
+
+// The error name is not kept if generic
+const GENERIC_NAMES = new Set([
+  'Error',
+  'ReferenceError',
+  'TypeError',
+  'SyntaxError',
+  'RangeError',
+  'URIError',
+  'EvalError',
+  'AggregateError',
+])
