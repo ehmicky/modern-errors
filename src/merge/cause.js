@@ -25,18 +25,21 @@ export const mergeSpecificCause = function (error, cause) {
 //  - This returns a subclass of the parent class, which does not break
 //    inheritance nor user expectations
 export const mergeCause = function (error, ErrorClass) {
-  const { cause } = error
-
-  if (!isErrorInstance(cause)) {
+  if (!isErrorInstance(error.cause)) {
     return mergeErrorCause(error)
   }
 
-  error.wrap = isSubclass(cause.constructor, ErrorClass)
+  error.wrap = isSubclass(error.cause.constructor, ErrorClass)
 
   if (!shouldPrefixCause(error, ErrorClass)) {
     return mergeErrorCause(error)
   }
 
+  return mergePrefixedError(error)
+}
+
+const mergePrefixedError = function (error) {
+  const { cause } = error
   const oldMessage = prefixCause(cause)
   const errorA = mergeErrorCause(error)
 
