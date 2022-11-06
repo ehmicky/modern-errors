@@ -24,9 +24,9 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
 } & { [Key in keyof ConstructorArg]: ConstructorArg[Key] }
 
 /**
- * Class-specific options, excluding plugin options and `UnknownError` options
+ * Class-specific options, excluding plugin options
  */
-interface CustomOption<
+interface KnownClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -76,24 +76,6 @@ interface CustomOption<
 }
 
 /**
- * Class-specific options, excluding plugin options
- */
-type KnownClassOptions<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  CustomAttributesArg extends CustomAttributes,
-  ErrorNameArg extends ErrorName,
-> = ErrorNameArg extends 'UnknownError'
-  ? {}
-  : CustomOption<
-      PluginsArg,
-      ErrorPropsArg,
-      ParentErrorClass,
-      CustomAttributesArg
-    >
-
-/**
  * Class-specific options, used internally only with additional generics
  */
 export type SpecificClassOptions<
@@ -101,13 +83,11 @@ export type SpecificClassOptions<
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
-  ErrorNameArg extends ErrorName,
 > = KnownClassOptions<
   PluginsArg,
   ErrorPropsArg,
   ParentErrorClass,
-  CustomAttributesArg,
-  ErrorNameArg
+  CustomAttributesArg
 > &
   PluginsOptions<PluginsArg>
 
@@ -120,6 +100,5 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
     PluginsArg,
     ErrorProps,
     ErrorConstructor<PluginsArg>,
-    CustomAttributes,
-    ErrorName
+    CustomAttributes
   >

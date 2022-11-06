@@ -37,7 +37,9 @@ expectError(BaseError.subclass('TestError', { custom: class {} }))
 expectError(PluginBaseError.subclass('TestError', { custom: class {} }))
 expectError(ChildError.subclass('TestError', { custom: class {} }))
 
-expectError(BaseError.subclass('TestError', { custom: class extends Object {} }))
+expectError(
+  BaseError.subclass('TestError', { custom: class extends Object {} }),
+)
 expectError(
   PluginBaseError.subclass('TestError', { custom: class extends Object {} }),
 )
@@ -63,10 +65,6 @@ expectError(
   DeepCustomError.subclass('TestError', {
     custom: class extends CustomError {},
   }),
-)
-
-expectError(
-  BaseError.subclass('UnknownError', { custom: class extends BaseError {} }),
 )
 
 expectAssignable<ClassOptions>({ custom: BaseError })
