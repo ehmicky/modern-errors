@@ -19,6 +19,23 @@ import { ERROR_CLASSES } from './map.js'
 // We do not validate duplicate class names since sub-groups of classes might
 // be used separately, explaining those duplicate names.
 export const createSubclass = function (ParentError, className, classOpts) {
+  const {
+    ErrorClass,
+    classOpts: classOptsA,
+    plugins,
+  } = applyClassOpts(ParentError, classOpts)
+  ERROR_CLASSES.set(ErrorClass, {
+    classOpts: classOptsA,
+    plugins,
+    subclasses: [],
+  })
+  addParentSubclass(ErrorClass, ParentError)
+  setErrorName(ErrorClass, className)
+  setClassMethods(ErrorClass, plugins)
+  return ErrorClass
+}
+
+const applyClassOpts = function (ParentError, classOpts) {
   const { classOpts: parentOpts, plugins: parentPluginsOpt } =
     ERROR_CLASSES.get(ParentError)
   const {
@@ -30,15 +47,7 @@ export const createSubclass = function (ParentError, className, classOpts) {
   const pluginsOptA = mergePluginOpts(parentPluginsOpt, pluginsOpt)
   const plugins = normalizePlugins(pluginsOptA)
   const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
-  ERROR_CLASSES.set(ErrorClass, {
-    classOpts: classOptsB,
-    plugins,
-    subclasses: [],
-  })
-  addParentSubclass(ErrorClass, ParentError)
-  setErrorName(ErrorClass, className)
-  setClassMethods(ErrorClass, plugins)
-  return ErrorClass
+  return { ErrorClass, classOpts: classOptsB, plugins }
 }
 
 const addParentSubclass = function (ErrorClass, ParentError) {
