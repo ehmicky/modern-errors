@@ -11,6 +11,8 @@ import { getPluginClasses } from '../../helpers/main.js'
 const { ErrorSubclasses } = getPluginClasses()
 const { ErrorSubclasses: OtherSubclasses } = getPluginClasses()
 
+const { propertyIsEnumerable: isEnum } = Object.prototype
+
 each(
   ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
@@ -44,6 +46,14 @@ each(
     test(`plugin.properties|instanceMethods|staticMethods get the class options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: true })
       t.true(getInfo(TestError).options.prop)
+    })
+
+    test(`plugin.properties|instanceMethods|staticMethods get the instancesData | ${title}`, (t) => {
+      const info = getInfo(ErrorClass)
+      t.false(isEnum.call(info, 'instancesData'))
+      const instanceOpts = { prop: true }
+      const error = new ErrorClass('message', instanceOpts)
+      t.deepEqual(info.instancesData.get(error).pluginsOpts, instanceOpts)
     })
   },
 )

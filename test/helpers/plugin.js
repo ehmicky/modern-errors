@@ -6,6 +6,15 @@ const validateContext = function (context) {
   }
 }
 
+const addInstancesData = function (info, originalInfo) {
+  // eslint-disable-next-line fp/no-mutating-methods
+  return Object.defineProperty(
+    info,
+    'instancesData',
+    Object.getOwnPropertyDescriptor(originalInfo, 'instancesData'),
+  )
+}
+
 export const TEST_PLUGIN = {
   name: 'prop',
   isOptions(prop) {
@@ -31,20 +40,20 @@ export const TEST_PLUGIN = {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
     const toSet = isPlainObj(info.options?.prop) ? info.options?.prop.toSet : {}
-    return { ...toSet, properties: { ...info } }
+    return { ...toSet, properties: addInstancesData({ ...info }, info) }
   },
   instanceMethods: {
     getInstance(info, ...args) {
       // eslint-disable-next-line fp/no-this
       validateContext(this)
-      return { ...info, args }
+      return addInstancesData({ ...info, args }, info)
     },
   },
   staticMethods: {
     getProp(info, ...args) {
       // eslint-disable-next-line fp/no-this
       validateContext(this)
-      return { ...info, args }
+      return addInstancesData({ ...info, args }, info)
     },
   },
 }
