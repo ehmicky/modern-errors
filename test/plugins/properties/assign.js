@@ -20,6 +20,11 @@ each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
   test(`plugin.properties() can set properties | ${title}`, (t) => {
     t.true(new ErrorClass('test', { prop: { toSet: { [key]: true } } })[key])
   })
+
+  test(`plugin.properties() changes are not reverted by parent error | ${title}`, (t) => {
+    const cause = new ErrorClass('test', { prop: { toSet: { [key]: true } } })
+    t.true(new ErrorClass('test', { cause })[key])
+  })
 })
 
 each(ErrorSubclasses, ['message', 'stack'], ({ title }, ErrorClass, key) => {
