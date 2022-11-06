@@ -9,6 +9,7 @@ export const callStaticMethod = function ({
   plugin,
   plugins,
   ErrorClass,
+  ErrorClass: { name: className },
   ErrorClasses,
   errorData,
   AnyError,
@@ -16,11 +17,11 @@ export const callStaticMethod = function ({
 }) {
   if (!Object.prototype.isPrototypeOf.call(AnyError, ErrorClass)) {
     throw new TypeError(
-      `Missing "this" context: "${methodName}()" must be called using "ErrorClass.${methodName}()"`,
+      `Missing "this" context: "${methodName}()" must be called using "${className}.${methodName}()"`,
     )
   }
 
-  const { classOpts } = ErrorClasses[ErrorClass.name]
+  const { classOpts } = ErrorClasses[className]
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
   const options = finalizePluginsOpts({
     pluginsOpts: classOpts,
@@ -32,6 +33,7 @@ export const callStaticMethod = function ({
     options,
     errorData,
     AnyError,
+    className,
     ErrorClasses,
     methodOpts,
     plugins,

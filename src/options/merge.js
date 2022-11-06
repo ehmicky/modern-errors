@@ -24,12 +24,12 @@ export const mergeClassOpts = function ({
 export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
   return Object.fromEntries(
     getPluginNames(plugins)
-      .map((name) => getPluginOpts(oldOpts, newOpts, name))
+      .map((name) => mergePluginOpts(oldOpts, newOpts, name))
       .filter(Boolean),
   )
 }
 
-const getPluginOpts = function (oldOpts, newOpts, name) {
+const mergePluginOpts = function (oldOpts, newOpts, name) {
   const pluginOpt = mergeOpt(oldOpts[name], newOpts[name])
   return pluginOpt === undefined ? undefined : [name, pluginOpt]
 }

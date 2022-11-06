@@ -14,6 +14,7 @@ export const getErrorInfo = function (
   error,
 ) {
   const errorA = AnyError.normalize(error)
+  const className = errorA.name
   const { pluginsOpts } = errorData.get(errorA)
   const pluginsOptsA = mergeClassOpts({
     error: errorA,
@@ -27,5 +28,5 @@ export const getErrorInfo = function (
     plugins,
     plugin,
   })
-  return { error: errorA, options }
+  return { error: errorA, className, options }
 }

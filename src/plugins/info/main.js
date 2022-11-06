@@ -11,7 +11,7 @@ export const getErrorPluginInfo = function ({
   plugins,
   plugin,
 }) {
-  const { options } = getErrorInfo(
+  const { className, options } = getErrorInfo(
     { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
     error,
   )
@@ -19,6 +19,7 @@ export const getErrorPluginInfo = function ({
     options,
     errorData,
     AnyError,
+    className,
     ErrorClasses,
     methodOpts,
     plugins,
@@ -32,6 +33,7 @@ export const getPluginInfo = function ({
   options,
   errorData,
   AnyError,
+  className,
   ErrorClasses,
   methodOpts,
   plugins,
@@ -46,7 +48,13 @@ export const getPluginInfo = function ({
     plugin,
   })
   const ErrorClassesA = getErrorClasses(ErrorClasses)
-  return { options, AnyError, ErrorClasses: ErrorClassesA, errorInfo }
+  return {
+    options,
+    AnyError,
+    className,
+    ErrorClasses: ErrorClassesA,
+    errorInfo,
+  }
 }
 
 // `ErrorClasses` are passed to all plugin methods.
