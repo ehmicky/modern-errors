@@ -33,11 +33,8 @@ export const mergeCause = function (error, ErrorClass) {
 
 const mergeInstanceCause = function (error, ErrorClass) {
   const { cause } = error
-  const causeIsSubclass = isSubclass(cause.constructor, ErrorClass)
-  const parentIsSubClass = isSubclass(ErrorClass, cause.constructor)
-  error.wrap = causeIsSubclass
-
-  return !causeIsSubclass && !parentIsSubClass && hasSpecificName(cause)
+  error.wrap = isSubclass(cause.constructor, ErrorClass)
+  return shouldPrefixCause(error, ErrorClass)
     ? mergePrefixedCause(error)
     : mergeErrorCause(error)
 }
@@ -45,38 +42,48 @@ const mergeInstanceCause = function (error, ErrorClass) {
 // When switching error classes, we keep the old class name in the error
 // message, except:
 //  - When the error name is absent or is too generic
+//     - Including `Error`, `TypeError`, etc. except when `error.name` has been
+//       set to something else, since this is a common pattern
 //  - When the child is a subclass of the parent, since the class does not
 //    change then
 //  - When the parent is a subclass of the child, since the new class becomes
 //    the subclass, which already contains the other class in its chain, i.e.
 //    not worth adding to the message
-const hasSpecificName = function (cause) {
-  return typeof cause.name === 'string' && !GENERIC_NAMES.has(cause.name)
+const shouldPrefixCause = function (error, ErrorClass) {
+  const { cause } = error
+  return (
+    hasValidName(cause) &&
+    (hasUsefulName(cause, ErrorClass) || cause.name !== cause.constructor.name)
+  )
 }
 
-// The error name is not kept if generic
-const GENERIC_NAMES = new Set([
-  '',
-  'Error',
-  'ReferenceError',
-  'TypeError',
-  'SyntaxError',
-  'RangeError',
-  'URIError',
-  'EvalError',
-  'AggregateError',
-])
+const hasValidName = function (cause) {
+  return (
+    typeof cause.name === 'string' &&
+    cause.name !== '' &&
+    typeof cause.constructor === 'function' &&
+    typeof cause.constructor.name === 'string'
+  )
+}
+
+const hasUsefulName = function (cause, ErrorClass) {
+  return !(
+    isSubclass(cause.constructor, ErrorClass) ||
+    isSubclass(ErrorClass, cause.constructor) ||
+    cause.constructor.name in globalThis
+  )
+}
 
 const mergePrefixedCause = function (error) {
   const { cause } = error
-  const { oldMessage, newMessage } = addSpecificName(cause)
+  const { oldMessage, newMessage } = prefixCauseName(cause)
   setErrorMessage(cause, newMessage)
   const errorA = mergeErrorCause(error)
   setErrorMessage(cause, oldMessage)
   return errorA
 }
 
-const addSpecificName = function (cause) {
+const prefixCauseName = function (cause) {
   const oldMessage = typeof cause.message === 'string' ? cause.message : ''
   const newMessage =
     oldMessage === '' ? cause.name : `${cause.name}: ${oldMessage}`

@@ -72,12 +72,9 @@ test('Name of cause with subclass is ignored', (t) => {
   t.is(new TestError('', { cause }).message, cause.message)
 })
 
-test('Name of cause with superclass is kept', (t) => {
+test('Name of cause with superclass is ignored', (t) => {
   const cause = new TestError('causeMessage')
-  t.is(
-    new ChildTestError('', { cause }).message,
-    `${cause.name}: ${cause.message}`,
-  )
+  t.is(new ChildTestError('', { cause }).message, cause.message)
 })
 
 test('Name of cause with unrelated class is kept', (t) => {
