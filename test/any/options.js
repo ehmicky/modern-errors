@@ -1,31 +1,24 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, createAnyError } from '../helpers/main.js'
+import { defineClassOpts } from '../helpers/main.js'
 
-const { TestError, AnyError } = defineClassOpts()
+const { AnyError, TestError } = defineClassOpts()
 
-test('Allows empty options', (t) => {
-  t.notThrows(() => new TestError('test'))
-})
-
-each([null, '', { custom: true }], ({ title }, opts) => {
-  test(`Validate against invalid options | ${title}`, (t) => {
+each([AnyError, TestError], [undefined, {}], ({ title }, ErrorClass, opts) => {
+  test(`Allows empty options | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => new TestError('test', opts))
+    t.notThrows(() => new ErrorClass('test', opts))
   })
 })
 
-test('Requires AnyError.subclass()', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(() => new TestAnyError('test', { cause: '' }))
-})
-
-test('Validate that AnyError has 2 arguments', (t) => {
-  const cause = new TestError('causeMessage')
-  t.throws(() => new AnyError('message', { cause }, true))
-})
-
-test('Validate that AnyError has a cause', (t) => {
-  t.throws(() => new AnyError('message'))
-})
+each(
+  [AnyError, TestError],
+  [null, '', { custom: true }],
+  ({ title }, ErrorClass, opts) => {
+    test(`Validate against invalid options | ${title}`, (t) => {
+      // eslint-disable-next-line max-nested-callbacks
+      t.throws(() => new ErrorClass('test', opts))
+    })
+  },
+)
