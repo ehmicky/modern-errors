@@ -1,5 +1,6 @@
 import { mergeClassOpts } from '../../options/merge.js'
 import { finalizePluginsOpts } from '../../options/plugins.js'
+import { ERROR_INSTANCES } from '../../subclass/map.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
 // `ErrorClass` and `options`.
@@ -12,16 +13,13 @@ import { finalizePluginsOpts } from '../../options/plugins.js'
 // If the `error` is not a `modern-errors` instance, an empty object is returned
 //  - I.e. the plugin should call `AnyError.normalize(error[, UnknownError])`
 //    first
-export const getErrorInfo = function (
-  { errorData, methodOpts, plugins, plugin },
-  error,
-) {
-  if (!errorData.has(error)) {
+export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
+  if (!ERROR_INSTANCES.has(error)) {
     return {}
   }
 
   const ErrorClass = error.constructor
-  const { pluginsOpts } = errorData.get(error)
+  const { pluginsOpts } = ERROR_INSTANCES.get(error)
   const pluginsOptsA = mergeClassOpts(ErrorClass, plugins, pluginsOpts)
   const options = finalizePluginsOpts({
     pluginsOpts: pluginsOptsA,

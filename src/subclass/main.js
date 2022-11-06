@@ -19,7 +19,6 @@ import { ERROR_CLASSES } from './map.js'
 export const createSubclass = function ({
   ErrorClass,
   className,
-  errorData,
   parentOpts,
   classOpts,
   plugins,
@@ -37,7 +36,7 @@ export const createSubclass = function ({
       plugins,
     }),
   )
-  addAllInstanceMethods({ plugins, ErrorClass, errorData })
-  addAllStaticMethods({ plugins, ErrorClass, errorData })
+  addAllInstanceMethods(plugins, ErrorClass)
+  addAllStaticMethods(plugins, ErrorClass)
   return ErrorClass
 }

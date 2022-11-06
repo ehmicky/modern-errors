@@ -34,13 +34,9 @@ import { callStaticMethod } from './call.js'
 // We do not provide with `plugin.init()`:
 //  - This would encourage stateful plugins
 //  - Instead, static methods that initialize should be used
-export const addAllStaticMethods = function ({
-  plugins,
-  ErrorClass,
-  errorData,
-}) {
+export const addAllStaticMethods = function (plugins, ErrorClass) {
   plugins.forEach((plugin) => {
-    addStaticMethods({ plugin, plugins, ErrorClass, errorData })
+    addStaticMethods({ plugin, plugins, ErrorClass })
   })
 }
 
@@ -49,15 +45,14 @@ const addStaticMethods = function ({
   plugin: { staticMethods },
   plugins,
   ErrorClass,
-  errorData,
 }) {
   Object.entries(staticMethods).forEach(
-    addStaticMethod.bind(undefined, { plugin, plugins, ErrorClass, errorData }),
+    addStaticMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }
 
 const addStaticMethod = function (
-  { plugin, plugins, ErrorClass, errorData },
+  { plugin, plugins, ErrorClass },
   [methodName, methodFunc],
 ) {
   setNonEnumProp(
@@ -68,7 +63,6 @@ const addStaticMethod = function (
       plugin,
       plugins,
       ErrorClass,
-      errorData,
     }),
   )
 }

@@ -4,13 +4,9 @@ import { callInstanceMethod } from './call.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `ErrorClass.prototype.*`.
-export const addAllInstanceMethods = function ({
-  plugins,
-  ErrorClass,
-  errorData,
-}) {
+export const addAllInstanceMethods = function (plugins, ErrorClass) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, plugins, ErrorClass, errorData })
+    addInstanceMethods({ plugin, plugins, ErrorClass })
   })
 }
 
@@ -19,20 +15,14 @@ const addInstanceMethods = function ({
   plugin: { instanceMethods },
   plugins,
   ErrorClass,
-  errorData,
 }) {
   Object.entries(instanceMethods).forEach(
-    addInstanceMethod.bind(undefined, {
-      plugin,
-      plugins,
-      ErrorClass,
-      errorData,
-    }),
+    addInstanceMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }
 
 const addInstanceMethod = function (
-  { plugin, plugins, ErrorClass, errorData },
+  { plugin, plugins, ErrorClass },
   [methodName, methodFunc],
 ) {
   setNonEnumProp(
@@ -47,7 +37,6 @@ const addInstanceMethod = function (
         plugin,
         plugins,
         ErrorClass,
-        errorData,
         args,
       })
     },

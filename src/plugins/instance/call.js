@@ -9,7 +9,6 @@ export const callInstanceMethod = function ({
   plugin,
   plugins,
   ErrorClass,
-  errorData,
   args,
 }) {
   if (!(error instanceof ErrorClass)) {
@@ -19,12 +18,6 @@ export const callInstanceMethod = function ({
   }
 
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
-  const info = getErrorPluginInfo({
-    error,
-    errorData,
-    methodOpts,
-    plugins,
-    plugin,
-  })
+  const info = getErrorPluginInfo({ error, methodOpts, plugins, plugin })
   return methodFunc(info, ...argsA)
 }

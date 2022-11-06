@@ -4,11 +4,13 @@ import { validateGlobalOpts } from '../options/class.js'
 import { computePluginsOpts } from '../options/instance.js'
 import { setPluginsProperties } from '../plugins/properties/main.js'
 import { createSubclass } from '../subclass/main.js'
+import { ERROR_INSTANCES } from '../subclass/map.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { setConstructorArgs } from './args.js'
 import { mergeCause } from './merge.js'
 import { normalizeOpts } from './options.js'
+// eslint-disable-next-line import/max-dependencies
 import { validateSubclass } from './subclass.js'
 
 const CoreError = errorCustomClass('CoreError')
@@ -35,20 +37,19 @@ const CoreError = errorCustomClass('CoreError')
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createAnyError = function (errorData, plugins, globalOpts) {
+export const createAnyError = function (plugins, globalOpts) {
   validateGlobalOpts(globalOpts)
-  const AnyError = getAnyError(errorData, plugins)
+  const AnyError = getAnyError(plugins)
   return createSubclass({
     ErrorClass: AnyError,
     className: 'AnyError',
-    errorData,
     parentOpts: {},
     classOpts: globalOpts,
     plugins,
   })
 }
 
-const getAnyError = function (errorData, plugins) {
+const getAnyError = function (plugins) {
   /* eslint-disable fp/no-this */
   return class AnyError extends CoreError {
     constructor(message, opts, ...args) {
@@ -63,7 +64,6 @@ const getAnyError = function (errorData, plugins) {
         opts: optsA,
         args,
         ErrorClass,
-        errorData,
         plugins,
       })
     }
@@ -77,18 +77,13 @@ const modifyError = function ({
   opts,
   args,
   ErrorClass,
-  errorData,
   plugins,
 }) {
-  const { opts: optsA, pluginsOpts } = computePluginsOpts(
-    opts,
-    errorData,
-    plugins,
-  )
+  const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, ErrorClass)
-  errorData.set(error, { pluginsOpts })
+  ERROR_INSTANCES.set(error, { pluginsOpts })
   setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
-  setPluginsProperties(error, errorData, plugins)
+  setPluginsProperties(error, plugins)
   return error
 }

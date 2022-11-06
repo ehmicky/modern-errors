@@ -7,18 +7,16 @@ import { getErrorInfo } from './error.js'
 // `staticMethods` since it does not have access to an error.
 export const getErrorPluginInfo = function ({
   error,
-  errorData,
   methodOpts,
   plugins,
   plugin,
 }) {
   const { ErrorClass, options } = getErrorInfo(
-    { errorData, methodOpts, plugins, plugin },
+    { methodOpts, plugins, plugin },
     error,
   )
   const info = getPluginInfo({
     options,
-    errorData,
     ErrorClass,
     methodOpts,
     plugins,
@@ -30,14 +28,12 @@ export const getErrorPluginInfo = function ({
 // Retrieve `info` passed to `plugin.properties|instanceMethods|staticMethods`
 export const getPluginInfo = function ({
   options,
-  errorData,
   ErrorClass,
   methodOpts,
   plugins,
   plugin,
 }) {
   const errorInfo = getErrorInfo.bind(undefined, {
-    errorData,
     methodOpts,
     plugins,
     plugin,
