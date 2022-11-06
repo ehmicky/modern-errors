@@ -42,13 +42,13 @@ class ModernBaseError extends Error {
   constructor(message, opts) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
+    const { plugins } = classesData.get(ErrorClass)
     const optsA = normalizeOpts(ErrorClass, opts)
 
     super(message, optsA)
 
     ensureCorrectClass(this, ErrorClass)
     ponyfillCause(this, optsA)
-    const { plugins } = classesData.get(ErrorClass)
     const { opts: optsB, pluginsOpts } = computePluginsOpts(plugins, optsA)
     setAggregateErrors(this, optsB)
 
