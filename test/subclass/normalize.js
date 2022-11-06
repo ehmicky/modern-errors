@@ -40,17 +40,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(TestError.normalize(error) instanceof TestError)
   })
 
-  test(`ErrorClass.normalize() keeps error class if same class | ${title}`, (t) => {
-    const error = new ErrorClass('test')
-    t.true(ErrorClass.normalize(error) instanceof ErrorClass)
-  })
-
-  test(`ErrorClass.normalize() keeps error class if subclass | ${title}`, (t) => {
-    const TestError = ErrorClass.subclass('TestError')
-    const error = new TestError('test')
-    t.true(ErrorClass.normalize(error) instanceof TestError)
-  })
-
   test(`ErrorClass.normalize(error, TestError) changes error class if superclass | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError')
     const SubTestError = TestError.subclass('SubTestError')
@@ -58,10 +47,21 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(TestError.normalize(error, SubTestError) instanceof SubTestError)
   })
 
+  test(`ErrorClass.normalize() keeps error class if same class | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    t.true(ErrorClass.normalize(error) instanceof ErrorClass)
+  })
+
   test(`ErrorClass.normalize(error, TestError) keeps error class if same class | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError')
     const error = new ErrorClass('test')
     t.true(ErrorClass.normalize(error, TestError) instanceof TestError)
+  })
+
+  test(`ErrorClass.normalize() keeps error class if subclass | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const error = new TestError('test')
+    t.true(ErrorClass.normalize(error) instanceof TestError)
   })
 
   test(`ErrorClass.normalize() context is bound | ${title}`, (t) => {
@@ -80,7 +80,9 @@ each(
 
     test(`ErrorClass.normalize(error, TestError) changes error class if unknown | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError')
-      t.true(TestError.normalize(getUnknownError()) instanceof TestError)
+      t.true(
+        ErrorClass.normalize(getUnknownError(), TestError) instanceof TestError,
+      )
     })
   },
 )
