@@ -12,8 +12,7 @@ Plugins can add:
 - Error [properties](#properties): `error.message`, `error.stack` or any other
   `error.*`
 - Error [instance methods](#instancemethodsmethodname): `error.exampleMethod()`
-- [`AnyError`](../README.md#anyerror)
-  [static methods](#staticmethodsmethodname): `AnyError.exampleMethod()`
+- Error [static methods](#staticmethodsmethodname): `ErrorClass.exampleMethod()`
 
 ## Examples
 
@@ -44,7 +43,7 @@ export default {
     },
   },
 
-  // Add `AnyError` static methods like `AnyError.staticMethod(...args)`
+  // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
   staticMethods: {
     staticMethod(info, ...args) {
       // ...
@@ -126,8 +125,7 @@ export default {
 
 _Type_: `(info, ...args) => any`
 
-Add [`AnyError`](../README.md#anyerror) static methods like
-`AnyError.methodName(...args)`.
+Add error static methods like `ErrorClass.methodName(...args)`.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
@@ -135,7 +133,7 @@ The first argument [`info`](#info) is provided by `modern-errors`. The other
 ```js
 export default {
   name: 'example',
-  // `AnyError.multiply(2, 3)` returns `6`
+  // `ErrorClass.multiply(2, 3)` returns `6`
   staticMethods: {
     multiply(info, first, second) {
       return first * second
@@ -180,9 +178,7 @@ Plugin users can pass additional `options`
 `getOptions()`.
 
 - When error classes are defined:
-  [`modernErrors(plugins, options)`](../README.md#modernerrorsplugins-options)
-  and
-  [`AnyError.subclass('ErrorClass', options)`](../README.md#anyerrorsubclassname-options)
+  [`ErrorClass.subclass('ExampleError', options)`](../README.md#errorclasssubclassname-options)
 - When new errors are created:
   [`new ErrorClass('message', options)`](../README.md#simple-errors)
 - As a last argument to [instance methods](#instancemethodsmethodname) or
@@ -297,21 +293,18 @@ export default {
 }
 ```
 
-### AnyError
+### ErrorClass
 
-_Type_: `typeof AnyError`
+_Type_: `ErrorClass`
 
-Reference to [`AnyError`](../README.md#anyerror). This can be used to
-[wrap errors](../README.md#wrap-error-class) or to call
-[`AnyError.normalize()`](../README.md#anyerrornormalizeanyexception) or
-[`error instanceof AnyError`](../README.md#check-error-classes).
+Current error class.
 
 ```js
 export default {
   name: 'example',
   instanceMethods: {
-    addErrors({ error, AnyError }, errors = []) {
-      error.errors = errors.map(AnyError.normalize)
+    addErrors({ error, ErrorClass }, errors = []) {
+      error.errors = errors.map(ErrorClass.normalize)
     },
   },
 }
@@ -319,18 +312,17 @@ export default {
 
 ### ErrorClasses
 
-_Type_: `object`
+_Type_: `ErrorClass[]`
 
-Object with all error classes created with
-[`AnyError.subclass()`](../README.md#anyerrorsubclassname-options) or
-`ErrorClass.subclass()`.
+Array containing both the current error class and all its
+[subclasses](../README.md#errorclasssubclassname-options) (including deep ones).
 
 ```js
 export default {
   name: 'example',
   staticMethods: {
     isKnownErrorClass({ ErrorClasses }, value) {
-      return Object.values(ErrorClasses).includes(value)
+      return ErrorClasses.includes(value)
     },
   },
 }
@@ -340,9 +332,7 @@ export default {
 
 _Type_: `(Error) => info`
 
-Returns the [`info`](#info) object from a specific `Error`, except from
-[`info.AnyError`](#anyerror), [`info.ErrorClasses`](#errorclasses) and
-[`info.errorInfo`](#errorinfo).
+Returns the [`info`](#info) object from a specific `Error`.
 
 ```js
 export default {

@@ -31,10 +31,13 @@ const result = error.isUserInput() // Inferred type: `true`
 Plugin methods, properties and [options](../README.md#plugin-options) are typed.
 
 ```ts
+import ModernError from 'modern-errors'
 // This plugin adds an `error.httpResponse()` method
 import modernErrorsHttp from 'modern-errors-http'
 
-const AnyError = modernErrors([modernErrorsHttp])
+const AnyError = ModernError.subclass('AnyError', {
+  plugins: [modernErrorsHttp],
+})
 
 const UnknownError = AnyError.subclass('UnknownError')
 const InputError = AnyError.subclass('InputError')
@@ -87,12 +90,10 @@ printErrorClass(InputError)
 ## Wide types
 
 The following types are exported:
-[`ErrorInstance`](../README.md#new-anyerrormessage-options),
-[`ErrorClass`](../README.md#%EF%B8%8F-error-classes),
-[`AnyErrorClass`](../README.md#anyerror),
-[`GlobalOptions`](../README.md#modernerrorsplugins-options),
-[`ClassOptions`](../README.md#anyerrorsubclassname-options),
-[`InstanceOptions`](../README.md#new-anyerrormessage-options),
+[`ErrorInstance`](../README.md#new-errorclassmessage-options),
+[`ErrorClass`](../README.md#%EF%B8%8F-error-classes), `AnyErrorClass`,
+`GlobalOptions`, [`ClassOptions`](../README.md#errorclasssubclassname-options),
+[`InstanceOptions`](../README.md#new-errorclassmessage-options),
 [`MethodOptions`](../README.md#plugin-options),
 [`Plugin`](../README.md#-plugins) and [`Info`](plugins.md#info-1).
 
