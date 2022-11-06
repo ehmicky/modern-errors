@@ -15,7 +15,6 @@ import type {
 import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { NoAdditionalProps } from '../../utils.js'
-import type { IsForbiddenClassName } from '../name.js'
 import type {
   ErrorConstructor,
   ParentInstanceOptions,
@@ -137,9 +136,7 @@ export type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => IsForbiddenClassName<ErrorNameArg> extends true
-  ? never
-  : ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
+) => ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
   ? ErrorSubclass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
