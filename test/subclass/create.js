@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses } from '../helpers/main.js'
 
-const { KnownErrorClasses } = getClasses()
+const { ErrorClasses } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Does not modify invalid classes | ${title}`, (t) => {
     class custom extends Object {}
     t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
@@ -31,7 +31,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   [
     undefined,
     '',

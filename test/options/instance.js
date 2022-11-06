@@ -4,11 +4,9 @@ import { each } from 'test-each'
 import { getClasses } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { KnownErrorClasses, SpecificErrorClasses } = getClasses({
-  plugins: [TEST_PLUGIN],
-})
+const { ErrorClasses, ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
-each(KnownErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
+each(ErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
   test(`Allows empty options | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
     t.notThrows(() => new ErrorClass('test', opts))
@@ -16,7 +14,7 @@ each(KnownErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
 })
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   [null, '', { custom: true }],
   ({ title }, ErrorClass, opts) => {
     test(`Validate against invalid options | ${title}`, (t) => {
@@ -25,7 +23,7 @@ each(
     })
   },
 )
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`Does not set options if not defined | ${title}`, (t) => {
     t.is(new ErrorClass('test').properties.options.prop, undefined)
   })
@@ -78,7 +76,7 @@ each(SpecificErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  SpecificErrorClasses,
+  ErrorSubclasses,
   [{ prop: false }, {}, undefined],
   ({ title }, ErrorClass, opts) => {
     test(`Parent errors options has priority over child | ${title}`, (t) => {
@@ -90,13 +88,9 @@ each(
   },
 )
 
-each(
-  SpecificErrorClasses,
-  SpecificErrorClasses,
-  ({ title }, ErrorClass, ChildClass) => {
-    test(`Child instance options are not unset | ${title}`, (t) => {
-      const cause = new ChildClass('causeMessage', { prop: false })
-      t.false(new ErrorClass('test', { cause }).properties.options.prop)
-    })
-  },
-)
+each(ErrorSubclasses, ErrorSubclasses, ({ title }, ErrorClass, ChildClass) => {
+  test(`Child instance options are not unset | ${title}`, (t) => {
+    const cause = new ChildClass('causeMessage', { prop: false })
+    t.false(new ErrorClass('test', { cause }).properties.options.prop)
+  })
+})

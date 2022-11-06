@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses } from '../helpers/main.js'
 
-const { KnownErrorClasses } = getClasses()
+const { ErrorClasses } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Custom option defaults to parent class | ${title}`, (t) => {
     t.is(Object.getPrototypeOf(ErrorClass.subclass('TestError')), ErrorClass)
   })
@@ -51,7 +51,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   ['message', 'properties', 'getInstance'],
   ({ title }, ErrorClass, propName) => {
     test(`"custom" option can override other properties | ${title}`, (t) => {

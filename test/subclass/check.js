@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses } from '../helpers/main.js'
 
-const { KnownErrorClasses } = getClasses()
+const { ErrorClasses } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Parent error cannot be passed as is | ${title}`, (t) => {
     t.throws(
       ErrorClass.subclass.bind(undefined, 'SelfError', { custom: ErrorClass }),
@@ -44,7 +44,7 @@ class NullClass {}
 Object.setPrototypeOf(NullClass, null)
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   [
     'TestError',
     NullClass,
@@ -64,18 +64,14 @@ each(
   },
 )
 
-each(
-  KnownErrorClasses,
-  ['', null],
-  ({ title }, ErrorClass, invalidPrototype) => {
-    test(`Validate against invalid prototypes | ${title}`, (t) => {
-      // eslint-disable-next-line unicorn/consistent-function-scoping
-      const custom = function () {}
-      // eslint-disable-next-line fp/no-mutation
-      custom.prototype = invalidPrototype
-      // eslint-disable-next-line fp/no-mutating-methods
-      Object.setPrototypeOf(custom, ErrorClass)
-      t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
-    })
-  },
-)
+each(ErrorClasses, ['', null], ({ title }, ErrorClass, invalidPrototype) => {
+  test(`Validate against invalid prototypes | ${title}`, (t) => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const custom = function () {}
+    // eslint-disable-next-line fp/no-mutation
+    custom.prototype = invalidPrototype
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.setPrototypeOf(custom, ErrorClass)
+    t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
+  })
+})

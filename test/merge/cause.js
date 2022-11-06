@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { getClasses, ModernError } from '../helpers/main.js'
 import { getUnknownErrors } from '../helpers/unknown.js'
 
-const { KnownErrorClasses, ChildError } = getClasses()
+const { ErrorClasses, ChildError } = getClasses()
 
 const assertInstanceOf = function (t, error, ErrorClass) {
   t.true(error instanceof ErrorClass)
@@ -12,7 +12,7 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Parent class with known cause uses child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new ModernError('message', { cause })
@@ -57,15 +57,11 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(
-  KnownErrorClasses,
-  getUnknownErrors(),
-  ({ title }, ErrorClass, getError) => {
-    test(`Unknown cause uses parent class and instance | ${title}`, (t) => {
-      const cause = getError()
-      const error = new ErrorClass('message', { cause })
-      assertInstanceOf(t, error, ErrorClass)
-      t.not(error, cause)
-    })
-  },
-)
+each(ErrorClasses, getUnknownErrors(), ({ title }, ErrorClass, getError) => {
+  test(`Unknown cause uses parent class and instance | ${title}`, (t) => {
+    const cause = getError()
+    const error = new ErrorClass('message', { cause })
+    assertInstanceOf(t, error, ErrorClass)
+    t.not(error, cause)
+  })
+})

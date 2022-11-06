@@ -1,13 +1,12 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getUnknownErrors } from '../helpers/unknown.js'
-
 import { getClasses, ModernError } from './helpers/main.js'
+import { getUnknownErrors } from './helpers/unknown.js'
 
-const { KnownErrorClasses, SpecificErrorClasses, AnyError } = getClasses()
+const { ErrorClasses, ErrorSubclasses, AnyError } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Can use known error classes | ${title}`, (t) => {
     const error = new ErrorClass('test')
     t.true(error instanceof ErrorClass)
@@ -15,7 +14,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`instanceof AnyError can be used with known errors | ${title}`, (t) => {
     t.true(new ErrorClass('test') instanceof AnyError)
   })

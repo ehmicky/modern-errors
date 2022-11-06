@@ -4,8 +4,8 @@ import { each } from 'test-each'
 import { getClasses } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { SpecificErrorClasses } = getClasses()
-const { SpecificErrorClasses: PluginErrorClasses } = getClasses({
+const { ErrorSubclasses } = getClasses()
+const { ErrorSubclasses: PluginErrorClasses } = getClasses({
   plugins: [TEST_PLUGIN],
 })
 
@@ -52,7 +52,7 @@ each(
 )
 
 each(
-  SpecificErrorClasses,
+  ErrorSubclasses,
   [callStaticMethod, callInstanceMethod],
   ({ title }, ErrorClass, callMethod) => {
     test(`plugin methods pass last argument as method options if plugin.isOptions() is undefined | ${title}`, (t) => {

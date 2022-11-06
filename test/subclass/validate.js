@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses } from '../helpers/main.js'
 
-const { KnownErrorClasses } = getClasses()
+const { ErrorClasses } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
     class ChildError extends ErrorClass {}
     // eslint-disable-next-line max-nested-callbacks

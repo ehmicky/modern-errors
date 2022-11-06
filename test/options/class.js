@@ -4,17 +4,15 @@ import { each } from 'test-each'
 import { getClasses } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { KnownErrorClasses, SpecificErrorClasses } = getClasses({
-  plugins: [TEST_PLUGIN],
-})
+const { ErrorClasses, ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Validate invalid class options | ${title}`, (t) => {
     t.throws(ErrorClass.subclass.bind(undefined, 'TestError', true))
   })
 })
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`Can pass class options | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError', { prop: true })
     t.true(new TestError('test').properties.options.prop)

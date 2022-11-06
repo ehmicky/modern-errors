@@ -5,7 +5,7 @@ export { ModernError }
 export const getClasses = function (opts) {
   const AnyError = ModernError.subclass('AnyError', opts)
   const ChildError = AnyError.subclass('ChildError')
-  const SpecificErrorClasses = [AnyError, ChildError]
-  const KnownErrorClasses = [ModernError, ...SpecificErrorClasses]
-  return { KnownErrorClasses, SpecificErrorClasses, AnyError, ChildError }
+  const ErrorSubclasses = [AnyError, ChildError]
+  const ErrorClasses = [ModernError, ...ErrorSubclasses]
+  return { ErrorClasses, ErrorSubclasses, AnyError, ChildError }
 }

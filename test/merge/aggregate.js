@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses, ModernError } from '../helpers/main.js'
 
-const { KnownErrorClasses } = getClasses()
+const { ErrorClasses } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`error.errors can be set | ${title}`, (t) => {
     t.deepEqual(new ErrorClass('test', { errors: [] }).errors, [])
   })
@@ -40,7 +40,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
 })
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   [undefined, {}, { errors: undefined }],
   ({ title }, ErrorClass, opts) => {
     test(`error.errors is not set by default | ${title}`, (t) => {

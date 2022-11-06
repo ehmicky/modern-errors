@@ -8,7 +8,7 @@ import {
   getUnknownErrorInstances,
 } from '../helpers/unknown.js'
 
-const { KnownErrorClasses, SpecificErrorClasses } = getClasses()
+const { ErrorClasses, ErrorSubclasses } = getClasses()
 
 const getExpectedMessage = function (cause) {
   if (isErrorInstance(cause)) {
@@ -19,7 +19,7 @@ const getExpectedMessage = function (cause) {
 }
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   getUnknownErrors(),
   ({ title }, ErrorClass, getUnknownError) => {
     test(`Cause name is ignored if generic | ${title}`, (t) => {
@@ -37,7 +37,7 @@ each(
 )
 
 each(
-  KnownErrorClasses,
+  ErrorClasses,
   getUnknownErrorInstances(),
   ['', 'test: '],
   // eslint-disable-next-line max-params
@@ -53,7 +53,7 @@ each(
   },
 )
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Name of cause with same class is ignored | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     t.is(new ErrorClass('', { cause }).message, cause.message)
@@ -70,7 +70,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`Name of cause with unrelated class is kept | ${title}`, (t) => {
     const UnrelatedError = ModernError.subclass('UnrelatedError')
     const cause = new UnrelatedError('causeMessage')

@@ -4,10 +4,10 @@ import { each } from 'test-each'
 import { getClasses } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { SpecificErrorClasses: NoOptionsErrorClasses } = getClasses({
+const { ErrorSubclasses: NoOptionsErrorClasses } = getClasses({
   plugins: [{ ...TEST_PLUGIN, getOptions: undefined }],
 })
-const { SpecificErrorClasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
 each(NoOptionsErrorClasses, ({ title }, ErrorClass) => {
   test(`plugin.getOptions() forbids options by default | ${title}`, (t) => {
@@ -27,7 +27,7 @@ each(
   },
 )
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.getOptions() validate class options | ${title}`, (t) => {
     t.throws(
       ErrorClass.subclass.bind(undefined, 'TestError', { prop: 'invalid' }),

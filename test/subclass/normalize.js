@@ -3,9 +3,9 @@ import { each } from 'test-each'
 
 import { getClasses, ModernError } from '../helpers/main.js'
 
-const { KnownErrorClasses, SpecificErrorClasses, ChildError } = getClasses()
+const { ErrorClasses, ErrorSubclasses, ChildError } = getClasses()
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
     t.true(ErrorClass.normalize() instanceof Error)
   })
@@ -36,7 +36,7 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() prevents naming collisions | ${title}`, (t) => {
     const OtherAnyError = ModernError.subclass('AnyError')
     const normalizedError = ErrorClass.normalize(new OtherAnyError('test'))
