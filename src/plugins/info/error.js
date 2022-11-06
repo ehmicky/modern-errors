@@ -10,9 +10,7 @@ import { instancesData, classesData } from '../../subclass/map.js'
 //     - E.g. when integrating with another library's plugin system, static
 //       methods are needed to return that other plugin, but they need to take
 //       errors as argument
-// If the `error` is not a `modern-errors` instance, an empty object is returned
-//  - I.e. the plugin should call `ErrorClass.normalize(error[, UnknownError])`
-//    first
+// If the `error` is not an `ErrorClass` instance, it is normalized to one.
 export const getAnyErrorInfo = function (
   { ErrorClass, methodOpts, plugins, plugin },
   error,
