@@ -10,7 +10,7 @@ import {
   TestError,
   ChildTestError,
   SiblingError,
-} from '../helpers/known.js'
+} from './helpers/known.js'
 
 const getExpectedMessage = function (cause) {
   if (isErrorInstance(cause)) {
