@@ -50,3 +50,12 @@ export const TEST_PLUGIN = {
     },
   },
 }
+
+export const OTHER_PLUGIN = {
+  ...TEST_PLUGIN,
+  name: 'other',
+  instanceMethods: {
+    getOtherInstance: TEST_PLUGIN.instanceMethods.getInstance,
+  },
+  staticMethods: { getOtherProp: TEST_PLUGIN.staticMethods.getProp },
+}

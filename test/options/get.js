@@ -2,26 +2,27 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
+import { OTHER_PLUGIN } from '../helpers/plugin.js'
 
-const properties = () => ({})
+const noGetOptionsPlugin = { ...OTHER_PLUGIN, getOptions: undefined }
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`plugin.getOptions() forbids options by default | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError', {
-      plugins: [{ name: 'one', properties }],
+      plugins: [noGetOptionsPlugin],
     })
     // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => new TestError('test', { one: true }))
+    t.throws(() => new TestError('test', { other: true }))
   })
 })
 
 each(
   KnownErrorClasses,
-  [undefined, {}, { one: undefined }],
+  [undefined, {}, { other: undefined }],
   ({ title }, ErrorClass, opts) => {
     test(`plugin.getOptions() allows undefined options by default | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', {
-        plugins: [{ name: 'one', properties }],
+        plugins: [noGetOptionsPlugin],
       })
       // eslint-disable-next-line max-nested-callbacks
       t.notThrows(() => new TestError('test', opts))

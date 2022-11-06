@@ -1,73 +1,83 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { SpecificErrorClasses } from '../helpers/known.js'
+import { OTHER_PLUGIN } from '../helpers/plugin.js'
 
-const callStaticMethod = function ({ AnyError: TestAnyError, args = [] }) {
-  return TestAnyError.getProp(...args)
+const callStaticMethod = function (ErrorClass, ...args) {
+  return ErrorClass.getOtherProp(...args)
 }
 
-const callInstanceMethod = function ({ TestError, args = [] }) {
-  return new TestError('message').getInstance(...args)
+const callInstanceMethod = function (ErrorClass, ...args) {
+  return new ErrorClass('message').getOtherInstance(...args)
 }
 
-each([callStaticMethod, callInstanceMethod], ({ title }, callMethod) => {
-  test(`plugin methods can pass method options | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({ prop: false })
-    t.true(callMethod({ AnyError, TestError, args: [true] }).options.prop)
-  })
-
-  test(`plugin methods merge method options | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({
-      prop: { one: false, two: { three: false }, five: false },
+each(
+  SpecificErrorClasses,
+  [callStaticMethod, callInstanceMethod],
+  ({ title }, ErrorClass, callMethod) => {
+    test(`plugin methods can pass method options | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [OTHER_PLUGIN],
+        other: false,
+      })
+      t.true(callMethod(TestError, true).options.prop)
     })
-    t.deepEqual(
-      callMethod({
-        AnyError,
-        TestError,
-        args: [{ one: true, two: { three: true }, four: true }],
-      }).options.prop,
-      { one: true, two: { three: true }, four: true, five: false },
-    )
-  })
 
-  test(`plugin methods do not forward method options | ${title}`, (t) => {
-    const { AnyError, TestError } = defineClassOpts()
-    t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [0])
-  })
+    test(`plugin methods merge method options | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [OTHER_PLUGIN],
+        other: { one: false, two: { three: false }, five: false },
+      })
+      t.deepEqual(
+        callMethod(TestError, { one: true, two: { three: true }, four: true })
+          .options.prop,
+        { one: true, two: { three: true }, four: true, five: false },
+      )
+    })
 
-  test(`plugin methods pass last argument as method options if plugin.isOptions() is undefined | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({}, [
-      { ...TEST_PLUGIN, isOptions: undefined },
-    ])
-    t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [0])
-  })
+    test(`plugin methods pass last argument as method option if plugin.isOptions() returns true | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [OTHER_PLUGIN],
+      })
+      t.deepEqual(callMethod(TestError, 0, true).args, [0])
+    })
 
-  test(`plugin methods do not pass last argument as method options if plugin.isOptions() and getOptions() are both undefined | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({}, [
-      { ...TEST_PLUGIN, isOptions: undefined, getOptions: undefined },
-    ])
-    t.deepEqual(callMethod({ AnyError, TestError, args: [0, true] }).args, [
-      0,
-      true,
-    ])
-  })
+    test(`plugin methods pass last argument as method option if plugin.isOptions() returns false | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [OTHER_PLUGIN],
+      })
+      t.deepEqual(callMethod(TestError, 0, 1).args, [0, 1])
+    })
 
-  test(`plugin methods throw if plugin.isOptions() does not return a boolean | ${title}`, (t) => {
-    const { AnyError, TestError } = defineGlobalOpts({}, [
-      { ...TEST_PLUGIN, isOptions() {} },
-    ])
-    t.throws(callMethod.bind(undefined, { AnyError, TestError, args: [0] }))
-  })
+    test(`plugin methods pass last argument as method options if plugin.isOptions() is undefined | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [{ ...OTHER_PLUGIN, isOptions: undefined }],
+      })
+      t.deepEqual(callMethod(TestError, 0, true).args, [0])
+    })
 
-  test(`plugin methods only pass method options if plugin.isOptions() returns true | ${title}`, (t) => {
-    const { AnyError, TestError } = defineClassOpts()
-    t.deepEqual(callMethod({ AnyError, TestError, args: [1] }).args, [1])
-  })
+    test(`plugin methods do not pass last argument as method options if plugin.isOptions() and getOptions() are both undefined | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [
+          { ...OTHER_PLUGIN, isOptions: undefined, getOptions: undefined },
+        ],
+      })
+      t.deepEqual(callMethod(TestError, 0, true).args, [0, true])
+    })
 
-  test(`plugin methods can have no arguments | ${title}`, (t) => {
-    const { AnyError, TestError } = defineClassOpts()
-    t.deepEqual(callMethod({ AnyError, TestError, args: [] }).args, [])
-  })
-})
+    test(`plugin methods throw if plugin.isOptions() does not return a boolean | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [{ ...OTHER_PLUGIN, isOptions() {} }],
+      })
+      t.throws(callMethod.bind(undefined, TestError, 0))
+    })
+
+    test(`plugin methods can have no arguments | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        plugins: [OTHER_PLUGIN],
+      })
+      t.deepEqual(callMethod(TestError).args, [])
+    })
+  },
+)
