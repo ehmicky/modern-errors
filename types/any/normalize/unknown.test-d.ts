@@ -2,22 +2,22 @@ import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from 'modern-errors'
 
-const AnyError = modernErrors()
-type AnyInstance = InstanceType<typeof AnyError>
+const BaseError = modernErrors()
+type BaseInstance = InstanceType<typeof BaseError>
 
-const unknownError = new AnyError('', { cause: '' })
+const unknownError = new BaseError('', { cause: '' })
 type UnknownInstance = typeof unknownError
 
 expectType<Error>(unknownError)
 expectAssignable<ErrorInstance>(unknownError)
-expectType<AnyInstance>(unknownError)
+expectType<BaseInstance>(unknownError)
 expectType<UnknownInstance>(unknownError)
 
-expectType<UnknownInstance>(new AnyError('', { cause: unknownError }))
-expectType<UnknownInstance>(AnyError.normalize(unknownError))
-expectType<UnknownInstance>(new AnyError('', { cause: new Error('') }))
-expectType<UnknownInstance>(AnyError.normalize(new Error('')))
-expectType<UnknownInstance>(new AnyError('', { cause: undefined }))
-expectType<UnknownInstance>(AnyError.normalize(undefined))
-expectType<UnknownInstance>(new AnyError('', { cause: '' }))
-expectType<UnknownInstance>(AnyError.normalize(''))
+expectType<UnknownInstance>(new BaseError('', { cause: unknownError }))
+expectType<UnknownInstance>(BaseError.normalize(unknownError))
+expectType<UnknownInstance>(new BaseError('', { cause: new Error('') }))
+expectType<UnknownInstance>(BaseError.normalize(new Error('')))
+expectType<UnknownInstance>(new BaseError('', { cause: undefined }))
+expectType<UnknownInstance>(BaseError.normalize(undefined))
+expectType<UnknownInstance>(new BaseError('', { cause: '' }))
+expectType<UnknownInstance>(BaseError.normalize(''))

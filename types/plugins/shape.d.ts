@@ -20,7 +20,7 @@ import type { GetProperties } from './properties.js'
  *     exampleMethod() {},
  *   },
  *
- *   // Add `AnyError` static methods like `AnyError.staticMethod()`
+ *   // Add `BaseError` static methods like `BaseError.staticMethod()`
  *   staticMethods: {
  *     staticMethod() {},
  *   },
@@ -139,7 +139,7 @@ export interface Plugin {
   readonly instanceMethods?: InstanceMethods
 
   /**
-   * Add `AnyError` static methods like `AnyError.methodName(...args)`.
+   * Add `BaseError` static methods like `BaseError.methodName(...args)`.
    *
    * The first argument `info` is provided by `modern-errors`.
    * The other `...args` are forwarded from the method's call.
@@ -148,7 +148,7 @@ export interface Plugin {
    * ```js
    * export default {
    *   name: 'example',
-   *   // `AnyError.multiply(2, 3)` returns `6`
+   *   // `BaseError.multiply(2, 3)` returns `6`
    *   staticMethods: {
    *     multiply(info, first, second) {
    *       return first * second

@@ -1,6 +1,6 @@
 import type { Plugin, Plugins } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
-import type { AnyErrorClass, SpecificAnyErrorClass } from './any/main.js'
+import type { BaseErrorClass, SpecificBaseErrorClass } from './any/main.js'
 import type { ErrorClass } from './subclass/main/main.js'
 import type { ErrorInstance } from './any/modify/main.js'
 import type { PluginsOptions } from './options/plugins.js'
@@ -19,22 +19,22 @@ export type {
   GlobalOptions,
   ErrorInstance,
   ErrorClass,
-  AnyErrorClass,
+  BaseErrorClass,
 }
 
 /**
- * Creates and returns `AnyError`.
+ * Creates and returns `BaseError`.
  *
  * @example
  * ```js
  *  // Base error class
- *  export const AnyError = modernErrors()
+ *  export const BaseError = modernErrors()
  *
  *  // The first error class must be named "UnknownError"
- *  export const UnknownError = AnyError.subclass('UnknownError')
- *  export const InputError = AnyError.subclass('InputError')
- *  export const AuthError = AnyError.subclass('AuthError')
- *  export const DatabaseError = AnyError.subclass('DatabaseError')
+ *  export const UnknownError = BaseError.subclass('UnknownError')
+ *  export const InputError = BaseError.subclass('InputError')
+ *  export const AuthError = BaseError.subclass('AuthError')
+ *  export const DatabaseError = BaseError.subclass('DatabaseError')
  * ```
  */
 export default function modernErrors<
@@ -43,11 +43,11 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): SpecificAnyErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
+): SpecificBaseErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
-//  - When wrapping an error as `cause` without `AnyError`:
+//  - When wrapping an error as `cause` without `BaseError`:
 //     - The following properties of `cause` are ignored, which is expected:
 //        - Error core properties
 //        - Class-specific properties: `custom` methods, instance methods,
@@ -63,10 +63,10 @@ export default function modernErrors<
 //       `undefined`
 //     - This problem does not apply to error core properties (`message` and
 //       `stack`) which are always kept correct
-//  - Type narrowing with `instanceof AnyError` does not work if there are any
+//  - Type narrowing with `instanceof BaseError` does not work if there are any
 //    plugins with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
-//  - `new AnyError()` should fail if the second argument is not an object with
+//  - `new BaseError()` should fail if the second argument is not an object with
 //    a `cause` property
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
@@ -75,12 +75,12 @@ export default function modernErrors<
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `instanceMethods`, `properties()` or `props`, it should work even if it is
 //    not a subtype of it
-//  - Error normalization (`AnyError.normalize()` and aggregate `errors`) is not
+//  - Error normalization (`BaseError.normalize()` and aggregate `errors`) is not
 //    applied on errors coming from another `modernErrors()` call, even though
 //    it should (as opposed to errors coming from the same `modernErrors()`
 //    call)
 //  - `ErrorClass.subclass(..., { custom })`:
-//     - Currently fails if `custom` is not an `AnyError` child, which is
+//     - Currently fails if `custom` is not an `BaseError` child, which is
 //       expected
 //     - Fails if `custom` is extending from a parent type of `ErrorClass`, but
 //       only if that parent type has a `custom` option itself

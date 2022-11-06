@@ -8,16 +8,16 @@ const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
 type FullErrorInstance = ErrorInstance<[typeof fullPlugin]>
 
-const AnyError = modernErrors([fullPlugin])
-const unknownError = new AnyError('', { cause: '' })
+const BaseError = modernErrors([fullPlugin])
+const unknownError = new BaseError('', { cause: '' })
 
 expectAssignable<Error>(unknownError)
 expectAssignable<ErrorInstance>(unknownError)
 expectAssignable<BareErrorInstance>(unknownError)
 expectAssignable<FullErrorInstance>(unknownError)
 
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     prop = true
   },
 })

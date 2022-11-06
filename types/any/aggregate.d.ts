@@ -39,7 +39,7 @@ export interface AggregateErrors {
 }
 
 /**
- * Apply `AnyError.normalize()` on the `errors` option
+ * Apply `BaseError.normalize()` on the `errors` option
  */
 type NormalizeAggregateErrors<
   PluginsArg extends Plugins,

@@ -2,8 +2,8 @@ import { expectType } from 'tsd'
 
 import modernErrors from 'modern-errors'
 
-const NoPluginsAnyError = modernErrors()
-const AnyError = modernErrors([
+const NoPluginsBaseError = modernErrors()
+const BaseError = modernErrors([
   {
     name: 'test' as const,
     instanceMethods: { instanceMethod: () => {} },
@@ -11,15 +11,15 @@ const AnyError = modernErrors([
   },
 ])
 
-const ChildError = AnyError.subclass('ChildError')
+const ChildError = BaseError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     prop = false as const
   },
 })
-const ConflictCustomError = AnyError.subclass('ConflictCustomError', {
-  custom: class extends AnyError {
+const ConflictCustomError = BaseError.subclass('ConflictCustomError', {
+  custom: class extends BaseError {
     prop = true as const
   },
 })
@@ -30,7 +30,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-const unknownError = new AnyError('', { cause: '' })
+const unknownError = new BaseError('', { cause: '' })
 const childError = new ChildError('')
 const deepChildError = new DeepChildError('')
 const customError = new CustomError('')
@@ -38,8 +38,8 @@ const childCustomError = new ChildCustomError('')
 const deepCustomError = new DeepCustomError('')
 
 const exception = {} as unknown
-if (exception instanceof NoPluginsAnyError) {
-  expectType<typeof NoPluginsAnyError['prototype']>(exception)
+if (exception instanceof NoPluginsBaseError) {
+  expectType<typeof NoPluginsBaseError['prototype']>(exception)
 }
 if (exception instanceof ChildError) {
   expectType<typeof ChildError['prototype']>(exception)
@@ -73,22 +73,22 @@ if (deepCustomError instanceof DeepCustomError) {
   expectType<typeof deepCustomError>(deepCustomError)
 }
 
-if (unknownError instanceof AnyError) {
+if (unknownError instanceof BaseError) {
   expectType<typeof unknownError>(unknownError)
 }
-if (childError instanceof AnyError) {
+if (childError instanceof BaseError) {
   expectType<typeof childError>(childError)
 }
-if (deepChildError instanceof AnyError) {
+if (deepChildError instanceof BaseError) {
   expectType<typeof deepChildError>(deepChildError)
 }
-if (customError instanceof AnyError) {
+if (customError instanceof BaseError) {
   expectType<typeof customError>(customError)
 }
-if (childCustomError instanceof AnyError) {
+if (childCustomError instanceof BaseError) {
   expectType<typeof childCustomError>(childCustomError)
 }
-if (deepCustomError instanceof AnyError) {
+if (deepCustomError instanceof BaseError) {
   expectType<typeof deepCustomError>(deepCustomError)
 }
 

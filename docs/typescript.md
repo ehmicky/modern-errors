@@ -12,8 +12,8 @@ Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 [`custom`](../README.md#class-custom-logic) methods/properties are typed.
 
 ```ts
-const InputError = AnyError.subclass('InputError', {
-  custom: class extends AnyError {
+const InputError = BaseError.subclass('InputError', {
+  custom: class extends BaseError {
     isUserInput() {
       return true as const
     }
@@ -35,12 +35,12 @@ import ModernError from 'modern-errors'
 // This plugin adds an `error.httpResponse()` method
 import modernErrorsHttp from 'modern-errors-http'
 
-const AnyError = ModernError.subclass('AnyError', {
+const BaseError = ModernError.subclass('BaseError', {
   plugins: [modernErrorsHttp],
 })
 
-const UnknownError = AnyError.subclass('UnknownError')
-const InputError = AnyError.subclass('InputError')
+const UnknownError = BaseError.subclass('UnknownError')
+const InputError = BaseError.subclass('InputError')
 
 const inputError = new InputError('Wrong user name', {
   http: { title: false }, // Type error: `title` must be a string
@@ -55,7 +55,7 @@ When catching exceptions, their type can be
 using [`instanceof`](../README.md#check-error-classes).
 
 ```ts
-const InputError = AnyError.subclass('InputError', {
+const InputError = BaseError.subclass('InputError', {
   props: { isUserError: true as const },
 })
 
@@ -78,12 +78,12 @@ etc. can be used to retrieve the type of a variable or method.
 
 ```ts
 const printErrorClass = function (
-  ErrorClass: ReturnType<typeof AnyError.subclass>,
+  ErrorClass: ReturnType<typeof BaseError.subclass>,
 ) {
   // ...
 }
 
-const InputError = AnyError.subclass('InputError')
+const InputError = BaseError.subclass('InputError')
 printErrorClass(InputError)
 ```
 
@@ -91,7 +91,7 @@ printErrorClass(InputError)
 
 The following types are exported:
 [`ErrorInstance`](../README.md#new-errorclassmessage-options),
-[`ErrorClass`](../README.md#%EF%B8%8F-error-classes), `AnyErrorClass`,
+[`ErrorClass`](../README.md#%EF%B8%8F-error-classes), `BaseErrorClass`,
 `GlobalOptions`, [`ClassOptions`](../README.md#errorclasssubclassname-options),
 [`InstanceOptions`](../README.md#new-errorclassmessage-options),
 [`MethodOptions`](../README.md#plugin-options),

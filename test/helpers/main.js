@@ -3,9 +3,9 @@ import ModernError from 'modern-errors'
 export { ModernError }
 
 export const getClasses = function (opts) {
-  const AnyError = ModernError.subclass('AnyError', opts)
-  const ChildError = AnyError.subclass('ChildError')
-  const ErrorSubclassesArg = [AnyError, ChildError]
+  const BaseError = ModernError.subclass('BaseError', opts)
+  const ChildError = BaseError.subclass('ChildError')
+  const ErrorSubclassesArg = [BaseError, ChildError]
   const ErrorClassesArg = [ModernError, ...ErrorSubclassesArg]
   return { ErrorClasses: ErrorClassesArg, ErrorSubclasses: ErrorSubclassesArg }
 }

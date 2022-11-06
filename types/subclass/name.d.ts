@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 
 /**
- * Forbid 'AnyError' to be passed as first argument to `ErrorClass.subclass()`
+ * Forbid 'BaseError' to be passed as first argument to `ErrorClass.subclass()`
  */
 export type IsForbiddenClassName<ErrorNameArg extends ErrorName> =
-  ErrorNameArg extends 'AnyError' ? true : false
+  ErrorNameArg extends 'BaseError' ? true : false

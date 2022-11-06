@@ -8,25 +8,25 @@ const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 type BareErrorClass = ErrorClass<[typeof barePlugin]>
 type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
-const AnyError = modernErrors([fullPlugin])
+const BaseError = modernErrors([fullPlugin])
 
-expectAssignable<ErrorClass>(AnyError)
-expectAssignable<BareErrorClass>(AnyError)
-expectAssignable<FullErrorClass>(AnyError)
+expectAssignable<ErrorClass>(BaseError)
+expectAssignable<BareErrorClass>(BaseError)
+expectAssignable<FullErrorClass>(BaseError)
 
-const ChildError = AnyError.subclass('ChildError')
+const ChildError = BaseError.subclass('ChildError')
 
 expectAssignable<ErrorClass>(ChildError)
 expectAssignable<BareErrorClass>(ChildError)
 expectAssignable<FullErrorClass>(ChildError)
 
-const WideAnyError = modernErrors([{} as Plugin])
+const WideBaseError = modernErrors([{} as Plugin])
 
-expectAssignable<ErrorClass>(WideAnyError)
-expectAssignable<BareErrorClass>(WideAnyError)
-expectNotAssignable<FullErrorClass>(WideAnyError)
+expectAssignable<ErrorClass>(WideBaseError)
+expectAssignable<BareErrorClass>(WideBaseError)
+expectNotAssignable<FullErrorClass>(WideBaseError)
 
-const WideError = WideAnyError.subclass('WideError')
+const WideError = WideBaseError.subclass('WideError')
 
 expectAssignable<ErrorClass>(WideError)
 expectAssignable<BareErrorClass>(WideError)

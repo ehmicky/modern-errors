@@ -6,22 +6,22 @@ import modernErrors, {
   GlobalOptions,
 } from 'modern-errors'
 
-const AnyError = modernErrors()
-const ChildError = AnyError.subclass('ChildError')
+const BaseError = modernErrors()
+const ChildError = BaseError.subclass('ChildError')
 
 modernErrors([], { props: {} })
-AnyError.subclass('TestError', { props: {} })
+BaseError.subclass('TestError', { props: {} })
 ChildError.subclass('TestError', { props: {} })
-new AnyError('', { cause: '', props: {} })
+new BaseError('', { cause: '', props: {} })
 new ChildError('', { props: {} })
 expectAssignable<GlobalOptions>({ props: {} })
 expectAssignable<ClassOptions>({ props: {} })
 expectAssignable<InstanceOptions>({ props: {} })
 
 expectError(modernErrors([], { props: true }))
-expectError(AnyError.subclass('TestError', { props: true }))
+expectError(BaseError.subclass('TestError', { props: true }))
 expectError(ChildError.subclass('TestError', { props: true }))
-expectError(new AnyError('', { cause: '', props: true }))
+expectError(new BaseError('', { cause: '', props: true }))
 expectError(new ChildError('', { props: true }))
 expectNotAssignable<GlobalOptions>({ props: true })
 expectNotAssignable<ClassOptions>({ props: true })

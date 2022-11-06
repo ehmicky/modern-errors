@@ -20,7 +20,7 @@ export const mergeSpecificCause = function (error, cause) {
 // class to match the constructor being used.
 // However, if `error.cause` has the same class or a child class, we keep it
 // instead
-//  - This allows using `new AnyError(...)` to wrap an error without changing
+//  - This allows using `new BaseError(...)` to wrap an error without changing
 //    its class
 //  - This returns a subclass of the parent class, which does not break
 //    inheritance nor user expectations

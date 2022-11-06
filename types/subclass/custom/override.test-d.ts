@@ -4,18 +4,18 @@ import modernErrors, { Info } from 'modern-errors'
 
 const name = 'test' as const
 
-const AnyError = modernErrors()
-const PropertyAnyError = modernErrors([
+const BaseError = modernErrors()
+const PropertyBaseError = modernErrors([
   { name, properties: () => ({ property: true as boolean }) },
 ])
-const PropertyError = PropertyAnyError.subclass('PropertyError', {
-  custom: class extends PropertyAnyError {
+const PropertyError = PropertyBaseError.subclass('PropertyError', {
+  custom: class extends PropertyBaseError {
     property = true as const
   },
 })
 expectType<true>(new PropertyError('').property)
 
-const InstanceMethodAnyError = modernErrors([
+const InstanceMethodBaseError = modernErrors([
   {
     name,
     instanceMethods: {
@@ -24,17 +24,17 @@ const InstanceMethodAnyError = modernErrors([
     },
   },
 ])
-const InstanceMethodError = InstanceMethodAnyError.subclass(
+const InstanceMethodError = InstanceMethodBaseError.subclass(
   'InstanceMethodError',
   {
-    custom: class extends InstanceMethodAnyError {
+    custom: class extends InstanceMethodBaseError {
       instanceMethod = (arg: boolean) => true as const
     },
   },
 )
 expectType<true>(new InstanceMethodError('').instanceMethod(true))
 
-const StaticMethodAnyError = modernErrors([
+const StaticMethodBaseError = modernErrors([
   {
     name,
     staticMethods: {
@@ -42,27 +42,27 @@ const StaticMethodAnyError = modernErrors([
     },
   },
 ])
-const StaticMethodError = StaticMethodAnyError.subclass('StaticMethodError', {
-  custom: class extends StaticMethodAnyError {
+const StaticMethodError = StaticMethodBaseError.subclass('StaticMethodError', {
+  custom: class extends StaticMethodBaseError {
     static staticMethod(arg: boolean) {
       return true as const
     }
   },
 })
 expectError(StaticMethodError.staticMethod(true))
-const StaticMethodArrowError = StaticMethodAnyError.subclass(
+const StaticMethodArrowError = StaticMethodBaseError.subclass(
   'StaticMethodArrowError',
   {
-    custom: class extends StaticMethodAnyError {
+    custom: class extends StaticMethodBaseError {
       static staticMethod = (arg: boolean) => true as const
     },
   },
 )
 expectError(StaticMethodArrowError.staticMethod(true))
 
-const PropsAnyError = modernErrors([], { props: { prop: true as boolean } })
-const PropsError = PropsAnyError.subclass('PropsError', {
-  custom: class extends PropsAnyError {
+const PropsBaseError = modernErrors([], { props: { prop: true as boolean } })
+const PropsError = PropsBaseError.subclass('PropsError', {
+  custom: class extends PropsBaseError {
     prop = true as const
   },
 })
@@ -71,51 +71,51 @@ expectType<true>(new PropsError('').prop)
 // `tsd`'s `expectError()` fails to properly lint those, so they must be
 // manually checked by uncommenting those lines.
 // expectError(
-//   class extends PropertyAnyError {
+//   class extends PropertyBaseError {
 //     property = ''
 //   },
 // )
 // expectError(
-//   class extends InstanceMethodAnyError {
+//   class extends InstanceMethodBaseError {
 //     instanceMethod = (arg: true) => true as boolean | string
 //   },
 // )
 // expectError(
-//   class extends InstanceMethodAnyError {
+//   class extends InstanceMethodBaseError {
 //     instanceMethod = (arg: never) => true as boolean
 //   },
 // )
 // expectError(
-//   class extends StaticMethodAnyError {
+//   class extends StaticMethodBaseError {
 //     static staticMethod(arg: true) {
 //       return true as boolean | string
 //     }
 //   },
 // )
 // expectError(
-//   class extends StaticMethodAnyError {
+//   class extends StaticMethodBaseError {
 //     static staticMethod(arg: never) {
 //       return true as boolean
 //     }
 //   },
 // )
 // expectError(
-//   class extends StaticMethodAnyError {
+//   class extends StaticMethodBaseError {
 //     static staticMethod = (arg: true) => true as boolean | string
 //   },
 // )
 // expectError(
-//   class extends StaticMethodAnyError {
+//   class extends StaticMethodBaseError {
 //     static staticMethod = (arg: never) => true as boolean
 //   },
 // )
 // expectError(
-//   class extends PropsAnyError {
+//   class extends PropsBaseError {
 //     prop = true as boolean | string
 //   },
 // )
 // expectError(
-//   class extends AnyError {
+//   class extends BaseError {
 //     message = true
 //   },
 // )

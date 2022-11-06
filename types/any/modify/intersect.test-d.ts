@@ -2,8 +2,8 @@ import { expectType, expectAssignable, expectError } from 'tsd'
 
 import modernErrors from 'modern-errors'
 
-const AnyError = modernErrors()
-const ChildError = AnyError.subclass('ChildError')
+const BaseError = modernErrors()
+const ChildError = BaseError.subclass('ChildError')
 
 const name = 'test' as const
 

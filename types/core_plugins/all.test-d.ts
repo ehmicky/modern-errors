@@ -18,8 +18,8 @@ const plugins = [
   cleanPlugin,
   winstonPlugin,
 ]
-const AnyError = modernErrors(plugins)
-const error = new AnyError('', { cause: '' })
+const BaseError = modernErrors(plugins)
+const error = new BaseError('', { cause: '' })
 
 modernErrors(plugins, {
   bugs: 'https://example.com',
@@ -41,7 +41,7 @@ expectType<void>(error.exit({ silent: true }))
 const errorObject = error.toJSON()
 expectType<ErrorObject>(errorObject)
 
-const restore = AnyError.logProcess({ exit: true })
+const restore = BaseError.logProcess({ exit: true })
 expectType<void>(restore())
-expectType<ErrorInstance>(AnyError.parse(errorObject))
-expectType<Format>(AnyError.fullFormat({ stack: true }))
+expectType<ErrorInstance>(BaseError.parse(errorObject))
+expectType<Format>(BaseError.fullFormat({ stack: true }))

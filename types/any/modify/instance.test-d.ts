@@ -2,13 +2,13 @@ import { expectType, expectAssignable } from 'tsd'
 
 import modernErrors, { ErrorInstance } from 'modern-errors'
 
-const AnyError = modernErrors()
-type AnyInstance = InstanceType<typeof AnyError>
+const BaseError = modernErrors()
+type BaseInstance = InstanceType<typeof BaseError>
 
-const ChildError = AnyError.subclass('ChildError')
+const ChildError = BaseError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     prop = true
   },
 })
@@ -24,7 +24,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-const generalError = {} as any as AnyInstance
+const generalError = {} as any as BaseInstance
 const childError = new ChildError('')
 const deepChildError = new DeepChildError('')
 const customError = new CustomError('')
@@ -48,15 +48,15 @@ expectAssignable<ErrorInstance>(childCustomError)
 expectAssignable<ErrorInstance>(customChildError)
 expectAssignable<ErrorInstance>(deepCustomError)
 
-expectType<AnyInstance>(generalError)
-expectType<AnyInstance>(childError)
-expectType<AnyInstance>(deepChildError)
-expectAssignable<AnyInstance>(customError)
-expectAssignable<AnyInstance>(childCustomError)
-expectAssignable<AnyInstance>(customChildError)
-expectAssignable<AnyInstance>(deepCustomError)
+expectType<BaseInstance>(generalError)
+expectType<BaseInstance>(childError)
+expectType<BaseInstance>(deepChildError)
+expectAssignable<BaseInstance>(customError)
+expectAssignable<BaseInstance>(childCustomError)
+expectAssignable<BaseInstance>(customChildError)
+expectAssignable<BaseInstance>(deepCustomError)
 
-expectType<typeof AnyError['prototype']>(generalError)
+expectType<typeof BaseError['prototype']>(generalError)
 expectType<typeof ChildError['prototype']>(childError)
 expectType<typeof DeepChildError['prototype']>(deepChildError)
 expectType<typeof CustomError['prototype']>(customError)

@@ -14,7 +14,7 @@ import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { BaseError } from '../../any/modify/main.js'
 import type { NoAdditionalProps } from '../../utils.js'
-import type { SpecificAnyErrorClass } from '../../any/main.js'
+import type { SpecificBaseErrorClass } from '../../any/main.js'
 import type { IsForbiddenClassName } from '../name.js'
 import type {
   ErrorConstructor,
@@ -70,8 +70,8 @@ interface ErrorSubclassCore<
    *
    * @example
    * ```js
-   * const SharedError = AnyError.subclass('SharedError', {
-   *   custom: class extends AnyError {
+   * const SharedError = BaseError.subclass('SharedError', {
+   *   custom: class extends BaseError {
    *     // ...
    *   },
    * })
@@ -89,7 +89,7 @@ interface ErrorSubclassCore<
 }
 
 /**
- * Error class, including `AnyError`, with specific `props`, `custom`, etc.
+ * Error class, including `BaseError`, with specific `props`, `custom`, etc.
  */
 export type ErrorSubclass<
   PluginsArg extends Plugins,
@@ -104,12 +104,12 @@ export type ErrorSubclass<
 > &
   CustomStaticAttributes<
     PluginsArg,
-    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>,
     ParentErrorClass
   >
 
 /**
- * Error class, including `AnyError`
+ * Error class, including `BaseError`
  */
 export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
   PluginsArg,
@@ -119,7 +119,7 @@ export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
 >
 
 /**
- * `AnyError.subclass()` or `ErrorClass.subclass()`
+ * `BaseError.subclass()` or `ErrorClass.subclass()`
  */
 export type CreateSubclass<
   PluginsArg extends Plugins,
@@ -146,7 +146,7 @@ export type CreateSubclass<
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
       CustomInstanceAttributes<
-        InstanceType<SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>>,
+        InstanceType<SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>>,
         InstanceType<ClassOptionsArg['custom']>
       >
     >

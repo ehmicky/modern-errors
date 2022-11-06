@@ -2,10 +2,10 @@ import { expectType } from 'tsd'
 
 import modernErrors from 'modern-errors'
 
-const AnyError = modernErrors()
-const ChildError = AnyError.subclass('ChildError')
-const PluginAnyError = modernErrors([{ name: 'test' as const }])
+const BaseError = modernErrors()
+const ChildError = BaseError.subclass('ChildError')
+const PluginBaseError = modernErrors([{ name: 'test' as const }])
 
-expectType<never>(AnyError.subclass('AnyError'))
-expectType<never>(ChildError.subclass('AnyError'))
-expectType<never>(PluginAnyError.subclass('AnyError'))
+expectType<never>(BaseError.subclass('BaseError'))
+expectType<never>(ChildError.subclass('BaseError'))
+expectType<never>(PluginBaseError.subclass('BaseError'))

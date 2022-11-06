@@ -37,11 +37,11 @@ interface CustomOption<
    *
    * @example
    * ```js
-   * export const InputError = AnyError.subclass('InputError', {
-   *   // The `class` must extend from `AnyError`
-   *   custom: class extends AnyError {
+   * export const InputError = BaseError.subclass('InputError', {
+   *   // The `class` must extend from `BaseError`
+   *   custom: class extends BaseError {
    *     // If a `constructor` is defined, its parameters must be (message, options)
-   *     // like `AnyError`
+   *     // like `BaseError`
    *     constructor(message, options) {
    *       // Modifying `message` or `options` should be done before `super()`
    *       message += message.endsWith('.') ? '' : '.'
@@ -112,7 +112,7 @@ export type SpecificClassOptions<
   PluginsOptions<PluginsArg>
 
 /**
- * Class-specific options passed to `AnyError.subclass('ErrorName', options)` or
+ * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or
  * `ErrorClass.subclass('ErrorName', options)`
  */
 export type ClassOptions<PluginsArg extends Plugins = []> =

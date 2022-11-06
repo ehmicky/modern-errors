@@ -43,7 +43,7 @@ export interface CorePluginsOptions {
    *
    * @example
    * ```js
-   * const InputError = AnyError.subclass('InputError', {
+   * const InputError = BaseError.subclass('InputError', {
    *   props: { isUserError: true },
    * })
    * const error = new InputError('...')

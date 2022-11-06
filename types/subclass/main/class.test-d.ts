@@ -1,16 +1,16 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
 import modernErrors, {
-  AnyErrorClass,
+  BaseErrorClass,
   ErrorClass,
   ErrorInstance,
 } from 'modern-errors'
 
-const AnyError = modernErrors()
-const ChildError = AnyError.subclass('ChildError')
+const BaseError = modernErrors()
+const ChildError = BaseError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     prop = true
   },
 })
@@ -26,7 +26,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-expectAssignable<ErrorClass>(AnyError)
+expectAssignable<ErrorClass>(BaseError)
 expectAssignable<ErrorClass>(ChildError)
 expectAssignable<ErrorClass>(DeepChildError)
 expectAssignable<ErrorClass>(CustomError)
@@ -34,19 +34,19 @@ expectAssignable<ErrorClass>(ChildCustomError)
 expectAssignable<ErrorClass>(CustomChildError)
 expectAssignable<ErrorClass>(DeepCustomError)
 
-expectAssignable<AnyErrorClass>(AnyError)
-expectNotAssignable<AnyErrorClass>(ChildError)
-expectNotAssignable<AnyErrorClass>(DeepChildError)
-expectNotAssignable<AnyErrorClass>(CustomError)
-expectNotAssignable<AnyErrorClass>(ChildCustomError)
-expectNotAssignable<AnyErrorClass>(CustomChildError)
-expectNotAssignable<AnyErrorClass>(DeepCustomError)
+expectAssignable<BaseErrorClass>(BaseError)
+expectNotAssignable<BaseErrorClass>(ChildError)
+expectNotAssignable<BaseErrorClass>(DeepChildError)
+expectNotAssignable<BaseErrorClass>(CustomError)
+expectNotAssignable<BaseErrorClass>(ChildCustomError)
+expectNotAssignable<BaseErrorClass>(CustomChildError)
+expectNotAssignable<BaseErrorClass>(DeepCustomError)
 
-expectError(AnyError.subclass())
+expectError(BaseError.subclass())
 expectError(ChildError.subclass())
-expectError(AnyError.subclass({}))
+expectError(BaseError.subclass({}))
 expectError(ChildError.subclass({}))
-expectError(AnyError.subclass('Test'))
+expectError(BaseError.subclass('Test'))
 expectError(ChildError.subclass('Test'))
 
 expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)

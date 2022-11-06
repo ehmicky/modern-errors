@@ -6,9 +6,9 @@ import type { MainInstanceOptions } from '../../options/instance.js'
 import type { ErrorInstance, BaseError } from '../modify/main.js'
 
 /**
- * Return value of `new AnyError()` or `AnyError.normalize()`.
+ * Return value of `new BaseError()` or `BaseError.normalize()`.
  */
-export type AnyErrorInstance<
+export type BaseErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
@@ -21,7 +21,7 @@ export type AnyErrorInstance<
 >
 
 /**
- * `AnyError.normalize()`. Also applied to aggregate `errors`.
+ * `BaseError.normalize()`. Also applied to aggregate `errors`.
  */
 export type NormalizeError<
   PluginsArg extends Plugins,
@@ -29,4 +29,4 @@ export type NormalizeError<
   ErrorArg extends unknown,
 > = ErrorArg extends ErrorInstance
   ? ErrorArg
-  : AnyErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>
+  : BaseErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>

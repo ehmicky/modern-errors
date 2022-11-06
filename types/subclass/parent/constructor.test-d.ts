@@ -2,29 +2,29 @@ import { expectError } from 'tsd'
 
 import modernErrors, { InstanceOptions } from 'modern-errors'
 
-const AnyError = modernErrors()
+const BaseError = modernErrors()
 
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
+BaseError.subclass('TestError', {
+  custom: class extends BaseError {
     constructor(message: string, options?: InstanceOptions) {
       super(message, options)
     }
   },
 })
 
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
+BaseError.subclass('TestError', {
+  custom: class extends BaseError {
     constructor(message: string, options?: object) {
       super(message, options)
     }
   },
 })
 
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
+BaseError.subclass('TestError', {
+  custom: class extends BaseError {
     constructor(
       message: string,
-      options?: ConstructorParameters<typeof AnyError>[1],
+      options?: ConstructorParameters<typeof BaseError>[1],
     ) {
       super(message, options)
     }
@@ -32,8 +32,8 @@ AnyError.subclass('TestError', {
 })
 
 expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
+  BaseError.subclass('TestError', {
+    custom: class extends BaseError {
       constructor(message: string, options?: true) {
         super(message, {})
       }
@@ -42,8 +42,8 @@ expectError(
 )
 
 expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
+  BaseError.subclass('TestError', {
+    custom: class extends BaseError {
       constructor(
         message: string,
         options?: InstanceOptions & { cause?: true },
@@ -54,10 +54,10 @@ expectError(
   }),
 )
 
-AnyError.subclass('TestError', {
-  custom: class extends AnyError {
+BaseError.subclass('TestError', {
+  custom: class extends BaseError {
     constructor(
-      message: ConstructorParameters<typeof AnyError>[0],
+      message: ConstructorParameters<typeof BaseError>[0],
       options?: InstanceOptions,
     ) {
       super(message, options)
@@ -66,8 +66,8 @@ AnyError.subclass('TestError', {
 })
 
 expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
+  BaseError.subclass('TestError', {
+    custom: class extends BaseError {
       constructor(options?: object) {
         super('', options)
       }
@@ -76,8 +76,8 @@ expectError(
 )
 
 expectError(
-  AnyError.subclass('TestError', {
-    custom: class extends AnyError {
+  BaseError.subclass('TestError', {
+    custom: class extends BaseError {
       constructor() {
         super()
       }
@@ -85,8 +85,8 @@ expectError(
   }),
 )
 
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true },
@@ -137,18 +137,18 @@ expectError(
 )
 
 const plugins = [{ name: 'test' as const }]
-const PluginAnyError = modernErrors(plugins)
+const PluginBaseError = modernErrors(plugins)
 
-PluginAnyError.subclass('TestError', {
-  custom: class extends PluginAnyError {
+PluginBaseError.subclass('TestError', {
+  custom: class extends PluginBaseError {
     constructor(message: string, options?: InstanceOptions) {
       super(message, options)
     }
   },
 })
 
-PluginAnyError.subclass('TestError', {
-  custom: class extends PluginAnyError {
+PluginBaseError.subclass('TestError', {
+  custom: class extends PluginBaseError {
     constructor(message: string, options?: InstanceOptions<typeof plugins>) {
       super(message, options)
     }

@@ -1,5 +1,5 @@
 import type { ErrorName } from 'error-custom-class'
-import type { AnyErrorClass } from '../any/main.js'
+import type { BaseErrorClass } from '../any/main.js'
 import type { ErrorClass } from '../subclass/main/main.js'
 import type { ErrorInstance } from '../any/modify/main.js'
 import type { Plugins } from './shape.js'
@@ -43,25 +43,25 @@ interface CommonInfo {
   readonly options: never
 
   /**
-   * Reference to `AnyError`. This can be used to call `AnyError.normalize()` or
-   * `error instanceof AnyError`.
+   * Reference to `BaseError`. This can be used to call `BaseError.normalize()` or
+   * `error instanceof BaseError`.
    *
    * @example
    * ```js
    * export default {
    *   name: 'example',
    *   instanceMethods: {
-   *     addErrors({ error, AnyError }, errors = []) {
-   *       error.errors = errors.map(AnyError.normalize)
+   *     addErrors({ error, BaseError }, errors = []) {
+   *       error.errors = errors.map(BaseError.normalize)
    *     },
    *   },
    * }
    * ```
    */
-  readonly AnyError: AnyErrorClass<Plugins>
+  readonly BaseError: BaseErrorClass<Plugins>
 
   /**
-   * Object with all error classes created with `AnyError.subclass()` or
+   * Object with all error classes created with `BaseError.subclass()` or
    * `ErrorClass.subclass()`.
    *
    * @example
@@ -77,14 +77,14 @@ interface CommonInfo {
    * ```
    */
   readonly ErrorClasses: {
-    AnyError: never
+    BaseError: never
     UnknownError: ErrorClass
     [name: ErrorName]: ErrorClass
   }
 
   /**
    * Returns the `info` object from a specific `Error`, except from
-   * `info.AnyError`, `info.ErrorClasses` and `info.errorInfo`.
+   * `info.BaseError`, `info.ErrorClasses` and `info.errorInfo`.
    *
    * @example
    * ```js
@@ -134,7 +134,7 @@ export interface Info {
    */
   readonly errorInfo: Omit<
     CommonInfo,
-    'AnyError' | 'ErrorClasses' | 'errorInfo'
+    'BaseError' | 'ErrorClasses' | 'errorInfo'
   >
 }
 

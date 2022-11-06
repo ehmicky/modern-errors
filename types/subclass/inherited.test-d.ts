@@ -2,12 +2,12 @@ import { expectType, expectError } from 'tsd'
 
 import modernErrors from 'modern-errors'
 
-const AnyError = modernErrors()
+const BaseError = modernErrors()
 
-const ChildError = AnyError.subclass('ChildError')
+const ChildError = BaseError.subclass('ChildError')
 const GrandChildError = ChildError.subclass('GrandChildError')
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     static prop = true as const
   },
 })

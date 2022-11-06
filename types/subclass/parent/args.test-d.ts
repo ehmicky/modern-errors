@@ -2,12 +2,12 @@ import { expectError } from 'tsd'
 
 import modernErrors, { InstanceOptions } from 'modern-errors'
 
-const AnyError = modernErrors()
+const BaseError = modernErrors()
 
-const ChildError = AnyError.subclass('ChildError')
+const ChildError = BaseError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = AnyError.subclass('CustomError', {
-  custom: class extends AnyError {
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true },
@@ -41,7 +41,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-new AnyError('', { cause: '' })
+new BaseError('', { cause: '' })
 new ChildError('')
 new DeepChildError('')
 new CustomError('', { prop: true }, true)
@@ -49,7 +49,7 @@ new ChildCustomError('', { prop: true }, true)
 new CustomChildError('', { prop: true }, true)
 new DeepCustomError('', { prop: true, propTwo: true }, false)
 
-expectError(new AnyError())
+expectError(new BaseError())
 expectError(new ChildError())
 expectError(new DeepChildError())
 expectError(new CustomError())
@@ -57,7 +57,7 @@ expectError(new ChildCustomError())
 expectError(new CustomChildError())
 expectError(new DeepCustomError())
 
-expectError(new AnyError(true))
+expectError(new BaseError(true))
 expectError(new ChildError(true))
 expectError(new DeepChildError(true))
 expectError(new CustomError(true))
@@ -65,7 +65,7 @@ expectError(new ChildCustomError(true))
 expectError(new CustomChildError(true))
 expectError(new DeepCustomError(true))
 
-expectError(new AnyError('', true))
+expectError(new BaseError('', true))
 expectError(new ChildError('', true))
 expectError(new DeepChildError('', true))
 expectError(new CustomError('', true))
@@ -80,7 +80,7 @@ expectError(new ChildCustomError('', { other: true }))
 expectError(new CustomChildError('', { other: true }))
 expectError(new DeepCustomError('', { other: true }))
 
-expectError(new AnyError('', { cause: '', other: true }))
+expectError(new BaseError('', { cause: '', other: true }))
 expectError(new ChildError('', { cause: '', other: true }))
 expectError(new DeepChildError('', { cause: '', other: true }))
 expectError(new CustomError('', { cause: '', other: true }))

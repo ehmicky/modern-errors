@@ -4,9 +4,9 @@ import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { CreateSubclass } from '../subclass/main/main.js'
-import type { AnyErrorInstance, NormalizeError } from './normalize/main.js'
+import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
 
-interface AnyErrorClassCore<
+interface BaseErrorClassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
 > {
@@ -19,7 +19,7 @@ interface AnyErrorClassCore<
    *   throw new AuthError('...')
    * } catch (cause) {
    *   // Still an AuthError
-   *   throw new AnyError('...', { cause })
+   *   throw new BaseError('...', { cause })
    * }
    * ```
    */
@@ -30,7 +30,7 @@ interface AnyErrorClassCore<
       SpecificInstanceOptions<PluginsArg>
     >,
     ...extra: readonly any[]
-  ): AnyErrorInstance<
+  ): BaseErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     InstanceOptionsArg['cause'],
@@ -38,7 +38,7 @@ interface AnyErrorClassCore<
   >
 
   readonly prototype: InstanceType<
-    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>
+    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>
   >
 
   /**
@@ -48,13 +48,13 @@ interface AnyErrorClassCore<
    *
    * @example
    * ```js
-   * export const InputError = AnyError.subclass('InputError', options)
+   * export const InputError = BaseError.subclass('InputError', options)
    * ```
    */
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    SpecificAnyErrorClass<PluginsArg, ErrorPropsArg>,
+    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>,
     {}
   >
 
@@ -68,7 +68,7 @@ interface AnyErrorClassCore<
    *   throw 'Missing file path.'
    * } catch (error) {
    *   // Normalized from a string to an `Error` instance
-   *   throw AnyError.normalize(error)
+   *   throw BaseError.normalize(error)
    * }
    * ```
    */
@@ -78,16 +78,16 @@ interface AnyErrorClassCore<
 }
 
 /**
- * Base error class `AnyError`, used internally only with additional generics
+ * Base error class `BaseError`, used internally only with additional generics
  */
-export type SpecificAnyErrorClass<
+export type SpecificBaseErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-> = AnyErrorClassCore<PluginsArg, ErrorPropsArg> &
+> = BaseErrorClassCore<PluginsArg, ErrorPropsArg> &
   PluginsStaticMethods<PluginsArg>
 
 /**
- * Base error class `AnyError`
+ * Base error class `BaseError`
  */
-export type AnyErrorClass<PluginsArg extends Plugins = []> =
-  SpecificAnyErrorClass<PluginsArg, ErrorProps>
+export type BaseErrorClass<PluginsArg extends Plugins = []> =
+  SpecificBaseErrorClass<PluginsArg, ErrorProps>

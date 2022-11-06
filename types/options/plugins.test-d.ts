@@ -11,14 +11,14 @@ import modernErrors, {
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, getOptions: (input: true) => input }
 
-const AnyError = modernErrors([fullPlugin])
-const ChildError = AnyError.subclass('ChildError')
+const BaseError = modernErrors([fullPlugin])
+const ChildError = BaseError.subclass('ChildError')
 
 expectError(modernErrors([barePlugin], { test: true }))
 
 modernErrors([fullPlugin], { test: true })
-AnyError.subclass('TestError', { test: true })
-new AnyError('', { test: true })
+BaseError.subclass('TestError', { test: true })
+new BaseError('', { test: true })
 new ChildError('', { test: true })
 expectAssignable<GlobalOptions<[typeof fullPlugin]>>({ test: true })
 expectAssignable<ClassOptions<[typeof fullPlugin]>>({ test: true })
@@ -26,8 +26,8 @@ expectAssignable<InstanceOptions<[typeof fullPlugin]>>({ test: true })
 expectAssignable<MethodOptions<typeof fullPlugin>>(true)
 
 expectError(modernErrors([fullPlugin], { test: 'true' }))
-expectError(AnyError.subclass('TestError', { test: 'true' }))
-expectError(new AnyError('', { test: 'true' }))
+expectError(BaseError.subclass('TestError', { test: 'true' }))
+expectError(new BaseError('', { test: 'true' }))
 expectError(new ChildError('', { test: 'true' }))
 expectNotAssignable<GlobalOptions<[typeof fullPlugin]>>({ test: 'true' })
 expectNotAssignable<ClassOptions<[typeof fullPlugin]>>({ test: 'true' })
@@ -39,7 +39,7 @@ expectError(modernErrors([fullPlugin as Plugin], { other: true }))
 expectError(
   modernErrors([{ ...fullPlugin, name: '' as string }], { other: true }),
 )
-expectError(new AnyError('', { cause: '', other: true }))
+expectError(new BaseError('', { cause: '', other: true }))
 expectError(new ChildError('', { other: true }))
 expectError(new ChildError('', { cause: '', other: true }))
 expectNotAssignable<GlobalOptions>({ other: true })
