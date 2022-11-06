@@ -43,14 +43,26 @@ export const getPluginInfo = function ({
     plugins,
     plugin,
   })
-  const ErrorClassesA = getErrorClasses(ErrorClasses)
+  const ErrorClassesA = getErrorClasses(ErrorClasses, className)
   return { options, className, ErrorClasses: ErrorClassesA, errorInfo }
 }
 
 // `ErrorClasses` are passed to all plugin methods.
 // A shallow copy is done to prevent mutations.
-const getErrorClasses = function (ErrorClasses) {
-  return Object.fromEntries(Object.entries(ErrorClasses).map(getErrorClass))
+const getErrorClasses = function (ErrorClasses, parentClassName) {
+  const ParentClass = ErrorClasses[parentClassName].ErrorClass
+  return Object.fromEntries(
+    Object.entries(ErrorClasses)
+      .filter(([, { ErrorClass }]) => isSubclass(ErrorClass, ParentClass))
+      .map(getErrorClass),
+  )
+}
+
+const isSubclass = function (ErrorClass, ParentClass) {
+  return (
+    ParentClass === ErrorClass ||
+    Object.prototype.isPrototypeOf.call(ParentClass, ErrorClass)
+  )
 }
 
 const getErrorClass = function ([className, { ErrorClass }]) {
