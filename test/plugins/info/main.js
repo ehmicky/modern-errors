@@ -9,6 +9,7 @@ import {
 import { getPluginClasses } from '../../helpers/main.js'
 
 const { ErrorSubclasses } = getPluginClasses()
+const { ErrorSubclasses: OtherSubclasses } = getPluginClasses()
 
 each(
   ErrorSubclasses,
@@ -16,10 +17,6 @@ each(
   ({ title }, ErrorClass, getValues) => {
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClass | ${title}`, (t) => {
       t.is(getValues(ErrorClass).ErrorClass, ErrorClass)
-    })
-
-    test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-      t.true(Array.isArray(getValues(ErrorClass).ErrorClasses))
     })
 
     test(`plugin.properties|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
@@ -51,20 +48,32 @@ each(
   },
 )
 
-each(ErrorSubclasses, ({ title }, ErrorClass) => {
-  test(`plugin.properties gets the instance options | ${title}`, (t) => {
-    t.true(new ErrorClass('test', { prop: true }).properties.options.prop)
-  })
+each(
+  OtherSubclasses,
+  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  ({ title }, ErrorClass, getValues) => {
+    test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
+      t.deepEqual(getValues(ErrorClass).ErrorClasses, [
+        ErrorClass,
+        // eslint-disable-next-line max-nested-callbacks
+        ...OtherSubclasses.filter((ErrorSubclass) =>
+          Object.prototype.isPrototypeOf.call(ErrorClass, ErrorSubclass),
+        ),
+      ])
+    })
+  },
+)
 
-  test(`plugin.instanceMethods gets the instance options | ${title}`, (t) => {
-    t.true(new ErrorClass('test', { prop: true }).getInstance().options.prop)
-  })
+each(
+  ErrorSubclasses,
+  [getPropertiesInfo, getInstanceInfo],
+  ({ title }, ErrorClass, getValues) => {
+    test(`plugin.properties|instanceMethods gets the instance options | ${title}`, (t) => {
+      t.true(getValues(ErrorClass, { prop: true }).options.prop)
+    })
 
-  test(`plugin.properties gets the error | ${title}`, (t) => {
-    t.true(new ErrorClass('test').properties.error instanceof Error)
-  })
-
-  test(`plugin.instanceMethods gets the error | ${title}`, (t) => {
-    t.true(new ErrorClass('test').getInstance().error instanceof Error)
-  })
-})
+    test(`plugin.properties|instanceMethods gets the error | ${title}`, (t) => {
+      t.true(getValues(ErrorClass, { prop: true }).error instanceof Error)
+    })
+  },
+)

@@ -41,5 +41,5 @@ export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
 // duplicate names.
 export const getSubclasses = function (ErrorClass) {
   const { subclasses } = classesData.get(ErrorClass)
-  return [...subclasses]
+  return [ErrorClass, ...subclasses]
 }
