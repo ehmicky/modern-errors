@@ -16,6 +16,10 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
     const { getProp } = ErrorClass
     t.deepEqual(getProp(0).args, [0])
   })
+
+  test(`Plugin static methods are not enumerable | ${title}`, (t) => {
+    t.deepEqual(Object.keys(ErrorClass), [])
+  })
 })
 
 each(

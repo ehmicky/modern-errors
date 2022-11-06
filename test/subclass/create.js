@@ -12,7 +12,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.false('name' in custom.prototype)
   })
 
-  test(`Static methods are not enumerable | ${title}`, (t) => {
+  test(`Core static methods are not enumerable | ${title}`, (t) => {
     t.deepEqual(Object.keys(ErrorClass), [])
   })
 
@@ -27,6 +27,12 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
       Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name').enumerable,
     )
     t.is(new ErrorClass('test').name, ErrorClass.name)
+  })
+
+  test(`ErrorClass.subclass() context is bound | ${title}`, (t) => {
+    const { subclass } = ErrorClass
+    const TestError = subclass('TestError')
+    t.true(new TestError('message') instanceof TestError)
   })
 })
 
