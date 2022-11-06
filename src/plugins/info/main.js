@@ -52,14 +52,14 @@ export const getPluginInfo = function ({
 // `ErrorClasses` are passed to all plugin methods.
 // It excludes parent classes.
 // A shallow copy is done to prevent mutations.
+// This is an array, not an object, since some error classes might have
+// duplicate names.
 const getErrorClasses = function (ErrorClasses, ParentClass) {
-  return Object.fromEntries(
-    Object.entries(ErrorClasses)
-      .filter(([, { ErrorClass }]) => isSubclass(ErrorClass, ParentClass))
-      .map(getErrorClass),
-  )
+  return Object.values(ErrorClasses)
+    .map(getErrorClass)
+    .filter((ErrorClass) => isSubclass(ErrorClass, ParentClass))
 }
 
-const getErrorClass = function ([className, { ErrorClass }]) {
-  return [className, ErrorClass]
+const getErrorClass = function ({ ErrorClass }) {
+  return ErrorClass
 }
