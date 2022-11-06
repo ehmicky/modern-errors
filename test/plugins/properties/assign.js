@@ -6,6 +6,11 @@ import { getPluginClasses } from '../../helpers/main.js'
 const { ErrorSubclasses } = getPluginClasses()
 
 each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
+  test(`plugin.properties() can return an empty object | ${title}`, (t) => {
+    // eslint-disable-next-line max-nested-callbacks
+    t.notThrows(() => new ErrorClass('test', { prop: { toSet: {} } }))
+  })
+
   test(`plugin.properties() can set properties | ${title}`, (t) => {
     t.true(new ErrorClass('test', { prop: { toSet: { [key]: true } } })[key])
   })

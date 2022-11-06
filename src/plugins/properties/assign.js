@@ -10,7 +10,7 @@ import { getPluginsMethodNames } from '../instance/add.js'
 // Those are shallowly merged.
 // Many properties are ignored:
 //  - error core properties (except for `message` and `stack`)
-//  - reserved top-level properties like `constructorArgs`
+//  - reserved top-level properties like `wrap`
 //  - instance methods
 // Setting those does not throw since:
 //  - `plugin.properties()`'s return value might be dynamically generated
