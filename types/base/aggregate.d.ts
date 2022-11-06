@@ -1,5 +1,4 @@
 import type { Plugins } from '../plugins/shape.js'
-import type { NormalizeError } from './normalize/main.js'
 import type { MainInstanceOptions } from '../options/instance.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
 
@@ -39,23 +38,26 @@ export interface AggregateErrors {
 }
 
 /**
- * Apply `BaseError.normalize()` on the `errors` option
+ * Normalize each error in the `errors` option to `Error` instances
  */
-type NormalizeAggregateErrors<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  AggregateErrorsArg extends AggregateErrorsArray,
-> = AggregateErrorsArg extends never[]
-  ? []
-  : AggregateErrorsArg extends readonly [
-      infer AggregateErrorArg extends AggregateErrorOption,
-      ...infer Rest extends AggregateErrorsArray,
-    ]
-  ? [
-      NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorArg>,
-      ...NormalizeAggregateErrors<PluginsArg, ErrorPropsArg, Rest>,
-    ]
-  : NormalizeError<PluginsArg, ErrorPropsArg, AggregateErrorsArg[number]>[]
+type NormalizeAggregateError<ErrorArg extends AggregateErrorOption> =
+  ErrorArg extends Error ? ErrorArg : Error
+
+/**
+ * Normalize all errors in the `errors` option to `Error` instances
+ */
+type NormalizeAggregateErrors<AggregateErrorsArg extends AggregateErrorsArray> =
+  AggregateErrorsArg extends never[]
+    ? []
+    : AggregateErrorsArg extends readonly [
+        infer AggregateErrorArg extends AggregateErrorOption,
+        ...infer Rest extends AggregateErrorsArray,
+      ]
+    ? [
+        NormalizeAggregateError<AggregateErrorArg>,
+        ...NormalizeAggregateErrors<Rest>,
+      ]
+    : NormalizeAggregateError<AggregateErrorsArg[number]>[]
 
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined
@@ -80,15 +82,11 @@ type ConcatAggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> =
  * Retrieve the aggregate errors from the `errors` option
  */
 export type GetAggregateErrors<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
   MainInstanceOptionsArg extends MainInstanceOptions,
 > = ConcatAggregateErrors<MainInstanceOptionsArg> extends never
   ? {}
   : {
       errors: NormalizeAggregateErrors<
-        PluginsArg,
-        ErrorPropsArg,
         ConcatAggregateErrors<MainInstanceOptionsArg>
       >
     }

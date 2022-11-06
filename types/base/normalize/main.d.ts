@@ -17,11 +17,11 @@ export type BaseErrorInstance<
   PluginsArg,
   ErrorPropsArg,
   CustomInstanceAttributes<Error, ErrorArg>,
-  GetAggregateErrors<PluginsArg, ErrorPropsArg, MainInstanceOptionsArg>
+  GetAggregateErrors<MainInstanceOptionsArg>
 >
 
 /**
- * `BaseError.normalize()`. Also applied to aggregate `errors`.
+ * `BaseError.normalize()`.
  */
 export type NormalizeError<
   PluginsArg extends Plugins,

@@ -51,7 +51,7 @@ interface ErrorSubclassCore<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     CustomAttributesArg,
-    GetAggregateErrors<PluginsArg, ErrorPropsArg, InstanceOptionsArg>
+    GetAggregateErrors<InstanceOptionsArg>
   >
 
   readonly prototype: InstanceType<
