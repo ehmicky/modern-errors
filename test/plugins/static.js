@@ -11,6 +11,11 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.staticMethods are set on ErrorClass | ${title}`, (t) => {
     t.is(typeof ErrorClass.getProp, 'function')
   })
+
+  test(`plugin.staticMethods context is bound | ${title}`, (t) => {
+    const { getProp } = ErrorClass
+    t.deepEqual(getProp(0).args, [0])
+  })
 })
 
 each(
