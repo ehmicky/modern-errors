@@ -3,7 +3,7 @@ import { finalizePluginsOpts } from '../../options/plugins.js'
 import { instancesData, classesData } from '../../subclass/map.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
-// `ErrorClass` and `options`.
+// `ErrorClass`, `ErrorClasses` and `options`.
 // This is meant to be used by plugins either:
 //  - Operating on nested errors
 //  - With static methods operating on errors
