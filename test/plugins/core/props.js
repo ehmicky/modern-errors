@@ -30,8 +30,8 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
       props: { one: true, [propSym]: true },
     })
     const error = new ErrorClass('message', { cause, props: { two: true } })
-    t.true(error.one)
     t.true(error[propSym])
+    t.true(error.one)
     t.true(error.two)
   })
 
