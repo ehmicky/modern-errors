@@ -5,7 +5,7 @@ import { mergeCause } from './any/merge.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
-import { createClass } from './subclass/main.js'
+import { createClass } from './subclass/create.js'
 import { classesData, instancesData } from './subclass/map.js'
 import { validateSubclass } from './subclass/validate.js'
 
