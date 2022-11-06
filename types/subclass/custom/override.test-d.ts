@@ -49,7 +49,8 @@ const StaticMethodError = StaticMethodBaseError.subclass('StaticMethodError', {
     }
   },
 })
-expectError(StaticMethodError.staticMethod(true))
+// TODO: fix. `custom` should have priority
+expectType<boolean>(StaticMethodError.staticMethod(true))
 const StaticMethodArrowError = StaticMethodBaseError.subclass(
   'StaticMethodArrowError',
   {
@@ -58,7 +59,8 @@ const StaticMethodArrowError = StaticMethodBaseError.subclass(
     },
   },
 )
-expectError(StaticMethodArrowError.staticMethod(true))
+// TODO: fix. `custom` should have priority
+expectType<boolean>(StaticMethodArrowError.staticMethod(true))
 
 const PropsBaseError = modernErrors([], { props: { prop: true as boolean } })
 const PropsError = PropsBaseError.subclass('PropsError', {

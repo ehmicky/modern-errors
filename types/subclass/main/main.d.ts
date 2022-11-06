@@ -1,5 +1,6 @@
 import type { ErrorName } from 'error-custom-class'
 
+import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { GetAggregateErrors } from '../../base/aggregate.js'
 import type { BaseError } from '../../base/modify/main.js'
@@ -105,7 +106,8 @@ export type SpecificErrorClass<
     PluginsArg,
     SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>,
     ParentErrorClass
-  >
+  > &
+  PluginsStaticMethods<PluginsArg>
 
 /**
  * Error class, including `BaseError`
