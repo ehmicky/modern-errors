@@ -70,7 +70,7 @@
     "modern-errors-serialize": "^1.2.0",
     "modern-errors-stack": "^1.2.0",
     "modern-errors-winston": "^1.2.0",
-    "test-each": "^5.4.2"
+    "test-each": "^5.5.0"
   },
   "engines": {
     "node": ">=14.18.0"
