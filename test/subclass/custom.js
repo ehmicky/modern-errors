@@ -1,102 +1,68 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  createAnyError,
-  defineClassOpts,
-  defineSimpleCustom,
-  defineDeepCustom,
-  defineClassesOpts,
-} from '../helpers/main.js'
+import { KnownErrorClasses } from '../helpers/known.js'
 
-const { TestError, UnknownError, AnyError } = defineClassOpts()
-const { SimpleCustomError, AnyError: CustomAnyError } = defineSimpleCustom()
-const { TestError: DeepCustomError, SimpleCustomError: DeepCustomParentError } =
-  defineDeepCustom()
-
-each([AnyError, TestError], ({ title }, ParentError) => {
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Custom option defaults to parent class | ${title}`, (t) => {
-    t.is(
-      Object.getPrototypeOf(ParentError.subclass(`Default${ParentError.name}`)),
-      ParentError,
-    )
+    t.is(Object.getPrototypeOf(ErrorClass.subclass('TestError')), ErrorClass)
   })
-})
 
-each([SimpleCustomError, DeepCustomError], ({ title }, ErrorClass) => {
   test(`Custom classes are inherited | ${title}`, (t) => {
-    t.true(ErrorClass.staticProp)
-    t.true(new ErrorClass('test').prop)
+    const TestError = ErrorClass.subclass('TestError', {
+      custom: class extends ErrorClass {
+        prop = true
+        static staticProp = true
+      },
+    })
+    t.true(TestError.staticProp)
+    t.true(new TestError('test').prop)
   })
-})
 
-test('instanceof AnyError works with custom classes', (t) => {
-  t.true(new SimpleCustomError('test') instanceof CustomAnyError)
-})
-
-test('instanceof ParentError works with deep custom classes', (t) => {
-  t.true(new DeepCustomError('test') instanceof DeepCustomParentError)
-})
-
-test('Parent class is custom class when passed', (t) => {
-  t.is(Object.getPrototypeOf(SimpleCustomError).name, SimpleCustomError.name)
-})
-
-class NullClass {}
-// eslint-disable-next-line fp/no-mutating-methods
-Object.setPrototypeOf(NullClass, null)
-
-test('"custom" option is not modified', (t) => {
-  const { OtherTestError } = defineClassesOpts((TestAnyError) => ({
-    OtherTestError: {
-      custom: class ReadonlyClass extends TestAnyError {},
-    },
-  }))
-  t.is(Object.getPrototypeOf(OtherTestError).name, 'ReadonlyClass')
-})
-
-test('"custom" option can be shared', (t) => {
-  const { TwoError } = defineClassesOpts((TestAnyError) => {
-    class Parent extends TestAnyError {}
-    return { OneError: { custom: Parent }, TwoError: { custom: Parent } }
+  test(`instanceof works with custom classes | ${title}`, (t) => {
+    const CustomError = ErrorClass.subclass('CustomError', {
+      custom: class extends ErrorClass {},
+    })
+    t.true(new CustomError('test') instanceof ErrorClass)
   })
-  t.is(Object.getPrototypeOf(TwoError).name, 'Parent')
-})
 
-test('Cannot use "custom" with UnknownError', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(() =>
-    TestAnyError.subclass('UnknownError', {
-      custom: class extends TestAnyError {},
-    }),
-  )
-})
+  test(`Parent class is custom class when passed | ${title}`, (t) => {
+    const custom = class extends ErrorClass {}
+    const CustomError = ErrorClass.subclass('CustomError', { custom })
+    t.is(Object.getPrototypeOf(CustomError), custom)
+  })
 
-test('Can use "custom" with UnknownError children', (t) => {
-  const ChildUnknownError = UnknownError.subclass('ChildUnknownError', {
-    custom: class extends UnknownError {
+  test(`"custom" option is not modified | ${title}`, (t) => {
+    class ReadonlyClass extends ErrorClass {}
+    t.is(ReadonlyClass.name, 'ReadonlyClass')
+    ErrorClass.subclass('CustomError', { custom: ReadonlyClass })
+    t.is(ReadonlyClass.name, 'ReadonlyClass')
+  })
+
+  test(`"custom" option can be shared | ${title}`, (t) => {
+    class SharedError extends ErrorClass {
       static prop = true
-    },
+    }
+    t.true(ErrorClass.subclass('OneError', { custom: SharedError }).prop)
+    t.true(ErrorClass.subclass('TwoError', { custom: SharedError }).prop)
   })
-  t.true(ChildUnknownError.prop)
 })
 
-each(['message', 'properties', 'getInstance'], ({ title }, propName) => {
-  test(`"custom" option can override other properties | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
-    const { OtherTestError } = defineClassesOpts((TestAnyError) => ({
-      OtherTestError: {
-        custom: class extends TestAnyError {
-          // eslint-disable-next-line max-nested-callbacks
+each(
+  KnownErrorClasses,
+  ['message', 'properties', 'getInstance'],
+  ({ title }, ErrorClass, propName) => {
+    test(`"custom" option can override other properties | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', {
+        custom: class extends ErrorClass {
           constructor(message, options) {
             super(message, options)
             // eslint-disable-next-line fp/no-this, fp/no-mutation
             this[propName] = true
           }
         },
-      },
-    }))
-    t.not(new TestError('test')[propName], undefined)
-    t.true(new OtherTestError('test')[propName])
-  })
-})
+      })
+      t.true(new TestError('test')[propName])
+    })
+  },
+)
