@@ -32,6 +32,12 @@ import { classesData, instancesData } from './subclass/map.js'
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
+// We do not call `Error.captureStackTrace(this, CustomErrorClass)` because:
+//  - It is V8 specific
+//  - And on V8 (unlike in some browsers like Firefox), `Error.stack`
+//    automatically omits the stack lines from custom error constructors
+//  - Also, this would force child classes to also use
+//    `Error.captureStackTrace()`
 /* eslint-disable fp/no-this */
 class ModernBaseError extends Error {
   constructor(message, opts, ...args) {
