@@ -4,6 +4,20 @@ import { each } from 'test-each'
 import { ErrorClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
+each(
+  ErrorClasses,
+  ['isOptions', 'getOptions', 'properties'],
+  ({ title }, ErrorClass, propName) => {
+    test(`Should validate functions | ${title}`, (t) => {
+      t.throws(
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, [propName]: true }],
+        }),
+      )
+    })
+  },
+)
+
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Should allow valid plugins | ${title}`, (t) => {
     t.notThrows(
@@ -64,20 +78,6 @@ each(
       t.notThrows(
         ErrorClass.subclass.bind(undefined, 'TestError', {
           plugins: [{ ...TEST_PLUGIN, ...opts }],
-        }),
-      )
-    })
-  },
-)
-
-each(
-  ErrorClasses,
-  ['isOptions', 'getOptions', 'properties'],
-  ({ title }, ErrorClass, propName) => {
-    test(`Should validate functions | ${title}`, (t) => {
-      t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, [propName]: true }],
         }),
       )
     })
