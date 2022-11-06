@@ -2,17 +2,16 @@ import isPlainObj from 'is-plain-obj'
 
 import { classesData } from '../subclass/map.js'
 
-// Merge global and class options with instance options.
+// Merge class options with instance options.
 // This is done as late as possible to ensure `ERROR_INSTANCES` only contains
-// instance options, since `constructorArgs` should not have global nor class
-// options.
+// instance options, since `constructorArgs` should not have class options.
 export const mergeClassOpts = function (ErrorClass, plugins, pluginsOpts) {
   const { classOpts } = classesData.get(ErrorClass)
   return mergePluginsOpts(classOpts, pluginsOpts, plugins)
 }
 
 // Merge:
-//  - child class options with parent class options (including global ones)
+//  - child class options with parent class options
 //  - class options with instance options
 //  - method options with other options
 // The same logic is used between those, for consistency.

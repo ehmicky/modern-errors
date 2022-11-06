@@ -1,4 +1,4 @@
-// Ensure global and class options:
+// Ensure class options:
 //  - Only contain plugins options
 //  - Do not refer to unloaded plugins
 export const validatePluginsOptsNames = function (pluginsOpts, plugins) {

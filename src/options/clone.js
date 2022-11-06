@@ -3,7 +3,7 @@ import isPlainObj from 'is-plain-obj'
 // Deep clone an object except for class instances.
 // This is done on:
 //  - Plugins options before storing them for later usage:
-//     - For: global options, class options, error instance options
+//     - For class options and error instance options
 //     - So that, if user mutates them, this does not change the options used
 //       internally
 //     - This would otherwise be a problem
@@ -14,7 +14,7 @@ import isPlainObj from 'is-plain-obj'
 //     - This also allows exposing plugin methods arguments to users
 //        - E.g. by returning them or setting them to `error.*`
 //        - Without any risk for mutations to impact the logic
-//           - E.g. global `props` can be set and mutated on each error instance
+//           - E.g. shared `props` can be set and mutated on each error instance
 //             without propagating to other instances
 export const deepClone = function (value) {
   if (Array.isArray(value)) {

@@ -89,7 +89,7 @@ each(
       t.true(errorInfo(new ErrorClass('test', { prop: false })).options.prop)
     })
 
-    test(`errorInfo global and class options have less priority than method options | ${title}`, (t) => {
+    test(`errorInfo class options have less priority than method options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: false })
       const { errorInfo } = getValues(TestError, {}, true)
       t.true(errorInfo(new TestError('test')).options.prop)
