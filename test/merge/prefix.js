@@ -33,13 +33,14 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
 each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
   test(`Name of cause with unrelated class is kept | ${title}`, (t) => {
+    const causeMessage = 'causeMessage'
     const TestError = ErrorClass.subclass('TestError')
     const OtherError = ErrorClass.subclass('OtherError')
-    const cause = new OtherError('causeMessage')
-    t.is(
-      new TestError(message, { cause }).message,
-      `${message}${cause.name}: ${cause.message}`,
-    )
+    const error = new OtherError(causeMessage)
+    const newError = new TestError(message, { cause: error })
+    t.is(newError.message, `${message}${error.name}: ${causeMessage}`)
+    t.true(newError.stack.includes(`${error.name}:`))
+    t.is(error.message, causeMessage)
   })
 
   test(`Name of cause with same class is kept if changed | ${title}`, (t) => {
@@ -47,10 +48,9 @@ each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
     const causeName = 'NamedError'
     const error = new ErrorClass(causeMessage)
     error.name = causeName
-    t.is(
-      new ErrorClass(message, { cause: error }).message,
-      `${message}${causeName}: ${causeMessage}`,
-    )
+    const newError = new ErrorClass(message, { cause: error })
+    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
+    t.true(newError.stack.includes(`${causeName}:`))
   })
 
   test(`Name of cause with subclass is kept if changed | ${title}`, (t) => {
@@ -59,10 +59,9 @@ each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
     const causeName = 'NamedError'
     const error = new TestError(causeMessage)
     error.name = causeName
-    t.is(
-      new ErrorClass(message, { cause: error }).message,
-      `${message}${causeName}: ${causeMessage}`,
-    )
+    const newError = new ErrorClass(message, { cause: error })
+    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
+    t.true(newError.stack.includes(`${causeName}:`))
   })
 
   test(`Name of cause with superclass is kept if changed | ${title}`, (t) => {
@@ -71,12 +70,31 @@ each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
     const causeName = 'NamedError'
     const error = new ErrorClass(causeMessage)
     error.name = causeName
-    t.is(
-      new TestError(message, { cause: error }).message,
-      `${message}${causeName}: ${causeMessage}`,
-    )
+    const newError = new TestError(message, { cause: error })
+    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
+    t.is(error.message, causeMessage)
   })
 })
+
+each(
+  ErrorClasses,
+  getUnknownErrorInstances(),
+  messages,
+  // eslint-disable-next-line max-params
+  ({ title }, ErrorClass, getUnknownError, message) => {
+    test(`Unknown cause name is kept if changed | ${title}`, (t) => {
+      const error = getUnknownError()
+      const causeName = 'NamedError'
+      error.name = causeName
+      const { message: causeMessage } = error
+      const newError = new ErrorClass(message, { cause: error })
+      t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
+      t.true(newError.stack.includes(`${causeName}:`))
+      const { message: newMessage } = error
+      t.is(newMessage, causeMessage)
+    })
+  },
+)
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Handle invalid error message | ${title}`, (t) => {
@@ -117,23 +135,6 @@ each(
       const cause = getUnknownError()
       t.false(
         new ErrorClass('', { cause }).stack.includes('normalize-exception'),
-      )
-    })
-  },
-)
-
-each(
-  ErrorClasses,
-  getUnknownErrorInstances(),
-  messages,
-  // eslint-disable-next-line max-params
-  ({ title }, ErrorClass, getUnknownError, message) => {
-    test(`Unknown cause name is kept if changed | ${title}`, (t) => {
-      const error = getUnknownError()
-      error.name = 'NamedError'
-      t.is(
-        new ErrorClass(message, { cause: error }).message,
-        `${message}${error.name}: ${error.message}`,
       )
     })
   },
