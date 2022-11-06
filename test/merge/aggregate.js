@@ -1,7 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { AnyError, TestError, KnownErrorClasses } from '../helpers/known.js'
+import { getClasses, ModernError } from '../helpers/main.js'
+
+const { KnownErrorClasses } = getClasses()
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`error.errors can be set | ${title}`, (t) => {
@@ -25,13 +27,13 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`error.errors are normalized | ${title}`, (t) => {
     const [error] = new ErrorClass('test', { errors: [true] }).errors
     t.true(error instanceof Error)
-    t.false(error instanceof AnyError)
+    t.false(error instanceof ModernError)
   })
 
   test(`error.errors are appended to | ${title}`, (t) => {
-    const one = new TestError('one')
-    const two = new TestError('two')
-    const cause = new TestError('causeMessage', { errors: [one] })
+    const one = new ModernError('one')
+    const two = new ModernError('two')
+    const cause = new ModernError('causeMessage', { errors: [one] })
     const error = new ErrorClass('message', { cause, errors: [two] })
     t.deepEqual(error.errors, [one, two])
   })

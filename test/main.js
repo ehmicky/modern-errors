@@ -1,13 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  KnownErrorClasses,
-  SpecificErrorClasses,
-  getUnknownErrors,
-  ModernError,
-  AnyError,
-} from './helpers/known.js'
+import { getClasses, ModernError, getUnknownErrors } from './helpers/main.js'
+
+const { KnownErrorClasses, SpecificErrorClasses, AnyError } = getClasses()
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Can use known error classes | ${title}`, (t) => {

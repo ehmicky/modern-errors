@@ -1,20 +1,23 @@
+import { runInNewContext } from 'node:vm'
+
 import ModernError from 'modern-errors'
 
-import { TEST_PLUGIN } from './plugin.js'
+export { ModernError }
 
-export const defineClassesOpts = function (ErrorClasses, opts) {
-  const AnyError = createAnyError(opts)
-  const ErrorClassesA =
-    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
-  const ErrorClassesB = Object.fromEntries(
-    Object.entries(ErrorClassesA).map(([errorName, classOpts]) => [
-      errorName,
-      AnyError.subclass(errorName, classOpts),
-    ]),
-  )
-  return { ModernError, AnyError, ...ErrorClassesB }
+export const getClasses = function (opts) {
+  const AnyError = ModernError.subclass('AnyError', opts)
+  const ChildError = AnyError.subclass('ChildError')
+  const SpecificErrorClasses = [AnyError, ChildError]
+  const KnownErrorClasses = [ModernError, ...SpecificErrorClasses]
+  return { KnownErrorClasses, SpecificErrorClasses, AnyError, ChildError }
 }
 
-const createAnyError = function ({ plugins = [TEST_PLUGIN], ...opts } = {}) {
-  return ModernError.subclass('AnyError', { ...opts, plugins })
+export const getUnknownErrors = function () {
+  return [...getUnknownErrorInstances(), () => 'message', () => {}]
+}
+
+export const getUnknownErrorInstances = function () {
+  return [TypeError, Error, runInNewContext('Error')].map(
+    (ErrorClass) => () => new ErrorClass('message'),
+  )
 }

@@ -1,12 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  KnownErrorClasses,
-  SpecificErrorClasses,
-  ModernError,
-  ChildTestError,
-} from '../helpers/known.js'
+import { getClasses, ModernError } from '../helpers/main.js'
+
+const { KnownErrorClasses, SpecificErrorClasses, ChildError } = getClasses()
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
@@ -32,10 +29,10 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`ErrorClass.normalize() keeps error class if known | ${title}`, (t) => {
-    const error = new ChildTestError('test')
+    const error = new ChildError('test')
     const normalizedError = ErrorClass.normalize(error)
     t.is(error, normalizedError)
-    t.is(normalizedError.constructor, ChildTestError)
+    t.is(normalizedError.constructor, ChildError)
   })
 })
 

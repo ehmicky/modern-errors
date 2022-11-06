@@ -1,7 +1,12 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
+import { getClasses } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
+
+const { KnownErrorClasses, SpecificErrorClasses } = getClasses({
+  plugins: [TEST_PLUGIN],
+})
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Validate invalid class options | ${title}`, (t) => {

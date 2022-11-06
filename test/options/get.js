@@ -1,31 +1,28 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
-import { OTHER_PLUGIN } from '../helpers/plugin.js'
+import { getClasses } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const noGetOptionsPlugin = { ...OTHER_PLUGIN, getOptions: undefined }
+const { SpecificErrorClasses: NoOptionsErrorClasses } = getClasses({
+  plugins: [{ ...TEST_PLUGIN, getOptions: undefined }],
+})
+const { SpecificErrorClasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(NoOptionsErrorClasses, ({ title }, ErrorClass) => {
   test(`plugin.getOptions() forbids options by default | ${title}`, (t) => {
-    const TestError = ErrorClass.subclass('TestError', {
-      plugins: [noGetOptionsPlugin],
-    })
     // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => new TestError('test', { other: true }))
+    t.throws(() => new ErrorClass('test', { prop: true }))
   })
 })
 
 each(
-  KnownErrorClasses,
-  [undefined, {}, { other: undefined }],
+  NoOptionsErrorClasses,
+  [undefined, {}, { prop: undefined }],
   ({ title }, ErrorClass, opts) => {
     test(`plugin.getOptions() allows undefined options by default | ${title}`, (t) => {
-      const TestError = ErrorClass.subclass('TestError', {
-        plugins: [noGetOptionsPlugin],
-      })
       // eslint-disable-next-line max-nested-callbacks
-      t.notThrows(() => new TestError('test', opts))
+      t.notThrows(() => new ErrorClass('test', opts))
     })
   },
 )

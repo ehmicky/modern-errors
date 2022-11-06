@@ -1,7 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses } from '../helpers/known.js'
+import { getClasses } from '../helpers/main.js'
+
+const { KnownErrorClasses } = getClasses()
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Custom option defaults to parent class | ${title}`, (t) => {

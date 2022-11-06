@@ -1,7 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses } from '../helpers/known.js'
+import { getClasses } from '../helpers/main.js'
+
+const { KnownErrorClasses } = getClasses()
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Parent error cannot be passed as is | ${title}`, (t) => {

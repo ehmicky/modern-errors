@@ -3,14 +3,13 @@ import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
 import {
-  KnownErrorClasses,
+  getClasses,
+  ModernError,
   getUnknownErrors,
   getUnknownErrorInstances,
-  AnyError,
-  TestError,
-  ChildTestError,
-  SiblingError,
-} from '../helpers/known.js'
+} from '../helpers/main.js'
+
+const { KnownErrorClasses, SpecificErrorClasses } = getClasses()
 
 const getExpectedMessage = function (cause) {
   if (isErrorInstance(cause)) {
@@ -56,28 +55,29 @@ each(
 )
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
-  test(`Name of AnyError cause is ignored | ${title}`, (t) => {
-    const cause = new AnyError('causeMessage')
-    t.is(new ErrorClass('', { cause }).message, cause.message)
-  })
-
   test(`Name of cause with same class is ignored | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     t.is(new ErrorClass('', { cause }).message, cause.message)
   })
+
+  test(`Name of cause with subclass is ignored | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
+    t.is(new ModernError('', { cause }).message, cause.message)
+  })
+
+  test(`Name of cause with superclass is ignored | ${title}`, (t) => {
+    const cause = new ModernError('causeMessage')
+    t.is(new ErrorClass('', { cause }).message, cause.message)
+  })
 })
 
-test('Name of cause with subclass is ignored', (t) => {
-  const cause = new ChildTestError('causeMessage')
-  t.is(new TestError('', { cause }).message, cause.message)
-})
-
-test('Name of cause with superclass is ignored', (t) => {
-  const cause = new TestError('causeMessage')
-  t.is(new ChildTestError('', { cause }).message, cause.message)
-})
-
-test('Name of cause with unrelated class is kept', (t) => {
-  const cause = new SiblingError('causeMessage')
-  t.is(new TestError('', { cause }).message, `${cause.name}: ${cause.message}`)
+each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+  test(`Name of cause with unrelated class is kept | ${title}`, (t) => {
+    const UnrelatedError = ModernError.subclass('UnrelatedError')
+    const cause = new UnrelatedError('causeMessage')
+    t.is(
+      new ErrorClass('', { cause }).message,
+      `${cause.name}: ${cause.message}`,
+    )
+  })
 })
