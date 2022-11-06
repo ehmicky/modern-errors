@@ -1,6 +1,6 @@
 import { excludeKeys, includeKeys } from 'filter-obj'
 
-import { ERROR_INSTANCES } from '../subclass/map.js'
+import { instancesData } from '../subclass/map.js'
 import { deepClone } from '../utils/clone.js'
 
 import { mergePluginsOpts, getPluginNames } from './merge.js'
@@ -17,11 +17,11 @@ export const computePluginsOpts = function (plugins, opts) {
 }
 
 const wrapPluginsOpts = function (plugins, pluginsOpts, { cause }) {
-  if (!ERROR_INSTANCES.has(cause)) {
+  if (!instancesData.has(cause)) {
     return pluginsOpts
   }
 
-  const causePluginsOpts = ERROR_INSTANCES.get(cause).pluginsOpts
+  const causePluginsOpts = instancesData.get(cause).pluginsOpts
 
   if (causePluginsOpts === undefined) {
     return pluginsOpts

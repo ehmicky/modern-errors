@@ -1,4 +1,4 @@
-import { ERROR_CLASSES } from '../subclass/map.js'
+import { classesData } from '../subclass/map.js'
 
 // We forbid subclasses that are not known, i.e. not passed to
 // `ErrorClass.subclass()`
@@ -12,7 +12,7 @@ import { ERROR_CLASSES } from '../subclass/map.js'
 //  - Not passed to the `custom` option of `*Error.subclass()`
 //  - But was extended from a known class
 export const validateSubclass = function (ErrorClass) {
-  if (ERROR_CLASSES.has(ErrorClass)) {
+  if (classesData.has(ErrorClass)) {
     return
   }
 

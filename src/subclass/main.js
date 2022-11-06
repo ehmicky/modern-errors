@@ -8,7 +8,7 @@ import { addAllStaticMethods } from '../plugins/static/add.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getErrorClass } from './custom.js'
-import { ERROR_CLASSES } from './map.js'
+import { classesData } from './map.js'
 
 // Create a new error class.
 // We allow `ErrorClass.subclass()` to create subclasses. This can be used to:
@@ -23,7 +23,7 @@ export const createSubclass = function (ParentError, className, classOpts) {
     classOpts: classOptsA,
     plugins,
   } = applyClassOpts(ParentError, classOpts)
-  ERROR_CLASSES.set(ErrorClass, {
+  classesData.set(ErrorClass, {
     classOpts: classOptsA,
     plugins,
     subclasses: [],
@@ -36,7 +36,7 @@ export const createSubclass = function (ParentError, className, classOpts) {
 
 const applyClassOpts = function (ParentError, classOpts) {
   const { classOpts: parentOpts, plugins: parentPlugins } =
-    ERROR_CLASSES.get(ParentError)
+    classesData.get(ParentError)
   const { custom, plugins, ...classOptsA } = normalizeClassOpts(
     ParentError,
     classOpts,
@@ -48,8 +48,8 @@ const applyClassOpts = function (ParentError, classOpts) {
 }
 
 const addParentSubclass = function (ErrorClass, ParentError) {
-  const { subclasses, ...classProps } = ERROR_CLASSES.get(ParentError)
-  ERROR_CLASSES.set(ParentError, {
+  const { subclasses, ...classProps } = classesData.get(ParentError)
+  classesData.set(ParentError, {
     ...classProps,
     subclasses: [...subclasses, ErrorClass],
   })

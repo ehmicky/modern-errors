@@ -9,7 +9,7 @@ import { setPluginsProperties } from './plugins/properties/main.js'
 import { CoreError } from './subclass/core.js'
 import { createSubclass } from './subclass/main.js'
 // eslint-disable-next-line import/max-dependencies
-import { ERROR_CLASSES, ERROR_INSTANCES } from './subclass/map.js'
+import { classesData, instancesData } from './subclass/map.js'
 
 // Base class for all error classes.
 // We encourage `instanceof` over `error.name` for checking since this:
@@ -46,11 +46,11 @@ class ModernBaseError extends CoreError {
 }
 
 const modifyError = function ({ currentError, opts, args, ErrorClass }) {
-  const { plugins } = ERROR_CLASSES.get(ErrorClass)
+  const { plugins } = classesData.get(ErrorClass)
   const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, ErrorClass)
-  ERROR_INSTANCES.set(error, { pluginsOpts })
+  instancesData.set(error, { pluginsOpts })
   setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
   setPluginsProperties(error, plugins)
   return error

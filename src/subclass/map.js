@@ -5,7 +5,7 @@
 //  - This does not change how the error class is printed
 // We use a `WeakMap` instead of an object since the key should be the error
 // class, not its `name`, because classes might have duplicate names.
-export const ERROR_CLASSES = new WeakMap()
+export const classesData = new WeakMap()
 
 // The same but for error instances
-export const ERROR_INSTANCES = new WeakMap()
+export const instancesData = new WeakMap()
