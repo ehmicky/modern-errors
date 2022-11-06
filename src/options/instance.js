@@ -6,10 +6,7 @@ import { instancesData } from '../subclass/map.js'
 import { deepClone } from './clone.js'
 import { mergePluginsOpts, getPluginNames } from './merge.js'
 
-// We keep track of un-normalized plugins options to re-use them later inside
-// `error.*()` instance methods.
-// We merge the options before they are normalized, since this is how users who
-// pass those options understand them.
+// Split `nativeOpts` (native `Error` options like `cause`) and `pluginsOpts`
 export const computePluginsOpts = function (ErrorClass, plugins, opts = {}) {
   validateOpts(ErrorClass, opts)
   const { errors, ...optsA } = opts
@@ -45,6 +42,10 @@ const validateOpts = function (ErrorClass, opts) {
   }
 }
 
+// We keep track of un-normalized plugins options to re-use them later inside
+// `error.*()` instance methods.
+// We merge the options before they are normalized, since this is how users who
+// pass those options understand them.
 const wrapPluginsOpts = function (plugins, pluginsOpts, { cause }) {
   if (!instancesData.has(cause)) {
     return pluginsOpts

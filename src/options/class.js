@@ -18,7 +18,7 @@ export const normalizeClassOpts = function (ParentError, classOpts = {}) {
 }
 
 // Validate and compute class options as soon as the class is created.
-// Merging priority is: parent class < child class < instance options.
+// Merging priority is: parent class < child class < instance < method
 // We encourages plugins to use class options
 //  - Including global ones, i.e. on the top-level class
 //  - As opposed to alternatives:

@@ -19,14 +19,14 @@ export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
   return pluginsC
 }
 
-const normalizePluginsOpt = function (ParentError, pluginsOpt = []) {
-  if (!Array.isArray(pluginsOpt)) {
+const normalizePluginsOpt = function (ParentError, plugins = []) {
+  if (!Array.isArray(plugins)) {
     throw new TypeError(
-      `The "plugins" option of "${ParentError.name}.subclass()" must be an array: ${pluginsOpt}`,
+      `The "plugins" option of "${ParentError.name}.subclass()" must be an array: ${plugins}`,
     )
   }
 
-  return pluginsOpt
+  return plugins
 }
 
 const normalizePlugin = function (plugin, ParentError) {

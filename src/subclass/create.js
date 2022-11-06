@@ -37,6 +37,7 @@ export const createSubclass = function (ParentError, className, classOpts) {
   })
 }
 
+// Keep track of error subclasses, to use as `info.ErrorClasses` in plugins
 const addParentSubclass = function (ErrorClass, ParentError) {
   const { subclasses, ...classProps } = classesData.get(ParentError)
   classesData.set(ParentError, {
@@ -45,7 +46,7 @@ const addParentSubclass = function (ErrorClass, ParentError) {
   })
 }
 
-// Run by top-level `ModernError` as well
+// Unlike `createSubclass()`, this is run by the top-level `ModernError` as well
 export const createClass = function ({
   ParentError,
   ErrorClass,
