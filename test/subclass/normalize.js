@@ -43,8 +43,8 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() prevents naming collisions | ${title}`, (t) => {
-    const OtherAnyError = ModernError.subclass('AnyError')
-    const normalizedError = ErrorClass.normalize(new OtherAnyError('test'))
+    const OtherError = ModernError.subclass(ErrorClass.name)
+    const normalizedError = ErrorClass.normalize(new OtherError('test'))
     t.is(normalizedError.constructor, ErrorClass)
   })
 })

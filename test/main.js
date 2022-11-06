@@ -42,20 +42,20 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(lines[stackIndex].includes('main.js'))
   })
 
-  test(`Has correct toString() | ${title}`, (t) => {
+  test(`error.toString() is correct | ${title}`, (t) => {
     t.is(error.toString(), `${ErrorClass.name}: ${message}`)
   })
 })
 
 each(getUnknownErrors(), ({ title }, getUnknownError) => {
-  test(`instanceof AnyError can be used with known errors | ${title}`, (t) => {
+  test(`instanceof can be used with known errors | ${title}`, (t) => {
     t.false(getUnknownError() instanceof ModernError)
   })
 })
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`instanceof prevents naming collisions | ${title}`, (t) => {
-    const OtherAnyError = ModernError.subclass(ErrorClass.name)
-    t.false(new OtherAnyError('test') instanceof ErrorClass)
+    const OtherError = ModernError.subclass(ErrorClass.name)
+    t.false(new OtherError('test') instanceof ErrorClass)
   })
 })

@@ -52,26 +52,26 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   })
 
   test(`Instance options have priority over class options | ${title}`, (t) => {
-    const OtherAnyError = ErrorClass.subclass('TestError', { prop: false })
-    const cause = new OtherAnyError('causeMessage')
+    const OtherError = ErrorClass.subclass('TestError', { prop: false })
+    const cause = new OtherError('causeMessage')
     t.true(
-      new OtherAnyError('test', { cause, prop: true }).properties.options.prop,
+      new OtherError('test', { cause, prop: true }).properties.options.prop,
     )
   })
 
   test(`Undefined instance options are ignored | ${title}`, (t) => {
-    const OtherAnyError = ErrorClass.subclass('TestError', { prop: true })
-    const cause = new OtherAnyError('causeMessage')
+    const OtherError = ErrorClass.subclass('TestError', { prop: true })
+    const cause = new OtherError('causeMessage')
     t.true(
-      new OtherAnyError('test', { cause, prop: undefined }).properties.options
+      new OtherError('test', { cause, prop: undefined }).properties.options
         .prop,
     )
   })
 
   test(`Not defined instance options are ignored | ${title}`, (t) => {
-    const OtherAnyError = ErrorClass.subclass('TestError', { prop: true })
-    const cause = new OtherAnyError('causeMessage')
-    t.true(new OtherAnyError('test', { cause }).properties.options.prop)
+    const OtherError = ErrorClass.subclass('TestError', { prop: true })
+    const cause = new OtherError('causeMessage')
+    t.true(new OtherError('test', { cause }).properties.options.prop)
   })
 })
 
