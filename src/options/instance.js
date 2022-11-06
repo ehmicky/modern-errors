@@ -52,11 +52,6 @@ const wrapPluginsOpts = function (plugins, pluginsOpts, { cause }) {
   }
 
   const causePluginsOpts = instancesData.get(cause).pluginsOpts
-
-  if (causePluginsOpts === undefined) {
-    return pluginsOpts
-  }
-
   const pluginsOptsA = mergePluginsOpts(causePluginsOpts, pluginsOpts, plugins)
   return deepClone(pluginsOptsA)
 }
