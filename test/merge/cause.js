@@ -1,10 +1,10 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, ModernError } from '../helpers/main.js'
+import { getClasses } from '../helpers/main.js'
 import { getUnknownErrors } from '../helpers/unknown.js'
 
-const { ErrorClasses, ChildError } = getClasses()
+const { ErrorClasses } = getClasses()
 
 const assertInstanceOf = function (t, error, ErrorClass) {
   t.true(error instanceof ErrorClass)
@@ -13,13 +13,6 @@ const assertInstanceOf = function (t, error, ErrorClass) {
 }
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
-  test(`Parent class with known cause uses child class and instance | ${title}`, (t) => {
-    const cause = new ErrorClass('causeMessage')
-    const error = new ModernError('message', { cause })
-    assertInstanceOf(t, error, cause.constructor)
-    t.is(error, cause)
-  })
-
   test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new ErrorClass('message', { cause })
@@ -43,16 +36,18 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`ErrorClass with cause of subclass use child class and instance | ${title}`, (t) => {
-    const cause = new ChildError('causeMessage')
-    const error = new ModernError('message', { cause })
-    assertInstanceOf(t, error, ChildError)
+    const TestError = ErrorClass.subclass('TestError')
+    const cause = new TestError('causeMessage')
+    const error = new ErrorClass('message', { cause })
+    assertInstanceOf(t, error, TestError)
     t.is(error, cause)
   })
 
   test(`ErrorClass with cause of superclass use parent class | ${title}`, (t) => {
-    const cause = new ModernError('causeMessage')
-    const error = new ChildError('message', { cause })
-    assertInstanceOf(t, error, ChildError)
+    const TestError = ErrorClass.subclass('TestError')
+    const cause = new ErrorClass('causeMessage')
+    const error = new TestError('message', { cause })
+    assertInstanceOf(t, error, TestError)
     t.not(error, cause)
   })
 })

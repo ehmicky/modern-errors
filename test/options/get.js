@@ -1,13 +1,13 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../helpers/main.js'
+import { getClasses, getPluginClasses } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 const { ErrorSubclasses: NoOptionsErrorClasses } = getClasses({
   plugins: [{ ...TEST_PLUGIN, getOptions: undefined }],
 })
-const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorSubclasses } = getPluginClasses()
 
 each(NoOptionsErrorClasses, ({ title }, ErrorClass) => {
   test(`plugin.getOptions() forbids options by default | ${title}`, (t) => {

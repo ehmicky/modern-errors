@@ -1,10 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { getPluginClasses } from '../helpers/main.js'
 
-const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorSubclasses } = getPluginClasses()
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`Options can be symbols | ${title}`, (t) => {

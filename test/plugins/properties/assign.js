@@ -1,10 +1,10 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../../helpers/main.js'
+import { getClasses, getPluginClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorSubclasses } = getPluginClasses()
 const { ErrorClasses } = getClasses()
 
 each(ErrorClasses, [undefined, true], ({ title }, ErrorClass, value) => {
