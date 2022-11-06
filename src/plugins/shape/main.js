@@ -12,8 +12,9 @@ import { validatePluginName } from './name.js'
 export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
   const pluginsA = normalizePluginsOpt(plugins)
   const pluginsB = pluginsA.map(normalizePlugin)
-  validateDuplicatePlugins(parentPlugins, pluginsB, ParentError)
-  return [...parentPlugins, ...pluginsB]
+  const pluginsC = [...parentPlugins, ...pluginsB]
+  validateDuplicatePlugins(pluginsC, ParentError)
+  return pluginsC
 }
 
 const normalizePluginsOpt = function (pluginsOpt = []) {

@@ -1,47 +1,58 @@
 // Ensure the same plugin is not passed twice.
 // Also ensure two plugins do not define the same instanceMethods|staticMethods
-export const validateDuplicatePlugins = function (
-  parentPlugins,
+export const validateDuplicatePlugins = function (plugins, ParentError) {
+  plugins.forEach((pluginA, indexA) => {
+    validateDuplicatePlugin({ pluginA, indexA, plugins, ParentError })
+  })
+}
+
+const validateDuplicatePlugin = function ({
+  pluginA,
+  indexA,
   plugins,
   ParentError,
-) {
-  plugins.forEach((plugin) => {
-    validateDuplicatePlugin(parentPlugins, plugin, ParentError)
+}) {
+  plugins.forEach((pluginB, indexB) => {
+    validateEachPlugin({ pluginA, pluginB, indexA, indexB, ParentError })
   })
 }
 
-const validateDuplicatePlugin = function (parentPlugins, plugin, ParentError) {
-  parentPlugins.forEach((parentPlugin) => {
-    validateEachPlugin(parentPlugin, plugin, ParentError)
-  })
-}
+const validateEachPlugin = function ({
+  pluginA,
+  pluginB,
+  indexA,
+  indexB,
+  ParentError,
+}) {
+  if (indexA === indexB) {
+    return
+  }
 
-const validateEachPlugin = function (parentPlugin, plugin, ParentError) {
-  if (parentPlugin.name === plugin.name) {
+  if (pluginA.name === pluginB.name) {
     throw new TypeError(
-      `${ParentError.name}.subclass() "plugins" option must not include "${plugin.fullName}": a parent error class already included that plugin.`,
+      `${ParentError.name}.subclass() "plugins" option must not include "${pluginA.fullName}": this plugin has already been included.`,
     )
   }
 
-  validateDuplicateMethods(parentPlugin, plugin, 'staticMethods')
-  validateDuplicateMethods(parentPlugin, plugin, 'instanceMethods')
+  validateDuplicateMethods(pluginA, pluginB, 'staticMethods')
+  validateDuplicateMethods(pluginA, pluginB, 'instanceMethods')
 }
 
-const validateDuplicateMethods = function (parentPlugin, plugin, propName) {
-  Object.keys(plugin[propName]).forEach((methodName) => {
-    validateDuplicateMethod({ parentPlugin, plugin, propName, methodName })
+const validateDuplicateMethods = function (pluginA, pluginB, propName) {
+  Object.keys(pluginA[propName]).forEach((methodName) => {
+    validateDuplicateMethod({ pluginA, pluginB, propName, methodName })
   })
 }
 
 const validateDuplicateMethod = function ({
-  parentPlugin,
-  plugin,
+  pluginA,
+  pluginB,
   propName,
   methodName,
 }) {
-  if (parentPlugin[propName][methodName] !== undefined) {
+  if (pluginB[propName][methodName] !== undefined) {
     throw new TypeError(
-      `Both plugins "${plugin.fullName}" and "${parentPlugin.fullName}" must not define the same "${propName}.${methodName}" property.`,
+      `The plugins "${pluginA.fullName}" and "${pluginB.fullName}" must not both define the same "${propName}.${methodName}" property.`,
     )
   }
 }
