@@ -1,20 +1,20 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
+import { KnownErrorClasses } from '../helpers/known.js'
+import { defineGlobalOpts } from '../helpers/main.js'
 
-each(['AnyError', 'TestError'], ({ title }, errorName) => {
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
-    const ParentError = defineClassOpts()[errorName]
-    class ChildError extends ParentError {}
+    class ChildError extends ErrorClass {}
     // eslint-disable-next-line max-nested-callbacks
     t.throws(() => new ChildError('test'))
   })
 
   test(`Can extend with subclass() | ${title}`, (t) => {
-    const ParentError = defineClassOpts()[errorName]
-    const ChildError = ParentError.subclass('ChildError')
-    t.is(new ChildError('test').name, 'ChildError')
+    const name = `${ErrorClass.name}ExtendChildError`
+    const ChildError = ErrorClass.subclass(name)
+    t.is(new ChildError('test').name, name)
   })
 })
 
