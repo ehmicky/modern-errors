@@ -1,9 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { createAnyError, defineClassOpts } from '../helpers/main.js'
+import { defineGlobalOpts, defineClassOpts } from '../helpers/main.js'
 
-each(['AnyError', 'TestError', 'UnknownError'], ({ title }, errorName) => {
+each(['AnyError', 'TestError'], ({ title }, errorName) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
     const ParentError = defineClassOpts()[errorName]
     class ChildError extends ParentError {}
@@ -13,14 +13,12 @@ each(['AnyError', 'TestError', 'UnknownError'], ({ title }, errorName) => {
 
   test(`Can extend with subclass() | ${title}`, (t) => {
     const ParentError = defineClassOpts()[errorName]
-    const ChildError = ParentError.subclass('ChildError', {
-      custom: class extends ParentError {},
-    })
+    const ChildError = ParentError.subclass('ChildError')
     t.is(new ChildError('test').name, 'ChildError')
   })
 })
 
-test('Cannot instantiate AnyError before AnyError.subclass()', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(() => new TestAnyError('', { cause: '' }))
+test('Can instantiate AnyError without any subclass', (t) => {
+  const { AnyError: TestAnyError } = defineGlobalOpts()
+  t.true(new TestAnyError('') instanceof TestAnyError)
 })
