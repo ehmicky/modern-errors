@@ -9,15 +9,20 @@ import { finalizePluginsOpts } from '../../options/plugins.js'
 //     - E.g. when integrating with another library's plugin system, static
 //       methods are needed to return that other plugin, but they need to take
 //       errors as argument
+// If the `error` is not a `modern-errors` instance, an empty object is returned
+//  - I.e. the plugin should call `AnyError.normalize(error[, UnknownError])`
+//    first
 export const getErrorInfo = function (
   { errorData, ErrorClasses, methodOpts, plugins, plugin },
   error,
 ) {
-  const errorA = ErrorClasses.AnyError.ErrorClass.normalize(error)
-  const className = errorA.name
-  const { pluginsOpts } = errorData.get(errorA)
+  if (!errorData.has(error)) {
+    return {}
+  }
+
+  const { pluginsOpts } = errorData.get(error)
   const pluginsOptsA = mergeClassOpts({
-    error: errorA,
+    error,
     ErrorClasses,
     plugins,
     pluginsOpts,
@@ -28,5 +33,6 @@ export const getErrorInfo = function (
     plugins,
     plugin,
   })
-  return { error: errorA, className, options }
+  const className = error.name
+  return { className, options }
 }
