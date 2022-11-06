@@ -1,6 +1,5 @@
 import isPlainObj from 'is-plain-obj'
 
-import PROPS_PLUGIN from '../../core_plugins/props.js'
 import { normalizeGetOptions } from '../../options/get.js'
 import { normalizeIsOptions } from '../../options/method.js'
 
@@ -8,25 +7,15 @@ import { normalizeMethods } from './methods.js'
 import { validatePluginName } from './name.js'
 
 // Validate and normalize plugins
-export const normalizePlugins = function (plugins = []) {
-  if (!Array.isArray(plugins)) {
-    throw new TypeError(`The first argument must be an array: ${plugins}`)
-  }
-
-  const pluginsA = [...CORE_PLUGINS, ...plugins].map(normalizePluginName)
-  return pluginsA.map((plugin, index) =>
-    normalizePlugin(plugin, index, pluginsA),
-  )
+export const normalizePlugins = function (pluginOpts) {
+  const plugins = pluginOpts.map(normalizePluginName)
+  return plugins.map((plugin, index) => normalizePlugin(plugin, index, plugins))
 }
-
-// Plugins included by default.
-// Order is significant, since last plugins `properties()` have priority.
-const CORE_PLUGINS = [PROPS_PLUGIN]
 
 const normalizePluginName = function (plugin) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
-      `The first argument must be an array of plugin objects: ${plugin}`,
+      `The "plugins" option must be an array of plugin objects: ${plugin}`,
     )
   }
 

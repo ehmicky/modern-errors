@@ -1,8 +1,10 @@
 import { setErrorName } from 'error-class-utils'
 
 import { normalize } from '../any/normalize.js'
-import { getClassOpts } from '../options/class.js'
+import { normalizeClassOpts, getClassOpts } from '../options/class.js'
 import { addAllInstanceMethods } from '../plugins/instance/add.js'
+import { normalizePlugins } from '../plugins/shape/main.js'
+import { mergePluginOpts } from '../plugins/shape/merge.js'
 import { addAllStaticMethods } from '../plugins/static/add.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
@@ -21,22 +23,32 @@ export const createSubclass = function ({
   className,
   parentOpts,
   classOpts,
-  plugins,
 }) {
-  const classOptsA = getClassOpts(plugins, parentOpts, classOpts)
+  const {
+    classOpts: classOptsA,
+    pluginsOpt,
+    plugins,
+  } = listClassOpts(parentOpts, classOpts)
+  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsA, plugins })
   setErrorName(ErrorClass, className)
-  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsA })
   setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
   setNonEnumProp(ErrorClass, 'subclass', (childClassName, childClassOpts) =>
     createSubclass({
       ErrorClass: getErrorClass(ErrorClass, childClassOpts),
       className: childClassName,
-      parentOpts: classOptsA,
+      parentOpts: { ...classOptsA, plugins: pluginsOpt },
       classOpts: childClassOpts,
-      plugins,
     }),
   )
   addAllInstanceMethods(plugins, ErrorClass)
   addAllStaticMethods(plugins, ErrorClass)
   return ErrorClass
+}
+
+const listClassOpts = function (parentOpts, classOpts) {
+  const classOptsA = normalizeClassOpts(classOpts)
+  const pluginsOpt = mergePluginOpts(parentOpts, classOptsA)
+  const plugins = normalizePlugins(pluginsOpt)
+  const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
+  return { classOpts: classOptsB, pluginsOpt, plugins }
 }

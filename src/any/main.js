@@ -1,10 +1,11 @@
 import errorCustomClass from 'error-custom-class'
 
+import { CORE_PLUGINS } from '../core_plugins/main.js'
 import { validateGlobalOpts } from '../options/class.js'
 import { computePluginsOpts } from '../options/instance.js'
 import { setPluginsProperties } from '../plugins/properties/main.js'
 import { createSubclass } from '../subclass/main.js'
-import { ERROR_INSTANCES } from '../subclass/map.js'
+import { ERROR_CLASSES, ERROR_INSTANCES } from '../subclass/map.js'
 
 import { setAggregateErrors } from './aggregate.js'
 import { setConstructorArgs } from './args.js'
@@ -37,19 +38,18 @@ const CoreError = errorCustomClass('CoreError')
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createAnyError = function (plugins, globalOpts) {
+export const createAnyError = function (globalOpts) {
   validateGlobalOpts(globalOpts)
-  const AnyError = getAnyError(plugins)
+  const AnyError = getAnyError()
   return createSubclass({
     ErrorClass: AnyError,
     className: 'AnyError',
-    parentOpts: {},
+    parentOpts: { plugins: CORE_PLUGINS },
     classOpts: globalOpts,
-    plugins,
   })
 }
 
-const getAnyError = function (plugins) {
+const getAnyError = function () {
   /* eslint-disable fp/no-this */
   return class AnyError extends CoreError {
     constructor(message, opts, ...args) {
@@ -59,26 +59,15 @@ const getAnyError = function (plugins) {
       super(message, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
-      return modifyError({
-        currentError: this,
-        opts: optsA,
-        args,
-        ErrorClass,
-        plugins,
-      })
+      return modifyError({ currentError: this, opts: optsA, args, ErrorClass })
     }
     /* c8 ignore stop */
   }
   /* eslint-enable fp/no-this */
 }
 
-const modifyError = function ({
-  currentError,
-  opts,
-  args,
-  ErrorClass,
-  plugins,
-}) {
+const modifyError = function ({ currentError, opts, args, ErrorClass }) {
+  const { plugins } = ERROR_CLASSES.get(ErrorClass)
   const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, ErrorClass)

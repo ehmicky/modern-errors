@@ -22,22 +22,25 @@ export const validateGlobalOpts = function (globalOpts) {
   }
 }
 
-// Validate and compute class options as soon as the class is created.
-// Merging priority is: global < parent class < child class < instance options.
-export const getClassOpts = function (plugins, parentOpts, classOpts = {}) {
+// Simple validation and normalization of class options
+export const normalizeClassOpts = function (classOpts = {}) {
   if (!isPlainObj(classOpts)) {
     throw new TypeError(
-      `The second argument must be a plain object: ${classOpts}`,
+      `The second argument of "ErrorClass.subclass()" must be a plain object, not: ${classOpts}`,
     )
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const { custom, ...classOptsA } = classOpts
-  validatePluginsOptsNames(classOptsA, plugins)
-  const classOptsB = mergePluginsOpts(parentOpts, classOptsA, plugins)
-  const classOptsC = deepClone(classOptsB)
+  return classOpts
+}
+
+// Validate and compute class options as soon as the class is created.
+// Merging priority is: parent class < child class < instance options.
+export const getClassOpts = function (parentOpts, classOpts, plugins) {
+  validatePluginsOptsNames(classOpts, plugins)
+  const classOptsA = mergePluginsOpts(parentOpts, classOpts, plugins)
+  const classOptsB = deepClone(classOptsA)
   plugins.forEach((plugin) => {
-    getPluginOpts({ pluginsOpts: classOptsC, plugin, full: false })
+    getPluginOpts({ pluginsOpts: classOptsB, plugin, full: false })
   })
-  return classOptsC
+  return classOptsB
 }

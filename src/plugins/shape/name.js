@@ -8,12 +8,17 @@ export const validatePluginsOptsNames = function (pluginsOpts, plugins) {
 }
 
 const validatePluginOptsName = function (optName, pluginOpts, plugins) {
-  if (!plugins.some(({ name }) => name === optName)) {
+  if (
+    !KNOWN_CLASS_OPTS.has(optName) &&
+    !plugins.some(({ name }) => name === optName)
+  ) {
     throw new TypeError(
-      `Invalid option "${optName}": the plugin "${NAME_PREFIX}${optName}" must be passed to "modernErrors(plugins)"`,
+      `Invalid option "${optName}": the plugin "${NAME_PREFIX}${optName}" must be passed to ErrorClass.subclass("...", { plugins })`,
     )
   }
 }
+
+const KNOWN_CLASS_OPTS = new Set(['plugins', 'custom'])
 
 // Validate `plugin.name`
 export const validatePluginName = function (plugin) {
