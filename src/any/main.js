@@ -67,12 +67,8 @@ const getAnyError = function (ErrorClasses, errorData, plugins) {
     constructor(message, opts, ...args) {
       const ErrorClass = new.target
       validateSubclass(ErrorClass, ErrorClasses)
-      const { message: messageA, opts: optsA } = normalizeOpts(
-        ErrorClass,
-        message,
-        opts,
-      )
-      super(messageA, optsA)
+      const optsA = normalizeOpts(ErrorClass, opts)
+      super(message, optsA)
       /* c8 ignore start */
       // eslint-disable-next-line no-constructor-return
       return modifyError({

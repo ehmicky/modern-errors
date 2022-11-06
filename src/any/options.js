@@ -12,7 +12,7 @@ import isPlainObj from 'is-plain-obj'
 //     - More standard
 //     - More monomorphic
 //     - Safer against injections
-export const normalizeOpts = function (ErrorClass, message, opts = {}) {
+export const normalizeOpts = function (ErrorClass, opts = {}) {
   if (!isPlainObj(opts)) {
     throw new TypeError(
       `Error options must be a plain object or undefined: ${opts}`,
@@ -25,5 +25,5 @@ export const normalizeOpts = function (ErrorClass, message, opts = {}) {
     )
   }
 
-  return { message, opts }
+  return opts
 }
