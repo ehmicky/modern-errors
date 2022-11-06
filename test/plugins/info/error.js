@@ -51,7 +51,8 @@ each(
     test(`errorInfo returns class options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: true })
       const { errorInfo } = getInfo(TestError)
-      t.true(errorInfo(new TestError('test')).options.prop)
+      const error = new TestError('test')
+      t.true(errorInfo(error).options.prop)
     })
 
     test(`errorInfo class options have less priority than instance options | ${title}`, (t) => {
