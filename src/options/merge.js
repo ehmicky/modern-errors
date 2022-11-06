@@ -17,10 +17,16 @@ export const mergeClassOpts = function ({
 //  - child class options with parent class options (including global ones)
 //  - class options with instance options
 //  - method options with other options
+// The same logic is used between those, for consistency.
 // `undefined` values are ignored, even if the key is set because:
 //  - This might be due to conditional logic
 //  - Differentiating between `undefined` and "not defined" values is confusing
 // Object options are shallowly merged.
+// The merging logic enforces the idea that information should only be appended,
+// to ensure that no error information is lost
+//  - E.g. there is no direct way to unset options
+//     - However, this can be achieved, e.g. by moving parent class options
+//       to their subclasses
 export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
   return Object.fromEntries(
     getPluginNames(plugins)
