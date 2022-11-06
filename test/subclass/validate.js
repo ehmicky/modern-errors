@@ -7,13 +7,13 @@ const { ErrorClasses } = getClasses()
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
-    class ChildError extends ErrorClass {}
+    class TestError extends ErrorClass {}
     // eslint-disable-next-line max-nested-callbacks
-    t.throws(() => new ChildError('test'))
+    t.throws(() => new TestError('test'))
   })
 
   test(`Can extend with subclass() | ${title}`, (t) => {
-    const ChildError = ErrorClass.subclass('ChildError')
-    t.is(new ChildError('test').constructor, ChildError)
+    const TestError = ErrorClass.subclass('TestError')
+    t.is(new TestError('test').constructor, TestError)
   })
 })

@@ -21,10 +21,32 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     )
   })
 
+  test(`Should validate plugins is an array | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', { plugins: true }),
+    )
+  })
+
   test(`Should validate plugin is an object | ${title}`, (t) => {
     t.throws(
       ErrorClass.subclass.bind(undefined, 'TestError', { plugins: [true] }),
     )
+  })
+
+  test(`Should inherit plugins | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', {
+      plugins: [{ name: 'one', properties: () => ({ one: true }) }],
+    })
+    const testError = new TestError('test')
+    t.true(testError.one)
+    t.false('two' in testError)
+
+    const SubTestError = TestError.subclass('SubTestError', {
+      plugins: [{ name: 'two', properties: () => ({ two: true }) }],
+    })
+    const subTestError = new SubTestError('test')
+    t.true(subTestError.one)
+    t.true(subTestError.two)
   })
 })
 

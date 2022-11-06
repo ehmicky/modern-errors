@@ -59,13 +59,13 @@ const normalizePlugin = function (plugin, ParentError) {
 
 const validateOptionalFuncs = function (plugin) {
   OPTIONAL_FUNCS.forEach((funcName) => {
-    validateOptionalMethod(plugin, funcName)
+    validateOptionalFunc(plugin, funcName)
   })
 }
 
 const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'properties']
 
-const validateOptionalMethod = function (plugin, funcName) {
+const validateOptionalFunc = function (plugin, funcName) {
   const funcValue = plugin[funcName]
 
   if (funcValue !== undefined && typeof funcValue !== 'function') {

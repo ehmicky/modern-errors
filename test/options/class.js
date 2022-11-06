@@ -30,25 +30,25 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   })
 
   test(`Child class options have priority over parent ones | ${title}`, (t) => {
-    const ParentError = ErrorClass.subclass('ParentError', { prop: false })
-    const ChildError = ParentError.subclass('ChildError', { prop: true })
-    t.true(new ChildError('test').properties.options.prop)
+    const TestError = ErrorClass.subclass('TestError', { prop: false })
+    const SubTestError = TestError.subclass('SubTestError', { prop: true })
+    t.true(new SubTestError('test').properties.options.prop)
   })
 
   test(`Undefined child class options are ignored | ${title}`, (t) => {
-    const ParentError = ErrorClass.subclass('ParentError', { prop: true })
-    const ChildError = ParentError.subclass('ChildError', { prop: undefined })
-    t.true(new ChildError('test').properties.options.prop)
+    const TestError = ErrorClass.subclass('TestError', { prop: true })
+    const SubTestError = TestError.subclass('SubTestError', { prop: undefined })
+    t.true(new SubTestError('test').properties.options.prop)
   })
 
   test(`Object child options are shallowly merged to parent options | ${title}`, (t) => {
-    const ParentError = ErrorClass.subclass('ParentError', {
+    const TestError = ErrorClass.subclass('TestError', {
       prop: { one: false, two: { three: false }, five: false },
     })
-    const ChildError = ParentError.subclass('ChildError', {
+    const SubTestError = TestError.subclass('SubTestError', {
       prop: { one: true, two: { three: true }, four: true },
     })
-    t.deepEqual(new ChildError('test').properties.options.prop, {
+    t.deepEqual(new SubTestError('test').properties.options.prop, {
       one: true,
       two: { three: true },
       four: true,
