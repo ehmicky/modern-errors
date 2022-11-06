@@ -55,7 +55,7 @@ interface ErrorSubclassCore<
   >
 
   readonly prototype: InstanceType<
-    ErrorSubclass<
+    SpecificErrorClass<
       PluginsArg,
       ErrorPropsArg,
       ParentErrorClass,
@@ -90,7 +90,7 @@ interface ErrorSubclassCore<
 /**
  * Error class, including `BaseError`, with specific `props`, `custom`, etc.
  */
-export type ErrorSubclass<
+export type SpecificErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
@@ -110,7 +110,7 @@ export type ErrorSubclass<
 /**
  * Error class, including `BaseError`
  */
-export type ErrorClass<PluginsArg extends Plugins = []> = ErrorSubclass<
+export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
   PluginsArg,
   ErrorProps,
   ErrorConstructor<PluginsArg>,
@@ -137,7 +137,7 @@ export type CreateSubclass<
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
 ) => ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
-  ? ErrorSubclass<
+  ? SpecificErrorClass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
@@ -146,7 +146,7 @@ export type CreateSubclass<
         InstanceType<ClassOptionsArg['custom']>
       >
     >
-  : ErrorSubclass<
+  : SpecificErrorClass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ParentErrorClass,
