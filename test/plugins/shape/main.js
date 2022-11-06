@@ -30,28 +30,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
 each(
   ErrorClasses,
-  [true, { getProp: true }, { getProp: undefined }],
-  ({ title }, ErrorClass, methods) => {
-    test(`Should validate plugin.instanceMethods | ${title}`, (t) => {
-      t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, instanceMethods: methods }],
-        }),
-      )
-    })
-
-    test(`Should validate plugin.staticMethods | ${title}`, (t) => {
-      t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, staticMethods: methods }],
-        }),
-      )
-    })
-  },
-)
-
-each(
-  ErrorClasses,
   [
     { isOptions: undefined },
     { getOptions: undefined },
