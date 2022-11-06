@@ -22,12 +22,14 @@ export const normalizeCause = function ({
     return { message, opts }
   }
 
-  if (!isAnyNormalize) {
-    return { message, opts: { ...opts, cause: AnyError.normalize(cause) } }
+  if (isAnyNormalize) {
+    return {
+      message: hasSpecificName(cause) ? `${cause.name}:` : message,
+      opts,
+    }
   }
 
-  const messageA = hasSpecificName(cause) ? `${cause.name}:` : message
-  return { message: messageA, opts }
+  return { message, opts: { ...opts, cause: AnyError.normalize(cause) } }
 }
 
 const hasSpecificName = function (cause) {
