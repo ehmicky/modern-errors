@@ -1,10 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../../helpers/main.js'
+import { ErrorClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
-
-const { ErrorClasses } = getClasses()
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`"props" are validated | ${title}`, (t) => {

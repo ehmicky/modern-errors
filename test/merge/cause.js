@@ -1,13 +1,11 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../helpers/main.js'
+import { ErrorClasses } from '../helpers/main.js'
 import {
   getUnknownErrors,
   getUnknownErrorInstances,
 } from '../helpers/unknown.js'
-
-const { ErrorClasses } = getClasses()
 
 const assertInstanceOf = function (t, error, ErrorClass) {
   t.true(error instanceof ErrorClass)

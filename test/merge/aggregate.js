@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, ModernError } from '../helpers/main.js'
-
-const { ErrorClasses } = getClasses()
+import { ErrorClasses, ModernError } from '../helpers/main.js'
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`error.errors can be set | ${title}`, (t) => {

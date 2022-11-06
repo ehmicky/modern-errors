@@ -1,9 +1,11 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, ModernError } from '../../helpers/main.js'
-
-const { ErrorClasses, ErrorSubclasses } = getClasses()
+import {
+  ErrorClasses,
+  ErrorSubclasses,
+  ModernError,
+} from '../../helpers/main.js'
 
 each([null, '', Function, Object, Error], ({ title }, invalidErrorClass) => {
   test(`ErrorClass.normalize() second argument must be a ModernError class | ${title}`, (t) => {

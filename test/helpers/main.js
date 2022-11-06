@@ -11,7 +11,9 @@ export const getPluginClasses = function () {
 export const getClasses = function (opts) {
   const AnyError = ModernError.subclass('AnyError', opts)
   const ChildError = AnyError.subclass('ChildError')
-  const ErrorSubclasses = [AnyError, ChildError]
-  const ErrorClasses = [ModernError, ...ErrorSubclasses]
-  return { ErrorClasses, ErrorSubclasses }
+  const ErrorSubclassesArg = [AnyError, ChildError]
+  const ErrorClassesArg = [ModernError, ...ErrorSubclassesArg]
+  return { ErrorClasses: ErrorClassesArg, ErrorSubclasses: ErrorSubclassesArg }
 }
+
+export const { ErrorClasses, ErrorSubclasses } = getClasses()

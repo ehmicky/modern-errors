@@ -2,10 +2,8 @@ import test from 'ava'
 import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
-import { getClasses } from '../../helpers/main.js'
+import { ErrorClasses } from '../../helpers/main.js'
 import { getUnknownErrors } from '../../helpers/unknown.js'
-
-const { ErrorClasses } = getClasses()
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Name of cause with same class is ignored | ${title}`, (t) => {

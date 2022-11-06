@@ -1,10 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, ModernError } from './helpers/main.js'
+import { ErrorClasses, ErrorSubclasses, ModernError } from './helpers/main.js'
 import { getUnknownErrors } from './helpers/unknown.js'
-
-const { ErrorClasses, ErrorSubclasses } = getClasses()
 
 const { propertyIsEnumerable: isEnum } = Object.prototype
 

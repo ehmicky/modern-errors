@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../helpers/main.js'
-
-const { ErrorClasses } = getClasses()
+import { ErrorClasses } from '../helpers/main.js'
 
 class NullClass {}
 // eslint-disable-next-line fp/no-mutating-methods

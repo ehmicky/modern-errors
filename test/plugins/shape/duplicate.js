@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../../helpers/main.js'
-
-const { ErrorClasses } = getClasses()
+import { ErrorClasses } from '../../helpers/main.js'
 
 const definePluginsSameClass = function (ErrorClass, pluginA, pluginB) {
   return ErrorClass.subclass.bind(undefined, 'TestError', {
