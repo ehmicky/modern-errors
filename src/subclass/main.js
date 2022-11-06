@@ -13,6 +13,8 @@ import { getErrorClass } from './custom.js'
 //  - Share options and custom logic between error classes
 //  - Bind and override options and custom logic between modules
 //  - Only export parent classes to consumers
+// We do not validate duplicate class names since sub-groups of classes might
+// be used separately, explaining those duplicate names.
 export const createSubclass = function ({
   ErrorClass,
   ErrorClasses,
@@ -23,10 +25,6 @@ export const createSubclass = function ({
   classOpts,
   plugins,
 }) {
-  if (ErrorClasses[className] !== undefined) {
-    throw new TypeError(`Error class "${className}" has already been defined.`)
-  }
-
   const classOptsA = getClassOpts(plugins, parentOpts, classOpts)
   setErrorName(ErrorClass, className)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
