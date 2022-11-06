@@ -2,27 +2,19 @@ import { runInNewContext } from 'node:vm'
 
 import { defineClassOpts } from './main.js'
 
-export const { TestError, UnknownError, AnyError } = defineClassOpts()
-
-const ChildTestError = TestError.subclass('ChildTestError')
-export const KnownErrorClasses = [TestError, ChildTestError]
+export const { TestError, AnyError } = defineClassOpts()
+export const ChildTestError = TestError.subclass('ChildTestError')
+export const KnownErrorClasses = [AnyError, TestError, ChildTestError]
 
 export const getKnownErrors = function () {
   return KnownErrorClasses.map(getBoundError)
 }
 
-const ChildUnknownError = UnknownError.subclass('ChildUnknownError')
-export const UnknownErrorClasses = [UnknownError, ChildUnknownError]
-
 export const getUnknownErrors = function () {
-  return UnknownErrorClasses.map(getBoundError)
+  return [...getUnknownErrorInstances(), () => 'message', () => {}]
 }
 
-export const getNativeErrors = function () {
-  return [...getNativeErrorInstances(), () => 'message', () => {}]
-}
-
-export const getNativeErrorInstances = function () {
+export const getUnknownErrorInstances = function () {
   return [TypeError, Error, runInNewContext('Error')].map(getBoundError)
 }
 

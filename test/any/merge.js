@@ -2,14 +2,11 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  TestError,
-  UnknownError,
   AnyError,
+  TestError,
+  ChildTestError,
   KnownErrorClasses,
-  UnknownErrorClasses,
-  getKnownErrors,
   getUnknownErrors,
-  getNativeErrors,
 } from '../helpers/known.js'
 
 const assertInstanceOf = function (t, error, ErrorClass) {
@@ -18,40 +15,52 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-each([...getKnownErrors(), ...getUnknownErrors()], ({ title }, getError) => {
-  test(`AnyError with known cause uses child class | ${title}`, (t) => {
-    const cause = getError()
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`AnyError with known cause uses child class and instance | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
     const error = new AnyError('message', { cause })
     assertInstanceOf(t, error, cause.constructor)
-  })
-})
-
-each(getNativeErrors(), ({ title }, getError) => {
-  test(`AnyError with unknown cause uses UnknownError | ${title}`, (t) => {
-    const cause = getError()
-    const error = new AnyError('message', { cause })
-    assertInstanceOf(t, error, UnknownError)
+    t.is(error, cause)
   })
 })
 
 each(
-  [...KnownErrorClasses, ...UnknownErrorClasses],
-  [...getKnownErrors(), ...getUnknownErrors(), ...getNativeErrors()],
+  KnownErrorClasses,
+  getUnknownErrors(),
   ({ title }, ErrorClass, getError) => {
-    test(`Known class with known or unknown cause uses parent class | ${title}`, (t) => {
+    test(`Unknown cause uses parent class and instance | ${title}`, (t) => {
       const cause = getError()
       const error = new ErrorClass('message', { cause })
       assertInstanceOf(t, error, ErrorClass)
+      t.not(error, cause)
     })
   },
 )
 
-test('AnyError with known cause uses its instance', (t) => {
-  const cause = new TestError('causeMessage')
-  t.is(new AnyError('message', { cause }), cause)
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage')
+    const error = new ErrorClass('message', { cause })
+    assertInstanceOf(t, error, ErrorClass)
+    t.is(error, cause)
+  })
 })
 
-each([TestError, AnyError], ({ title }, ErrorClass) => {
+test('ErrorClass with cause of subclass use child class and instance', (t) => {
+  const cause = new ChildTestError('causeMessage')
+  const error = new TestError('message', { cause })
+  assertInstanceOf(t, error, ChildTestError)
+  t.is(error, cause)
+})
+
+test('ErrorClass with cause of superclass use parent class', (t) => {
+  const cause = new TestError('causeMessage')
+  const error = new ChildTestError('message', { cause })
+  assertInstanceOf(t, error, ChildTestError)
+  t.not(error, cause)
+})
+
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`"cause" is merged | ${title}`, (t) => {
     const outerMessage = 'message'
     const innerMessage = 'causeMessage'
