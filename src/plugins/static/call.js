@@ -4,17 +4,10 @@ import { getPluginInfo } from '../info/main.js'
 
 // Called on `ErrorClass[methodName](...args)`
 export const callStaticMethod = function (
-  {
-    methodFunc,
-    plugin,
-    plugins,
-    ErrorClass: { name: className },
-    ErrorClasses,
-    errorData,
-  },
+  { methodFunc, plugin, plugins, ErrorClass, ErrorClasses, errorData },
   ...args
 ) {
-  const { classOpts } = ErrorClasses[className]
+  const { classOpts } = ErrorClasses[ErrorClass.name]
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
   const options = finalizePluginsOpts({
     pluginsOpts: classOpts,
@@ -25,7 +18,7 @@ export const callStaticMethod = function (
   const info = getPluginInfo({
     options,
     errorData,
-    className,
+    ErrorClass,
     ErrorClasses,
     methodOpts,
     plugins,

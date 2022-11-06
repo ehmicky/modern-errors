@@ -12,14 +12,14 @@ export const getErrorPluginInfo = function ({
   plugins,
   plugin,
 }) {
-  const { className, options } = getErrorInfo(
+  const { ErrorClass, options } = getErrorInfo(
     { errorData, ErrorClasses, methodOpts, plugins, plugin },
     error,
   )
   const info = getPluginInfo({
     options,
     errorData,
-    className,
+    ErrorClass,
     ErrorClasses,
     methodOpts,
     plugins,
@@ -32,7 +32,7 @@ export const getErrorPluginInfo = function ({
 export const getPluginInfo = function ({
   options,
   errorData,
-  className,
+  ErrorClass,
   ErrorClasses,
   methodOpts,
   plugins,
@@ -45,15 +45,14 @@ export const getPluginInfo = function ({
     plugins,
     plugin,
   })
-  const ErrorClassesA = getErrorClasses(ErrorClasses, className)
-  return { options, className, ErrorClasses: ErrorClassesA, errorInfo }
+  const ErrorClassesA = getErrorClasses(ErrorClasses, ErrorClass)
+  return { options, ErrorClass, ErrorClasses: ErrorClassesA, errorInfo }
 }
 
 // `ErrorClasses` are passed to all plugin methods.
 // It excludes parent classes.
 // A shallow copy is done to prevent mutations.
-const getErrorClasses = function (ErrorClasses, parentClassName) {
-  const ParentClass = ErrorClasses[parentClassName].ErrorClass
+const getErrorClasses = function (ErrorClasses, ParentClass) {
   return Object.fromEntries(
     Object.entries(ErrorClasses)
       .filter(([, { ErrorClass }]) => isSubclass(ErrorClass, ParentClass))
