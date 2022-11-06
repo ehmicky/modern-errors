@@ -7,5 +7,5 @@ export const getClasses = function (opts) {
   const ChildError = AnyError.subclass('ChildError')
   const ErrorSubclasses = [AnyError, ChildError]
   const ErrorClasses = [ModernError, ...ErrorSubclasses]
-  return { ErrorClasses, ErrorSubclasses, AnyError, ChildError }
+  return { ErrorClasses, ErrorSubclasses, ChildError }
 }
