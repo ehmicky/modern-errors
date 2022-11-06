@@ -62,7 +62,7 @@ const hasSpecificName = function (cause) {
 // The error name is not kept if generic
 const GENERIC_NAMES = new Set([
   '',
-  // 'Error',
+  'Error',
   'ReferenceError',
   'TypeError',
   'SyntaxError',
@@ -70,6 +70,7 @@ const GENERIC_NAMES = new Set([
   'URIError',
   'EvalError',
   'AggregateError',
+  'AnyError',
 ])
 
 const addSpecificName = function (cause) {
