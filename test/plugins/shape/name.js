@@ -1,10 +1,13 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineGlobalOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
+const { ErrorClasses } = getClasses()
+
 each(
+  ErrorClasses,
   [
     undefined,
     true,
@@ -19,9 +22,13 @@ each(
     'wrap',
     'constructorArgs',
   ],
-  ({ title }, name) => {
+  ({ title }, ErrorClass, name) => {
     test(`Should validate plugin.name | ${title}`, (t) => {
-      t.throws(defineGlobalOpts.bind(undefined, {}, [{ ...TEST_PLUGIN, name }]))
+      t.throws(
+        ErrorClass.subclass.bind(undefined, 'TestError', [
+          { ...TEST_PLUGIN, name },
+        ]),
+      )
     })
   },
 )
