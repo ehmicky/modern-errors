@@ -1,5 +1,7 @@
 import normalizeException from 'normalize-exception'
 
+import { setNonEnumProp } from '../utils/descriptors.js'
+
 // This has two purposes:
 //  - Normalizing exceptions:
 //     - Inside any `catch` block
@@ -25,9 +27,48 @@ import normalizeException from 'normalize-exception'
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
 export const normalize = function ({ ErrorClass, AnyError }, error) {
-  return shouldKeepClass(error, ErrorClass, AnyError)
-    ? normalizeException(error)
-    : new ErrorClass('', { cause: error })
+  return normalizeError({ error, ErrorClass, AnyError, parents: [] })
+}
+
+const normalizeError = function ({ error, ErrorClass, AnyError, parents }) {
+  if (parents.includes(error)) {
+    return error
+  }
+
+  const errorA = normalizeAggregateErrors({
+    error,
+    ErrorClass,
+    AnyError,
+    parents,
+  })
+  return shouldKeepClass(errorA, ErrorClass, AnyError)
+    ? normalizeException(errorA, { shallow: true })
+    : new ErrorClass('', { cause: errorA })
+}
+
+// `error.errors` are normalized before `error` so that if some are missing a
+// stack trace, the generated stack trace is coming from `new ErrorClass()`
+// instead of `normalizeException()`, since this is a nicer stack
+const normalizeAggregateErrors = function ({
+  error,
+  ErrorClass,
+  AnyError,
+  parents,
+}) {
+  if (!Array.isArray(error.errors)) {
+    return error
+  }
+
+  const errorsA = error.errors.map((aggregateError) =>
+    normalizeError({
+      error: aggregateError,
+      ErrorClass,
+      AnyError,
+      parents: [...parents, error],
+    }),
+  )
+  setNonEnumProp(error, 'errors', errorsA)
+  return error
 }
 
 const shouldKeepClass = function (error, ErrorClass, AnyError) {
