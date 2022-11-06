@@ -1,63 +1,66 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts, defineGlobalOpts } from '../helpers/main.js'
+import { getClasses } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
-const { TestError } = defineClassOpts()
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorClasses } = getClasses()
 
-test('plugin.instanceMethods are set on known errors', (t) => {
-  t.is(typeof new TestError('message').getInstance, 'function')
-})
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.instanceMethods are set on known errors | ${title}`, (t) => {
+    t.is(typeof new ErrorClass('message').getInstance, 'function')
+  })
 
-test('plugin.instanceMethods are inherited', (t) => {
-  t.false(hasOwn.call(new TestError('message'), 'getInstance'))
-})
+  test(`plugin.instanceMethods are inherited | ${title}`, (t) => {
+    t.false(hasOwn.call(new ErrorClass('message'), 'getInstance'))
+  })
 
-test('plugin.instanceMethods are not enumerable', (t) => {
-  t.false(
-    Object.getOwnPropertyDescriptor(
-      Object.getPrototypeOf(TestError).prototype,
-      'getInstance',
-    ).enumerable,
-  )
-})
+  test(`plugin.instanceMethods are not enumerable | ${title}`, (t) => {
+    t.false(
+      Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'getInstance')
+        .enumerable,
+    )
+  })
 
-test('plugin.instanceMethods must have the right context', (t) => {
-  const error = new TestError('message')
-  t.notThrows(error.getInstance.bind(error))
-  t.throws(error.getInstance)
-})
+  test(`plugin.instanceMethods validate the context | ${title}`, (t) => {
+    const error = new ErrorClass('message')
+    t.notThrows(error.getInstance.bind(error))
+    t.throws(error.getInstance)
+  })
 
-test('plugin.instanceMethods are passed the error', (t) => {
-  const error = new TestError('message')
-  t.is(error.getInstance().error, error)
-})
+  test(`plugin.instanceMethods are passed the error | ${title}`, (t) => {
+    const error = new ErrorClass('message')
+    t.is(error.getInstance().error, error)
+  })
 
-test('plugin.instanceMethods are passed the normalized instance options', (t) => {
-  const error = new TestError('message', { prop: true })
-  t.true(error.getInstance().options.prop)
-})
+  test(`plugin.instanceMethods are passed the normalized instance options | ${title}`, (t) => {
+    const error = new ErrorClass('message', { prop: true })
+    t.true(error.getInstance().options.prop)
+  })
 
-test('plugin.instanceMethods are passed the normalized class options', (t) => {
-  const { TestError: OtherTestError } = defineClassOpts({ prop: true })
-  t.true(new OtherTestError('message').getInstance().options.prop)
+  test(`plugin.instanceMethods are passed the normalized class options | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', { prop: true })
+    t.true(new TestError('message').getInstance().options.prop)
+  })
 })
 
 each(
+  ErrorClasses,
   [
     ...new Set([
       ...Reflect.ownKeys(Error.prototype),
       ...Reflect.ownKeys(Object.prototype),
     ]),
   ],
-  ({ title }, propName) => {
+  ({ title }, ErrorClass, propName) => {
     test(`plugin.instanceMethods cannot redefine native Error.prototype.* | ${title}`, (t) => {
       t.throws(
-        defineGlobalOpts.bind(undefined, {}, [
-          { name: 'one', instanceMethods: { [propName]() {} } },
-        ]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, instanceMethods: { [propName]() {} } }],
+        }),
       )
     })
   },
