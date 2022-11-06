@@ -66,8 +66,6 @@ export default function modernErrors<
 //  - Type narrowing with `instanceof BaseError` does not work if there are any
 //    plugins with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
-//  - `new BaseError()` should fail if the second argument is not an object with
-//    a `cause` property
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
 //    method `methodName(...) { ... }`. This is due to the following bug:
