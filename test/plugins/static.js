@@ -1,35 +1,27 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineClassOpts,
-  defineGlobalOpts,
-  createAnyError,
-} from '../helpers/main.js'
+import { getClasses } from '../helpers/main.js'
+import { TEST_PLUGIN } from '../helpers/plugin.js'
 
-const { AnyError } = defineClassOpts()
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorClasses } = getClasses()
 
-test('plugin.staticMethods are set on AnyError', (t) => {
-  t.is(typeof AnyError.getProp, 'function')
-})
-
-test('plugin.staticMethods cannot be called before AnyError.subclass()', (t) => {
-  const TestAnyError = createAnyError()
-  t.throws(TestAnyError.getProp)
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.staticMethods are set on ErrorClass | ${title}`, (t) => {
+    t.is(typeof ErrorClass.getProp, 'function')
+  })
 })
 
 each(
-  [
-    'subclass',
-    'normalize',
-    ...new Set([...Reflect.ownKeys(Error), ...Reflect.ownKeys(Function)]),
-  ],
-  ({ title }, propName) => {
+  ErrorClasses,
+  Reflect.ownKeys(Error),
+  ({ title }, ErrorClass, propName) => {
     test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
       t.throws(
-        defineGlobalOpts.bind(undefined, {}, [
-          { name: 'one', staticMethods: { [propName]() {} } },
-        ]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, staticMethods: { [propName]() {} } }],
+        }),
       )
     })
   },
