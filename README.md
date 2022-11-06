@@ -323,7 +323,8 @@ try {
 }
 ```
 
-Except when the outer error's class is a parent class, such as [`AnyError`](#create-error-classes).
+Except when the outer error's class is a parent class, such as
+[`AnyError`](#create-error-classes).
 
 ```js
 try {
