@@ -1,3 +1,5 @@
+import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
+
 import { setAggregateErrors } from './any/aggregate.js'
 import { setConstructorArgs } from './any/args.js'
 import { mergeCause } from './any/merge.js'
@@ -6,8 +8,7 @@ import { validateSubclass } from './any/subclass.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
-import { CoreError } from './subclass/core.js'
-import { createSubclass } from './subclass/main.js'
+import { createClass } from './subclass/main.js'
 // eslint-disable-next-line import/max-dependencies
 import { classesData, instancesData } from './subclass/map.js'
 
@@ -32,12 +33,14 @@ import { classesData, instancesData } from './subclass/map.js'
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
 /* eslint-disable fp/no-this */
-class ModernBaseError extends CoreError {
+class ModernBaseError extends Error {
   constructor(message, opts, ...args) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
     const optsA = normalizeOpts(ErrorClass, opts)
     super(message, optsA)
+    ensureCorrectClass(this, ErrorClass)
+    ponyfillCause(this, optsA)
     /* c8 ignore start */
     // eslint-disable-next-line no-constructor-return
     return modifyError({ currentError: this, opts: optsA, args, ErrorClass })
@@ -57,8 +60,13 @@ const modifyError = function ({ currentError, opts, args, ErrorClass }) {
 }
 
 /* eslint-enable fp/no-this */
-const ModernError = createSubclass(CoreError, 'ModernError', {
-  custom: ModernBaseError,
+const ModernError = createClass({
+  ParentError: Error,
+  ErrorClass: ModernBaseError,
+  parentOpts: {},
+  classOpts: {},
+  parentPlugins: [],
   plugins: CORE_PLUGINS,
+  className: 'ModernError',
 })
 export default ModernError

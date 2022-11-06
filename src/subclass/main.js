@@ -18,23 +18,6 @@ import { classesData } from './map.js'
 // We do not validate duplicate class names since sub-groups of classes might
 // be used separately, explaining those duplicate names.
 export const createSubclass = function (ParentError, className, classOpts) {
-  const {
-    ErrorClass,
-    classOpts: classOptsA,
-    plugins,
-  } = applyClassOpts(ParentError, classOpts)
-  classesData.set(ErrorClass, {
-    classOpts: classOptsA,
-    plugins,
-    subclasses: [],
-  })
-  addParentSubclass(ErrorClass, ParentError)
-  setErrorName(ErrorClass, className)
-  setClassMethods(ErrorClass, plugins)
-  return ErrorClass
-}
-
-const applyClassOpts = function (ParentError, classOpts) {
   const { classOpts: parentOpts, plugins: parentPlugins } =
     classesData.get(ParentError)
   const { custom, plugins, ...classOptsA } = normalizeClassOpts(
@@ -42,9 +25,16 @@ const applyClassOpts = function (ParentError, classOpts) {
     classOpts,
   )
   const ErrorClass = getErrorClass(ParentError, custom)
-  const pluginsA = normalizePlugins(parentPlugins, plugins, ParentError)
-  const classOptsB = getClassOpts(parentOpts, classOptsA, pluginsA)
-  return { ErrorClass, classOpts: classOptsB, plugins: pluginsA }
+  addParentSubclass(ErrorClass, ParentError)
+  return createClass({
+    ParentError,
+    ErrorClass,
+    parentOpts,
+    classOpts: classOptsA,
+    parentPlugins,
+    plugins,
+    className,
+  })
 }
 
 const addParentSubclass = function (ErrorClass, ParentError) {
@@ -53,6 +43,28 @@ const addParentSubclass = function (ErrorClass, ParentError) {
     ...classProps,
     subclasses: [...subclasses, ErrorClass],
   })
+}
+
+// Run by top-level `ModernError` as well
+export const createClass = function ({
+  ParentError,
+  ErrorClass,
+  parentOpts,
+  classOpts,
+  parentPlugins,
+  plugins,
+  className,
+}) {
+  const pluginsA = normalizePlugins(parentPlugins, plugins, ParentError)
+  const classOptsA = getClassOpts(parentOpts, classOpts, pluginsA)
+  classesData.set(ErrorClass, {
+    classOpts: classOptsA,
+    plugins: pluginsA,
+    subclasses: [],
+  })
+  setErrorName(ErrorClass, className)
+  setClassMethods(ErrorClass, pluginsA)
+  return ErrorClass
 }
 
 const setClassMethods = function (ErrorClass, plugins) {
