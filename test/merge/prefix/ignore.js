@@ -52,11 +52,13 @@ each(
     test(`Generated stacks are not used | ${title}`, (t) => {
       const cause = getUnknownError()
       t.false(
-        new ErrorClass('', { cause }).stack.includes('normalize-exception'),
+        new ErrorClass('', { cause }).stack.includes(GENERATED_STACK_HINT),
       )
     })
   },
 )
+
+const GENERATED_STACK_HINT = 'normalize-exception'
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Handle invalid error message | ${title}`, (t) => {
