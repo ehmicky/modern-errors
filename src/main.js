@@ -2,7 +2,6 @@ import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
 
 import { setAggregateErrors } from './any/aggregate.js'
 import { mergeCause } from './any/merge.js'
-import { normalizeOpts } from './any/options.js'
 import { validateSubclass } from './any/subclass.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
@@ -43,14 +42,17 @@ class ModernBaseError extends Error {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
     const { plugins } = classesData.get(ErrorClass)
-    const optsA = normalizeOpts(ErrorClass, opts)
+    const { nativeOpts, errors, pluginsOpts } = computePluginsOpts(
+      ErrorClass,
+      plugins,
+      opts,
+    )
 
-    super(message, optsA)
+    super(message, nativeOpts)
 
     ensureCorrectClass(this, ErrorClass)
-    ponyfillCause(this, optsA)
-    const { opts: optsB, pluginsOpts } = computePluginsOpts(plugins, optsA)
-    setAggregateErrors(this, optsB)
+    ponyfillCause(this, nativeOpts)
+    setAggregateErrors(this, errors)
 
     const error = mergeCause(this, ErrorClass)
     instancesData.set(error, { pluginsOpts })
