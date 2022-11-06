@@ -30,7 +30,7 @@ const validateEachPlugin = function ({
 
   if (pluginA.name === pluginB.name) {
     throw new TypeError(
-      `${ParentError.name}.subclass() "plugins" option must not include "${pluginA.fullName}": this plugin has already been included.`,
+      `The "plugins" option of ${ParentError.name}.subclass() must not include "${pluginA.fullName}": this plugin has already been included.`,
     )
   }
 

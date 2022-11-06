@@ -10,25 +10,29 @@ import { validatePluginName } from './name.js'
 // Validate and normalize plugins.
 // Also merge plugins of parent and child classes.
 export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
-  const pluginsA = normalizePluginsOpt(plugins)
-  const pluginsB = pluginsA.map(normalizePlugin)
+  const pluginsA = normalizePluginsOpt(ParentError, plugins)
+  const pluginsB = pluginsA.map((plugin) =>
+    normalizePlugin(plugin, ParentError),
+  )
   const pluginsC = [...parentPlugins, ...pluginsB]
   validateDuplicatePlugins(pluginsC, ParentError)
   return pluginsC
 }
 
-const normalizePluginsOpt = function (pluginsOpt = []) {
+const normalizePluginsOpt = function (ParentError, pluginsOpt = []) {
   if (!Array.isArray(pluginsOpt)) {
-    throw new TypeError(`The "plugins" option must be an array: ${pluginsOpt}`)
+    throw new TypeError(
+      `The "plugins" option of "${ParentError.name}.subclass()" must be an array: ${pluginsOpt}`,
+    )
   }
 
   return pluginsOpt
 }
 
-const normalizePlugin = function (plugin) {
+const normalizePlugin = function (plugin, ParentError) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
-      `The "plugins" option must be an array of plugin objects: ${plugin}`,
+      `The "plugins" option of "${ParentError.name}.subclass()" must be an array of plugin objects: ${plugin}`,
     )
   }
 
