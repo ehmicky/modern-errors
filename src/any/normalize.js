@@ -15,8 +15,14 @@ import normalizeException from 'normalize-exception'
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
 export const normalize = function ({ ErrorClass, AnyError }, error) {
-  return error instanceof AnyError &&
-    !(error.constructor === AnyError && ErrorClass !== AnyError)
+  return shouldKeepClass(error, ErrorClass, AnyError)
     ? normalizeException(error)
     : new ErrorClass('', { cause: error })
+}
+
+const shouldKeepClass = function (error, ErrorClass, AnyError) {
+  return (
+    error.constructor === ErrorClass ||
+    (error instanceof AnyError && error.constructor !== AnyError)
+  )
 }
