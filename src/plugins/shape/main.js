@@ -13,10 +13,10 @@ export const normalizePlugins = function (plugins = []) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
-  const pluginsA = [...CORE_PLUGINS, ...plugins]
-  return pluginsA
-    .map(normalizePluginName)
-    .map((plugin) => normalizePlugin(plugin, pluginsA))
+  const pluginsA = [...CORE_PLUGINS, ...plugins].map(normalizePluginName)
+  return pluginsA.map((plugin, index) =>
+    normalizePlugin(plugin, index, pluginsA),
+  )
 }
 
 // Plugins included by default.
@@ -33,7 +33,8 @@ const normalizePluginName = function (plugin) {
   return validatePluginName(plugin)
 }
 
-const normalizePlugin = function (plugin, plugins) {
+const normalizePlugin = function (plugin, index, plugins) {
+  validateTwicePlugin(plugin, index, plugins)
   validateOptionalFuncs(plugin)
   const pluginA = normalizeMethods({
     plugin,
@@ -54,6 +55,18 @@ const normalizePlugin = function (plugin, plugins) {
   const pluginC = normalizeIsOptions({ plugin: pluginB })
   const pluginD = normalizeGetOptions({ plugin: pluginC })
   return pluginD
+}
+
+const validateTwicePlugin = function (plugin, index, plugins) {
+  const hasTwicePlugin = plugins.some(
+    (pluginA, indexA) => indexA !== index && pluginA.name === plugin.name,
+  )
+
+  if (hasTwicePlugin) {
+    throw new TypeError(
+      `The plugin "${plugin.fullName}" must not be passed twice.`,
+    )
+  }
 }
 
 const validateOptionalFuncs = function (plugin) {

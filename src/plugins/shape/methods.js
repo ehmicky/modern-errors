@@ -49,7 +49,7 @@ const validateMethod = function ({
 
   if (forbiddenNames.has(methodName) || methodName in coreObject) {
     throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "${propName}.${methodName}" property name is invalid: ${coreObjectName}.${methodName} already exists.`,
+      `The plugin "${plugin.fullName}"'s "${propName}.${methodName}" property name is invalid: "${coreObjectName}.${methodName}" already exists.`,
     )
   }
 
@@ -64,12 +64,13 @@ const validateDuplicateMethod = function ({
 }) {
   const duplicatePlugin = plugins.find(
     (pluginA) =>
-      pluginA !== plugin && pluginA[propName]?.[methodName] !== undefined,
+      pluginA[propName]?.[methodName] !== undefined &&
+      pluginA.name !== plugin.name,
   )
 
   if (duplicatePlugin !== undefined) {
     throw new TypeError(
-      `Both plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" must not define the same "${propName}.${methodName}" property`,
+      `Both plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" must not define the same "${propName}.${methodName}" property.`,
     )
   }
 }
