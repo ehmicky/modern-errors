@@ -70,8 +70,10 @@ each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
     const causeName = 'NamedError'
     const error = new ErrorClass(causeMessage)
     error.name = causeName
-    const newError = new TestError(message, { cause: error })
-    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
+    error.stack = error.stack.replace(ErrorClass.name, causeName)
+    const newError = new TestError('', { cause: error })
+    t.is(newError.message, `${causeName}: ${causeMessage}`)
+    t.true(newError.stack.includes(`${causeName}:`))
     t.is(error.message, causeMessage)
   })
 })
