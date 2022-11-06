@@ -62,14 +62,23 @@ each(
   OtherSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
+    const expectedErrorClasses = [
+      ErrorClass,
+      ...OtherSubclasses.filter((ErrorSubclass) =>
+        Object.prototype.isPrototypeOf.call(ErrorClass, ErrorSubclass),
+      ),
+    ]
+
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-      t.deepEqual(getInfo(ErrorClass).ErrorClasses, [
-        ErrorClass,
-        // eslint-disable-next-line max-nested-callbacks
-        ...OtherSubclasses.filter((ErrorSubclass) =>
-          Object.prototype.isPrototypeOf.call(ErrorClass, ErrorSubclass),
-        ),
-      ])
+      t.deepEqual(getInfo(ErrorClass).ErrorClasses, expectedErrorClasses)
+    })
+
+    test(`errorInfo is passed ErrorClasses | ${title}`, (t) => {
+      const { errorInfo } = getInfo(ErrorClass)
+      t.deepEqual(
+        errorInfo(new ErrorClass('test')).ErrorClasses,
+        expectedErrorClasses,
+      )
     })
   },
 )
