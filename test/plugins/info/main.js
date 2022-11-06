@@ -6,78 +6,66 @@ import {
   getInstanceInfo,
   getStaticInfo,
 } from '../../helpers/info.js'
-import { defineClassOpts, defineGlobalOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
+import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-const ErrorClasses = defineClassOpts()
-const { TestError, UnknownError, AnyError } = ErrorClasses
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
 each(
+  ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  ({ title }, getValues) => {
-    test(`plugin.properties|instanceMethods|staticMethods is passed AnyError | ${title}`, (t) => {
-      t.is(getValues({ ErrorClasses }).AnyError, AnyError)
+  ({ title }, ErrorClass, getValues) => {
+    test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClass | ${title}`, (t) => {
+      t.is(getValues(ErrorClass).ErrorClass, ErrorClass)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClasses | ${title}`, (t) => {
-      t.deepEqual(getValues({ ErrorClasses }).ErrorClasses, {
-        TestError,
-        UnknownError,
-      })
+      t.true(Array.isArray(getValues(ErrorClass).ErrorClasses))
     })
 
     test(`plugin.properties|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
-      // eslint-disable-next-line fp/no-mutation, no-param-reassign
-      getValues({ ErrorClasses }).ErrorClasses.prop = true
-      t.false('prop' in AnyError.getProp().ErrorClasses)
+      const { ErrorClasses: ErrorClassesInfo } = getValues(ErrorClass)
+      const { length } = ErrorClassesInfo
+      // eslint-disable-next-line fp/no-mutating-methods
+      ErrorClassesInfo.push(true)
+      t.is(ErrorClass.getProp().ErrorClasses.length, length)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods cannot modify options | ${title}`, (t) => {
       // eslint-disable-next-line fp/no-mutation, no-param-reassign
-      getValues({ ErrorClasses }).options.prop = false
-      t.is(AnyError.getProp().options.prop, undefined)
+      getValues(ErrorClass).options.prop = false
+      t.is(ErrorClass.getProp().options.prop, undefined)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods has "full: true" with getOptions() | ${title}`, (t) => {
-      t.true(getValues({ ErrorClasses }).options.full)
+      t.true(getValues(ErrorClass).options.full)
     })
 
     test(`plugin.properties|instanceMethods|staticMethods is passed errorInfo | ${title}`, (t) => {
-      t.is(typeof getValues({ ErrorClasses }).errorInfo, 'function')
+      t.is(typeof getValues(ErrorClass).errorInfo, 'function')
+    })
+
+    test(`plugin.properties|instanceMethods|staticMethods get the class options | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError', { prop: true })
+      t.true(getValues(TestError).options.prop)
     })
   },
 )
 
-each(
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  ({ title }, getValues) => {
-    test(`plugin.properties|instanceMethods|staticMethods get the global options | ${title}`, (t) => {
-      const OtherErrorClasses = defineGlobalOpts({ prop: true })
-      t.true(getValues({ ErrorClasses: OtherErrorClasses }).options.prop)
-    })
-  },
-)
-
-each([getPropertiesInfo, getInstanceInfo], ({ title }, getValues) => {
-  test(`plugin.properties|instanceMethods get the class options | ${title}`, (t) => {
-    const OtherErrorClasses = defineClassOpts({ prop: true })
-    t.true(getValues({ ErrorClasses: OtherErrorClasses }).options.prop)
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.properties gets the instance options | ${title}`, (t) => {
+    t.true(new ErrorClass('test', { prop: true }).properties.options.prop)
   })
-})
 
-test('plugin.properties gets the instance options', (t) => {
-  const error = new TestError('test', { prop: true })
-  t.true(error.properties.options.prop)
-})
+  test(`plugin.instanceMethods gets the instance options | ${title}`, (t) => {
+    t.true(new ErrorClass('test', { prop: true }).getInstance().options.prop)
+  })
 
-test('plugin.instanceMethods gets the instance options', (t) => {
-  const error = new TestError('test', { prop: true })
-  t.true(error.getInstance().options.prop)
-})
+  test(`plugin.properties gets the error | ${title}`, (t) => {
+    t.true(new ErrorClass('test').properties.error instanceof Error)
+  })
 
-test('plugin.properties gets the error', (t) => {
-  t.true(new TestError('test').properties.error instanceof Error)
-})
-
-test('plugin.instanceMethods gets the error', (t) => {
-  t.true(new TestError('test').getInstance().error instanceof Error)
+  test(`plugin.instanceMethods gets the error | ${title}`, (t) => {
+    t.true(new ErrorClass('test').getInstance().error instanceof Error)
+  })
 })

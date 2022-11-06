@@ -27,26 +27,24 @@ export const TEST_PLUGIN = {
 
     return { prop, full }
   },
-  properties(utils) {
+  properties(info) {
     // eslint-disable-next-line fp/no-this
     validateContext(this)
-    const toSet = isPlainObj(utils.options?.prop)
-      ? utils.options?.prop.toSet
-      : {}
-    return { ...toSet, properties: { ...utils } }
+    const toSet = isPlainObj(info.options?.prop) ? info.options?.prop.toSet : {}
+    return { ...toSet, properties: { ...info } }
   },
   instanceMethods: {
-    getInstance(utils, ...args) {
+    getInstance(info, ...args) {
       // eslint-disable-next-line fp/no-this
       validateContext(this)
-      return { ...utils, args }
+      return { ...info, args }
     },
   },
   staticMethods: {
-    getProp(utils, ...args) {
+    getProp(info, ...args) {
       // eslint-disable-next-line fp/no-this
       validateContext(this)
-      return { ...utils, args }
+      return { ...info, args }
     },
   },
 }
