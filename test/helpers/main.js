@@ -11,12 +11,12 @@ export const defineClassOpts = function (classOpts, globalOpts, plugins) {
 }
 
 export const defineDeepCustom = function (childOpts, parentOpts, ...args) {
-  const { AnyError, UnknownError, SimpleCustomError } = defineSimpleCustom(
+  const { AnyError, SimpleCustomError } = defineSimpleCustom(
     parentOpts,
     ...args,
   )
   const TestError = SimpleCustomError.subclass('TestError', childOpts)
-  return { AnyError, UnknownError, SimpleCustomError, TestError }
+  return { AnyError, SimpleCustomError, TestError }
 }
 
 export const defineSimpleCustom = function (classOpts, globalOpts, plugins) {
@@ -37,10 +37,8 @@ export const defineSimpleCustom = function (classOpts, globalOpts, plugins) {
 
 export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
   const AnyError = createAnyError(globalOpts, plugins)
-  const ErrorClassesA =
-    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
-  const ErrorClassesB = createErrorClasses(AnyError, ErrorClassesA)
-  return { AnyError, ...ErrorClassesB }
+  const ErrorClassesA = createErrorClasses(AnyError, ErrorClasses)
+  return { AnyError, ...ErrorClassesA }
 }
 
 export const createAnyError = function (
@@ -50,16 +48,13 @@ export const createAnyError = function (
   return modernErrors(plugins, globalOpts)
 }
 
-const createErrorClasses = function (
-  AnyError,
-  { UnknownError: unknownErrorOpts = {}, ...ErrorClasses },
-) {
-  const UnknownError = AnyError.subclass('UnknownError', unknownErrorOpts)
-  const ErrorClassesA = Object.fromEntries(
-    Object.entries(ErrorClasses).map(([errorName, classOpts]) => [
+const createErrorClasses = function (AnyError, ErrorClasses) {
+  const ErrorClassesA =
+    typeof ErrorClasses === 'function' ? ErrorClasses(AnyError) : ErrorClasses
+  return Object.fromEntries(
+    Object.entries(ErrorClassesA).map(([errorName, classOpts]) => [
       errorName,
       AnyError.subclass(errorName, classOpts),
     ]),
   )
-  return { UnknownError, ...ErrorClassesA }
 }
