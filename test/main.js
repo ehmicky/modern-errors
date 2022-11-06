@@ -47,15 +47,15 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-each(getUnknownErrors(), ({ title }, getUnknownError) => {
-  test(`instanceof can be used with known errors | ${title}`, (t) => {
-    t.false(getUnknownError() instanceof ModernError)
-  })
-})
-
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`instanceof prevents naming collisions | ${title}`, (t) => {
     const OtherError = ModernError.subclass(ErrorClass.name)
     t.false(new OtherError('test') instanceof ErrorClass)
+  })
+})
+
+each(getUnknownErrors(), ({ title }, getUnknownError) => {
+  test(`instanceof can be used with known errors | ${title}`, (t) => {
+    t.false(getUnknownError() instanceof ModernError)
   })
 })

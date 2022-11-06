@@ -14,15 +14,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.false('name' in custom.prototype)
   })
 
-  test(`Core static methods are not enumerable | ${title}`, (t) => {
-    t.deepEqual(Object.keys(ErrorClass), [])
-  })
-
-  test(`Allows duplicate names | ${title}`, (t) => {
-    const DuplicateClass = ErrorClass.subclass(ErrorClass.name)
-    t.is(DuplicateClass.name, ErrorClass.name)
-  })
-
   test(`ErrorClass.name is correct | ${title}`, (t) => {
     t.not(ErrorClass.name, '')
   })
@@ -38,6 +29,14 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const error = new ErrorClass('test')
     t.false(hasOwn.call(error, 'name'))
     t.is(error.name, ErrorClass.name)
+  })
+
+  test(`Allows duplicate names | ${title}`, (t) => {
+    t.is(ErrorClass.subclass(ErrorClass.name).name, ErrorClass.name)
+  })
+
+  test(`Core static methods are not enumerable | ${title}`, (t) => {
+    t.deepEqual(Object.keys(ErrorClass), [])
   })
 
   test(`ErrorClass.subclass() context is bound | ${title}`, (t) => {

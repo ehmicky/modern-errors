@@ -14,6 +14,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
   test(`Can extend with subclass() | ${title}`, (t) => {
     const ChildError = ErrorClass.subclass('ChildError')
-    t.is(new ChildError('test').name, 'ChildError')
+    t.is(new ChildError('test').constructor, ChildError)
   })
 })

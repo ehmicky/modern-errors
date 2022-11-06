@@ -5,6 +5,32 @@ import { getClasses } from '../helpers/main.js'
 
 const { ErrorClasses } = getClasses()
 
+class NullClass {}
+// eslint-disable-next-line fp/no-mutating-methods
+Object.setPrototypeOf(NullClass, null)
+
+each(
+  ErrorClasses,
+  [
+    null,
+    'TestError',
+    NullClass,
+    Object,
+    Function,
+    () => {},
+    Error,
+    TypeError,
+    class ChildTypeError extends TypeError {},
+    class NoParentError {},
+    class InvalidError extends Object {},
+  ],
+  ({ title }, ErrorClass, custom) => {
+    test(`Validate against invalid "custom" option | ${title}`, (t) => {
+      t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
+    })
+  },
+)
+
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Parent error cannot be passed as is | ${title}`, (t) => {
     t.throws(
@@ -38,31 +64,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
   })
 })
-
-class NullClass {}
-// eslint-disable-next-line fp/no-mutating-methods
-Object.setPrototypeOf(NullClass, null)
-
-each(
-  ErrorClasses,
-  [
-    'TestError',
-    NullClass,
-    Object,
-    Function,
-    () => {},
-    Error,
-    TypeError,
-    class ChildTypeError extends TypeError {},
-    class NoParentError {},
-    class InvalidError extends Object {},
-  ],
-  ({ title }, ErrorClass, custom) => {
-    test(`Validate against invalid "custom" option | ${title}`, (t) => {
-      t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
-    })
-  },
-)
 
 each(ErrorClasses, ['', null], ({ title }, ErrorClass, invalidPrototype) => {
   test(`Validate against invalid prototypes | ${title}`, (t) => {

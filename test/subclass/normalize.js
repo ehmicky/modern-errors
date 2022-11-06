@@ -2,8 +2,15 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { getClasses, ModernError } from '../helpers/main.js'
+import { getUnknownErrors } from '../helpers/unknown.js'
 
-const { ErrorClasses, ErrorSubclasses, ChildError } = getClasses()
+const { ErrorClasses, ErrorSubclasses } = getClasses()
+
+each([null, '', Function, Object, Error], ({ title }, invalidErrorClass) => {
+  test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
+    t.throws(ModernError.normalize.bind(undefined, '', invalidErrorClass))
+  })
+})
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
@@ -22,17 +29,39 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     })
     error.message = true
     const normalizedError = ErrorClass.normalize(error)
-    t.true(normalizedError instanceof ErrorClass)
     t.is(normalizedError.name, name)
     t.false(Object.getOwnPropertyDescriptor(error, 'name').enumerable)
     t.is(normalizedError.message, '')
   })
 
-  test(`ErrorClass.normalize() keeps error class if known | ${title}`, (t) => {
-    const error = new ChildError('test')
-    const normalizedError = ErrorClass.normalize(error)
-    t.is(error, normalizedError)
-    t.is(normalizedError.constructor, ChildError)
+  test(`ErrorClass.normalize() changes error class if superclass | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const error = new ErrorClass('test')
+    t.true(TestError.normalize(error) instanceof TestError)
+  })
+
+  test(`ErrorClass.normalize() keeps error class if same class | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    t.true(ErrorClass.normalize(error) instanceof ErrorClass)
+  })
+
+  test(`ErrorClass.normalize() keeps error class if subclass | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const error = new TestError('test')
+    t.true(ErrorClass.normalize(error) instanceof TestError)
+  })
+
+  test(`ErrorClass.normalize(error, TestError) changes error class if superclass | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const SubTestError = TestError.subclass('SubTestError')
+    const error = new ErrorClass('test')
+    t.true(TestError.normalize(error, SubTestError) instanceof SubTestError)
+  })
+
+  test(`ErrorClass.normalize(error, TestError) keeps error class if same class | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const error = new ErrorClass('test')
+    t.true(ErrorClass.normalize(error, TestError) instanceof TestError)
   })
 
   test(`ErrorClass.normalize() context is bound | ${title}`, (t) => {
@@ -41,10 +70,30 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
+each(
+  ErrorClasses,
+  getUnknownErrors(),
+  ({ title }, ErrorClass, getUnknownError) => {
+    test(`ErrorClass.normalize() changes error class if unknown | ${title}`, (t) => {
+      t.true(ErrorClass.normalize(getUnknownError()) instanceof ErrorClass)
+    })
+
+    test(`ErrorClass.normalize(error, TestError) changes error class if unknown | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError')
+      t.true(TestError.normalize(getUnknownError()) instanceof TestError)
+    })
+  },
+)
+
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`ErrorClass.normalize() second argument must be a subclass | ${title}`, (t) => {
+    const TestError = ModernError.subclass('TestError')
+    t.throws(ErrorClass.normalize.bind(undefined, '', TestError))
+  })
+
   test(`ErrorClass.normalize() prevents naming collisions | ${title}`, (t) => {
     const OtherError = ModernError.subclass(ErrorClass.name)
-    const normalizedError = ErrorClass.normalize(new OtherError('test'))
-    t.is(normalizedError.constructor, ErrorClass)
+    const error = new OtherError('test')
+    t.true(ErrorClass.normalize(error) instanceof ErrorClass)
   })
 })
