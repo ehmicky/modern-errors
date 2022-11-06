@@ -2,13 +2,13 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  KnownErrorClasses,
+  SpecificErrorClasses,
   getUnknownErrors,
+  ModernError,
   AnyError,
 } from '../helpers/known.js'
-import { defineClassOpts } from '../helpers/main.js'
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(SpecificErrorClasses, ({ title }, ErrorClass) => {
   test(`instanceof AnyError can be used with known errors | ${title}`, (t) => {
     t.true(new ErrorClass('test') instanceof AnyError)
   })
@@ -21,7 +21,7 @@ each(getUnknownErrors(), ({ title }, getUnknownError) => {
 })
 
 test('instanceof AnyError prevents naming collisions', (t) => {
-  const { AnyError: OtherAnyError } = defineClassOpts()
+  const OtherAnyError = ModernError.subclass('OtherAnyError')
   t.false(new OtherAnyError('test') instanceof AnyError)
 })
 
