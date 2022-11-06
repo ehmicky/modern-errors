@@ -10,6 +10,7 @@ import { getPluginClasses } from '../../helpers/main.js'
 import { getUnknownErrors } from '../../helpers/unknown.js'
 
 const { ErrorSubclasses } = getPluginClasses()
+const { ErrorSubclasses: OtherSubclasses } = getPluginClasses()
 
 each(
   ErrorSubclasses,
@@ -25,6 +26,23 @@ each(
     test(`errorInfo returns ErrorClass | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass)
       t.is(errorInfo(new ErrorClass('test')).ErrorClass, ErrorClass)
+    })
+  },
+)
+
+each(
+  OtherSubclasses,
+  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  ({ title }, ErrorClass, getInfo) => {
+    test(`errorInfo is passed ErrorClasses | ${title}`, (t) => {
+      const { errorInfo } = getInfo(ErrorClass)
+      t.deepEqual(errorInfo(new ErrorClass('test')).ErrorClasses, [
+        ErrorClass,
+        // eslint-disable-next-line max-nested-callbacks
+        ...OtherSubclasses.filter((ErrorSubclass) =>
+          Object.prototype.isPrototypeOf.call(ErrorClass, ErrorSubclass),
+        ),
+      ])
     })
   },
 )
