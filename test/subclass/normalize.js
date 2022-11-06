@@ -105,6 +105,12 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
       ErrorClass.normalize(error).errors[0].errors[0] instanceof ErrorClass,
     )
   })
+
+  test(`ErrorClass.normalize() handles infinite recursions | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    error.errors = [error]
+    t.deepEqual(ErrorClass.normalize(error).errors, [])
+  })
 })
 
 each(

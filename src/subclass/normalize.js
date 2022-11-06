@@ -42,19 +42,10 @@ export const normalize = function (
 }
 
 const normalizeError = function ({ error, ErrorClass, UnknownError, parents }) {
-  if (parents.includes(error)) {
-    return error
-  }
-
-  const errorA = normalizeAggregateErrors({
-    error,
-    ErrorClass,
-    UnknownError,
-    parents,
-  })
-  return shouldKeepClass(errorA, ErrorClass, UnknownError)
-    ? normalizeException(errorA, { shallow: true })
-    : new UnknownError('', { cause: errorA })
+  normalizeAggregateErrors({ error, ErrorClass, UnknownError, parents })
+  return shouldKeepClass(error, ErrorClass, UnknownError)
+    ? normalizeException(error, { shallow: true })
+    : new UnknownError('', { cause: error })
 }
 
 // `error.errors` are normalized before `error` so that if some are missing a
@@ -67,19 +58,21 @@ const normalizeAggregateErrors = function ({
   parents,
 }) {
   if (!Array.isArray(error?.errors)) {
-    return error
+    return
   }
 
-  const errorsA = error.errors.map((aggregateError) =>
-    normalizeError({
-      error: aggregateError,
-      ErrorClass,
-      UnknownError,
-      parents: [...parents, error],
-    }),
-  )
-  setNonEnumProp(error, 'errors', errorsA)
-  return error
+  const parentsA = [...parents, error]
+  const errors = error.errors
+    .filter((aggregateError) => !parentsA.includes(aggregateError))
+    .map((aggregateError) =>
+      normalizeError({
+        error: aggregateError,
+        ErrorClass,
+        UnknownError,
+        parents: parentsA,
+      }),
+    )
+  setNonEnumProp(error, 'errors', errors)
 }
 
 const shouldKeepClass = function (error, ErrorClass, UnknownError) {
