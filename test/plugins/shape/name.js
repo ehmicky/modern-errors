@@ -25,9 +25,9 @@ each(
   ({ title }, ErrorClass, name) => {
     test(`Should validate plugin.name | ${title}`, (t) => {
       t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', [
-          { ...TEST_PLUGIN, name },
-        ]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, name }],
+        }),
       )
     })
   },

@@ -1,45 +1,57 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineGlobalOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-test('Should allow valid plugins', (t) => {
-  t.notThrows(defineGlobalOpts.bind(undefined, {}, [TEST_PLUGIN]))
-})
+const { ErrorClasses } = getClasses()
 
-test('Should allow passing no plugins', (t) => {
-  t.notThrows(defineGlobalOpts.bind(undefined, {}, []))
-})
+each(ErrorClasses, ({ title }, ErrorClass) => {
+  test(`Should allow valid plugins | ${title}`, (t) => {
+    t.notThrows(
+      ErrorClass.subclass.bind(undefined, 'TestError', {
+        plugins: [TEST_PLUGIN],
+      }),
+    )
+  })
 
-each([TEST_PLUGIN, [true]], ({ title }, plugins) => {
-  test(`Should validate plugins | ${title}`, (t) => {
-    t.throws(defineGlobalOpts.bind(undefined, {}, plugins))
+  test(`Should allow passing no plugins | ${title}`, (t) => {
+    t.notThrows(
+      ErrorClass.subclass.bind(undefined, 'TestError', { plugins: [] }),
+    )
+  })
+
+  test(`Should validate plugin is an object | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', { plugins: [true] }),
+    )
   })
 })
 
 each(
+  ErrorClasses,
   [true, { getProp: true }, { getProp: undefined }],
-  ({ title }, methods) => {
+  ({ title }, ErrorClass, methods) => {
     test(`Should validate plugin.instanceMethods | ${title}`, (t) => {
       t.throws(
-        defineGlobalOpts.bind(undefined, {}, [
-          { ...TEST_PLUGIN, instanceMethods: methods },
-        ]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, instanceMethods: methods }],
+        }),
       )
     })
 
     test(`Should validate plugin.staticMethods | ${title}`, (t) => {
       t.throws(
-        defineGlobalOpts.bind(undefined, {}, [
-          { ...TEST_PLUGIN, staticMethods: methods },
-        ]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, staticMethods: methods }],
+        }),
       )
     })
   },
 )
 
 each(
+  ErrorClasses,
   [
     { isOptions: undefined },
     { getOptions: undefined },
@@ -49,21 +61,27 @@ each(
     { instanceMethods: {} },
     { staticMethods: {} },
   ],
-  ({ title }, opts) => {
+  ({ title }, ErrorClass, opts) => {
     test(`Should allow optional properties | ${title}`, (t) => {
       t.notThrows(
-        defineGlobalOpts.bind(undefined, {}, [{ ...TEST_PLUGIN, ...opts }]),
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, ...opts }],
+        }),
       )
     })
   },
 )
 
-each(['isOptions', 'getOptions', 'properties'], ({ title }, propName) => {
-  test(`Should validate functions | ${title}`, (t) => {
-    t.throws(
-      defineGlobalOpts.bind(undefined, {}, [
-        { ...TEST_PLUGIN, [propName]: true },
-      ]),
-    )
-  })
-})
+each(
+  ErrorClasses,
+  ['isOptions', 'getOptions', 'properties'],
+  ({ title }, ErrorClass, propName) => {
+    test(`Should validate functions | ${title}`, (t) => {
+      t.throws(
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, [propName]: true }],
+        }),
+      )
+    })
+  },
+)
