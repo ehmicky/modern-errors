@@ -3,64 +3,63 @@ import { expectType, expectError } from 'tsd'
 import modernErrors from 'modern-errors'
 
 const BaseError = modernErrors()
-const UnknownError = BaseError.subclass('UnknownError')
-const ChildError = BaseError.subclass('ChildError')
-
-type UnknownInstance = typeof UnknownError['prototype']
-type ChildInstance = typeof ChildError['prototype']
+const CustomError = BaseError.subclass('CustomError', {
+  custom: class extends BaseError {
+    prop = true
+  },
+})
+type CustomInstance = typeof CustomError['prototype']
 
 const unknownErrorsArray = [true] as readonly true[]
 const unknownErrors = [true] as readonly [true]
-const knownErrors = [new ChildError('')] as const
+const knownErrors = [new CustomError('')] as const
 
-expectType<UnknownInstance[]>(
+expectType<Error[]>(
   new BaseError('', { cause: '', errors: unknownErrorsArray }).errors,
 )
-expectType<UnknownInstance[]>(
-  new ChildError('', { errors: unknownErrorsArray }).errors,
-)
-expectType<[UnknownInstance]>(
+expectType<Error[]>(new CustomError('', { errors: unknownErrorsArray }).errors)
+expectType<[Error]>(
   new BaseError('', { cause: '', errors: unknownErrors }).errors,
 )
-expectType<[UnknownInstance]>(
-  new ChildError('', { errors: unknownErrors }).errors,
-)
-expectType<[ChildInstance]>(
+expectType<[Error]>(new CustomError('', { errors: unknownErrors }).errors)
+expectType<[CustomInstance]>(
   new BaseError('', { cause: '', errors: knownErrors }).errors,
 )
-expectType<[ChildInstance]>(new ChildError('', { errors: knownErrors }).errors)
-expectType<UnknownInstance[]>(
+expectType<[CustomInstance]>(
+  new CustomError('', { errors: knownErrors }).errors,
+)
+expectType<Error[]>(
   new BaseError('', {
-    cause: new ChildError('', { errors: unknownErrorsArray }),
+    cause: new CustomError('', { errors: unknownErrorsArray }),
   }).errors,
 )
-expectType<UnknownInstance[]>(
-  new ChildError('', {
-    cause: new ChildError('', { errors: unknownErrorsArray }),
+expectType<Error[]>(
+  new CustomError('', {
+    cause: new CustomError('', { errors: unknownErrorsArray }),
   }).errors,
 )
-expectType<[UnknownInstance]>(
-  new BaseError('', { cause: new ChildError('', { errors: unknownErrors }) })
+expectType<[Error]>(
+  new BaseError('', { cause: new CustomError('', { errors: unknownErrors }) })
     .errors,
 )
-expectType<[UnknownInstance]>(
-  new ChildError('', { cause: new ChildError('', { errors: unknownErrors }) })
+expectType<[Error]>(
+  new CustomError('', { cause: new CustomError('', { errors: unknownErrors }) })
     .errors,
 )
-expectType<[UnknownInstance, ChildInstance]>(
+expectType<[Error, CustomInstance]>(
   new BaseError('', {
-    cause: new ChildError('', { errors: unknownErrors }),
+    cause: new CustomError('', { errors: unknownErrors }),
     errors: knownErrors,
   }).errors,
 )
-expectType<[UnknownInstance, ChildInstance]>(
-  new ChildError('', {
-    cause: new ChildError('', { errors: unknownErrors }),
+expectType<[Error, CustomInstance]>(
+  new CustomError('', {
+    cause: new CustomError('', { errors: unknownErrors }),
     errors: knownErrors,
   }).errors,
 )
 
 expectError(new BaseError('', { cause: '' }).errors)
-expectError(new ChildError('').errors)
+expectError(new CustomError('').errors)
 expectError(new BaseError('', { cause: '', errors: true }))
-expectError(new ChildError('', { errors: true }))
+expectError(new CustomError('', { errors: true }))

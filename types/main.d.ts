@@ -75,10 +75,9 @@ export default function modernErrors<
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `instanceMethods`, `properties()` or `props`, it should work even if it is
 //    not a subtype of it
-//  - Error normalization (`BaseError.normalize()` and aggregate `errors`) is not
-//    applied on errors coming from another `modernErrors()` call, even though
-//    it should (as opposed to errors coming from the same `modernErrors()`
-//    call)
+//  - Error normalization (`BaseError.normalize()`) is not applied on errors
+//    coming from another `modernErrors()` call, even though it should (as
+//    opposed to errors coming from the same `modernErrors()` call)
 //  - `ErrorClass.subclass(..., { custom })`:
 //     - Currently fails if `custom` is not an `BaseError` child, which is
 //       expected

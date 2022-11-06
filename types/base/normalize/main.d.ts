@@ -27,6 +27,6 @@ export type NormalizeError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-> = ErrorArg extends ErrorInstance
+> = ErrorArg extends ErrorInstance<PluginsArg>
   ? ErrorArg
   : BaseErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>
