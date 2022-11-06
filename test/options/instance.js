@@ -2,7 +2,6 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
-import { createAnyError } from '../helpers/main.js'
 
 each(KnownErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
   test(`Allows empty options | ${title}`, (t) => {
@@ -48,40 +47,29 @@ each(SpecificErrorClasses, ({ title }, ErrorClass) => {
     error.properties.options.prop.one = false
     t.true(error.getInstance().options.prop.one)
   })
-})
 
-each(
-  SpecificErrorClasses,
-  SpecificErrorClasses,
-  ({ title }, ErrorClass, ChildClass) => {
-    test(`Child instance options are not unset | ${title}`, (t) => {
-      const cause = new ChildClass('causeMessage', { prop: false })
-      t.false(new ErrorClass('test', { cause }).properties.options.prop)
-    })
-  },
-)
+  test(`Instance options have priority over class options | ${title}`, (t) => {
+    const OtherAnyError = ErrorClass.subclass('TestError', { prop: false })
+    const cause = new OtherAnyError('causeMessage')
+    t.true(
+      new OtherAnyError('test', { cause, prop: true }).properties.options.prop,
+    )
+  })
 
-test('Instance options have priority over class options', (t) => {
-  const OtherAnyError = createAnyError({ prop: false })
-  const cause = new OtherAnyError('causeMessage')
-  t.true(
-    new OtherAnyError('test', { cause, prop: true }).properties.options.prop,
-  )
-})
+  test(`Undefined instance options are ignored | ${title}`, (t) => {
+    const OtherAnyError = ErrorClass.subclass('TestError', { prop: true })
+    const cause = new OtherAnyError('causeMessage')
+    t.true(
+      new OtherAnyError('test', { cause, prop: undefined }).properties.options
+        .prop,
+    )
+  })
 
-test('Undefined instance options are ignored', (t) => {
-  const OtherAnyError = createAnyError({ prop: true })
-  const cause = new OtherAnyError('causeMessage')
-  t.true(
-    new OtherAnyError('test', { cause, prop: undefined }).properties.options
-      .prop,
-  )
-})
-
-test('Undefined instance options do not unset class options', (t) => {
-  const OtherAnyError = createAnyError({ prop: false })
-  const cause = new OtherAnyError('causeMessage')
-  t.false(new OtherAnyError('test', { cause }).properties.options.prop)
+  test(`Not defined instance options are ignored | ${title}`, (t) => {
+    const OtherAnyError = ErrorClass.subclass('TestError', { prop: true })
+    const cause = new OtherAnyError('causeMessage')
+    t.true(new OtherAnyError('test', { cause }).properties.options.prop)
+  })
 })
 
 each(
@@ -93,6 +81,17 @@ each(
       t.true(
         new ErrorClass('test', { cause, prop: true }).properties.options.prop,
       )
+    })
+  },
+)
+
+each(
+  SpecificErrorClasses,
+  SpecificErrorClasses,
+  ({ title }, ErrorClass, ChildClass) => {
+    test(`Child instance options are not unset | ${title}`, (t) => {
+      const cause = new ChildClass('causeMessage', { prop: false })
+      t.false(new ErrorClass('test', { cause }).properties.options.prop)
     })
   },
 )

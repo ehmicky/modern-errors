@@ -15,9 +15,6 @@ export const defineClassesOpts = function (ErrorClasses, opts) {
   return { ModernError, AnyError, ...ErrorClassesB }
 }
 
-export const createAnyError = function ({
-  plugins = [TEST_PLUGIN],
-  ...opts
-} = {}) {
+const createAnyError = function ({ plugins = [TEST_PLUGIN], ...opts } = {}) {
   return ModernError.subclass('AnyError', { ...opts, plugins })
 }
