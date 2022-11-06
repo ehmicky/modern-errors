@@ -332,7 +332,8 @@ export default {
 
 _Type_: `(Error) => info`
 
-Returns the [`info`](#info) object from a specific `Error`.
+Returns the [`info`](#info) object from a specific `Error`. All members are
+present except for `info.errorInfo` itself.
 
 ```js
 export default {
