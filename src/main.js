@@ -1,8 +1,8 @@
 import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
 
-import { setAggregateErrors } from './any/aggregate.js'
-import { mergeCause } from './any/merge.js'
+import { setAggregateErrors } from './aggregate.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
+import { mergeCause } from './merge.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
 import { createClass } from './subclass/create.js'

@@ -1,4 +1,4 @@
-import { setNonEnumProp } from '../utils/descriptors.js'
+import { setNonEnumProp } from './utils/descriptors.js'
 
 // Array of `errors` can be set using an option.
 // This is like `AggregateError` except:
