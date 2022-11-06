@@ -1,84 +1,87 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-const { TestError, AnyError } = defineClassOpts()
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
+const { ErrorClasses } = getClasses()
 
-each([undefined, true], ({ title }, value) => {
+each(ErrorClasses, [undefined, true], ({ title }, ErrorClass, value) => {
   test(`plugin.properties() must return a plain object | ${title}`, (t) => {
-    const { TestError: OtherTestError } = defineClassOpts({}, {}, [
-      { ...TEST_PLUGIN, properties: () => value },
-    ])
-    t.throws(() => new OtherTestError('test'))
+    const TestError = ErrorClass.subclass('TestError', {
+      plugins: [{ ...TEST_PLUGIN, properties: () => value }],
+    })
+    t.throws(() => new TestError('test'))
   })
 })
 
-each(['message', 'stack'], ({ title }, key) => {
+each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
+  test(`plugin.properties() can set properties | ${title}`, (t) => {
+    t.true(new ErrorClass('test', { prop: { toSet: { [key]: true } } })[key])
+  })
+})
+
+each(ErrorSubclasses, ['message', 'stack'], ({ title }, ErrorClass, key) => {
   test(`plugin.properties() can set some core properties | ${title}`, (t) => {
-    const error = new TestError('test', { prop: { toSet: { [key]: '0' } } })
+    const error = new ErrorClass('test', { prop: { toSet: { [key]: '0' } } })
     t.is(error[key], '0')
     t.false(Object.getOwnPropertyDescriptor(error, key).enumerable)
   })
 })
 
-test('plugin.properties() can set both message and stack', (t) => {
-  const oldMessage = 'one'
-  const message = 'two'
-  const stackPrefix = 'Stack: '
-  const error = new TestError(oldMessage, {
-    prop: { toSet: { message, stack: `${stackPrefix}${oldMessage}` } },
-  })
-  t.is(error.message, message)
-  t.is(error.stack, `${stackPrefix}${message}`)
-})
-
-each(['one', Symbol('one')], ({ title }, key) => {
-  test(`plugin.properties() can set properties | ${title}`, (t) => {
-    t.true(new TestError('test', { prop: { toSet: { [key]: true } } })[key])
-  })
-})
-
 each(
+  ErrorSubclasses,
   ['wrap', 'constructorArgs', 'name', 'cause', 'errors', 'getInstance'],
-  ({ title }, key) => {
+  ({ title }, ErrorClass, key) => {
     test(`plugin.properties() cannot set forbidden properties | ${title}`, (t) => {
       t.not(
-        new TestError('test', { prop: { toSet: { [key]: 'true' } } })[key],
+        new ErrorClass('test', { prop: { toSet: { [key]: 'true' } } })[key],
         'true',
       )
     })
   },
 )
-
-test('plugin.properties() shallow merge properties', (t) => {
-  const error = new Error('test')
-  error.one = false
-  error.two = false
-  const { one, two, three } = new TestError('test', {
-    cause: error,
-    prop: { toSet: { one: true, three: true } },
-  })
-  t.true(one)
-  t.false(two)
-  t.true(three)
-})
-
-test('plugin.properties() non-enumerable properties can be assigned', (t) => {
-  const cause = new TestError('test')
-  // eslint-disable-next-line fp/no-mutating-methods
-  Object.defineProperty(cause, 'nonEnumProp', {
-    value: true,
-    enumerable: false,
-    writable: true,
-    configurable: true,
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.properties() can set both message and stack | ${title}`, (t) => {
+    const oldMessage = 'one'
+    const message = 'two'
+    const stackPrefix = 'Stack: '
+    const error = new ErrorClass(oldMessage, {
+      prop: { toSet: { message, stack: `${stackPrefix}${oldMessage}` } },
+    })
+    t.is(error.message, message)
+    t.is(error.stack, `${stackPrefix}${message}`)
   })
 
-  const error = new AnyError('test', {
-    cause,
-    prop: { toSet: { nonEnumProp: false } },
+  test(`plugin.properties() shallow merge properties | ${title}`, (t) => {
+    const error = new Error('test')
+    error.one = false
+    error.two = false
+    const { one, two, three } = new ErrorClass('test', {
+      cause: error,
+      prop: { toSet: { one: true, three: true } },
+    })
+    t.true(one)
+    t.false(two)
+    t.true(three)
   })
-  t.false(error.nonEnumProp)
-  t.false(Object.getOwnPropertyDescriptor(error, 'nonEnumProp').enumerable)
+
+  test(`plugin.properties() non-enumerable properties can be assigned | ${title}`, (t) => {
+    const cause = new ErrorClass('test')
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.defineProperty(cause, 'nonEnumProp', {
+      value: true,
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    })
+
+    const error = new ErrorClass('test', {
+      cause,
+      prop: { toSet: { nonEnumProp: false } },
+    })
+    t.false(error.nonEnumProp)
+    t.false(Object.getOwnPropertyDescriptor(error, 'nonEnumProp').enumerable)
+  })
 })
