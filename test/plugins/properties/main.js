@@ -1,28 +1,10 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, getPluginClasses } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
-const { ErrorSubclasses } = getPluginClasses()
 const { ErrorClasses } = getClasses()
-
-each(ErrorSubclasses, ({ title }, ErrorClass) => {
-  test(`Object instance options are shallowly merged to class options | ${title}`, (t) => {
-    const TestError = ErrorClass.subclass('TestError', {
-      prop: { one: false, two: { three: false }, five: false },
-    })
-    const error = new TestError('test', {
-      prop: { one: true, two: { three: true }, four: true },
-    })
-    t.deepEqual(error.properties.options.prop, {
-      one: true,
-      two: { three: true },
-      five: false,
-      four: true,
-    })
-  })
-})
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`plugin.properties() is optional | ${title}`, (t) => {
@@ -58,5 +40,14 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const { message, stack } = new TestError('')
     t.is(message, names.join(''))
     t.true(stack.includes(names.join('')))
+  })
+})
+
+each(ErrorClasses, [undefined, true], ({ title }, ErrorClass, value) => {
+  test(`plugin.properties() must return a plain object | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', {
+      plugins: [{ ...TEST_PLUGIN, properties: () => value }],
+    })
+    t.throws(() => new TestError('test'))
   })
 })
