@@ -6,42 +6,38 @@ import {
   getInstanceInfo,
   getStaticInfo,
 } from '../../helpers/info.js'
-import { getNativeErrors } from '../../helpers/known.js'
-import { defineClassOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
+import { TEST_PLUGIN } from '../../helpers/plugin.js'
+import { getUnknownErrors } from '../../helpers/unknown.js'
 
-const ErrorClasses = defineClassOpts()
-const { TestError, AnyError } = ErrorClasses
+const { ErrorSubclasses } = getClasses({ plugins: [TEST_PLUGIN] })
 
 each(
+  ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  getNativeErrors(),
-  ({ title }, getValues, getError) => {
-    test(`errorInfo normalizes errors | ${title}`, (t) => {
-      const { errorInfo } = getValues({ ErrorClasses })
-      const { error } = errorInfo(getError())
-      t.true(error instanceof AnyError)
+  getUnknownErrors(),
+  // eslint-disable-next-line max-params
+  ({ title }, ErrorClass, getValues, getUnknownError) => {
+    test(`errorInfo throws on unknown errors | ${title}`, (t) => {
+      const { errorInfo } = getValues(ErrorClass)
+      t.throws(errorInfo.bind(undefined, getUnknownError()))
+    })
+
+    test(`errorInfo returns ErrorClass | ${title}`, (t) => {
+      const { errorInfo } = getValues(ErrorClass)
+      t.is(errorInfo(new ErrorClass('test')).ErrorClass, ErrorClass)
     })
   },
 )
 
 each(
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
-  ({ title }, getValues) => {
-    test(`errorInfo returns error | ${title}`, (t) => {
-      const { errorInfo } = getValues({ ErrorClasses })
-      t.true(errorInfo(new TestError('test')).error instanceof AnyError)
-    })
-  },
-)
-
-each(
+  ErrorSubclasses,
   [(error) => error.properties, (error) => error.getInstance()],
-  ({ title }, getSpecifics) => {
+  ({ title }, ErrorClass, getSpecifics) => {
     test(`errorInfo can be applied on error itself | ${title}`, (t) => {
-      const error = new TestError('test', { prop: true })
+      const error = new ErrorClass('test', { prop: true })
       const { errorInfo } = getSpecifics(error)
-      const { options } = errorInfo(error)
-      t.true(options.prop)
+      t.true(errorInfo(error).options.prop)
     })
   },
 )
