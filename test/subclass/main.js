@@ -1,17 +1,15 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
+import { KnownErrorClasses } from '../helpers/known.js'
 
-const { TestError, AnyError } = defineClassOpts()
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`Does not modify invalid classes | ${title}`, (t) => {
+    class custom extends Object {}
+    t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
+    t.false('name' in custom.prototype)
+  })
 
-test('Does not modify invalid classes', (t) => {
-  class custom extends Object {}
-  t.throws(defineClassOpts.bind(undefined, { custom }))
-  t.false('name' in custom.prototype)
-})
-
-each([TestError, AnyError], ({ title }, ErrorClass) => {
   test(`Static methods are not enumerable | ${title}`, (t) => {
     t.deepEqual(Object.keys(ErrorClass), [])
   })
