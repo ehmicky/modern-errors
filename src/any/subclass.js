@@ -6,11 +6,11 @@ import { ERROR_CLASSES } from '../subclass/map.js'
 //  - The class would not be normalized until its first instantiation
 //     - E.g. its `prototype.name` might be missing
 //  - The list of `ErrorClasses` would be potentially incomplete
-//     - E.g. `AnyError.parse()` would not be able to parse an error class until
-//       its first instantiation
+//     - E.g. `ErrorClass.parse()` would not be able to parse an error class
+//       until its first instantiation
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `*Error.subclass()`
-//  - But was extended from either `AnyError` or a known class
+//  - But was extended from a known class
 export const validateSubclass = function (ErrorClass) {
   if (ERROR_CLASSES.has(ErrorClass)) {
     return

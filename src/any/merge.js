@@ -4,7 +4,7 @@ import setErrorMessage from 'set-error-message'
 
 import { isSubclass } from '../utils/subclass.js'
 
-// Like `mergeCause()` but run outside of `new AnyError(...)`
+// Like `mergeCause()` but run outside of `new ErrorClass(...)`
 export const mergeSpecificCause = function (error, cause) {
   error.cause = cause
   error.wrap = true
@@ -13,16 +13,12 @@ export const mergeSpecificCause = function (error, cause) {
 
 // `error.cause` is merged as soon as the error is instantiated:
 //  - This is simpler as it avoids the error shape to change over its lifetime
-//    (before|after `AnyError.normalize()`)
+//    (before|after `ErrorClass.normalize()`)
 //  - This makes it easier to debug that merging itself
-//  - This allow benefitting from `cause` merging before `AnyError.normalize()`,
-//    e.g. for improved debugging
-// `error`'s class is used over `error.cause`'s since:
-//  - Users expect the instance class to match the constructor being used
-//  - Setting a class only if `error.cause` is not `instanceof AnyError` can
-//    sometimes be needed
-//     - However it usually indicates a catch block that is too wide, which
-//       is discouraged
+//  - This allow benefitting from `cause` merging before
+//    `ErrorClass.normalize()`, e.g. for improved debugging
+// `error`'s class is used over `error.cause`'s since users expect the instance
+// class to match the constructor being used.
 // However, if `error.cause` has the same class or a child class, we keep it
 // instead
 //  - This allows using `new AnyError(...)` to wrap an error without changing

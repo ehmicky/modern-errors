@@ -12,8 +12,8 @@ import { CoreError } from './core.js'
 //  - Including error core properties, `plugin.properties()`, instance|static
 //    methods
 //  - Reasons:
-//     - It is not possible for `AnyError` to check its child class since it is
-//       called afterwards
+//     - It is not possible for `ModernError` to check its child class since it
+//       is called afterwards
 //     - It allows for some useful overrides like `toJSON()`
 //     - It prevents user-defined `props` from overriding `custom` properties
 export const getErrorClass = function (ParentError, custom) {

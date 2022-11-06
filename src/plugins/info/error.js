@@ -11,7 +11,7 @@ import { ERROR_INSTANCES } from '../../subclass/map.js'
 //       methods are needed to return that other plugin, but they need to take
 //       errors as argument
 // If the `error` is not a `modern-errors` instance, an empty object is returned
-//  - I.e. the plugin should call `AnyError.normalize(error[, UnknownError])`
+//  - I.e. the plugin should call `ErrorClass.normalize(error[, UnknownError])`
 //    first
 export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
   if (!ERROR_INSTANCES.has(error)) {

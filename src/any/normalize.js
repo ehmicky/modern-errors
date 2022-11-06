@@ -8,7 +8,7 @@ import { isSubclass } from '../utils/subclass.js'
 //     - Inside any `catch` block
 //     - To:
 //        - Error instances with normal properties
-//        - Instances of `AnyError` (or any subclass), so plugin instance
+//        - Instances of `ModernError` (or any subclass), so plugin instance
 //          methods can be called
 //     - This is meant to be called as `AnyError.normalize()`
 //  - Assigning a default class:
