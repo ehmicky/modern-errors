@@ -29,7 +29,7 @@ const wrapPluginsOpts = function ({
   errorData,
   plugins,
 }) {
-  const causePluginsOpts = errorData.get(cause).pluginsOpts
+  const causePluginsOpts = errorData.get(cause)?.pluginsOpts
 
   if (causePluginsOpts === undefined) {
     return pluginsOpts

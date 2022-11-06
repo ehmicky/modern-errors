@@ -10,10 +10,10 @@ import { finalizePluginsOpts } from '../../options/plugins.js'
 //       methods are needed to return that other plugin, but they need to take
 //       errors as argument
 export const getErrorInfo = function (
-  { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
+  { errorData, ErrorClasses, methodOpts, plugins, plugin },
   error,
 ) {
-  const errorA = AnyError.normalize(error)
+  const errorA = ErrorClasses.AnyError.ErrorClass.normalize(error)
   const className = errorA.name
   const { pluginsOpts } = errorData.get(errorA)
   const pluginsOptsA = mergeClassOpts({

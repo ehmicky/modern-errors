@@ -41,7 +41,6 @@ const CoreError = errorCustomClass('CoreError')
 //       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-
 export const createAnyError = function ({
   ErrorClasses,
   errorData,
