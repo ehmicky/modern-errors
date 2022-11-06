@@ -1,6 +1,6 @@
 import { mergeClassOpts } from '../../options/merge.js'
 import { finalizePluginsOpts } from '../../options/plugins.js'
-import { ERROR_INSTANCES } from '../../subclass/map.js'
+import { ERROR_INSTANCES, ERROR_CLASSES } from '../../subclass/map.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
 // `ErrorClass` and `options`.
@@ -15,10 +15,13 @@ import { ERROR_INSTANCES } from '../../subclass/map.js'
 //    first
 export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
   if (!ERROR_INSTANCES.has(error)) {
-    return {}
+    throw new Error(
+      '"info.errorInfo(error)" must be called after "error" has been passed to "ErrorClass.normalize(error)"',
+    )
   }
 
   const ErrorClass = error.constructor
+  const ErrorClasses = getSubclasses(ErrorClass)
   const { pluginsOpts } = ERROR_INSTANCES.get(error)
   const pluginsOptsA = mergeClassOpts(ErrorClass, plugins, pluginsOpts)
   const options = finalizePluginsOpts({
@@ -27,5 +30,15 @@ export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
     plugins,
     plugin,
   })
-  return { ErrorClass, options }
+  return { ErrorClass, ErrorClasses, options }
+}
+
+// `ErrorClasses` are passed to all plugin methods.
+// It excludes parent classes.
+// A shallow copy is done to prevent mutations.
+// This is an array, not an object, since some error classes might have
+// duplicate names.
+export const getSubclasses = function (ErrorClass) {
+  const { subclasses } = ERROR_CLASSES.get(ErrorClass)
+  return [...subclasses]
 }

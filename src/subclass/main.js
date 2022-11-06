@@ -30,10 +30,23 @@ export const createSubclass = function (ParentError, className, classOpts) {
   const pluginsOptA = mergePluginOpts(parentPluginsOpt, pluginsOpt)
   const plugins = normalizePlugins(pluginsOptA)
   const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
-  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsB, plugins })
+  ERROR_CLASSES.set(ErrorClass, {
+    classOpts: classOptsB,
+    plugins,
+    subclasses: [],
+  })
+  addParentSubclass(ErrorClass, ParentError)
   setErrorName(ErrorClass, className)
   setClassMethods(ErrorClass, plugins)
   return ErrorClass
+}
+
+const addParentSubclass = function (ErrorClass, ParentError) {
+  const { subclasses, ...classProps } = ERROR_CLASSES.get(ParentError)
+  ERROR_CLASSES.set(ParentError, {
+    ...classProps,
+    subclasses: [...subclasses, ErrorClass],
+  })
 }
 
 const setClassMethods = function (ErrorClass, plugins) {

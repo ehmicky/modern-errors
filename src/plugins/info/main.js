@@ -1,7 +1,4 @@
-import { ERROR_CLASSES } from '../../subclass/map.js'
-import { isSubclass } from '../../utils/subclass.js'
-
-import { getErrorInfo } from './error.js'
+import { getErrorInfo, getSubclasses } from './error.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
 // `staticMethods` since it does not have access to an error.
@@ -38,21 +35,6 @@ export const getPluginInfo = function ({
     plugins,
     plugin,
   })
-  const ErrorClasses = [] // getErrorClasses(ErrorClass)
+  const ErrorClasses = getSubclasses(ErrorClass)
   return { options, ErrorClass, ErrorClasses, errorInfo }
-}
-
-// `ErrorClasses` are passed to all plugin methods.
-// It excludes parent classes.
-// A shallow copy is done to prevent mutations.
-// This is an array, not an object, since some error classes might have
-// duplicate names.
-const getErrorClasses = function (ParentClass) {
-  return Object.values(ErrorClasses)
-    .map(getErrorClass)
-    .filter((ErrorClass) => isSubclass(ErrorClass, ParentClass))
-}
-
-const getErrorClass = function ({ ErrorClass }) {
-  return ErrorClass
 }
