@@ -4,7 +4,6 @@ import normalizeException from 'normalize-exception'
 // `AnyError.normalize()` to:
 //  - Keep its error `name` in the error `message`
 //  - Ensure `new AnyError()` return value's class is a child of `AnyError`
-//  - Keep track of `showStack`
 // This applies regardless of parent class:
 //  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
 //  - With an empty message or not

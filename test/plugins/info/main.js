@@ -62,10 +62,6 @@ each([getPropertiesInfo, getInstanceInfo], ({ title }, getValues) => {
     const OtherErrorClasses = defineClassOpts({ prop: true })
     t.true(getValues({ ErrorClasses: OtherErrorClasses }).options.prop)
   })
-
-  test(`plugin.properties|instanceMethods get "showStack" | ${title}`, (t) => {
-    t.false(getValues({ ErrorClasses }).showStack)
-  })
 })
 
 test('plugin.properties gets the instance options', (t) => {

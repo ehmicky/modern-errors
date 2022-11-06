@@ -256,7 +256,7 @@ export default {
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
 and [static methods](#staticmethodsmethodname).
 
-[`info.error`](#error) and [`info.showStack`](#showstack) are not passed to
+[`info.error`](#error) is not passed to
 [static methods](#staticmethodsmethodname).
 
 Its members are readonly and should not be mutated, except for
@@ -293,34 +293,6 @@ export default {
   // `new ErrorClass('message', { example: value })` sets `error.example: value`
   properties({ options }) {
     return { example: options }
-  },
-}
-```
-
-### showStack
-
-_Type_: `boolean`
-
-Hints whether `error.stack` should be printed or not.
-
-This is `true` if the error (or one of its [inner](../README.md#-wrap-errors)
-errors) is [_unknown_](../README.md#-unknown-errors), and `false` otherwise.
-
-If a plugin prints `error.stack` optionally, `showStack` can be used as the
-default value of a `stack` boolean option. This allows users to decide whether
-to print `error.stack` or not, while still providing with a good default
-behavior.
-
-```js
-export default {
-  name: 'example',
-  getOptions(options) {
-    // ...
-  },
-  instanceMethods: {
-    log({ error, showStack, options: { stack = showStack } }) {
-      console.log(stack ? error.stack : error.message)
-    },
   },
 }
 ```
@@ -379,8 +351,8 @@ export default {
     getLogErrors({ errorInfo }) {
       return function logErrors(errors) {
         errors.forEach((error) => {
-          const { showStack } = errorInfo(error)
-          console.log(showStack ? error.stack : error.message)
+          const { options } = errorInfo(error)
+          console.error(options.example?.stack ? error.stack : error.message)
         })
       }
     },

@@ -6,7 +6,6 @@ const instanceMethodsInfo = {} as Info['instanceMethods']
 expectError(instanceMethodsInfo.other)
 expectAssignable<Error>(instanceMethodsInfo.error)
 expectAssignable<boolean>(instanceMethodsInfo.options)
-expectType<boolean>(instanceMethodsInfo.showStack)
 expectAssignable<AnyErrorClass>(instanceMethodsInfo.AnyError)
 
 expectAssignable<object>(instanceMethodsInfo.ErrorClasses)
@@ -26,7 +25,6 @@ const staticMethodsInfo = {} as Info['staticMethods']
 expectError(staticMethodsInfo.other)
 expectError(staticMethodsInfo.error)
 expectType<Info['instanceMethods']['options']>(staticMethodsInfo.options)
-expectError(staticMethodsInfo.showStack)
 expectType<Info['instanceMethods']['AnyError']>(staticMethodsInfo.AnyError)
 expectType<Info['instanceMethods']['ErrorClasses']>(
   staticMethodsInfo.ErrorClasses,
@@ -37,7 +35,6 @@ const propertiesInfo = {} as Info['properties']
 expectError(propertiesInfo.other)
 expectType<Info['instanceMethods']['error']>(propertiesInfo.error)
 expectType<Info['instanceMethods']['options']>(propertiesInfo.options)
-expectType<Info['instanceMethods']['showStack']>(propertiesInfo.showStack)
 expectType<Info['instanceMethods']['AnyError']>(propertiesInfo.AnyError)
 expectType<Info['instanceMethods']['ErrorClasses']>(propertiesInfo.ErrorClasses)
 expectType<Info['instanceMethods']['errorInfo']>(propertiesInfo.errorInfo)
@@ -48,7 +45,6 @@ expectType<Info['errorInfo']>(errorInfo)
 expectError(errorInfo.other)
 expectType<Info['instanceMethods']['error']>(errorInfo.error)
 expectType<Info['instanceMethods']['options']>(errorInfo.options)
-expectType<Info['instanceMethods']['showStack']>(errorInfo.showStack)
 expectError(errorInfo.AnyError)
 expectError(errorInfo.ErrorClasses)
 expectError(errorInfo.errorInfo)

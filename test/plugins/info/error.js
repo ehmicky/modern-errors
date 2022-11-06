@@ -10,7 +10,7 @@ import { getNativeErrors } from '../../helpers/known.js'
 import { defineClassOpts } from '../../helpers/main.js'
 
 const ErrorClasses = defineClassOpts()
-const { TestError, UnknownError, AnyError } = ErrorClasses
+const { TestError, AnyError } = ErrorClasses
 
 each(
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
@@ -18,8 +18,7 @@ each(
   ({ title }, getValues, getError) => {
     test(`errorInfo normalizes errors | ${title}`, (t) => {
       const { errorInfo } = getValues({ ErrorClasses })
-      const { error, showStack } = errorInfo(getError())
-      t.true(showStack)
+      const { error } = errorInfo(getError())
       t.true(error instanceof AnyError)
     })
   },
@@ -32,12 +31,6 @@ each(
       const { errorInfo } = getValues({ ErrorClasses })
       t.true(errorInfo(new TestError('test')).error instanceof AnyError)
     })
-
-    test(`errorInfo returns showStack | ${title}`, (t) => {
-      const { errorInfo } = getValues({ ErrorClasses })
-      t.true(errorInfo(new UnknownError('test')).showStack)
-      t.false(errorInfo(new TestError('test')).showStack)
-    })
   },
 )
 
@@ -47,9 +40,8 @@ each(
     test(`errorInfo can be applied on error itself | ${title}`, (t) => {
       const error = new TestError('test', { prop: true })
       const { errorInfo } = getSpecifics(error)
-      const { options, showStack } = errorInfo(error)
+      const { options } = errorInfo(error)
       t.true(options.prop)
-      t.false(showStack)
     })
   },
 )

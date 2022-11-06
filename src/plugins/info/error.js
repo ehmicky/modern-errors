@@ -2,7 +2,7 @@ import { mergeClassOpts } from '../../options/merge.js'
 import { finalizePluginsOpts } from '../../options/plugins.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
-// `options` and `showStack`.
+// `options`
 // This is meant to be used by plugins either:
 //  - Operating on nested errors
 //  - With static methods operating on errors
@@ -14,7 +14,7 @@ export const getErrorInfo = function (
   error,
 ) {
   const errorA = AnyError.normalize(error)
-  const { pluginsOpts, showStack } = errorData.get(errorA)
+  const { pluginsOpts } = errorData.get(errorA)
   const pluginsOptsA = mergeClassOpts({
     error: errorA,
     ErrorClasses,
@@ -27,5 +27,5 @@ export const getErrorInfo = function (
     plugins,
     plugin,
   })
-  return { error: errorA, options, showStack }
+  return { error: errorA, options }
 }

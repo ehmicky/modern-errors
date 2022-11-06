@@ -43,34 +43,6 @@ interface CommonInfo {
   readonly options: never
 
   /**
-   * Hints whether `error.stack` should be printed or not.
-   *
-   * This is `true` if the error (or one of its inner errors) is _unknown_, and
-   * `false` otherwise.
-   *
-   * If a plugin prints `error.stack` optionally, `showStack` can be used as the
-   * default value of a `stack` boolean option. This allows users to decide
-   * whether to print `error.stack` or not, while still providing with a good
-   * default behavior.
-   *
-   * @example
-   * ```js
-   * export default {
-   *   name: 'example',
-   *   getOptions(options) {
-   *     // ...
-   *   },
-   *   instanceMethods: {
-   *     log({ error, showStack, options: { stack = showStack } }) {
-   *       console.log(stack ? error.stack : error.message)
-   *     },
-   *   },
-   * }
-   * ```
-   */
-  readonly showStack: boolean
-
-  /**
    * Reference to `AnyError`. This can be used to call `AnyError.normalize()` or
    * `error instanceof AnyError`.
    *
@@ -122,8 +94,8 @@ interface CommonInfo {
    *     getLogErrors({ errorInfo }) {
    *       return function logErrors(errors) {
    *         errors.forEach((error) => {
-   *           const { showStack } = errorInfo(error)
-   *           console.log(showStack ? error.stack : error.message)
+   *           const { options } = errorInfo(error)
+   *           console.error(options.example?.stack ? error.stack : error.message)
    *         })
    *       }
    *     },
@@ -155,7 +127,7 @@ export interface Info {
   /**
    * `info` object passed to `plugin.staticMethods.*()`
    */
-  readonly staticMethods: Omit<CommonInfo, 'error' | 'showStack'>
+  readonly staticMethods: Omit<CommonInfo, 'error'>
 
   /**
    * `info` object returned by `errorInfo()`

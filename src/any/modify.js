@@ -8,7 +8,6 @@ import {
 import { setAggregateErrors, normalizeAggregateErrors } from './aggregate.js'
 import { getConstructorArgs, setConstructorArgs } from './args.js'
 import { getCause, mergeCause } from './merge.js'
-import { getShowStack } from './stack.js'
 
 // Merge `error.cause` and set `plugin.properties()`.
 // Also compute and keep track of instance options and `constructorArgs`.
@@ -39,7 +38,6 @@ export const modifyError = function ({
   return error
 }
 
-// eslint-disable-next-line max-statements
 const applyErrorLogic = function ({
   currentError,
   cause,
@@ -68,14 +66,8 @@ const applyErrorLogic = function ({
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, isAnyError)
   normalizeAggregateErrors(error, AnyError)
-  const showStack = getShowStack({ error, cause, errorData, ErrorClasses })
   setConstructorArgs(error, constructorArgs)
-  errorData.set(error, {
-    showStack,
-    pluginsOpts,
-    previousValues: [],
-    newValues: [],
-  })
+  errorData.set(error, { pluginsOpts, previousValues: [], newValues: [] })
   const { previousValues, newValues } = setPluginsProperties({
     error,
     AnyError,
@@ -83,6 +75,6 @@ const applyErrorLogic = function ({
     errorData,
     plugins,
   })
-  errorData.set(error, { showStack, pluginsOpts, previousValues, newValues })
+  errorData.set(error, { pluginsOpts, previousValues, newValues })
   return error
 }
