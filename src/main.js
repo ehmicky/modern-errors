@@ -36,29 +36,31 @@ import { classesData, instancesData } from './subclass/map.js'
 //    automatically omits the stack lines from custom error constructors
 //  - Also, this would force child classes to also use
 //    `Error.captureStackTrace()`
-/* eslint-disable fp/no-this */
+/* c8 ignore start */
+/* eslint-disable fp/no-this, max-statements, no-constructor-return */
 class ModernBaseError extends Error {
-  // eslint-disable-next-line max-statements
   constructor(message, opts) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
     const optsA = normalizeOpts(ErrorClass, opts)
+
     super(message, optsA)
+
     ensureCorrectClass(this, ErrorClass)
     ponyfillCause(this, optsA)
     const { plugins } = classesData.get(ErrorClass)
     const { opts: optsB, pluginsOpts } = computePluginsOpts(plugins, optsA)
     setAggregateErrors(this, optsB)
+
     const error = mergeCause(this, ErrorClass)
     instancesData.set(error, { pluginsOpts })
     setPluginsProperties(error, plugins)
-    /* c8 ignore start */
-    // eslint-disable-next-line no-constructor-return
+
     return error
   }
-  /* c8 ignore stop */
 }
-/* eslint-enable fp/no-this */
+/* eslint-enable fp/no-this, max-statements, no-constructor-return */
+/* c8 ignore stop */
 
 const ModernError = createClass({
   ParentError: Error,
