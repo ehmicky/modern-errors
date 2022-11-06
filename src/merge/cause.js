@@ -39,6 +39,10 @@ export const mergeCause = function (error, ErrorClass) {
 
   const oldMessage = prefixCause(cause)
   const errorA = mergeErrorCause(error)
-  undoPrefixCause(cause, oldMessage)
+
+  if (cause !== errorA) {
+    undoPrefixCause(cause, oldMessage)
+  }
+
   return errorA
 }
