@@ -55,7 +55,7 @@
     "error-custom-class": "^8.3.0",
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
-    "merge-error-cause": "^3.2.0",
+    "merge-error-cause": "^3.3.0",
     "normalize-exception": "^2.10.0",
     "set-error-message": "^1.4.0",
     "set-error-props": "^3.4.0"
