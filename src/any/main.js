@@ -5,7 +5,7 @@ import { computePluginsOpts } from '../options/instance.js'
 import { setPluginsProperties } from '../plugins/properties/main.js'
 import { createSubclass } from '../subclass/main.js'
 
-import { setAggregateErrors, normalizeAggregateErrors } from './aggregate.js'
+import { setAggregateErrors } from './aggregate.js'
 import { setConstructorArgs } from './args.js'
 import { mergeCause } from './merge.js'
 import { normalizeOpts } from './options.js'
@@ -73,7 +73,6 @@ const getAnyError = function (ErrorClasses, errorData, plugins) {
         ErrorClasses,
         errorData,
         plugins,
-        AnyError,
       })
     }
     /* c8 ignore stop */
@@ -89,7 +88,6 @@ const modifyError = function ({
   ErrorClasses,
   errorData,
   plugins,
-  AnyError,
 }) {
   const { opts: optsA, pluginsOpts } = computePluginsOpts(
     opts,
@@ -99,7 +97,6 @@ const modifyError = function ({
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, ErrorClass)
   errorData.set(error, { pluginsOpts })
-  normalizeAggregateErrors(error, AnyError)
   setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
   setPluginsProperties({ error, ErrorClasses, errorData, plugins })
   return error

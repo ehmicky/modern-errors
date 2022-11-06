@@ -20,12 +20,3 @@ export const setAggregateErrors = function (error, { errors }) {
 
   setNonEnumProp(error, 'errors', errors)
 }
-
-export const normalizeAggregateErrors = function (error, AnyError) {
-  if (!Array.isArray(error.errors)) {
-    return
-  }
-
-  const errorsA = error.errors.map(AnyError.normalize)
-  setNonEnumProp(error, 'errors', errorsA)
-}
