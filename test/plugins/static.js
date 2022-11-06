@@ -1,11 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, getPluginClasses } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { getPluginClasses } from '../helpers/main.js'
 
 const { ErrorSubclasses } = getPluginClasses()
-const { ErrorClasses } = getClasses()
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.staticMethods are set on ErrorClass | ${title}`, (t) => {
@@ -21,17 +19,3 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
     t.deepEqual(Object.keys(ErrorClass), [])
   })
 })
-
-each(
-  ErrorClasses,
-  Reflect.ownKeys(Error),
-  ({ title }, ErrorClass, propName) => {
-    test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
-      t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, staticMethods: { [propName]() {} } }],
-        }),
-      )
-    })
-  },
-)

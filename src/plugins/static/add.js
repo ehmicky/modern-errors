@@ -36,17 +36,12 @@ import { callStaticMethod } from './call.js'
 //  - Instead, static methods that initialize should be used
 export const addAllStaticMethods = function (plugins, ErrorClass) {
   plugins.forEach((plugin) => {
-    addStaticMethods({ plugin, plugins, ErrorClass })
+    addStaticMethods(plugin, plugins, ErrorClass)
   })
 }
 
-const addStaticMethods = function ({
-  plugin,
-  plugin: { staticMethods },
-  plugins,
-  ErrorClass,
-}) {
-  Object.entries(staticMethods).forEach(
+const addStaticMethods = function (plugin, plugins, ErrorClass) {
+  Object.entries(plugin.staticMethods).forEach(
     addStaticMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }

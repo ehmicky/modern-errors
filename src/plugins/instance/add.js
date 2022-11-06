@@ -6,17 +6,12 @@ import { callInstanceMethod } from './call.js'
 // `ErrorClass.prototype.*`.
 export const addAllInstanceMethods = function (plugins, ErrorClass) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, plugins, ErrorClass })
+    addInstanceMethods(plugin, plugins, ErrorClass)
   })
 }
 
-const addInstanceMethods = function ({
-  plugin,
-  plugin: { instanceMethods },
-  plugins,
-  ErrorClass,
-}) {
-  Object.entries(instanceMethods).forEach(
+const addInstanceMethods = function (plugin, plugins, ErrorClass) {
+  Object.entries(plugin.instanceMethods).forEach(
     addInstanceMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }

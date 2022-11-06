@@ -24,7 +24,7 @@ each(
       t.true(callMethod(TestError, true).options.prop)
     })
 
-    test(`plugin methods merge method options shallowly | ${title}`, (t) => {
+    test(`plugin methods merge method options to class options shallowly | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', {
         prop: { one: false, two: { three: false }, five: false },
       })

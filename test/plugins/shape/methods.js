@@ -27,3 +27,17 @@ each(
     })
   },
 )
+
+each(
+  ErrorClasses,
+  Reflect.ownKeys(Error),
+  ({ title }, ErrorClass, propName) => {
+    test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
+      t.throws(
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, staticMethods: { [propName]() {} } }],
+        }),
+      )
+    })
+  },
+)
