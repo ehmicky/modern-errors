@@ -30,7 +30,7 @@ each(
 
 each(
   ErrorClasses,
-  Reflect.ownKeys(Error),
+  [...Reflect.ownKeys(Error), 'normalize', 'subclass'],
   ({ title }, ErrorClass, propName) => {
     test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
       t.throws(
