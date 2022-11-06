@@ -3,7 +3,7 @@ import cliPlugin from 'modern-errors-cli'
 import httpPlugin, { HttpResponse } from 'modern-errors-http'
 import processPlugin from 'modern-errors-process'
 import serializePlugin, { ErrorObject } from 'modern-errors-serialize'
-import stackPlugin from 'modern-errors-stack'
+import cleanPlugin from 'modern-errors-clean'
 import winstonPlugin, { Format } from 'modern-errors-winston'
 import { expectType, expectAssignable } from 'tsd'
 
@@ -15,7 +15,7 @@ const plugins = [
   httpPlugin,
   processPlugin,
   serializePlugin,
-  stackPlugin,
+  cleanPlugin,
   winstonPlugin,
 ]
 const AnyError = modernErrors(plugins)
