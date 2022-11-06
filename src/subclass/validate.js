@@ -1,4 +1,4 @@
-import { classesData } from '../subclass/map.js'
+import { classesData } from './map.js'
 
 // We forbid subclasses that are not known, i.e. not passed to
 // `ErrorClass.subclass()`

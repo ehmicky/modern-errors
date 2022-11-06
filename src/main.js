@@ -2,12 +2,12 @@ import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
 
 import { setAggregateErrors } from './any/aggregate.js'
 import { mergeCause } from './any/merge.js'
-import { validateSubclass } from './any/subclass.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
 import { createClass } from './subclass/main.js'
 import { classesData, instancesData } from './subclass/map.js'
+import { validateSubclass } from './subclass/validate.js'
 
 // Base class for all error classes.
 // We encourage `instanceof` over `error.name` for checking since this:
