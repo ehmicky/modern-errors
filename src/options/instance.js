@@ -2,8 +2,8 @@ import { excludeKeys, includeKeys } from 'filter-obj'
 import isPlainObj from 'is-plain-obj'
 
 import { instancesData } from '../subclass/map.js'
-import { deepClone } from '../utils/clone.js'
 
+import { deepClone } from './clone.js'
 import { mergePluginsOpts, getPluginNames } from './merge.js'
 
 // We keep track of un-normalized plugins options to re-use them later inside

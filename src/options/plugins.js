@@ -1,5 +1,4 @@
-import { deepClone } from '../utils/clone.js'
-
+import { deepClone } from './clone.js'
 import { getPluginOpts } from './get.js'
 import { mergeMethodOpts } from './method.js'
 

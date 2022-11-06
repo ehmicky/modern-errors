@@ -1,8 +1,8 @@
 import isPlainObj from 'is-plain-obj'
 
 import { validatePluginsOptsNames } from '../plugins/shape/name.js'
-import { deepClone } from '../utils/clone.js'
 
+import { deepClone } from './clone.js'
 import { getPluginOpts } from './get.js'
 import { mergePluginsOpts } from './merge.js'
 
