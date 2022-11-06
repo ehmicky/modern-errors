@@ -32,7 +32,6 @@ export const callStaticMethod = function ({
   const info = getPluginInfo({
     options,
     errorData,
-    AnyError,
     className,
     ErrorClasses,
     methodOpts,

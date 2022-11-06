@@ -113,6 +113,6 @@ const modifyError = function ({
   errorData.set(error, { pluginsOpts })
   normalizeAggregateErrors(error, AnyError)
   setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
-  setPluginsProperties({ error, AnyError, ErrorClasses, errorData, plugins })
+  setPluginsProperties({ error, ErrorClasses, errorData, plugins })
   return error
 }

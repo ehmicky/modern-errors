@@ -5,20 +5,18 @@ import { getErrorInfo } from './error.js'
 export const getErrorPluginInfo = function ({
   error,
   errorData,
-  AnyError,
   ErrorClasses,
   methodOpts,
   plugins,
   plugin,
 }) {
   const { className, options } = getErrorInfo(
-    { errorData, AnyError, ErrorClasses, methodOpts, plugins, plugin },
+    { errorData, ErrorClasses, methodOpts, plugins, plugin },
     error,
   )
   const info = getPluginInfo({
     options,
     errorData,
-    AnyError,
     className,
     ErrorClasses,
     methodOpts,
@@ -32,7 +30,6 @@ export const getErrorPluginInfo = function ({
 export const getPluginInfo = function ({
   options,
   errorData,
-  AnyError,
   className,
   ErrorClasses,
   methodOpts,
@@ -41,20 +38,13 @@ export const getPluginInfo = function ({
 }) {
   const errorInfo = getErrorInfo.bind(undefined, {
     errorData,
-    AnyError,
     ErrorClasses,
     methodOpts,
     plugins,
     plugin,
   })
   const ErrorClassesA = getErrorClasses(ErrorClasses)
-  return {
-    options,
-    AnyError,
-    className,
-    ErrorClasses: ErrorClassesA,
-    errorInfo,
-  }
+  return { options, className, ErrorClasses: ErrorClassesA, errorInfo }
 }
 
 // `ErrorClasses` are passed to all plugin methods.

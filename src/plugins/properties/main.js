@@ -9,26 +9,17 @@ import { assignError } from './assign.js'
 // properties, e.g. `message` or `stack`.
 export const setPluginsProperties = function ({
   error,
-  AnyError,
   ErrorClasses,
   errorData,
   plugins,
 }) {
   return plugins.forEach((plugin) => {
-    applyPluginProperties({
-      error,
-      AnyError,
-      ErrorClasses,
-      errorData,
-      plugin,
-      plugins,
-    })
+    applyPluginProperties({ error, ErrorClasses, errorData, plugin, plugins })
   })
 }
 
 const applyPluginProperties = function ({
   error,
-  AnyError,
   ErrorClasses,
   errorData,
   plugin,
@@ -42,7 +33,6 @@ const applyPluginProperties = function ({
   const info = getErrorPluginInfo({
     error,
     errorData,
-    AnyError,
     ErrorClasses,
     plugins,
     plugin,
