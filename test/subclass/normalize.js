@@ -70,6 +70,13 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(ErrorClass.normalize(error) instanceof TestError)
   })
 
+  test(`ErrorClass.normalize(error, TestError) keeps error class if subclass | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const SubTestError = TestError.subclass('SubTestError')
+    const error = new SubTestError('test')
+    t.true(ErrorClass.normalize(error, TestError) instanceof SubTestError)
+  })
+
   test(`ErrorClass.normalize() context is bound | ${title}`, (t) => {
     const { normalize } = ErrorClass
     t.true(normalize() instanceof Error)
