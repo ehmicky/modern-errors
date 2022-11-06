@@ -40,3 +40,7 @@ test('AnyError.prototype.name is correct', (t) => {
     Object.getOwnPropertyDescriptor(AnyError.prototype, 'name').enumerable,
   )
 })
+
+test('Can instantiate ModernError without any subclass', (t) => {
+  t.true(new ModernError('') instanceof ModernError)
+})

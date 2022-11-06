@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses, ModernError } from '../helpers/known.js'
+import { KnownErrorClasses } from '../helpers/known.js'
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
@@ -14,8 +14,4 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
     const ChildError = ErrorClass.subclass('ChildError')
     t.is(new ChildError('test').name, 'ChildError')
   })
-})
-
-test('Can instantiate ModernError without any subclass', (t) => {
-  t.true(new ModernError('') instanceof ModernError)
 })
