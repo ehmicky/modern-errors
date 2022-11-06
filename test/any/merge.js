@@ -5,6 +5,7 @@ import {
   AnyError,
   TestError,
   ChildTestError,
+  SpecificErrorClasses,
   KnownErrorClasses,
   getUnknownErrors,
 } from '../helpers/known.js'
@@ -15,14 +16,16 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
+each(SpecificErrorClasses, ({ title }, ErrorClass) => {
   test(`AnyError with known cause uses child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new AnyError('message', { cause })
     assertInstanceOf(t, error, cause.constructor)
     t.is(error, cause)
   })
+})
 
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new ErrorClass('message', { cause })
