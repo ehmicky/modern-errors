@@ -58,10 +58,8 @@ Create [error classes](#%EF%B8%8F-error-classes).
 ```js
 import ModernError from 'modern-errors'
 
-// Top-level error class
 export const BaseError = ModernError.subclass('BaseError')
 
-// Error subclasses
 export const UnknownError = BaseError.subclass('UnknownError')
 export const InputError = BaseError.subclass('InputError')
 export const AuthError = BaseError.subclass('AuthError')
@@ -143,10 +141,8 @@ not `require()`.
 ```js
 import ModernError from 'modern-errors'
 
-// Top-level error class
 export const BaseError = ModernError.subclass('BaseError')
 
-// Error subclasses
 export const UnknownError = BaseError.subclass('UnknownError')
 export const InputError = BaseError.subclass('InputError')
 export const AuthError = BaseError.subclass('AuthError')
@@ -376,13 +372,15 @@ export const main = function () {
 
 ### Normalizing unknown errors
 
-An error is _unknown_ if its class was not
-[created](#errorclasssubclassname-options) by `modern-errors`. This indicates an
-unexpected exception, usually a bug.
+An error is _unknown_ if its class is not a subclass of the
+[`BaseError`](#create-error-classes). This indicates an unexpected exception,
+usually a bug.
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeanyexception-newerrorclass)
-assigns the [`UnknownError` class](#create-error-classes) to any error that is
-not an instance of `BaseError` (or of a subclass). `UnknownError` can be any
-error class.
+assigns the [`UnknownError` class](#create-error-classes) to those errors.
+
+```js
+export const UnknownError = BaseError.subclass('UnknownError')
+```
 
 <!-- eslint-skip -->
 
