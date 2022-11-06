@@ -2,6 +2,8 @@ import isErrorInstance from 'is-error-instance'
 import mergeErrorCause from 'merge-error-cause'
 import setErrorMessage from 'set-error-message'
 
+import { isSubclass } from '../utils/subclass.js'
+
 // Like `mergeCause()` but run outside of `new AnyError(...)`
 export const mergeSpecificCause = function (error, cause) {
   error.cause = cause
@@ -28,31 +30,32 @@ export const mergeSpecificCause = function (error, cause) {
 //  - This returns a subclass of the parent class, which does not break
 //    inheritance nor user expectations
 export const mergeCause = function (error, ErrorClass) {
+  return isErrorInstance(error.cause)
+    ? mergeInstanceCause(error, ErrorClass)
+    : mergeErrorCause(error)
+}
+
+const mergeInstanceCause = function (error, ErrorClass) {
   const { cause } = error
-  const wrap = cause instanceof ErrorClass
-  error.wrap = wrap
+  const causeIsSubclass = isSubclass(cause.constructor, ErrorClass)
+  const parentIsSubClass = isSubclass(ErrorClass, cause.constructor)
+  error.wrap = causeIsSubclass
 
-  if (wrap || !hasSpecificName(cause)) {
-    return mergeErrorCause(error)
-  }
-
-  const { oldMessage, newMessage } = addSpecificName(cause)
-  setErrorMessage(cause, newMessage)
-  const errorA = mergeErrorCause(error)
-  setErrorMessage(cause, oldMessage)
-  return errorA
+  return !causeIsSubclass && !parentIsSubClass && hasSpecificName(cause)
+    ? mergePrefixedCause(error)
+    : mergeErrorCause(error)
 }
 
 // When switching error classes, we keep the old class name in the error
 // message, except:
 //  - When the error name is absent or is too generic
-//  - When wrapping a child class
+//  - When the child is a subclass of the parent, since the class does not
+//    change then
+//  - When the parent is a subclass of the child, since the new class becomes
+//    the subclass, which already contains the other class in its chain, i.e.
+//    not worth adding to the message
 const hasSpecificName = function (cause) {
-  return (
-    isErrorInstance(cause) &&
-    typeof cause.name === 'string' &&
-    !GENERIC_NAMES.has(cause.name)
-  )
+  return typeof cause.name === 'string' && !GENERIC_NAMES.has(cause.name)
 }
 
 // The error name is not kept if generic
@@ -66,8 +69,16 @@ const GENERIC_NAMES = new Set([
   'URIError',
   'EvalError',
   'AggregateError',
-  'AnyError',
 ])
+
+const mergePrefixedCause = function (error) {
+  const { cause } = error
+  const { oldMessage, newMessage } = addSpecificName(cause)
+  setErrorMessage(cause, newMessage)
+  const errorA = mergeErrorCause(error)
+  setErrorMessage(cause, oldMessage)
+  return errorA
+}
 
 const addSpecificName = function (cause) {
   const oldMessage = typeof cause.message === 'string' ? cause.message : ''
