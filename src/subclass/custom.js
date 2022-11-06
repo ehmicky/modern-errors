@@ -1,3 +1,5 @@
+import { CoreError } from './core.js'
+
 // The `custom` option can be used to customize a specific error class.
 // It must extend directly from the parent class.
 // We use a thin child class instead of `custom` directly since this allows:
@@ -15,6 +17,10 @@
 //     - It allows for some useful overrides like `toJSON()`
 //     - It prevents user-defined `props` from overriding `custom` properties
 export const getErrorClass = function (ParentError, custom) {
+  if (ParentError === CoreError) {
+    return custom
+  }
+
   const ParentClass = getParentClass(ParentError, custom)
   return class extends ParentClass {}
 }

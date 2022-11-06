@@ -1,5 +1,3 @@
-import errorCustomClass from 'error-custom-class'
-
 import { setAggregateErrors } from './any/aggregate.js'
 import { setConstructorArgs } from './any/args.js'
 import { mergeCause } from './any/merge.js'
@@ -8,6 +6,7 @@ import { validateSubclass } from './any/subclass.js'
 import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
+import { CoreError } from './subclass/core.js'
 import { createSubclass } from './subclass/main.js'
 // eslint-disable-next-line import/max-dependencies
 import { ERROR_CLASSES, ERROR_INSTANCES } from './subclass/map.js'
@@ -32,9 +31,6 @@ import { ERROR_CLASSES, ERROR_INSTANCES } from './subclass/map.js'
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-const CoreError = errorCustomClass('CoreError')
-ERROR_CLASSES.set(CoreError, { classOpts: {}, plugins: [] })
-
 /* eslint-disable fp/no-this */
 class ModernBaseError extends CoreError {
   constructor(message, opts, ...args) {
