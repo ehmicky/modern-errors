@@ -31,9 +31,9 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`error.errors are appended to | ${title}`, (t) => {
-    const one = new ModernError('one')
-    const two = new ModernError('two')
-    const cause = new ModernError('causeMessage', { errors: [one] })
+    const one = new ErrorClass('one')
+    const two = new ErrorClass('two')
+    const cause = new ErrorClass('causeMessage', { errors: [one] })
     const error = new ErrorClass('message', { cause, errors: [two] })
     t.deepEqual(error.errors, [one, two])
   })
@@ -43,7 +43,7 @@ each(
   ErrorClasses,
   [undefined, {}, { errors: undefined }],
   ({ title }, ErrorClass, opts) => {
-    test(`error.errors is not set by default | ${title}`, (t) => {
+    test(`error.errors are not set by default | ${title}`, (t) => {
       t.false('errors' in new ErrorClass('test', opts))
     })
   },
