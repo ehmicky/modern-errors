@@ -55,7 +55,7 @@ const normalizeAggregateErrors = function ({
   AnyError,
   parents,
 }) {
-  if (!Array.isArray(error.errors)) {
+  if (!Array.isArray(error?.errors)) {
     return error
   }
 
@@ -73,7 +73,7 @@ const normalizeAggregateErrors = function ({
 
 const shouldKeepClass = function (error, ErrorClass, AnyError) {
   return (
-    error.constructor === ErrorClass ||
+    error?.constructor === ErrorClass ||
     (error instanceof AnyError && error.constructor !== AnyError)
   )
 }
