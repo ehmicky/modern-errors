@@ -57,7 +57,7 @@ interface CommonInfo {
    * }
    * ```
    */
-  readonly BaseError: BaseErrorClass<Plugins>
+  readonly ErrorClass: ErrorClass<Plugins>
 
   /**
    * Object with all error classes created with `BaseError.subclass()` or
@@ -129,7 +129,7 @@ export interface Info {
    */
   readonly errorInfo: Omit<
     CommonInfo,
-    'BaseError' | 'ErrorClasses' | 'errorInfo'
+    'ErrorClass' | 'ErrorClasses' | 'errorInfo'
   >
 }
 
