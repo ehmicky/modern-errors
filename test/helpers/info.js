@@ -9,6 +9,6 @@ export const getInstanceInfo = function (ErrorClass, instanceOpts, methodOpts) {
 }
 
 // Retrieve `info` passed to `plugin.staticMethods`
-export const getStaticInfo = function (ErrorClass, methodOpts) {
+export const getStaticInfo = function (ErrorClass, _, methodOpts) {
   return ErrorClass.getProp(methodOpts)
 }
