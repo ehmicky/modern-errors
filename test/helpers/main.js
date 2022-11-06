@@ -2,24 +2,13 @@ import modernErrors from 'modern-errors'
 
 import { TEST_PLUGIN } from './plugin.js'
 
-export const defineGlobalOpts = function (globalOpts, plugins) {
-  return defineClassOpts({}, globalOpts, plugins)
-}
-
-export const defineClassOpts = function (classOpts, globalOpts, plugins) {
-  return defineClassesOpts({ TestError: classOpts }, globalOpts, plugins)
-}
-
-export const defineDeepCustom = function (childOpts, parentOpts, ...args) {
-  const { AnyError, SimpleCustomError } = defineSimpleCustom(
-    parentOpts,
-    ...args,
-  )
+export const defineDeepCustom = function (childOpts, parentOpts, opts) {
+  const { AnyError, SimpleCustomError } = defineSimpleCustom(parentOpts, opts)
   const TestError = SimpleCustomError.subclass('TestError', childOpts)
   return { AnyError, SimpleCustomError, TestError }
 }
 
-export const defineSimpleCustom = function (classOpts, globalOpts, plugins) {
+export const defineSimpleCustom = function (classOpts, opts) {
   return defineClassesOpts(
     (AnyError) => ({
       SimpleCustomError: {
@@ -30,19 +19,18 @@ export const defineSimpleCustom = function (classOpts, globalOpts, plugins) {
         ...classOpts,
       },
     }),
-    globalOpts,
-    plugins,
+    opts,
   )
 }
 
-export const defineClassesOpts = function (ErrorClasses, globalOpts, plugins) {
-  const AnyError = createAnyError(globalOpts, plugins)
+export const defineClassesOpts = function (ErrorClasses, opts) {
+  const AnyError = createAnyError(opts)
   const ErrorClassesA = createErrorClasses(AnyError, ErrorClasses)
   return { AnyError, ...ErrorClassesA }
 }
 
-const createAnyError = function (globalOpts = {}, plugins = [TEST_PLUGIN]) {
-  return modernErrors(plugins, globalOpts)
+const createAnyError = function ({ plugins = [TEST_PLUGIN], ...opts } = {}) {
+  return modernErrors.subclass('AnyError', { ...opts, plugins })
 }
 
 const createErrorClasses = function (AnyError, ErrorClasses) {

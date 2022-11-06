@@ -23,17 +23,9 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`error.errors are normalized | ${title}`, (t) => {
-    t.true(
-      new ErrorClass('test', { errors: [true] }).errors[0] instanceof AnyError,
-    )
-  })
-
-  test(`error.errors are normalized deeply | ${title}`, (t) => {
-    const cause = new Error('causeMessage')
-    // eslint-disable-next-line fp/no-mutation
-    cause.errors = ['one']
-    const { errors } = new ErrorClass('test', { cause })
-    t.true(errors[0] instanceof AnyError)
+    const [error] = new ErrorClass('test', { errors: [true] }).errors
+    t.true(error instanceof Error)
+    t.false(error instanceof AnyError)
   })
 
   test(`error.errors are appended to | ${title}`, (t) => {
