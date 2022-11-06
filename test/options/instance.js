@@ -1,9 +1,26 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { SpecificErrorClasses } from '../helpers/known.js'
+import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
 import { createAnyError } from '../helpers/main.js'
 
+each(KnownErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
+  test(`Allows empty options | ${title}`, (t) => {
+    // eslint-disable-next-line max-nested-callbacks
+    t.notThrows(() => new ErrorClass('test', opts))
+  })
+})
+
+each(
+  KnownErrorClasses,
+  [null, '', { custom: true }],
+  ({ title }, ErrorClass, opts) => {
+    test(`Validate against invalid options | ${title}`, (t) => {
+      // eslint-disable-next-line max-nested-callbacks
+      t.throws(() => new ErrorClass('test', opts))
+    })
+  },
+)
 each(SpecificErrorClasses, ({ title }, ErrorClass) => {
   test(`Does not set options if not defined | ${title}`, (t) => {
     t.is(new ErrorClass('test').properties.options.prop, undefined)
