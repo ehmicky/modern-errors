@@ -1,21 +1,30 @@
 import test from 'ava'
+import { each } from 'test-each'
 
-import { defineGlobalOpts } from '../../helpers/main.js'
+import { getClasses } from '../../helpers/main.js'
 
-test('plugin.staticMethods cannot be defined twice by different plugins', (t) => {
-  t.throws(
-    defineGlobalOpts.bind(undefined, {}, [
-      { name: 'one', staticMethods: { one() {} } },
-      { name: 'two', staticMethods: { one() {} } },
-    ]),
-  )
-})
+const { ErrorClasses } = getClasses()
 
-test('plugin.instanceMethods cannot be defined twice by different plugins', (t) => {
-  t.throws(
-    defineGlobalOpts.bind(undefined, {}, [
-      { name: 'one', instanceMethods: { one() {} } },
-      { name: 'two', instanceMethods: { one() {} } },
-    ]),
-  )
+each(ErrorClasses, ({ title }, ErrorClass) => {
+  test(`plugin.staticMethods cannot be defined twice by different plugins | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', {
+        plugins: [
+          { name: 'one', staticMethods: { one() {} } },
+          { name: 'two', staticMethods: { one() {} } },
+        ],
+      }),
+    )
+  })
+
+  test(`plugin.instanceMethods cannot be defined twice by different plugins | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', {
+        plugins: [
+          { name: 'one', instanceMethods: { one() {} } },
+          { name: 'two', instanceMethods: { one() {} } },
+        ],
+      }),
+    )
+  })
 })
