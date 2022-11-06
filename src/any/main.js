@@ -1,6 +1,6 @@
 import errorCustomClass from 'error-custom-class'
 
-import { validateGlobalOpts } from '../options/global.js'
+import { validateGlobalOpts } from '../options/class.js'
 import { computePluginsOpts } from '../options/instance.js'
 import { setPluginsProperties } from '../plugins/properties/main.js'
 import { createSubclass } from '../subclass/main.js'
@@ -16,10 +16,6 @@ const CoreError = errorCustomClass('CoreError')
 // Base class for all error classes.
 // This is not a global class since it is bound to specific plugins, global
 // options and `ErrorClasses`.
-// This can be also instantiated on its own to wrap errors without changing
-// their class, as opposed to exporting a separate class for it since it:
-//  - Avoids confusion between both classes
-//  - Removes some exports, simplifying the API
 // We encourage `instanceof` over `error.name` for checking since this:
 //  - Prevents name collisions with other libraries
 //  - Allows checking if any error came from a given library
@@ -37,8 +33,6 @@ const CoreError = errorCustomClass('CoreError')
 //     - Leads to verbose error names
 //     - Requires either an additional option, or guessing ambiguously whether
 //       error names are meant to include a namespace prefix
-//     - Means special error classes (like `AnyError` or `UnknownError`) might
-//       or not be namespaced which might be confusing
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
 export const createAnyError = function ({
@@ -87,8 +81,6 @@ const getAnyError = function (ErrorClasses, errorData, plugins) {
   /* eslint-enable fp/no-this */
 }
 
-// Merge `error.cause` and set `plugin.properties()`.
-// Also compute and keep track of instance options and `constructorArgs`.
 const modifyError = function ({
   currentError,
   opts,

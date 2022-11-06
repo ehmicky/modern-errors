@@ -2,7 +2,7 @@ import { mergeClassOpts } from '../../options/merge.js'
 import { finalizePluginsOpts } from '../../options/plugins.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
-// `options`
+// `className` and `options`.
 // This is meant to be used by plugins either:
 //  - Operating on nested errors
 //  - With static methods operating on errors

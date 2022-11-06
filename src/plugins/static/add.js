@@ -2,11 +2,10 @@ import { setNonEnumProp } from '../../utils/descriptors.js'
 
 import { callStaticMethod } from './call.js'
 
-// Plugins can define a `staticMethods` object, which is merged to `AnyError.*`.
+// Plugins can define a `staticMethods` object, which is merged to
+// `ErrorClass.*`.
 // We privilege `instanceMethods` when one of the arguments is `error`
 //  - We do not pass `error` to static methods to encourage this
-//  - We also do not pass class `options`, but we do pass global ones, to allow
-//    plugins to configure static methods
 // State in plugins:
 //  - `modern-errors` does not have mutable state
 //     - This allows declaring error classes in the top-level state, instead of

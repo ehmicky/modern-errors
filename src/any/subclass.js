@@ -1,5 +1,5 @@
 // We forbid subclasses that are not known, i.e. not passed to
-// `*Error.subclass()`
+// `ErrorClass.subclass()`
 //  - They would not be validated at load time
 //  - The class would not be normalized until its first instantiation
 //     - E.g. its `prototype.name` might be missing

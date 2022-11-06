@@ -1,7 +1,15 @@
 import normalizeException from 'normalize-exception'
 
-// Normalizer ensures its class is among an allowed list of classes.
-// Otherwise, we convert it to a new `UnknownError`.
+// This has two purposes:
+//  - Normalizing exceptions:
+//     - Inside any `catch` block
+//     - To error instances with normal properties
+//     - To instances of `AnyError` (or any subclass)
+//     - This is meant to be called as `AnyError.normalize()`
+//  - Assigning a default class:
+//     - Inside a top-level `catch` block
+//     - For errors that are not instances of `AnyError` (or any subclass)
+//     - This is meant to be called as `UnknownError.normalize()`
 // This returns the `error` instead of throwing it so the user can handle it
 // before re-throwing it if needed.
 // This is called `normalize()`, not `normalizeError()` so it does not end

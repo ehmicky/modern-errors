@@ -1,5 +1,5 @@
 // The `custom` option can be used to customize a specific error class.
-// It must extend directly from `AnyError`.
+// It must extend directly from the parent class.
 // We use a thin child class instead of `custom` directly since this allows:
 //  - Mutating it, e.g. its `name`, without modifying the `custom` option
 //  - Creating several classes with the same `custom` option
@@ -10,13 +10,10 @@
 //  - Including error core properties, `plugin.properties()`, instance|static
 //    methods
 //  - Reasons:
-//     - It is not possible for `BaseError` to check its child class since it
-//       is called afterwards
+//     - It is not possible for `AnyError` to check its child class since it is
+//       called afterwards
 //     - It allows for some useful overrides like `toJSON()`
 //     - It prevents user-defined `props` from overriding `custom` properties
-// This does not apply to static methods because:
-//  - They can be checked
-//  - Overriding can be done through a different method
 export const getErrorClass = function (ParentError, classOpts) {
   const ParentClass = getParentClass(ParentError, classOpts)
   return class extends ParentClass {}
@@ -33,7 +30,6 @@ const getParentClass = function (ParentError, classOpts) {
   return custom
 }
 
-// Validate `custom` option
 const validateCustom = function (custom, ParentError) {
   if (typeof custom !== 'function') {
     throw new TypeError(`The "custom" property must be a class: ${custom}`)

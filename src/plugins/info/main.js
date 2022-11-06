@@ -48,6 +48,7 @@ export const getPluginInfo = function ({
 }
 
 // `ErrorClasses` are passed to all plugin methods.
+// It excludes parent classes.
 // A shallow copy is done to prevent mutations.
 const getErrorClasses = function (ErrorClasses, parentClassName) {
   const ParentClass = ErrorClasses[parentClassName].ErrorClass

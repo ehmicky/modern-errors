@@ -1,7 +1,7 @@
 import { getMethodOpts } from '../../options/method.js'
 import { getErrorPluginInfo } from '../info/main.js'
 
-// Called on `error.{methodName}(...args)`
+// Called on `error[methodName](...args)`
 export const callInstanceMethod = function ({
   error,
   methodFunc,

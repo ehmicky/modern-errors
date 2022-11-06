@@ -9,11 +9,6 @@ import { setNonEnumProp } from '../utils/descriptors.js'
 import { getErrorClass } from './custom.js'
 
 // Create a new error class.
-// The API is divided into two calls: creating `AnyError`, then creating each
-// error class extending from `AnyError`:
-//  - This makes it clear to users that they can reuse plugin methods
-//  - This also makes it clearer to types, simplifying them
-//  - This removes any need to mutate any `custom` class
 // We allow `ErrorClass.subclass()` to create subclasses. This can be used to:
 //  - Share options and custom logic between error classes
 //  - Bind and override options and custom logic between modules
@@ -28,7 +23,10 @@ export const createSubclass = function ({
   classOpts,
   plugins,
 }) {
-  validateClassName(className, ErrorClasses)
+  if (ErrorClasses[className] !== undefined) {
+    throw new TypeError(`Error class "${className}" has already been defined.`)
+  }
+
   const classOptsA = getClassOpts(plugins, parentOpts, classOpts)
   setErrorName(ErrorClass, className)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
@@ -49,23 +47,7 @@ export const createSubclass = function ({
       plugins,
     }),
   )
-  addAllInstanceMethods({
-    plugins,
-    ErrorClasses,
-    ErrorClass,
-    errorData,
-  })
-  addAllStaticMethods({
-    plugins,
-    ErrorClasses,
-    ErrorClass,
-    errorData,
-  })
+  addAllInstanceMethods({ plugins, ErrorClasses, ErrorClass, errorData })
+  addAllStaticMethods({ plugins, ErrorClasses, ErrorClass, errorData })
   return ErrorClass
-}
-
-const validateClassName = function (className, ErrorClasses) {
-  if (ErrorClasses[className] !== undefined) {
-    throw new TypeError(`Error class "${className}" has already been defined.`)
-  }
 }

@@ -3,7 +3,7 @@ import { setNonEnumProp } from '../../utils/descriptors.js'
 import { callInstanceMethod } from './call.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
-// `AnyError.prototype.*`.
+// `ErrorClass.prototype.*`.
 export const addAllInstanceMethods = function ({
   plugins,
   ErrorClasses,

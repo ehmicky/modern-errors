@@ -34,7 +34,7 @@ const normalizePluginName = function (plugin) {
 }
 
 const normalizePlugin = function (plugin, index, plugins) {
-  validateTwicePlugin(plugin, index, plugins)
+  validateRepeatedPlugin(plugin, index, plugins)
   validateOptionalFuncs(plugin)
   const pluginA = normalizeMethods({
     plugin,
@@ -57,12 +57,12 @@ const normalizePlugin = function (plugin, index, plugins) {
   return pluginD
 }
 
-const validateTwicePlugin = function (plugin, index, plugins) {
-  const hasTwicePlugin = plugins.some(
+const validateRepeatedPlugin = function (plugin, index, plugins) {
+  const repeatsPlugin = plugins.some(
     (pluginA, indexA) => indexA !== index && pluginA.name === plugin.name,
   )
 
-  if (hasTwicePlugin) {
+  if (repeatsPlugin) {
     throw new TypeError(
       `The plugin "${plugin.fullName}" must not be passed twice.`,
     )

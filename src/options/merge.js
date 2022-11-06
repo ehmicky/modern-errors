@@ -14,9 +14,9 @@ export const mergeClassOpts = function ({
 }
 
 // Merge:
-//  - child class options with parent class options
+//  - child class options with parent class options (including global ones)
 //  - class options with instance options
-//  - `AnyError` options with its `cause` options
+//  - method options with other options
 // `undefined` values are ignored, even if the key is set because:
 //  - This might be due to conditional logic
 //  - Differentiating between `undefined` and "not defined" values is confusing

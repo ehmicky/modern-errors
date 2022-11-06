@@ -1,5 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
+// Validate and normalize `plugin.instanceMethods|staticMethods`
 export const normalizeMethods = function ({
   plugin,
   plugins,
