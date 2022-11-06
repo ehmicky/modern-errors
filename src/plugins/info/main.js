@@ -1,3 +1,5 @@
+import { instancesData } from '../../subclass/map.js'
+
 import { getErrorInfo, getSubclasses } from './error.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
@@ -19,7 +21,9 @@ export const getErrorPluginInfo = function ({
     plugins,
     plugin,
   })
-  return { ...info, error }
+  // eslint-disable-next-line fp/no-mutating-assign
+  Object.assign(info, { error })
+  return info
 }
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods|staticMethods`
@@ -36,5 +40,19 @@ export const getPluginInfo = function ({
     plugin,
   })
   const ErrorClasses = getSubclasses(ErrorClass)
-  return { options, ErrorClass, ErrorClasses, errorInfo }
+  const info = { options, ErrorClass, ErrorClasses, errorInfo }
+  setInstancesData(info)
+  return info
+}
+
+// `instancesData` is internal, undocumented and non-enumerable.
+// It is only needed in very specific plugins like `modern-errors-serialize`
+const setInstancesData = function (info) {
+  // eslint-disable-next-line fp/no-mutating-methods
+  Object.defineProperty(info, 'instancesData', {
+    value: instancesData,
+    enumerable: false,
+    writable: true,
+    configurable: true,
+  })
 }
