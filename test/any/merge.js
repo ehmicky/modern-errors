@@ -60,11 +60,10 @@ each([TestError, AnyError], ({ title }, ErrorClass) => {
     t.is(error.message, `${innerMessage}\n${outerMessage}`)
   })
 
-  test(`"cause" can have undefined value | ${title}`, (t) => {
+  test(`"cause" is ignored if undefined | ${title}`, (t) => {
     const outerMessage = 'message'
-    const cause = undefined
-    const error = new ErrorClass(outerMessage, { cause })
+    const error = new ErrorClass(outerMessage, { cause: undefined })
     t.false('cause' in error)
-    t.is(error.message, `${cause}\n${outerMessage}`)
+    t.is(error.message, outerMessage)
   })
 })

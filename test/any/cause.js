@@ -14,7 +14,11 @@ import {
 } from '../helpers/known.js'
 
 const getExpectedMessage = function (cause) {
-  return isErrorInstance(cause) ? cause.message : String(cause)
+  if (isErrorInstance(cause)) {
+    return cause.message
+  }
+
+  return cause === undefined ? '' : String(cause)
 }
 
 each(
@@ -26,6 +30,15 @@ each(
       t.is(
         getExpectedMessage(cause),
         new ParentErrorClass('', { cause }).message,
+      )
+    })
+
+    test(`Generated stacks are not used | ${title}`, (t) => {
+      const cause = getCause()
+      t.false(
+        new ParentErrorClass('', { cause }).stack.includes(
+          'normalize-exception',
+        ),
       )
     })
   },

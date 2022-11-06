@@ -1,4 +1,4 @@
-import normalizeException from 'normalize-exception'
+import isErrorInstance from 'is-error-instance'
 
 // If `cause` is not an `AnyError` instance, we convert it using
 // `AnyError.normalize()` to:
@@ -7,16 +7,14 @@ import normalizeException from 'normalize-exception'
 // This applies regardless of parent class:
 //  - `new AnyError()`, `new KnownError()` or `new UnknownError()`
 //  - With an empty message or not
-// `undefined` causes are not ignored when the `cause` key is defined:
-//  - This is because `new AnyError()` requires a `cause`, which might be a
-//    legitimate `undefined` error
-//  - Other error classes have the same behavior for consistency with `AnyError`
-//  - This makes the behavior different from:
-//     - `normalize-exception` and `merge-error-cause`
-//     - Other options (`errors` and plugin options)
+// `undefined` causes are ignored when the `cause` key is defined, for
+// consistency with:
+//  - `normalize-exception` and `merge-error-cause`
+//  - Other options (`errors` and plugin options)
 export const normalizeCause = function ({
   message,
   opts,
+  opts: { cause },
   AnyError,
   isAnyNormalize,
 }) {
@@ -25,12 +23,15 @@ export const normalizeCause = function ({
   }
 
   if (!isAnyNormalize) {
-    return { message, opts: { ...opts, cause: AnyError.normalize(opts.cause) } }
+    return { message, opts: { ...opts, cause: AnyError.normalize(cause) } }
   }
 
-  const cause = normalizeException(opts.cause)
-  const messageA = GENERIC_NAMES.has(cause.name) ? message : `${cause.name}:`
+  const messageA = hasSpecificName(cause) ? `${cause.name}:` : message
   return { message: messageA, opts: { ...opts, cause } }
+}
+
+const hasSpecificName = function (cause) {
+  return isErrorInstance(cause) && !GENERIC_NAMES.has(cause.name)
 }
 
 // The error name is not kept if generic or `UnknownError` itself
