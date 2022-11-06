@@ -134,53 +134,6 @@ It is an ES module and must be loaded using
 [an `import` or `import()` statement](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c),
 not `require()`.
 
-# API
-
-## ModernError
-
-Top-level [`ErrorClass`](#errorclass).
-
-## ErrorClass
-
-### ErrorClass.subclass(name, options?)
-
-`name`: `string`\
-`options`: `object?`\
-_Return value_: `class extends ErrorClass {}`
-
-Creates and returns a child [`ErrorClass`](#errorclass).
-
-Options:
-
-- any [plugin options](#plugin-options)
-- `props`: [error properties](#error-instance-properties)
-- `plugins`: array of [plugins](#-plugins)
-- `custom`: [custom class](#-custom-logic) to add any methods, `constructor` or
-  properties
-
-### ErrorClass.normalize(anyException, UnknownErrorClass?)
-
-`anyException`: `any`\
-`UnknownErrorClass`: `ErrorClass` (default: `ErrorClass`)\
-_Return value_: `Error`
-
-Normalizes [invalid errors](#invalid-errors). If `anyException` is not an
-instance of `ErrorClass` (or of a subclass), sets its class to
-`UnknownErrorClass`.
-
-### new ErrorClass(message, options?)
-
-`message`: `string`\
-`options`: `object?`\
-_Return value_: `Error`
-
-Options:
-
-- any [plugin options](#plugin-options)
-- `props`: [error properties](#error-instance-properties)
-- `cause`: inner error being [wrapped](#-wrap-errors)
-- `errors`: array of errors being [aggregated](#aggregate-errors)
-
 # Usage
 
 ## ⛑️ Error classes
@@ -618,6 +571,53 @@ plugin.
 
 Please see the [following documentation](docs/typescript.md) for information
 about TypeScript types.
+
+# API
+
+## ModernError
+
+Top-level [`ErrorClass`](#errorclass).
+
+## ErrorClass
+
+### ErrorClass.subclass(name, options?)
+
+`name`: `string`\
+`options`: `object?`\
+_Return value_: `class extends ErrorClass {}`
+
+Creates and returns a child [`ErrorClass`](#errorclass).
+
+Options:
+
+- any [plugin options](#plugin-options)
+- `props`: [error properties](#error-instance-properties)
+- `plugins`: array of [plugins](#-plugins)
+- `custom`: [custom class](#-custom-logic) to add any methods, `constructor` or
+  properties
+
+### new ErrorClass(message, options?)
+
+`message`: `string`\
+`options`: `object?`\
+_Return value_: `Error`
+
+Options:
+
+- any [plugin options](#plugin-options)
+- `props`: [error properties](#error-instance-properties)
+- `cause`: inner error being [wrapped](#-wrap-errors)
+- `errors`: array of errors being [aggregated](#aggregate-errors)
+
+### ErrorClass.normalize(anyException, UnknownErrorClass?)
+
+`anyException`: `any`\
+`UnknownErrorClass`: `ErrorClass` (default: `ErrorClass`)\
+_Return value_: `Error`
+
+Normalizes [invalid errors](#invalid-errors). If `anyException` is not an
+instance of `ErrorClass` (or of a subclass), sets its class to
+`UnknownErrorClass`.
 
 # Modules
 
