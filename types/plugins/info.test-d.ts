@@ -1,25 +1,13 @@
 import { expectType, expectAssignable, expectError } from 'tsd'
 
-import modernErrors, { Info, BaseErrorClass, ErrorInstance } from 'modern-errors'
+import { Info, BaseErrorClass, ErrorClass } from 'modern-errors'
 
 const instanceMethodsInfo = {} as Info['instanceMethods']
 expectError(instanceMethodsInfo.other)
 expectAssignable<Error>(instanceMethodsInfo.error)
 expectAssignable<boolean>(instanceMethodsInfo.options)
 expectAssignable<BaseErrorClass>(instanceMethodsInfo.BaseError)
-
-expectAssignable<object>(instanceMethodsInfo.ErrorClasses)
-expectError(instanceMethodsInfo.ErrorClasses.other)
-expectType<never>(instanceMethodsInfo.ErrorClasses.BaseError)
-expectAssignable<ErrorInstance>(
-  new instanceMethodsInfo.ErrorClasses.UnknownError(''),
-)
-expectAssignable<Function | undefined>(instanceMethodsInfo.ErrorClasses.SError)
-
-const BaseError = modernErrors()
-const ChildError = BaseError.subclass('ChildError')
-expectAssignable<typeof BaseError>(instanceMethodsInfo.BaseError)
-expectAssignable<typeof instanceMethodsInfo.ErrorClasses.TestError>(ChildError)
+expectAssignable<readonly ErrorClass[]>(instanceMethodsInfo.ErrorClasses)
 
 const staticMethodsInfo = {} as Info['staticMethods']
 expectError(staticMethodsInfo.other)

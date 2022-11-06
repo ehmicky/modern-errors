@@ -1,4 +1,3 @@
-import type { ErrorName } from 'error-custom-class'
 import type { BaseErrorClass } from '../base/main.js'
 import type { ErrorInstance } from '../base/modify/main.js'
 import type { ErrorClass } from '../subclass/main/main.js'
@@ -76,11 +75,7 @@ interface CommonInfo {
    * }
    * ```
    */
-  readonly ErrorClasses: {
-    BaseError: never
-    UnknownError: ErrorClass
-    [name: ErrorName]: ErrorClass
-  }
+  readonly ErrorClasses: readonly ErrorClass[]
 
   /**
    * Returns the `info` object from a specific `Error`, except from
