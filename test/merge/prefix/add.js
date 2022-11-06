@@ -35,8 +35,8 @@ each(ErrorClasses, messages, ({ title }, ErrorClass, message) => {
     const error = new TestError(causeMessage)
     error.name = causeName
     const newError = new ErrorClass(message, { cause: error })
-    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
     t.true(newError.stack.includes(`${causeName}:`))
+    t.is(newError.message, `${message}${causeName}: ${causeMessage}`)
   })
 
   test(`Name of cause with superclass is kept if changed | ${title}`, (t) => {
