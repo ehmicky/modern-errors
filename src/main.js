@@ -38,6 +38,7 @@ import { classesData, instancesData } from './subclass/map.js'
 //    `Error.captureStackTrace()`
 /* eslint-disable fp/no-this */
 class ModernBaseError extends Error {
+  // eslint-disable-next-line max-statements
   constructor(message, opts) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
@@ -45,23 +46,19 @@ class ModernBaseError extends Error {
     super(message, optsA)
     ensureCorrectClass(this, ErrorClass)
     ponyfillCause(this, optsA)
+    const { plugins } = classesData.get(ErrorClass)
+    const { opts: optsB, pluginsOpts } = computePluginsOpts(plugins, optsA)
+    setAggregateErrors(this, optsB)
+    const error = mergeCause(this, ErrorClass)
+    instancesData.set(error, { pluginsOpts })
+    setPluginsProperties(error, plugins)
     /* c8 ignore start */
     // eslint-disable-next-line no-constructor-return
-    return modifyError(this, optsA, ErrorClass)
+    return error
   }
   /* c8 ignore stop */
 }
 /* eslint-enable fp/no-this */
-
-const modifyError = function (currentError, opts, ErrorClass) {
-  const { plugins } = classesData.get(ErrorClass)
-  const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
-  setAggregateErrors(currentError, optsA)
-  const error = mergeCause(currentError, ErrorClass)
-  instancesData.set(error, { pluginsOpts })
-  setPluginsProperties(error, plugins)
-  return error
-}
 
 const ModernError = createClass({
   ParentError: Error,
