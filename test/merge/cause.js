@@ -1,7 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, getUnknownErrors, ModernError } from '../helpers/main.js'
+import { getClasses, ModernError } from '../helpers/main.js'
+import { getUnknownErrors } from '../helpers/unknown.js'
 
 const { KnownErrorClasses, SpecificErrorClasses, AnyError } = getClasses()
 

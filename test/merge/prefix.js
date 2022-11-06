@@ -2,12 +2,11 @@ import test from 'ava'
 import isErrorInstance from 'is-error-instance'
 import { each } from 'test-each'
 
+import { getClasses, ModernError } from '../helpers/main.js'
 import {
-  getClasses,
-  ModernError,
   getUnknownErrors,
   getUnknownErrorInstances,
-} from '../helpers/main.js'
+} from '../helpers/unknown.js'
 
 const { KnownErrorClasses, SpecificErrorClasses } = getClasses()
 
