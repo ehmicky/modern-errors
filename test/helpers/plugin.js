@@ -1,5 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
+import { getClasses } from './main.js'
+
 const validateContext = function (context) {
   if (context !== undefined) {
     throw new Error('Defined context')
@@ -57,3 +59,9 @@ export const TEST_PLUGIN = {
     },
   },
 }
+
+export const getPluginClasses = function () {
+  return getClasses({ plugins: [TEST_PLUGIN] })
+}
+
+export const { ErrorClasses, ErrorSubclasses } = getPluginClasses()

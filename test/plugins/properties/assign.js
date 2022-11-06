@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getPluginClasses } from '../../helpers/main.js'
-
-const { ErrorSubclasses } = getPluginClasses()
+import { ErrorSubclasses } from '../../helpers/plugin.js'
 
 each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
   test(`plugin.properties() can return an empty object | ${title}`, (t) => {

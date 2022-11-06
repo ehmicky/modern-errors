@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getPluginClasses } from '../helpers/main.js'
-
-const { ErrorSubclasses } = getPluginClasses()
+import { ErrorSubclasses } from '../helpers/plugin.js'
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 

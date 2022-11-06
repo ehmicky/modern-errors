@@ -1,9 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getPluginClasses } from '../helpers/main.js'
-
-const { ErrorClasses, ErrorSubclasses } = getPluginClasses()
+import { ErrorClasses, ErrorSubclasses } from '../helpers/plugin.js'
 
 each(ErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
   test(`Allows empty options | ${title}`, (t) => {

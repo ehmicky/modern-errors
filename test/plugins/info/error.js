@@ -6,10 +6,8 @@ import {
   getInstanceInfo,
   getStaticInfo,
 } from '../../helpers/info.js'
-import { getPluginClasses } from '../../helpers/main.js'
+import { ErrorSubclasses } from '../../helpers/plugin.js'
 import { getUnknownErrors } from '../../helpers/unknown.js'
-
-const { ErrorSubclasses } = getPluginClasses()
 
 each(
   ErrorSubclasses,

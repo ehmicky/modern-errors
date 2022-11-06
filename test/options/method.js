@@ -2,10 +2,11 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { callStaticMethod, callInstanceMethod } from '../helpers/info.js'
-import { ErrorSubclasses, getPluginClasses } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
-
-const { ErrorSubclasses: PluginErrorClasses } = getPluginClasses()
+import { ErrorSubclasses } from '../helpers/main.js'
+import {
+  ErrorSubclasses as PluginErrorClasses,
+  TEST_PLUGIN,
+} from '../helpers/plugin.js'
 
 each(
   PluginErrorClasses,
