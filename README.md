@@ -578,38 +578,67 @@ about TypeScript types.
 
 Top-level [`ErrorClass`](#errorclass).
 
-## ErrorClass
-
-### ErrorClass.subclass(name, options?)
+## ErrorClass.subclass(name, options?)
 
 `name`: `string`\
-`options`: `object?`\
+`options`: [`ClassOptions?`](#options)\
 _Return value_: `class extends ErrorClass {}`
 
 Creates and returns a child [`ErrorClass`](#errorclass).
 
-Options:
+### options
 
-- any [plugin options](#plugin-options)
-- `props`: [error properties](#error-instance-properties)
-- `plugins`: array of [plugins](#-plugins)
-- `custom`: [custom class](#-custom-logic) to add any methods, `constructor` or
-  properties
+#### options.props
 
-### new ErrorClass(message, options?)
+_Type_: `object`
+
+[Error class properties](#error-class-properties).
+
+#### options.plugins
+
+_Type_: [`Plugin[]`](#-plugins)
+
+#### options.custom
+
+_Type_: `class extends ErrorClass`
+
+[Custom class](#-custom-logic) to add any methods, `constructor` or properties.
+
+#### options.\*
+
+Any [plugin options](#plugin-options) can also be specified.
+
+## new ErrorClass(message, options?)
 
 `message`: `string`\
 `options`: `object?`\
 _Return value_: `Error`
 
-Options:
+### options
 
-- any [plugin options](#plugin-options)
-- `props`: [error properties](#error-instance-properties)
-- `cause`: inner error being [wrapped](#-wrap-errors)
-- `errors`: array of errors being [aggregated](#aggregate-errors)
+#### options.props
 
-### ErrorClass.normalize(anyException, UnknownErrorClass?)
+_Type_: `object`
+
+[Error instance properties](#error-instance-properties).
+
+#### options.cause
+
+_Type_: [`any`](#wrapped-errors)
+
+Inner error being [wrapped](#-wrap-errors).
+
+#### options.errors
+
+_Type_: `any[]`
+
+Array of errors being [aggregated](#aggregate-errors).
+
+#### options.\*
+
+Any [plugin options](#plugin-options) can also be specified.
+
+## ErrorClass.normalize(anyException, UnknownErrorClass?)
 
 `anyException`: `any`\
 `UnknownErrorClass`: `ErrorClass` (default: `ErrorClass`)\
