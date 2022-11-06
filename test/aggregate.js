@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { AnyError, TestError, KnownErrorClasses } from '../helpers/known.js'
+import { AnyError, TestError, KnownErrorClasses } from './helpers/known.js'
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`error.errors can be set | ${title}`, (t) => {
