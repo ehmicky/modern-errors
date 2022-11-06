@@ -1,3 +1,9 @@
+# 4.1.1
+
+## Bug fixes
+
+- Improve how stack traces are printed
+
 # 4.1.0
 
 ## Features
