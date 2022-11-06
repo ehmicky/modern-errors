@@ -19,7 +19,7 @@ export const validateSubclass = function (ErrorClass, ErrorClasses) {
   const { name: parentName } = Object.getPrototypeOf(ErrorClass)
   throw new Error(
     `"new ${name}()" must not be directly called.
-The following error class should be used instead:
-  export const ${name} = ${parentName}.subclass('${name}', { custom: ${name} })`,
+This error class should be created like this instead:
+  export const ${name} = ${parentName}.subclass('${name}')`,
   )
 }
