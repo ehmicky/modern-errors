@@ -1,7 +1,6 @@
 import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
 
 import { setAggregateErrors } from './any/aggregate.js'
-import { setConstructorArgs } from './any/args.js'
 import { mergeCause } from './any/merge.js'
 import { normalizeOpts } from './any/options.js'
 import { validateSubclass } from './any/subclass.js'
@@ -9,7 +8,6 @@ import { CORE_PLUGINS } from './core_plugins/main.js'
 import { computePluginsOpts } from './options/instance.js'
 import { setPluginsProperties } from './plugins/properties/main.js'
 import { createClass } from './subclass/main.js'
-// eslint-disable-next-line import/max-dependencies
 import { classesData, instancesData } from './subclass/map.js'
 
 // Base class for all error classes.
@@ -40,7 +38,7 @@ import { classesData, instancesData } from './subclass/map.js'
 //    `Error.captureStackTrace()`
 /* eslint-disable fp/no-this */
 class ModernBaseError extends Error {
-  constructor(message, opts, ...args) {
+  constructor(message, opts) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
     const optsA = normalizeOpts(ErrorClass, opts)
@@ -49,23 +47,22 @@ class ModernBaseError extends Error {
     ponyfillCause(this, optsA)
     /* c8 ignore start */
     // eslint-disable-next-line no-constructor-return
-    return modifyError({ currentError: this, opts: optsA, args, ErrorClass })
+    return modifyError(this, optsA, ErrorClass)
   }
   /* c8 ignore stop */
 }
+/* eslint-enable fp/no-this */
 
-const modifyError = function ({ currentError, opts, args, ErrorClass }) {
+const modifyError = function (currentError, opts, ErrorClass) {
   const { plugins } = classesData.get(ErrorClass)
   const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
   setAggregateErrors(currentError, optsA)
   const error = mergeCause(currentError, ErrorClass)
   instancesData.set(error, { pluginsOpts })
-  setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
   setPluginsProperties(error, plugins)
   return error
 }
 
-/* eslint-enable fp/no-this */
 const ModernError = createClass({
   ParentError: Error,
   ErrorClass: ModernBaseError,
