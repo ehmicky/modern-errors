@@ -4,7 +4,6 @@ import { normalize } from '../any/normalize.js'
 import { normalizeClassOpts, getClassOpts } from '../options/class.js'
 import { addAllInstanceMethods } from '../plugins/instance/add.js'
 import { normalizePlugins } from '../plugins/shape/main.js'
-import { mergePluginOpts } from '../plugins/shape/merge.js'
 import { addAllStaticMethods } from '../plugins/static/add.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
@@ -36,18 +35,16 @@ export const createSubclass = function (ParentError, className, classOpts) {
 }
 
 const applyClassOpts = function (ParentError, classOpts) {
-  const { classOpts: parentOpts, plugins: parentPluginsOpt } =
+  const { classOpts: parentOpts, plugins: parentPlugins } =
     ERROR_CLASSES.get(ParentError)
-  const {
-    custom,
-    plugins: pluginsOpt,
-    ...classOptsA
-  } = normalizeClassOpts(ParentError, classOpts)
+  const { custom, plugins, ...classOptsA } = normalizeClassOpts(
+    ParentError,
+    classOpts,
+  )
   const ErrorClass = getErrorClass(ParentError, custom)
-  const pluginsOptA = mergePluginOpts(parentPluginsOpt, pluginsOpt)
-  const plugins = normalizePlugins(pluginsOptA)
-  const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
-  return { ErrorClass, classOpts: classOptsB, plugins }
+  const pluginsA = normalizePlugins(parentPlugins, plugins, ParentError)
+  const classOptsB = getClassOpts(parentOpts, classOptsA, pluginsA)
+  return { ErrorClass, classOpts: classOptsB, plugins: pluginsA }
 }
 
 const addParentSubclass = function (ErrorClass, ParentError) {

@@ -3,59 +3,53 @@ import isPlainObj from 'is-plain-obj'
 import { normalizeGetOptions } from '../../options/get.js'
 import { normalizeIsOptions } from '../../options/method.js'
 
+import { validateDuplicatePlugins } from './duplicate.js'
 import { normalizeMethods } from './methods.js'
 import { validatePluginName } from './name.js'
 
-// Validate and normalize plugins
-export const normalizePlugins = function (pluginOpts) {
-  const plugins = pluginOpts.map(normalizePluginName)
-  return plugins.map((plugin, index) => normalizePlugin(plugin, index, plugins))
+// Validate and normalize plugins.
+// Also merge plugins of parent and child classes.
+export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
+  const pluginsA = normalizePluginsOpt(plugins)
+  const pluginsB = pluginsA.map(normalizePlugin)
+  validateDuplicatePlugins(parentPlugins, pluginsB, ParentError)
+  return [...parentPlugins, ...pluginsB]
 }
 
-const normalizePluginName = function (plugin) {
+const normalizePluginsOpt = function (pluginsOpt = []) {
+  if (!Array.isArray(pluginsOpt)) {
+    throw new TypeError(`The "plugins" option must be an array: ${pluginsOpt}`)
+  }
+
+  return pluginsOpt
+}
+
+const normalizePlugin = function (plugin) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
       `The "plugins" option must be an array of plugin objects: ${plugin}`,
     )
   }
 
-  return validatePluginName(plugin)
-}
-
-const normalizePlugin = function (plugin, index, plugins) {
-  validateRepeatedPlugin(plugin, index, plugins)
-  validateOptionalFuncs(plugin)
-  const pluginA = normalizeMethods({
-    plugin,
-    plugins,
+  const pluginA = validatePluginName(plugin)
+  validateOptionalFuncs(pluginA)
+  const pluginB = normalizeMethods({
+    plugin: pluginA,
     propName: 'instanceMethods',
     coreObject: Error.prototype,
     coreObjectName: 'error',
     forbiddenNames: new Set([]),
   })
-  const pluginB = normalizeMethods({
-    plugin: pluginA,
-    plugins,
+  const pluginC = normalizeMethods({
+    plugin: pluginB,
     propName: 'staticMethods',
     coreObject: Error,
     coreObjectName: 'Error',
     forbiddenNames: new Set(['normalize', 'subclass']),
   })
-  const pluginC = normalizeIsOptions({ plugin: pluginB })
-  const pluginD = normalizeGetOptions({ plugin: pluginC })
-  return pluginD
-}
-
-const validateRepeatedPlugin = function (plugin, index, plugins) {
-  const repeatsPlugin = plugins.some(
-    (pluginA, indexA) => indexA !== index && pluginA.name === plugin.name,
-  )
-
-  if (repeatsPlugin) {
-    throw new TypeError(
-      `The plugin "${plugin.fullName}" must not be passed twice.`,
-    )
-  }
+  const pluginD = normalizeIsOptions({ plugin: pluginC })
+  const pluginE = normalizeGetOptions({ plugin: pluginD })
+  return pluginE
 }
 
 const validateOptionalFuncs = function (plugin) {

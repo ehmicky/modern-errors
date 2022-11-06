@@ -3,7 +3,6 @@ import isPlainObj from 'is-plain-obj'
 // Validate and normalize `plugin.instanceMethods|staticMethods`
 export const normalizeMethods = function ({
   plugin,
-  plugins,
   propName,
   coreObject,
   coreObjectName,
@@ -23,7 +22,6 @@ export const normalizeMethods = function ({
       propName,
       methodName,
       plugin,
-      plugins,
       coreObject,
       coreObjectName,
       forbiddenNames,
@@ -37,7 +35,6 @@ const validateMethod = function ({
   propName,
   methodName,
   plugin,
-  plugins,
   coreObject,
   coreObjectName,
   forbiddenNames,
@@ -51,27 +48,6 @@ const validateMethod = function ({
   if (forbiddenNames.has(methodName) || methodName in coreObject) {
     throw new TypeError(
       `The plugin "${plugin.fullName}"'s "${propName}.${methodName}" property name is invalid: "${coreObjectName}.${methodName}" already exists.`,
-    )
-  }
-
-  validateDuplicateMethod({ propName, methodName, plugin, plugins })
-}
-
-const validateDuplicateMethod = function ({
-  propName,
-  methodName,
-  plugin,
-  plugins,
-}) {
-  const duplicatePlugin = plugins.find(
-    (pluginA) =>
-      pluginA[propName]?.[methodName] !== undefined &&
-      pluginA.name !== plugin.name,
-  )
-
-  if (duplicatePlugin !== undefined) {
-    throw new TypeError(
-      `Both plugins "${plugin.fullName}" and "${duplicatePlugin.fullName}" must not define the same "${propName}.${methodName}" property.`,
     )
   }
 }
