@@ -5,7 +5,6 @@ import {
   defineGlobalOpts,
   defineClassOpts,
   defineClassesOpts,
-  defineDeepCustom,
 } from '../helpers/main.js'
 import { TEST_PLUGIN } from '../helpers/plugin.js'
 
@@ -53,32 +52,30 @@ test('plugin.getOptions() full is true for UnknownError options with plugin.prop
   )
 })
 
-each([defineClassOpts, defineDeepCustom], ({ title }, defineOpts) => {
-  test(`Child options have priority over parent ones | ${title}`, (t) => {
-    const { TestError } = defineOpts({ prop: true }, { prop: false })
-    t.true(new TestError('test').properties.options.prop)
-  })
+test('Child options have priority over parent ones', (t) => {
+  const { TestError } = defineClassOpts({ prop: true }, { prop: false })
+  t.true(new TestError('test').properties.options.prop)
+})
 
-  test(`undefined child options are ignored over parent ones | ${title}`, (t) => {
-    const { TestError } = defineOpts({ prop: undefined }, { prop: true })
-    t.true(new TestError('test').properties.options.prop)
-  })
+test('undefined child options are ignored over parent ones', (t) => {
+  const { TestError } = defineClassOpts({ prop: undefined }, { prop: true })
+  t.true(new TestError('test').properties.options.prop)
+})
 
-  test(`undefined parent options are ignored over child ones | ${title}`, (t) => {
-    const { TestError } = defineOpts({ prop: true }, { prop: undefined })
-    t.true(new TestError('test').properties.options.prop)
-  })
+test('undefined parent options are ignored over child ones', (t) => {
+  const { TestError } = defineClassOpts({ prop: true }, { prop: undefined })
+  t.true(new TestError('test').properties.options.prop)
+})
 
-  test(`Object child options are shallowly merged to parent options | ${title}`, (t) => {
-    const { TestError } = defineOpts(
-      { prop: { one: true, two: { three: true }, four: true } },
-      { prop: { one: false, two: { three: false }, five: false } },
-    )
-    t.deepEqual(new TestError('test').properties.options.prop, {
-      one: true,
-      two: { three: true },
-      four: true,
-      five: false,
-    })
+test('Object child options are shallowly merged to parent options', (t) => {
+  const { TestError } = defineClassOpts(
+    { prop: { one: true, two: { three: true }, four: true } },
+    { prop: { one: false, two: { three: false }, five: false } },
+  )
+  t.deepEqual(new TestError('test').properties.options.prop, {
+    one: true,
+    two: { three: true },
+    four: true,
+    five: false,
   })
 })
