@@ -1,11 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses, getPluginClasses } from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { getPluginClasses } from '../helpers/main.js'
 
 const { ErrorSubclasses } = getPluginClasses()
-const { ErrorClasses } = getClasses()
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
@@ -35,33 +33,4 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
     const error = new ErrorClass('message')
     t.is(error.getInstance().error, error)
   })
-
-  test(`plugin.instanceMethods are passed the normalized instance options | ${title}`, (t) => {
-    const error = new ErrorClass('message', { prop: true })
-    t.true(error.getInstance().options.prop)
-  })
-
-  test(`plugin.instanceMethods are passed the normalized class options | ${title}`, (t) => {
-    const TestError = ErrorClass.subclass('TestError', { prop: true })
-    t.true(new TestError('message').getInstance().options.prop)
-  })
 })
-
-each(
-  ErrorClasses,
-  [
-    ...new Set([
-      ...Reflect.ownKeys(Error.prototype),
-      ...Reflect.ownKeys(Object.prototype),
-    ]),
-  ],
-  ({ title }, ErrorClass, propName) => {
-    test(`plugin.instanceMethods cannot redefine native Error.prototype.* | ${title}`, (t) => {
-      t.throws(
-        ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, instanceMethods: { [propName]() {} } }],
-        }),
-      )
-    })
-  },
-)

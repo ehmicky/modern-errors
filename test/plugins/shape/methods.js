@@ -41,3 +41,22 @@ each(
     })
   },
 )
+
+each(
+  ErrorClasses,
+  [
+    ...new Set([
+      ...Reflect.ownKeys(Error.prototype),
+      ...Reflect.ownKeys(Object.prototype),
+    ]),
+  ],
+  ({ title }, ErrorClass, propName) => {
+    test(`plugin.instanceMethods cannot redefine native Error.prototype.* | ${title}`, (t) => {
+      t.throws(
+        ErrorClass.subclass.bind(undefined, 'TestError', {
+          plugins: [{ ...TEST_PLUGIN, instanceMethods: { [propName]() {} } }],
+        }),
+      )
+    })
+  },
+)
