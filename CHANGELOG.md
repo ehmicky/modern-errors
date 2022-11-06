@@ -1,8 +1,181 @@
-# 4.2.0 (unreleased)
+# 5.0.0
+
+## Breaking changes
+
+### Top-level error class
+
+The default export is now the top-level error class
+[`ModernError`](README.md#modernerror).
+
+Also, the base error class is now documented as
+[`BaseError`](README.md#create-error-classes) instead of `AnyError`.
+
+Before:
+
+```js
+import modernErrors from 'modern-errors'
+
+export const AnyError = modernErrors(plugins, options)
+```
+
+After:
+
+```js
+import ModernError from 'modern-errors'
+
+export const BaseError = ModernError.subclass('BaseError', {
+  ...options,
+  plugins,
+})
+```
+
+### Error normalization
+
+Creating an `UnknownError` error class is now optional, although still
+recommended. To normalize unknown errors, `UnknownError` must now be passed as a
+second argument to
+[`BaseError.normalize()`](README.md#errorclassnormalizeerror-newerrorclass).
+
+Before:
+
+```js
+export const main = function () {
+  try {
+    // ...
+  } catch (error) {
+    throw BaseError.normalize(error)
+  }
+}
+```
+
+After:
+
+```js
+export const main = function () {
+  try {
+    // ...
+  } catch (error) {
+    throw BaseError.normalize(error, UnknownError)
+  }
+}
+```
+
+When `UnknownError` is not passed as a second argument, `BaseError.normalize()`
+now converts unknown errors to `BaseError` instances instead.
+
+### Wrap error options
+
+When wrapping errors, the outer and inner error's options are
+[now always merged](README.md#wrap-error-options).
+
+Before:
+
+```js
+try {
+  throw new AuthError('...', innerOptions)
+} catch (cause) {
+  // Options are now `outerOptions`. `innerOptions` are discarded.
+  throw new InputError('...', { ...outerOptions, cause })
+}
+```
+
+After:
+
+```js
+try {
+  throw new AuthError('...', innerOptions)
+} catch (cause) {
+  // `outerOptions` are merged with `innerOptions`
+  throw new InputError('...', { ...outerOptions, cause })
+}
+```
+
+### Wrap error class
+
+When wrapping errors, the inner error's
+[class is now used](README.md#wrap-error-class) if the outer error's class is a
+parent (including `BaseError`).
+
+Before:
+
+```js
+export const UserError = BaseError.subclass('UserError')
+export const AuthError = UserError.subclass('AuthError')
+```
+
+```js
+try {
+  throw new AuthError('...')
+} catch (cause) {
+  // Now an UserError
+  throw new UserError('...', { cause })
+}
+```
+
+After:
+
+```js
+try {
+  throw new AuthError('...')
+} catch (cause) {
+  // Still an AuthError, because that is a subclass of UserError
+  throw new UserError('...', { cause })
+}
+```
+
+### Aggregate errors
+
+[Aggregate errors](README.md#aggregate-errors) are now
+[normalized](README.md#-normalize-errors) by
+[`BaseError.normalize()`](README.md#errorclassnormalizeerror-newerrorclass)
+instead of [`new ErrorClass()`](README.md#new-errorclassmessage-options).
 
 ## Features
 
-- Improve the stack trace produced when wrapping an error that does not have one
+### Global custom logic
+
+Global [custom logic](README.md#class-custom-logic) can now be specified by
+passing the [`custom` option](README.md#optionscustom) to the
+[`BaseError`](README.md#errorclasssubclassname-options), as opposed to its
+subclasses.
+
+### Class-specific plugins
+
+[Plugins](README.md#-plugins) can now be specific to an error class (and its
+subclasses) by using the [`plugins` option](README.md#optionsplugins).
+
+### Optional wrapping
+
+The `BaseError` can now be instantiating without
+[wrapping an error](README.md#-wrap-errors). The
+[`cause` option](README.md#optionscause) is not required anymore.
+
+### Missing stack trace
+
+Improve the stack trace produced when wrapping an error that does not have one.
+
+## Plugins
+
+The following changes only impact [custom plugin](docs/plugins.md) authors.
+
+### `info.ErrorClass`
+
+[Static methods](docs/plugins.md#staticmethodsmethodname) (including
+[`ErrorClass.normalize()`](README.md#errorclassnormalizeerror-newerrorclass))
+can now be called on any error class, not only on `BaseError`. As a consequence,
+`info.AnyError` has been renamed to
+[`info.ErrorClass`](docs/plugins.md#errorclass).
+
+### `info.ErrorClasses`
+
+[`info.ErrorClasses`](docs/plugins.md#errorclasses) is now an array instead of
+an object. This array might contain error classes with duplicate names.
+
+### `info.errorInfo`
+
+[`info.errorInfo(error)`](docs/plugins.md#errorinfo) now returns the error's
+[`ErrorClass`](docs/plugins.md#errorclass) and
+[`ErrorClasses`](docs/plugins.md#errorclasses).
 
 # 4.1.1
 
