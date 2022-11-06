@@ -4,6 +4,7 @@ import PROPS_PLUGIN from '../../core_plugins/props.js'
 import { normalizeGetOptions } from '../../options/get.js'
 import { normalizeIsOptions } from '../../options/method.js'
 
+import { normalizeMethods } from './methods.js'
 import { validatePluginName } from './name.js'
 
 // Validate and normalize plugins
@@ -12,27 +13,47 @@ export const normalizePlugins = function (plugins = []) {
     throw new TypeError(`The first argument must be an array: ${plugins}`)
   }
 
-  return [...CORE_PLUGINS, ...plugins].map(normalizePlugin)
+  const pluginsA = [...CORE_PLUGINS, ...plugins]
+  return pluginsA
+    .map(normalizePluginName)
+    .map((plugin) => normalizePlugin(plugin, pluginsA))
 }
 
 // Plugins included by default.
 // Order is significant, since last plugins `properties()` have priority.
 const CORE_PLUGINS = [PROPS_PLUGIN]
 
-const normalizePlugin = function (plugin) {
+const normalizePluginName = function (plugin) {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
       `The first argument must be an array of plugin objects: ${plugin}`,
     )
   }
 
-  const pluginA = validatePluginName(plugin)
-  validateOptionalFuncs(pluginA)
-  const pluginB = normalizeMethods(pluginA, 'instanceMethods')
-  const pluginC = normalizeMethods(pluginB, 'staticMethods')
-  const pluginD = normalizeIsOptions({ plugin: pluginC })
-  const pluginE = normalizeGetOptions({ plugin: pluginD })
-  return pluginE
+  return validatePluginName(plugin)
+}
+
+const normalizePlugin = function (plugin, plugins) {
+  validateOptionalFuncs(plugin)
+  const pluginA = normalizeMethods({
+    plugin,
+    plugins,
+    propName: 'instanceMethods',
+    coreObject: Error.prototype,
+    coreObjectName: 'error',
+    forbiddenNames: new Set([]),
+  })
+  const pluginB = normalizeMethods({
+    plugin: pluginA,
+    plugins,
+    propName: 'staticMethods',
+    coreObject: Error,
+    coreObjectName: 'Error',
+    forbiddenNames: new Set(['normalize', 'subclass']),
+  })
+  const pluginC = normalizeIsOptions({ plugin: pluginB })
+  const pluginD = normalizeGetOptions({ plugin: pluginC })
+  return pluginD
 }
 
 const validateOptionalFuncs = function (plugin) {
@@ -49,29 +70,6 @@ const validateOptionalMethod = function (plugin, funcName) {
   if (funcValue !== undefined && typeof funcValue !== 'function') {
     throw new TypeError(
       `The plugin "${plugin.fullName}"'s "${funcName}()" property must be either undefined or a function, not: ${funcValue}`,
-    )
-  }
-}
-
-const normalizeMethods = function (plugin, propName) {
-  const methods = plugin[propName] ?? {}
-
-  if (!isPlainObj(methods)) {
-    throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "${propName}" property must be either undefined or a plain object, not: ${methods}`,
-    )
-  }
-
-  Object.entries(methods).forEach(([methodName, methodValue]) => {
-    validateMethod(methodValue, `${propName}.${methodName}`, plugin)
-  })
-  return { ...plugin, [propName]: methods }
-}
-
-const validateMethod = function (methodValue, methodName, plugin) {
-  if (typeof methodValue !== 'function') {
-    throw new TypeError(
-      `The plugin "${plugin.fullName}"'s "${methodName}" property must be a function, not: ${methodValue}`,
     )
   }
 }

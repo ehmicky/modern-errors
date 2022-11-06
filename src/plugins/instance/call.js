@@ -8,12 +8,12 @@ export const callInstanceMethod = function ({
   methodName,
   plugin,
   plugins,
+  ErrorClass,
   ErrorClasses,
   errorData,
-  AnyError,
   args,
 }) {
-  if (!(error instanceof AnyError)) {
+  if (!(error instanceof ErrorClass)) {
     throw new TypeError(
       `Missing "this" context: "${methodName}()" must be called using "error.${methodName}()"`,
     )

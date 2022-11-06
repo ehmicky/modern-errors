@@ -38,17 +38,11 @@ import { callStaticMethod } from './call.js'
 export const addAllStaticMethods = function ({
   plugins,
   ErrorClasses,
+  ErrorClass,
   errorData,
-  AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addStaticMethods({
-      plugin,
-      plugins,
-      ErrorClasses,
-      errorData,
-      AnyError,
-    })
+    addStaticMethods({ plugin, plugins, ErrorClasses, ErrorClass, errorData })
   })
 }
 
@@ -57,57 +51,34 @@ const addStaticMethods = function ({
   plugin: { staticMethods },
   plugins,
   ErrorClasses,
+  ErrorClass,
   errorData,
-  AnyError,
 }) {
   Object.entries(staticMethods).forEach(
     addStaticMethod.bind(undefined, {
       plugin,
       plugins,
       ErrorClasses,
+      ErrorClass,
       errorData,
-      AnyError,
     }),
   )
 }
 
 const addStaticMethod = function (
-  { plugin, plugins, ErrorClasses, errorData, AnyError },
+  { plugin, plugins, ErrorClasses, ErrorClass, errorData },
   [methodName, methodFunc],
 ) {
-  validateMethodName(methodName, plugin, AnyError)
   setNonEnumProp(
-    AnyError,
+    ErrorClass,
     methodName,
     callStaticMethod.bind(undefined, {
       methodFunc,
       plugin,
       plugins,
+      ErrorClass,
       ErrorClasses,
       errorData,
-      AnyError,
     }),
-    function boundStaticMethod(...args) {
-      return callStaticMethod({
-        methodFunc,
-        methodName,
-        plugin,
-        plugins,
-        // eslint-disable-next-line fp/no-this, no-invalid-this
-        ErrorClass: this,
-        ErrorClasses,
-        errorData,
-        AnyError,
-        args,
-      })
-    },
   )
-}
-
-const validateMethodName = function (methodName, plugin, AnyError) {
-  if (methodName in AnyError) {
-    throw new Error(
-      `Plugin "${plugin.fullName}" must not redefine "AnyError.${methodName}()"`,
-    )
-  }
 }

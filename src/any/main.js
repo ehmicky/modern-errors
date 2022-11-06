@@ -55,6 +55,7 @@ export const createAnyError = function ({
     ErrorClasses,
     AnyError,
     className: 'AnyError',
+    errorData,
     parentOpts: {},
     classOpts: globalOpts,
     plugins,

@@ -2,6 +2,8 @@ import { setErrorName } from 'error-class-utils'
 
 import { normalize } from '../any/normalize.js'
 import { getClassOpts } from '../options/class.js'
+import { addAllInstanceMethods } from '../plugins/instance/add.js'
+import { addAllStaticMethods } from '../plugins/static/add.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getErrorClass } from './custom.js'
@@ -21,6 +23,7 @@ export const createSubclass = function ({
   ErrorClasses,
   AnyError,
   className,
+  errorData,
   parentOpts,
   classOpts,
   plugins,
@@ -46,6 +49,18 @@ export const createSubclass = function ({
       plugins,
     }),
   )
+  addAllInstanceMethods({
+    plugins,
+    ErrorClasses,
+    ErrorClass,
+    errorData,
+  })
+  addAllStaticMethods({
+    plugins,
+    ErrorClasses,
+    ErrorClass,
+    errorData,
+  })
   return ErrorClass
 }
 

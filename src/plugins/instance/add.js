@@ -7,39 +7,39 @@ import { callInstanceMethod } from './call.js'
 export const addAllInstanceMethods = function ({
   plugins,
   ErrorClasses,
+  ErrorClass,
   errorData,
-  AnyError,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, plugins, ErrorClasses, errorData, AnyError })
+    addInstanceMethods({ plugin, plugins, ErrorClasses, ErrorClass, errorData })
   })
 }
 
 const addInstanceMethods = function ({
   plugin,
+  plugin: { instanceMethods },
   plugins,
   ErrorClasses,
+  ErrorClass,
   errorData,
-  AnyError,
 }) {
-  Object.entries(plugin.instanceMethods).forEach(
+  Object.entries(instanceMethods).forEach(
     addInstanceMethod.bind(undefined, {
       plugin,
       plugins,
       ErrorClasses,
+      ErrorClass,
       errorData,
-      AnyError,
     }),
   )
 }
 
 const addInstanceMethod = function (
-  { plugin, plugins, ErrorClasses, errorData, AnyError },
+  { plugin, plugins, ErrorClasses, ErrorClass, errorData },
   [methodName, methodFunc],
 ) {
-  validateMethodName(methodName, plugin, AnyError)
   setNonEnumProp(
-    AnyError.prototype,
+    ErrorClass.prototype,
     methodName,
     function boundInstanceMethod(...args) {
       return callInstanceMethod({
@@ -49,21 +49,13 @@ const addInstanceMethod = function (
         methodName,
         plugin,
         plugins,
+        ErrorClass,
         ErrorClasses,
         errorData,
-        AnyError,
         args,
       })
     },
   )
-}
-
-const validateMethodName = function (methodName, plugin, AnyError) {
-  if (methodName in AnyError.prototype) {
-    throw new Error(
-      `Plugin "${plugin.fullName}" must not redefine "error.${methodName}()"`,
-    )
-  }
 }
 
 // Retrieve the name of all instance methods
