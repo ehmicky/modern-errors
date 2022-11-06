@@ -63,7 +63,7 @@
   "devDependencies": {
     "@ehmicky/dev-tasks": "^1.0.99",
     "is-error-instance": "^1.2.0",
-    "modern-errors-bugs": "^1.2.0",
+    "modern-errors-bugs": "^1.3.0",
     "modern-errors-cli": "^1.3.1",
     "modern-errors-http": "^1.3.0",
     "modern-errors-process": "^1.2.0",
