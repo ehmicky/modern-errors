@@ -1,4 +1,4 @@
-import { mergeClassOpts } from '../../options/merge.js'
+import { mergePluginsOpts } from '../../options/merge.js'
 import { finalizePluginsOpts } from '../../options/plugins.js'
 import { instancesData, classesData } from '../../subclass/map.js'
 
@@ -23,7 +23,8 @@ export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
   const ErrorClass = error.constructor
   const ErrorClasses = getSubclasses(ErrorClass)
   const { pluginsOpts } = instancesData.get(error)
-  const pluginsOptsA = mergeClassOpts(ErrorClass, plugins, pluginsOpts)
+  const { classOpts } = classesData.get(ErrorClass)
+  const pluginsOptsA = mergePluginsOpts(classOpts, pluginsOpts, plugins)
   const options = finalizePluginsOpts({
     pluginsOpts: pluginsOptsA,
     methodOpts,

@@ -6,9 +6,6 @@ import isPlainObj from 'is-plain-obj'
 //     - For class options and error instance options
 //     - So that, if user mutates them, this does not change the options used
 //       internally
-//     - This would otherwise be a problem
-//        - e.g. `constructorArgs` mutations would mean `ErrorClass.parse()`
-//          would re-initialize errors with different arguments
 //  - Most arguments passed to `plugin.*()` methods:
 //     - This prevents mutations by plugins from impacting the logic
 //     - This also allows exposing plugin methods arguments to users

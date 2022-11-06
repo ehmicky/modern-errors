@@ -1,20 +1,12 @@
 import isPlainObj from 'is-plain-obj'
 
-import { classesData } from '../subclass/map.js'
-
-// Merge class options with instance options.
-// This is done as late as possible to ensure `ERROR_INSTANCES` only contains
-// instance options, since `constructorArgs` should not have class options.
-export const mergeClassOpts = function (ErrorClass, plugins, pluginsOpts) {
-  const { classOpts } = classesData.get(ErrorClass)
-  return mergePluginsOpts(classOpts, pluginsOpts, plugins)
-}
-
 // Merge:
 //  - child class options with parent class options
 //  - class options with instance options
 //  - method options with other options
 // The same logic is used between those, for consistency.
+// For class options, this is done as late as possible to ensure `instancesData`
+// only contains instance options.
 // `undefined` values are ignored, even if the key is set because:
 //  - This might be due to conditional logic
 //  - Differentiating between `undefined` and "not defined" values is confusing
