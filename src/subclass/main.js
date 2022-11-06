@@ -18,7 +18,6 @@ import { getErrorClass } from './custom.js'
 export const createSubclass = function ({
   ErrorClass,
   ErrorClasses,
-  AnyError,
   className,
   errorData,
   parentOpts,
@@ -29,16 +28,11 @@ export const createSubclass = function ({
   setErrorName(ErrorClass, className)
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
-  setNonEnumProp(
-    ErrorClass,
-    'normalize',
-    normalize.bind(undefined, { ErrorClass, AnyError }),
-  )
+  setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
   setNonEnumProp(ErrorClass, 'subclass', (childClassName, childClassOpts) =>
     createSubclass({
       ErrorClass: getErrorClass(ErrorClass, childClassOpts),
       ErrorClasses,
-      AnyError,
       className: childClassName,
       parentOpts: classOptsA,
       classOpts: childClassOpts,

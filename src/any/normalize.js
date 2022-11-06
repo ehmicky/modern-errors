@@ -1,6 +1,7 @@
 import normalizeException from 'normalize-exception'
 
 import { setNonEnumProp } from '../utils/descriptors.js'
+import { isSubclass } from '../utils/subclass.js'
 
 // This has two purposes:
 //  - Normalizing exceptions:
@@ -26,11 +27,21 @@ import { setNonEnumProp } from '../utils/descriptors.js'
 // before re-throwing it if needed.
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
-export const normalize = function ({ ErrorClass, AnyError }, error) {
-  return normalizeError({ error, ErrorClass, AnyError, parents: [] })
+export const normalize = function (
+  ErrorClass,
+  error,
+  UnknownError = ErrorClass,
+) {
+  if (!isSubclass(UnknownError, ErrorClass)) {
+    throw new TypeError(
+      `${ErrorClass.name}.normalize()'s second argument should be a subclass of ${ErrorClass.name}, not: ${UnknownError}`,
+    )
+  }
+
+  return normalizeError({ error, ErrorClass, UnknownError, parents: [] })
 }
 
-const normalizeError = function ({ error, ErrorClass, AnyError, parents }) {
+const normalizeError = function ({ error, ErrorClass, UnknownError, parents }) {
   if (parents.includes(error)) {
     return error
   }
@@ -38,12 +49,12 @@ const normalizeError = function ({ error, ErrorClass, AnyError, parents }) {
   const errorA = normalizeAggregateErrors({
     error,
     ErrorClass,
-    AnyError,
+    UnknownError,
     parents,
   })
-  return shouldKeepClass(errorA, ErrorClass, AnyError)
+  return shouldKeepClass(errorA, ErrorClass, UnknownError)
     ? normalizeException(errorA, { shallow: true })
-    : new ErrorClass('', { cause: errorA })
+    : new UnknownError('', { cause: errorA })
 }
 
 // `error.errors` are normalized before `error` so that if some are missing a
@@ -52,7 +63,7 @@ const normalizeError = function ({ error, ErrorClass, AnyError, parents }) {
 const normalizeAggregateErrors = function ({
   error,
   ErrorClass,
-  AnyError,
+  UnknownError,
   parents,
 }) {
   if (!Array.isArray(error?.errors)) {
@@ -63,7 +74,7 @@ const normalizeAggregateErrors = function ({
     normalizeError({
       error: aggregateError,
       ErrorClass,
-      AnyError,
+      UnknownError,
       parents: [...parents, error],
     }),
   )
@@ -71,9 +82,9 @@ const normalizeAggregateErrors = function ({
   return error
 }
 
-const shouldKeepClass = function (error, ErrorClass, AnyError) {
+const shouldKeepClass = function (error, ErrorClass, UnknownError) {
   return (
-    error?.constructor === ErrorClass ||
-    (error instanceof AnyError && error.constructor !== AnyError)
+    error?.constructor === UnknownError ||
+    (error instanceof ErrorClass && error.constructor !== ErrorClass)
   )
 }

@@ -46,7 +46,6 @@ export const createAnyError = function ({
   return createSubclass({
     ErrorClass: AnyError,
     ErrorClasses,
-    AnyError,
     className: 'AnyError',
     errorData,
     parentOpts: {},

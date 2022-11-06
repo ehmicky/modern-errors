@@ -1,3 +1,5 @@
+import { isSubclass } from '../../utils/subclass.js'
+
 import { getErrorInfo } from './error.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
@@ -56,13 +58,6 @@ const getErrorClasses = function (ErrorClasses, parentClassName) {
     Object.entries(ErrorClasses)
       .filter(([, { ErrorClass }]) => isSubclass(ErrorClass, ParentClass))
       .map(getErrorClass),
-  )
-}
-
-const isSubclass = function (ErrorClass, ParentClass) {
-  return (
-    ParentClass === ErrorClass ||
-    Object.prototype.isPrototypeOf.call(ParentClass, ErrorClass)
   )
 }
 
