@@ -194,7 +194,8 @@ console.log(error.isUserError) // true
 
 ### Aggregate errors
 
-The `errors` option aggregates multiple errors into one. This is like
+The [`errors` option](#optionserrors) aggregates multiple errors into one. This
+is like
 [`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
 except that it works with any error class.
 
@@ -216,7 +217,8 @@ throw new InputError('...', { errors: [databaseError, authError] })
 
 Any error's [message](#wrap-error-message), [class](#wrap-error-class) and
 [options](#wrap-error-options) can be wrapped using the
-[standard `cause` option](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause).
+[standard](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause)
+[`cause` option](#optionscause).
 
 Instead of being set as a `cause` property, the inner error is directly
 [merged](https://github.com/ehmicky/merge-error-cause) to the outer error,
@@ -433,8 +435,8 @@ try {
 
 ### Class custom logic
 
-The [`custom`](#errorclasssubclassname-options) option can be used to provide an
-error `class` with additional methods, `constructor` or properties.
+The [`custom` option](#optionscustom) can be used to provide an error `class`
+with additional methods, `constructor` or properties.
 
 <!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this,
      class-methods-use-this -->
@@ -495,8 +497,8 @@ Plugins extend `modern-errors` features. All available plugins are
 
 ### Adding plugins
 
-To use a plugin, please install it, then pass it to the `plugins` option of
-[`ErrorClass.subclass()`](#errorclasssubclassname-options).
+To use a plugin, please install it, then pass it to the
+[`plugins` option](#optionsplugins).
 
 ```bash
 npm install modern-errors-{pluginName}
@@ -532,21 +534,20 @@ const options = {
 
 Plugin options can apply to (in priority order):
 
-- Any error: second argument to
-  [`ModernError.subclass()`](#errorclasssubclassname-options)
+- Any error: second argument to [`ModernError.subclass()`](#options-1)
 
 ```js
 export const AnyError = ModernError.subclass('AnyError', options)
 ```
 
 - Any error of a specific class (and all its subclasses): second argument to
-  [`ErrorClass.subclass()`](#errorclasssubclassname-options)
+  [`ErrorClass.subclass()`](#options-1)
 
 ```js
 export const InputError = AnyError.subclass('InputError', options)
 ```
 
-- A specific error: second argument to the error's constructor
+- A specific error: second argument to [`new ErrorClass()`](#options-3)
 
 ```js
 throw new InputError('...', options)
