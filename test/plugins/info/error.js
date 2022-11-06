@@ -15,14 +15,11 @@ each(
   getUnknownErrors(),
   // eslint-disable-next-line max-params
   ({ title }, ErrorClass, getInfo, getUnknownError) => {
-    test(`errorInfo throws on unknown errors | ${title}`, (t) => {
+    test(`errorInfo normalizes unknown errors | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass)
-      t.throws(errorInfo.bind(undefined, getUnknownError()))
-    })
-
-    test(`errorInfo returns ErrorClass | ${title}`, (t) => {
-      const { errorInfo } = getInfo(ErrorClass)
-      t.is(errorInfo(new ErrorClass('test')).ErrorClass, ErrorClass)
+      const info = errorInfo(getUnknownError())
+      t.is(info.error.constructor, ErrorClass)
+      t.is(info.ErrorClass, ErrorClass)
     })
   },
 )
@@ -43,6 +40,23 @@ each(
   ErrorSubclasses,
   [getPropertiesInfo, getInstanceInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
+    test(`errorInfo returns error | ${title}`, (t) => {
+      const { errorInfo } = getInfo(ErrorClass)
+      const error = new ErrorClass('test')
+      t.is(errorInfo(error).error, error)
+    })
+
+    test(`errorInfo returns ErrorClass | ${title}`, (t) => {
+      const { errorInfo } = getInfo(ErrorClass)
+      t.is(errorInfo(new ErrorClass('test')).ErrorClass, ErrorClass)
+    })
+
+    test(`errorInfo returns ErrorClass of subclass | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError')
+      const { errorInfo } = getInfo(ErrorClass)
+      t.is(errorInfo(new TestError('test')).ErrorClass, TestError)
+    })
+
     test(`errorInfo returns instance options | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass)
       t.true(errorInfo(new ErrorClass('test', { prop: true })).options.prop)
@@ -50,7 +64,7 @@ each(
 
     test(`errorInfo returns class options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: true })
-      const { errorInfo } = getInfo(TestError)
+      const { errorInfo } = getInfo(ErrorClass)
       const error = new TestError('test')
       t.true(errorInfo(error).options.prop)
     })

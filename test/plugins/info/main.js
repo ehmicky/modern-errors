@@ -94,3 +94,11 @@ each(
     })
   },
 )
+
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.properties is passed the final ErrorClass| ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const cause = new TestError('causeMessage')
+    t.is(new ErrorClass('test', { cause }).properties.ErrorClass, TestError)
+  })
+})

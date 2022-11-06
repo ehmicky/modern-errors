@@ -13,17 +13,26 @@ import { instancesData, classesData } from '../../subclass/map.js'
 // If the `error` is not a `modern-errors` instance, an empty object is returned
 //  - I.e. the plugin should call `ErrorClass.normalize(error[, UnknownError])`
 //    first
-export const getErrorInfo = function ({ methodOpts, plugins, plugin }, error) {
-  if (!instancesData.has(error)) {
-    throw new Error(
-      '"info.errorInfo(error)" must be called after "error" has been passed to "ErrorClass.normalize(error)"',
-    )
-  }
+export const getAnyErrorInfo = function (
+  { ErrorClass, methodOpts, plugins, plugin },
+  error,
+) {
+  const errorA = ErrorClass.normalize(error)
+  const info = getKnownErrorInfo({ error: errorA, methodOpts, plugins, plugin })
+  return { ...info, error: errorA }
+}
 
+// Retrieve `info` of a normalized error
+export const getKnownErrorInfo = function ({
+  error,
+  methodOpts,
+  plugins,
+  plugin,
+}) {
   const ErrorClass = error.constructor
   const ErrorClasses = getSubclasses(ErrorClass)
-  const { pluginsOpts } = instancesData.get(error)
   const { classOpts } = classesData.get(ErrorClass)
+  const { pluginsOpts } = instancesData.get(error)
   const pluginsOptsA = mergePluginsOpts(classOpts, pluginsOpts, plugins)
   const options = finalizePluginsOpts({
     pluginsOpts: pluginsOptsA,
