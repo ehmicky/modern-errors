@@ -272,25 +272,6 @@ export default {
 }
 ```
 
-### options
-
-_Type_: `any`
-
-Plugin's options, as returned by [`getOptions()`](#getoptions).
-
-```js
-export default {
-  name: 'example',
-  getOptions(options) {
-    return options
-  },
-  // `new ErrorClass('message', { example: value })` sets `error.example: value`
-  properties({ options }) {
-    return { example: options }
-  },
-}
-```
-
 ### ErrorClass
 
 _Type_: `ErrorClass`
@@ -322,6 +303,25 @@ export default {
     isKnownErrorClass({ ErrorClasses }, value) {
       return ErrorClasses.includes(value)
     },
+  },
+}
+```
+
+### options
+
+_Type_: `any`
+
+Plugin's options, as returned by [`getOptions()`](#getoptions).
+
+```js
+export default {
+  name: 'example',
+  getOptions(options) {
+    return options
+  },
+  // `new ErrorClass('message', { example: value })` sets `error.example: value`
+  properties({ options }) {
+    return { example: options }
   },
 }
 ```
