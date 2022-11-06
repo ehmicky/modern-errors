@@ -29,12 +29,6 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
     t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { one: true }))
   })
 
-  test(`plugin.getOptions() full is false for class options | ${title}`, (t) => {
-    t.throws(
-      ErrorClass.subclass.bind(undefined, 'TestError', { prop: 'partial' }),
-    )
-  })
-
   test(`Child class options have priority over parent ones | ${title}`, (t) => {
     const ParentError = ErrorClass.subclass('ParentError', { prop: false })
     const ChildError = ParentError.subclass('ChildError', { prop: true })
@@ -60,5 +54,11 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
       four: true,
       five: false,
     })
+  })
+
+  test(`plugin.getOptions() full is false for class options | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', { prop: 'partial' }),
+    )
   })
 })
