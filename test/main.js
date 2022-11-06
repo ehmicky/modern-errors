@@ -6,12 +6,44 @@ import { getUnknownErrors } from './helpers/unknown.js'
 
 const { ErrorClasses, ErrorSubclasses } = getClasses()
 
+const { propertyIsEnumerable: isEnum } = Object.prototype
+
+const isStackLine = function (line) {
+  return line.trim().startsWith('at ')
+}
+
 each(ErrorClasses, ({ title }, ErrorClass) => {
+  const message = 'test'
+  const error = new ErrorClass(message)
+
   test(`instanceof can be used with known errors | ${title}`, (t) => {
-    const error = new ErrorClass('test')
     t.true(error instanceof Error)
     t.true(error instanceof ErrorClass)
     t.true(error instanceof ModernError)
+  })
+
+  test(`error.constructor is correct | ${title}`, (t) => {
+    t.is(error.constructor, ErrorClass)
+  })
+
+  test(`error.message is correct | ${title}`, (t) => {
+    t.is(error.message, message)
+    t.false(isEnum.call(error, 'message'))
+  })
+
+  test(`error.stack is correct | ${title}`, (t) => {
+    t.true(error.stack.includes(message))
+    t.false(isEnum.call(error, 'stack'))
+  })
+
+  test(`error.stack does not include the constructor | ${title}`, (t) => {
+    const lines = error.stack.split('\n')
+    const stackIndex = lines.findIndex(isStackLine)
+    t.true(lines[stackIndex].includes('main.js'))
+  })
+
+  test(`Has correct toString() | ${title}`, (t) => {
+    t.is(error.toString(), `${ErrorClass.name}: ${message}`)
   })
 })
 

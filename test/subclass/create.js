@@ -5,6 +5,8 @@ import { getClasses } from '../helpers/main.js'
 
 const { ErrorClasses } = getClasses()
 
+const { hasOwnProperty: hasOwn } = Object.prototype
+
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Does not modify invalid classes | ${title}`, (t) => {
     class custom extends Object {}
@@ -21,12 +23,21 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.is(DuplicateClass.name, ErrorClass.name)
   })
 
+  test(`ErrorClass.name is correct | ${title}`, (t) => {
+    t.not(ErrorClass.name, '')
+  })
+
   test(`prototype.name is correct | ${title}`, (t) => {
     t.is(ErrorClass.prototype.name, ErrorClass.name)
     t.false(
       Object.getOwnPropertyDescriptor(ErrorClass.prototype, 'name').enumerable,
     )
-    t.is(new ErrorClass('test').name, ErrorClass.name)
+  })
+
+  test(`error.name is correct | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    t.false(hasOwn.call(error, 'name'))
+    t.is(error.name, ErrorClass.name)
   })
 
   test(`ErrorClass.subclass() context is bound | ${title}`, (t) => {
