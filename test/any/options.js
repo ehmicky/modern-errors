@@ -1,11 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { defineClassOpts } from '../helpers/main.js'
+import { KnownErrorClasses } from '../helpers/known.js'
 
-const { AnyError, TestError } = defineClassOpts()
-
-each([AnyError, TestError], [undefined, {}], ({ title }, ErrorClass, opts) => {
+each(KnownErrorClasses, [undefined, {}], ({ title }, ErrorClass, opts) => {
   test(`Allows empty options | ${title}`, (t) => {
     // eslint-disable-next-line max-nested-callbacks
     t.notThrows(() => new ErrorClass('test', opts))
@@ -13,7 +11,7 @@ each([AnyError, TestError], [undefined, {}], ({ title }, ErrorClass, opts) => {
 })
 
 each(
-  [AnyError, TestError],
+  KnownErrorClasses,
   [null, '', { custom: true }],
   ({ title }, ErrorClass, opts) => {
     test(`Validate against invalid options | ${title}`, (t) => {
