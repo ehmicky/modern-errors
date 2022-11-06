@@ -1,3 +1,9 @@
+# 4.2.0 (unreleased)
+
+## Features
+
+- Improve the stack trace produced when wrapping an error that does not have one
+
 # 4.1.1
 
 ## Bug fixes
