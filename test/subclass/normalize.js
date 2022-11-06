@@ -1,8 +1,12 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { KnownErrorClasses, AnyError, TestError } from '../helpers/known.js'
-import { defineClassOpts } from '../helpers/main.js'
+import {
+  KnownErrorClasses,
+  SpecificErrorClasses,
+  ModernError,
+  ChildTestError,
+} from '../helpers/known.js'
 
 each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
@@ -28,28 +32,17 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`ErrorClass.normalize() keeps error class if known | ${title}`, (t) => {
-    const error = new TestError('test')
+    const error = new ChildTestError('test')
     const normalizedError = ErrorClass.normalize(error)
     t.is(error, normalizedError)
-    t.true(normalizedError instanceof TestError)
+    t.is(normalizedError.constructor, ChildTestError)
   })
+})
 
+each(SpecificErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() prevents naming collisions | ${title}`, (t) => {
-    const { TestError: OtherTestError } = defineClassOpts()
-    const normalizedError = ErrorClass.normalize(new OtherTestError('test'))
+    const OtherAnyError = ModernError.subclass('AnyError')
+    const normalizedError = ErrorClass.normalize(new OtherAnyError('test'))
     t.is(normalizedError.constructor, ErrorClass)
   })
-})
-
-test('AnyError.normalize() keeps AnyError error class', (t) => {
-  const error = new AnyError('test')
-  t.is(AnyError.normalize(error).constructor, AnyError)
-})
-
-test('Non-AnyError.normalize() changes AnyError error class', (t) => {
-  const error = new AnyError('test')
-  const { message } = error
-  const normalizedError = TestError.normalize(error)
-  t.is(normalizedError.constructor, TestError)
-  t.is(normalizedError.message, message)
 })

@@ -30,7 +30,7 @@ each(getUnknownErrors(), ({ title }, getUnknownError) => {
 })
 
 test('instanceof AnyError prevents naming collisions', (t) => {
-  const OtherAnyError = ModernError.subclass('OtherAnyError')
+  const OtherAnyError = ModernError.subclass('AnyError')
   t.false(new OtherAnyError('test') instanceof AnyError)
 })
 
