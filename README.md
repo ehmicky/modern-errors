@@ -310,7 +310,7 @@ try {
 
 Any error can be directly passed to the [`cause` option](#wrap-inner-error),
 even if it is [invalid](#invalid-errors), [unknown](#-unknown-errors) or not
-[normalized](#errorclassnormalizeanyexception-unknownerrorclass).
+[normalized](#errorclassnormalizeanyexception-newerrorclass).
 
 ```js
 try {
@@ -327,8 +327,8 @@ Manipulating errors that are not
 or that have
 [invalid properties](https://github.com/ehmicky/normalize-exception#features)
 can lead to unexpected bugs.
-[`BaseError.normalize()`](#errorclassnormalizeanyexception-unknownerrorclass)
-fixes that.
+[`BaseError.normalize()`](#errorclassnormalizeanyexception-newerrorclass) fixes
+that.
 
 <!-- eslint-disable no-throw-literal -->
 
@@ -357,7 +357,7 @@ try {
 ### Top-level error handler
 
 Wrapping a module's main functions with
-[`BaseError.normalize()`](#errorclassnormalizeanyexception-unknownerrorclass)
+[`BaseError.normalize()`](#errorclassnormalizeanyexception-newerrorclass)
 ensures every error being thrown is [valid](#invalid-errors), applies
 [plugins](#using-plugins-with-unknown-errors), and has a class that is either
 [_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
@@ -379,7 +379,7 @@ export const main = function () {
 An error is _unknown_ if its class was not
 [created](#errorclasssubclassname-options) by `modern-errors`. This indicates an
 unexpected exception, usually a bug.
-[`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeanyexception-unknownerrorclass)
+[`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeanyexception-newerrorclass)
 assigns the [`UnknownError` class](#create-error-classes) to any error that is
 not an instance of `BaseError` (or of a subclass). `UnknownError` can be any
 error class.
@@ -415,7 +415,7 @@ try {
 
 ### Using plugins with unknown errors
 
-[`BaseError.normalize()`](#errorclassnormalizeanyexception-unknownerrorclass) is
+[`BaseError.normalize()`](#errorclassnormalizeanyexception-newerrorclass) is
 required for [_unknown_ errors](#-unknown-errors) to use [plugins](#-plugins).
 
 <!-- eslint-skip -->
@@ -638,15 +638,16 @@ Array of errors being [aggregated](#aggregate-errors).
 
 Any [plugin options](#plugin-options) can also be specified.
 
-## ErrorClass.normalize(anyException, UnknownErrorClass?)
+## ErrorClass.normalize(anyException, NewErrorClass?)
 
 `anyException`: `any`\
-`UnknownErrorClass`: `ErrorClass` (default: `ErrorClass`)\
+`NewErrorClass`: `subclass of ErrorClass`\
 _Return value_: `Error`
 
-Normalizes [invalid errors](#invalid-errors). If `anyException` is not an
-instance of `ErrorClass` (or of a subclass), sets its class to
-`UnknownErrorClass`.
+Normalizes [invalid errors](#invalid-errors).
+
+If `anyException`'s class is a subclass of `ErrorClass`, it is left as is.
+Otherwise, it is converted to `NewErrorClass`, which defaults to `ErrorClass`.
 
 # Modules
 
