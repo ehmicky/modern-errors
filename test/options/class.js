@@ -1,81 +1,62 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import {
-  defineGlobalOpts,
-  defineClassOpts,
-  defineClassesOpts,
-} from '../helpers/main.js'
-import { TEST_PLUGIN } from '../helpers/plugin.js'
+import { KnownErrorClasses, SpecificErrorClasses } from '../helpers/known.js'
 
-each([defineGlobalOpts, defineClassOpts], ({ title }, defineOpts) => {
-  test(`Validate invalid global and class options | ${title}`, (t) => {
-    t.throws(defineOpts.bind(undefined, true))
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
+  test(`Validate invalid class options | ${title}`, (t) => {
+    t.throws(ErrorClass.subclass.bind(undefined, 'TestError', true))
   })
+})
 
-  test(`Can pass global and class options | ${title}`, (t) => {
-    const { TestError } = defineOpts({ prop: true })
+each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+  test(`Can pass class options | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError', { prop: true })
     t.true(new TestError('test').properties.options.prop)
   })
 
-  test(`Global and class options are readonly | ${title}`, (t) => {
-    const classOpts = { prop: { one: true } }
-    const { TestError } = defineOpts(classOpts)
+  test(`Class options are readonly | ${title}`, (t) => {
+    const prop = { one: true }
+    const TestError = ErrorClass.subclass('TestError', { prop })
     // eslint-disable-next-line fp/no-mutation
-    classOpts.prop.one = false
+    prop.one = false
     t.true(new TestError('test').properties.options.prop.one)
   })
 
   test(`Cannot pass unknown options | ${title}`, (t) => {
-    t.throws(defineOpts.bind(undefined, { one: true }))
+    t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { one: true }))
   })
-})
 
-test('plugin.getOptions() full is false for class options', (t) => {
-  t.throws(defineClassOpts.bind(undefined, { prop: 'partial' }))
-})
+  test(`plugin.getOptions() full is false for class options | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', { prop: 'partial' }),
+    )
+  })
 
-test('plugin.getOptions() full is false for UnknownError options with plugin.properties undefined', (t) => {
-  t.throws(
-    defineClassesOpts.bind(
-      undefined,
-      { UnknownError: { prop: 'partial' } },
-      {},
-      [{ ...TEST_PLUGIN, properties: undefined }],
-    ),
-  )
-})
+  test(`Child class options have priority over parent ones | ${title}`, (t) => {
+    const ParentError = ErrorClass.subclass('ParentError', { prop: false })
+    const ChildError = ParentError.subclass('ChildError', { prop: true })
+    t.true(new ChildError('test').properties.options.prop)
+  })
 
-test('plugin.getOptions() full is true for UnknownError options with plugin.properties defined', (t) => {
-  t.notThrows(
-    defineClassesOpts.bind(undefined, { UnknownError: { prop: 'partial' } }),
-  )
-})
+  test(`Undefined child class options are ignored | ${title}`, (t) => {
+    const ParentError = ErrorClass.subclass('ParentError', { prop: true })
+    const ChildError = ParentError.subclass('ChildError', { prop: undefined })
+    t.true(new ChildError('test').properties.options.prop)
+  })
 
-test('Child options have priority over parent ones', (t) => {
-  const { TestError } = defineClassOpts({ prop: true }, { prop: false })
-  t.true(new TestError('test').properties.options.prop)
-})
-
-test('undefined child options are ignored over parent ones', (t) => {
-  const { TestError } = defineClassOpts({ prop: undefined }, { prop: true })
-  t.true(new TestError('test').properties.options.prop)
-})
-
-test('undefined parent options are ignored over child ones', (t) => {
-  const { TestError } = defineClassOpts({ prop: true }, { prop: undefined })
-  t.true(new TestError('test').properties.options.prop)
-})
-
-test('Object child options are shallowly merged to parent options', (t) => {
-  const { TestError } = defineClassOpts(
-    { prop: { one: true, two: { three: true }, four: true } },
-    { prop: { one: false, two: { three: false }, five: false } },
-  )
-  t.deepEqual(new TestError('test').properties.options.prop, {
-    one: true,
-    two: { three: true },
-    four: true,
-    five: false,
+  test(`Object child options are shallowly merged to parent options | ${title}`, (t) => {
+    const ParentError = ErrorClass.subclass('ParentError', {
+      prop: { one: false, two: { three: false }, five: false },
+    })
+    const ChildError = ParentError.subclass('ChildError', {
+      prop: { one: true, two: { three: true }, four: true },
+    })
+    t.deepEqual(new ChildError('test').properties.options.prop, {
+      one: true,
+      two: { three: true },
+      four: true,
+      five: false,
+    })
   })
 })
