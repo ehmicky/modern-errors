@@ -33,13 +33,16 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
     const cause = new ErrorClass('causeMessage', {
       prop: { one: false, two: false, four: { five: false } },
     })
-    t.deepEqual(
-      new ErrorClass('test', {
-        cause,
-        prop: { two: true, three: true, four: { six: true } },
-      }).properties.options.prop,
-      { one: false, two: true, three: true, four: { six: true } },
-    )
+    const error = new ErrorClass('test', {
+      cause,
+      prop: { two: true, three: true, four: { six: true } },
+    })
+    t.deepEqual(error.properties.options.prop, {
+      one: false,
+      two: true,
+      three: true,
+      four: { six: true },
+    })
   })
 
   test(`plugin.properties() cannot modify "options" passed to instance methods | ${title}`, (t) => {
@@ -51,24 +54,23 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`Instance options have priority over class options | ${title}`, (t) => {
     const OtherError = ErrorClass.subclass('TestError', { prop: false })
     const cause = new OtherError('causeMessage')
-    t.true(
-      new OtherError('test', { cause, prop: true }).properties.options.prop,
-    )
+    const error = new OtherError('test', { cause, prop: true })
+    t.true(error.properties.options.prop)
   })
 
   test(`Undefined instance options are ignored | ${title}`, (t) => {
     const OtherError = ErrorClass.subclass('TestError', { prop: true })
     const cause = new OtherError('causeMessage')
-    t.true(
-      new OtherError('test', { cause, prop: undefined }).properties.options
-        .prop,
-    )
+    const error = new OtherError('test', { cause, prop: undefined })
+    t.true(error.properties.options.prop)
   })
 
   test(`Not defined instance options are ignored | ${title}`, (t) => {
     const OtherError = ErrorClass.subclass('TestError', { prop: true })
-    const cause = new OtherError('causeMessage')
-    t.true(new OtherError('test', { cause }).properties.options.prop)
+    const error = new OtherError('test', {
+      cause: new OtherError('causeMessage'),
+    })
+    t.true(error.properties.options.prop)
   })
 })
 
@@ -78,9 +80,8 @@ each(
   ({ title }, ErrorClass, opts) => {
     test(`Parent errors options has priority over child | ${title}`, (t) => {
       const cause = new ErrorClass('causeMessage', opts)
-      t.true(
-        new ErrorClass('test', { cause, prop: true }).properties.options.prop,
-      )
+      const error = new ErrorClass('test', { cause, prop: true })
+      t.true(error.properties.options.prop)
     })
   },
 )
@@ -88,6 +89,7 @@ each(
 each(ErrorSubclasses, ErrorSubclasses, ({ title }, ErrorClass, ChildClass) => {
   test(`Child instance options are not unset | ${title}`, (t) => {
     const cause = new ChildClass('causeMessage', { prop: false })
-    t.false(new ErrorClass('test', { cause }).properties.options.prop)
+    const error = new ErrorClass('test', { cause })
+    t.false(error.properties.options.prop)
   })
 })
