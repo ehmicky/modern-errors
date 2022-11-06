@@ -32,6 +32,14 @@ import { deepClone } from '../../utils/clone.js'
 //  - Constructor might throw while cloning due to change in either:
 //     - Global scope
 //     - Class instance passed as argument
+// If the inner error was created by `modern-errors` but from a different
+// `AnyError`, we treat like any other unknown error, i.e. we do not restore its
+// `previousValues` since:
+//   - This most likely means the inner error is coming from a different
+//     library. Therefore, we do not control its information and want to keep
+//     all of it.
+//   - The inner error might have more relevant information. For example, the
+//     `bugs` URL is most likely more precise.
 export const getAllValues = function (previousDescriptors, newDescriptors) {
   const changedKeys = getChangedKeys(previousDescriptors, newDescriptors)
   const previousValues = getChangedDescriptors(previousDescriptors, changedKeys)
