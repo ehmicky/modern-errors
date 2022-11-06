@@ -1,3 +1,5 @@
+import { ERROR_CLASSES } from '../subclass/map.js'
+
 // We forbid subclasses that are not known, i.e. not passed to
 // `ErrorClass.subclass()`
 //  - They would not be validated at load time
@@ -9,13 +11,12 @@
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `*Error.subclass()`
 //  - But was extended from either `AnyError` or a known class
-export const validateSubclass = function (ErrorClass, ErrorClasses) {
-  const { name } = ErrorClass
-
-  if (ErrorClasses[name] !== undefined) {
+export const validateSubclass = function (ErrorClass) {
+  if (ERROR_CLASSES.has(ErrorClass)) {
     return
   }
 
+  const { name } = ErrorClass
   const { name: parentName } = Object.getPrototypeOf(ErrorClass)
   throw new Error(
     `"new ${name}()" must not be directly called.

@@ -1,3 +1,4 @@
+import { ERROR_CLASSES } from '../../subclass/map.js'
 import { isSubclass } from '../../utils/subclass.js'
 
 import { getErrorInfo } from './error.js'
@@ -7,20 +8,18 @@ import { getErrorInfo } from './error.js'
 export const getErrorPluginInfo = function ({
   error,
   errorData,
-  ErrorClasses,
   methodOpts,
   plugins,
   plugin,
 }) {
   const { ErrorClass, options } = getErrorInfo(
-    { errorData, ErrorClasses, methodOpts, plugins, plugin },
+    { errorData, methodOpts, plugins, plugin },
     error,
   )
   const info = getPluginInfo({
     options,
     errorData,
     ErrorClass,
-    ErrorClasses,
     methodOpts,
     plugins,
     plugin,
@@ -33,20 +32,18 @@ export const getPluginInfo = function ({
   options,
   errorData,
   ErrorClass,
-  ErrorClasses,
   methodOpts,
   plugins,
   plugin,
 }) {
   const errorInfo = getErrorInfo.bind(undefined, {
     errorData,
-    ErrorClasses,
     methodOpts,
     plugins,
     plugin,
   })
-  const ErrorClassesA = getErrorClasses(ErrorClasses, ErrorClass)
-  return { options, ErrorClass, ErrorClasses: ErrorClassesA, errorInfo }
+  const ErrorClasses = [] // getErrorClasses(ErrorClass)
+  return { options, ErrorClass, ErrorClasses, errorInfo }
 }
 
 // `ErrorClasses` are passed to all plugin methods.
@@ -54,7 +51,7 @@ export const getPluginInfo = function ({
 // A shallow copy is done to prevent mutations.
 // This is an array, not an object, since some error classes might have
 // duplicate names.
-const getErrorClasses = function (ErrorClasses, ParentClass) {
+const getErrorClasses = function (ParentClass) {
   return Object.values(ErrorClasses)
     .map(getErrorClass)
     .filter((ErrorClass) => isSubclass(ErrorClass, ParentClass))

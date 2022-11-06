@@ -9,7 +9,6 @@ export const callInstanceMethod = function ({
   plugin,
   plugins,
   ErrorClass,
-  ErrorClasses,
   errorData,
   args,
 }) {
@@ -23,7 +22,6 @@ export const callInstanceMethod = function ({
   const info = getErrorPluginInfo({
     error,
     errorData,
-    ErrorClasses,
     methodOpts,
     plugins,
     plugin,

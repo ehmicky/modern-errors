@@ -7,6 +7,7 @@ import { addAllStaticMethods } from '../plugins/static/add.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getErrorClass } from './custom.js'
+import { ERROR_CLASSES } from './map.js'
 
 // Create a new error class.
 // We allow `ErrorClass.subclass()` to create subclasses. This can be used to:
@@ -17,7 +18,6 @@ import { getErrorClass } from './custom.js'
 // be used separately, explaining those duplicate names.
 export const createSubclass = function ({
   ErrorClass,
-  ErrorClasses,
   className,
   errorData,
   parentOpts,
@@ -26,20 +26,18 @@ export const createSubclass = function ({
 }) {
   const classOptsA = getClassOpts(plugins, parentOpts, classOpts)
   setErrorName(ErrorClass, className)
-  // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  ErrorClasses[className] = { ErrorClass, classOpts: classOptsA }
+  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsA })
   setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
   setNonEnumProp(ErrorClass, 'subclass', (childClassName, childClassOpts) =>
     createSubclass({
       ErrorClass: getErrorClass(ErrorClass, childClassOpts),
-      ErrorClasses,
       className: childClassName,
       parentOpts: classOptsA,
       classOpts: childClassOpts,
       plugins,
     }),
   )
-  addAllInstanceMethods({ plugins, ErrorClasses, ErrorClass, errorData })
-  addAllStaticMethods({ plugins, ErrorClasses, ErrorClass, errorData })
+  addAllInstanceMethods({ plugins, ErrorClass, errorData })
+  addAllStaticMethods({ plugins, ErrorClass, errorData })
   return ErrorClass
 }

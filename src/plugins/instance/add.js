@@ -6,12 +6,11 @@ import { callInstanceMethod } from './call.js'
 // `ErrorClass.prototype.*`.
 export const addAllInstanceMethods = function ({
   plugins,
-  ErrorClasses,
   ErrorClass,
   errorData,
 }) {
   plugins.forEach((plugin) => {
-    addInstanceMethods({ plugin, plugins, ErrorClasses, ErrorClass, errorData })
+    addInstanceMethods({ plugin, plugins, ErrorClass, errorData })
   })
 }
 
@@ -19,7 +18,6 @@ const addInstanceMethods = function ({
   plugin,
   plugin: { instanceMethods },
   plugins,
-  ErrorClasses,
   ErrorClass,
   errorData,
 }) {
@@ -27,7 +25,6 @@ const addInstanceMethods = function ({
     addInstanceMethod.bind(undefined, {
       plugin,
       plugins,
-      ErrorClasses,
       ErrorClass,
       errorData,
     }),
@@ -35,7 +32,7 @@ const addInstanceMethods = function ({
 }
 
 const addInstanceMethod = function (
-  { plugin, plugins, ErrorClasses, ErrorClass, errorData },
+  { plugin, plugins, ErrorClass, errorData },
   [methodName, methodFunc],
 ) {
   setNonEnumProp(
@@ -50,7 +47,6 @@ const addInstanceMethod = function (
         plugin,
         plugins,
         ErrorClass,
-        ErrorClasses,
         errorData,
         args,
       })

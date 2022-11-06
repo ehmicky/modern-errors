@@ -13,7 +13,7 @@ import { finalizePluginsOpts } from '../../options/plugins.js'
 //  - I.e. the plugin should call `AnyError.normalize(error[, UnknownError])`
 //    first
 export const getErrorInfo = function (
-  { errorData, ErrorClasses, methodOpts, plugins, plugin },
+  { errorData, methodOpts, plugins, plugin },
   error,
 ) {
   if (!errorData.has(error)) {
@@ -22,12 +22,7 @@ export const getErrorInfo = function (
 
   const ErrorClass = error.constructor
   const { pluginsOpts } = errorData.get(error)
-  const pluginsOptsA = mergeClassOpts({
-    error,
-    ErrorClasses,
-    plugins,
-    pluginsOpts,
-  })
+  const pluginsOptsA = mergeClassOpts(ErrorClass, plugins, pluginsOpts)
   const options = finalizePluginsOpts({
     pluginsOpts: pluginsOptsA,
     methodOpts,

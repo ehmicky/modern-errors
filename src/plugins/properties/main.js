@@ -15,20 +15,14 @@ import { assignError } from './assign.js'
 //    `properties(optionsB)`
 //  - If `options` are an object, the same applies but with
 //    `{ ...optionsA, ...optionsB }`
-export const setPluginsProperties = function ({
-  error,
-  ErrorClasses,
-  errorData,
-  plugins,
-}) {
+export const setPluginsProperties = function (error, errorData, plugins) {
   return plugins.forEach((plugin) => {
-    applyPluginProperties({ error, ErrorClasses, errorData, plugin, plugins })
+    applyPluginProperties({ error, errorData, plugin, plugins })
   })
 }
 
 const applyPluginProperties = function ({
   error,
-  ErrorClasses,
   errorData,
   plugin,
   plugin: { properties, fullName },
@@ -38,13 +32,7 @@ const applyPluginProperties = function ({
     return
   }
 
-  const info = getErrorPluginInfo({
-    error,
-    errorData,
-    ErrorClasses,
-    plugins,
-    plugin,
-  })
+  const info = getErrorPluginInfo({ error, errorData, plugins, plugin })
   const newProps = properties(info)
 
   if (!isPlainObj(newProps)) {

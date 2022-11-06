@@ -35,17 +35,11 @@ const CoreError = errorCustomClass('CoreError')
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const createAnyError = function ({
-  ErrorClasses,
-  errorData,
-  plugins,
-  globalOpts,
-}) {
+export const createAnyError = function (errorData, plugins, globalOpts) {
   validateGlobalOpts(globalOpts)
-  const AnyError = getAnyError(ErrorClasses, errorData, plugins)
+  const AnyError = getAnyError(errorData, plugins)
   return createSubclass({
     ErrorClass: AnyError,
-    ErrorClasses,
     className: 'AnyError',
     errorData,
     parentOpts: {},
@@ -54,12 +48,12 @@ export const createAnyError = function ({
   })
 }
 
-const getAnyError = function (ErrorClasses, errorData, plugins) {
+const getAnyError = function (errorData, plugins) {
   /* eslint-disable fp/no-this */
   return class AnyError extends CoreError {
     constructor(message, opts, ...args) {
       const ErrorClass = new.target
-      validateSubclass(ErrorClass, ErrorClasses)
+      validateSubclass(ErrorClass)
       const optsA = normalizeOpts(ErrorClass, opts)
       super(message, optsA)
       /* c8 ignore start */
@@ -69,7 +63,6 @@ const getAnyError = function (ErrorClasses, errorData, plugins) {
         opts: optsA,
         args,
         ErrorClass,
-        ErrorClasses,
         errorData,
         plugins,
       })
@@ -84,7 +77,6 @@ const modifyError = function ({
   opts,
   args,
   ErrorClass,
-  ErrorClasses,
   errorData,
   plugins,
 }) {
@@ -97,6 +89,6 @@ const modifyError = function ({
   const error = mergeCause(currentError, ErrorClass)
   errorData.set(error, { pluginsOpts })
   setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
-  setPluginsProperties({ error, ErrorClasses, errorData, plugins })
+  setPluginsProperties(error, errorData, plugins)
   return error
 }
