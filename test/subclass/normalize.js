@@ -34,6 +34,11 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.is(error, normalizedError)
     t.is(normalizedError.constructor, ChildError)
   })
+
+  test(`ErrorClass.normalize() context is bound | ${title}`, (t) => {
+    const { normalize } = ErrorClass
+    t.true(normalize() instanceof Error)
+  })
 })
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
