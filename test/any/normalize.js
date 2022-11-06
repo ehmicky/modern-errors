@@ -1,11 +1,12 @@
 import test from 'ava'
 import { each } from 'test-each'
 
+import { KnownErrorClasses } from '../helpers/known.js'
 import { defineClassOpts } from '../helpers/main.js'
 
 const { AnyError, TestError } = defineClassOpts()
 
-each([AnyError, TestError], ({ title }, ErrorClass) => {
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes unknown errors | ${title}`, (t) => {
     t.true(ErrorClass.normalize() instanceof Error)
   })
