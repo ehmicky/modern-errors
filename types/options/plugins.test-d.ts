@@ -6,7 +6,7 @@ import modernErrors, {
   ClassOptions,
   InstanceOptions,
   MethodOptions,
-} from '../main.js'
+} from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, getOptions: (input: true) => input }

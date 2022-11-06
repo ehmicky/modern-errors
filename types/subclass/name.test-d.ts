@@ -1,6 +1,6 @@
 import { expectType } from 'tsd'
 
-import modernErrors from '../main.js'
+import modernErrors from 'modern-errors'
 
 const AnyError = modernErrors()
 const ChildError = AnyError.subclass('ChildError')

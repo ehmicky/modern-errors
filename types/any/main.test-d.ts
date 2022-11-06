@@ -1,6 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import modernErrors, { Plugin, AnyErrorClass } from '../main.js'
+import modernErrors, { Plugin, AnyErrorClass } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }

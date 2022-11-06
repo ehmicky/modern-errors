@@ -7,7 +7,7 @@ import stackPlugin from 'modern-errors-stack'
 import winstonPlugin, { Format } from 'modern-errors-winston'
 import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors, { ErrorInstance } from '../main.js'
+import modernErrors, { ErrorInstance } from 'modern-errors'
 
 const plugins = [
   bugsPlugin,

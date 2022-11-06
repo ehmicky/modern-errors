@@ -1,6 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import { ClassOptions, InstanceOptions, GlobalOptions } from '../main.js'
+import { ClassOptions, InstanceOptions, GlobalOptions } from 'modern-errors'
 
 expectAssignable<InstanceOptions>({ cause: '' })
 expectNotAssignable<GlobalOptions>({ cause: '' })

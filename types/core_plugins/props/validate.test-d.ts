@@ -4,7 +4,7 @@ import modernErrors, {
   ClassOptions,
   InstanceOptions,
   GlobalOptions,
-} from '../../main.js'
+} from 'modern-errors'
 
 const AnyError = modernErrors()
 const ChildError = AnyError.subclass('ChildError')

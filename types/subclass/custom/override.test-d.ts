@@ -1,6 +1,6 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors, { Info } from '../../main.js'
+import modernErrors, { Info } from 'modern-errors'
 
 const name = 'test' as const
 

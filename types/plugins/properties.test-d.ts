@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { Info, Plugin } from '../main.js'
+import modernErrors, { Info, Plugin } from 'modern-errors'
 
 const name = 'test' as const
 const emptyPlugin = { name }

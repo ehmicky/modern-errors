@@ -1,6 +1,6 @@
 import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors, { ErrorInstance } from '../../main.js'
+import modernErrors, { ErrorInstance } from 'modern-errors'
 
 const AnyError = modernErrors()
 type AnyInstance = InstanceType<typeof AnyError>

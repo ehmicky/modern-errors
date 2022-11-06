@@ -1,6 +1,6 @@
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
-import modernErrors, { Plugin, ErrorInstance } from '../../main.js'
+import modernErrors, { Plugin, ErrorInstance } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }

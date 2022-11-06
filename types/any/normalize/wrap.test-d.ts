@@ -1,6 +1,6 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors, { Plugin } from '../../main.js'
+import modernErrors, { Plugin } from 'modern-errors'
 
 const AnyError = modernErrors()
 const CustomError = AnyError.subclass('CustomError', {

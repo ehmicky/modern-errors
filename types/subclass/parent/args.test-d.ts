@@ -1,6 +1,6 @@
 import { expectError } from 'tsd'
 
-import modernErrors, { InstanceOptions } from '../../main.js'
+import modernErrors, { InstanceOptions } from 'modern-errors'
 
 const AnyError = modernErrors()
 
