@@ -79,8 +79,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
   test(`ErrorClass.normalize() keeps error class if subclass | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError')
-    const error = new TestError('test')
-    t.true(ErrorClass.normalize(error) instanceof TestError)
+    t.true(ErrorClass.normalize(new TestError('test')) instanceof TestError)
   })
 
   test(`ErrorClass.normalize(error, TestError) keeps error class if subclass | ${title}`, (t) => {
