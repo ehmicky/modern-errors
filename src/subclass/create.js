@@ -1,6 +1,5 @@
 import { setErrorName } from 'error-class-utils'
 
-import { normalize } from '../any/normalize.js'
 import { normalizeClassOpts, getClassOpts } from '../options/class.js'
 import { addAllInstanceMethods } from '../plugins/instance/add.js'
 import { normalizePlugins } from '../plugins/shape/main.js'
@@ -9,6 +8,7 @@ import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getErrorClass } from './custom.js'
 import { classesData } from './map.js'
+import { normalize } from './normalize.js'
 
 // Create a new error class.
 // We allow `ErrorClass.subclass()` to create subclasses. This can be used to:
