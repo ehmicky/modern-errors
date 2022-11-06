@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { getClasses, ModernError } from '../helpers/main.js'
 import { getUnknownErrors } from '../helpers/unknown.js'
 
-const { KnownErrorClasses, SpecificErrorClasses, AnyError } = getClasses()
+const { KnownErrorClasses, ChildError } = getClasses()
 
 const assertInstanceOf = function (t, error, ErrorClass) {
   t.true(error instanceof ErrorClass)
@@ -12,16 +12,14 @@ const assertInstanceOf = function (t, error, ErrorClass) {
   t.is(error.name, ErrorClass.name)
 }
 
-each(SpecificErrorClasses, ({ title }, ErrorClass) => {
+each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`Parent class with known cause uses child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new ModernError('message', { cause })
     assertInstanceOf(t, error, cause.constructor)
     t.is(error, cause)
   })
-})
 
-each(KnownErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass with cause of same class use child class and instance | ${title}`, (t) => {
     const cause = new ErrorClass('causeMessage')
     const error = new ErrorClass('message', { cause })
@@ -43,6 +41,20 @@ each(KnownErrorClasses, ({ title }, ErrorClass) => {
     t.false('cause' in error)
     t.is(error.message, outerMessage)
   })
+
+  test(`ErrorClass with cause of subclass use child class and instance | ${title}`, (t) => {
+    const cause = new ChildError('causeMessage')
+    const error = new ModernError('message', { cause })
+    assertInstanceOf(t, error, ChildError)
+    t.is(error, cause)
+  })
+
+  test(`ErrorClass with cause of superclass use parent class | ${title}`, (t) => {
+    const cause = new ModernError('causeMessage')
+    const error = new ChildError('message', { cause })
+    assertInstanceOf(t, error, ChildError)
+    t.not(error, cause)
+  })
 })
 
 each(
@@ -57,17 +69,3 @@ each(
     })
   },
 )
-
-test('ErrorClass with cause of subclass use child class and instance', (t) => {
-  const cause = new AnyError('causeMessage')
-  const error = new ModernError('message', { cause })
-  assertInstanceOf(t, error, AnyError)
-  t.is(error, cause)
-})
-
-test('ErrorClass with cause of superclass use parent class', (t) => {
-  const cause = new ModernError('causeMessage')
-  const error = new AnyError('message', { cause })
-  assertInstanceOf(t, error, AnyError)
-  t.not(error, cause)
-})
