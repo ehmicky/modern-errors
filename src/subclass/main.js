@@ -18,37 +18,31 @@ import { ERROR_CLASSES } from './map.js'
 //  - Only export parent classes to consumers
 // We do not validate duplicate class names since sub-groups of classes might
 // be used separately, explaining those duplicate names.
-export const createSubclass = function ({
-  ErrorClass,
-  className,
-  parentOpts,
-  classOpts,
-}) {
+export const createSubclass = function (ParentError, className, classOpts) {
+  const { classOpts: parentOpts, plugins: parentPluginsOpt } =
+    ERROR_CLASSES.get(ParentError)
   const {
-    classOpts: classOptsA,
-    pluginsOpt,
-    plugins,
-  } = listClassOpts(parentOpts, classOpts)
-  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsA, plugins })
+    custom,
+    plugins: pluginsOpt,
+    ...classOptsA
+  } = normalizeClassOpts(ParentError, classOpts)
+  const ErrorClass = getErrorClass(ParentError, custom)
+  const pluginsOptA = mergePluginOpts(parentPluginsOpt, pluginsOpt)
+  const plugins = normalizePlugins(pluginsOptA)
+  const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
+  ERROR_CLASSES.set(ErrorClass, { classOpts: classOptsB, plugins })
   setErrorName(ErrorClass, className)
-  setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
-  setNonEnumProp(ErrorClass, 'subclass', (childClassName, childClassOpts) =>
-    createSubclass({
-      ErrorClass: getErrorClass(ErrorClass, childClassOpts),
-      className: childClassName,
-      parentOpts: { ...classOptsA, plugins: pluginsOpt },
-      classOpts: childClassOpts,
-    }),
-  )
-  addAllInstanceMethods(plugins, ErrorClass)
-  addAllStaticMethods(plugins, ErrorClass)
+  setClassMethods(ErrorClass, plugins)
   return ErrorClass
 }
 
-const listClassOpts = function (parentOpts, classOpts) {
-  const classOptsA = normalizeClassOpts(classOpts)
-  const pluginsOpt = mergePluginOpts(parentOpts, classOptsA)
-  const plugins = normalizePlugins(pluginsOpt)
-  const classOptsB = getClassOpts(parentOpts, classOptsA, plugins)
-  return { classOpts: classOptsB, pluginsOpt, plugins }
+const setClassMethods = function (ErrorClass, plugins) {
+  setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
+  setNonEnumProp(
+    ErrorClass,
+    'subclass',
+    createSubclass.bind(undefined, ErrorClass),
+  )
+  addAllInstanceMethods(plugins, ErrorClass)
+  addAllStaticMethods(plugins, ErrorClass)
 }

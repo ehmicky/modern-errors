@@ -1,6 +1,68 @@
-import { createAnyError } from './any/main.js'
+import errorCustomClass from 'error-custom-class'
 
-// Creates error classes.
-export default function modernErrors(globalOpts) {
-  return createAnyError(globalOpts)
+import { setAggregateErrors } from './any/aggregate.js'
+import { setConstructorArgs } from './any/args.js'
+import { mergeCause } from './any/merge.js'
+import { normalizeOpts } from './any/options.js'
+import { validateSubclass } from './any/subclass.js'
+import { CORE_PLUGINS } from './core_plugins/main.js'
+import { computePluginsOpts } from './options/instance.js'
+import { setPluginsProperties } from './plugins/properties/main.js'
+import { createSubclass } from './subclass/main.js'
+// eslint-disable-next-line import/max-dependencies
+import { ERROR_CLASSES, ERROR_INSTANCES } from './subclass/map.js'
+
+// Base class for all error classes.
+// We encourage `instanceof` over `error.name` for checking since this:
+//  - Prevents name collisions with other libraries
+//  - Allows checking if any error came from a given library
+//  - Includes error classes in the exported interface explicitly instead of
+//    implicitly, so that users are mindful about breaking changes
+//  - Bundles classes with TypeScript documentation, types and autocompletion
+//  - Encourages documenting error types
+// Checking class with `error.name` is still supported, but not documented
+//  - Since it is widely used and can be better in specific cases
+//  - It also does not have narrowing with TypeScript
+// This also provides with namespacing, i.e. prevents classes of the same name
+// but in different libraries to be considered equal. As opposed to the
+// following alternatives:
+//  - Namespacing all error names with a common prefix since this:
+//     - Leads to verbose error names
+//     - Requires either an additional option, or guessing ambiguously whether
+//       error names are meant to include a namespace prefix
+//  - Using a separate `namespace` property: this adds too much complexity and
+//    is less standard than `instanceof`
+const CoreError = errorCustomClass('CoreError')
+ERROR_CLASSES.set(CoreError, { classOpts: {}, plugins: [] })
+
+/* eslint-disable fp/no-this */
+class ModernBaseError extends CoreError {
+  constructor(message, opts, ...args) {
+    const ErrorClass = new.target
+    validateSubclass(ErrorClass)
+    const optsA = normalizeOpts(ErrorClass, opts)
+    super(message, optsA)
+    /* c8 ignore start */
+    // eslint-disable-next-line no-constructor-return
+    return modifyError({ currentError: this, opts: optsA, args, ErrorClass })
+  }
+  /* c8 ignore stop */
 }
+
+const modifyError = function ({ currentError, opts, args, ErrorClass }) {
+  const { plugins } = ERROR_CLASSES.get(ErrorClass)
+  const { opts: optsA, pluginsOpts } = computePluginsOpts(plugins, opts)
+  setAggregateErrors(currentError, optsA)
+  const error = mergeCause(currentError, ErrorClass)
+  ERROR_INSTANCES.set(error, { pluginsOpts })
+  setConstructorArgs({ error, opts: optsA, pluginsOpts, args })
+  setPluginsProperties(error, plugins)
+  return error
+}
+
+/* eslint-enable fp/no-this */
+const ModernError = createSubclass(CoreError, 'ModernError', {
+  custom: ModernBaseError,
+  plugins: CORE_PLUGINS,
+})
+export default ModernError
