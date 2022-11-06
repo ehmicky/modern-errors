@@ -84,7 +84,7 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
 
   test(`Object instance options are shallowly merged to class options | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError', {
-      prop: { one: false, two: { three: false }, five: false },
+      prop: { one: false, five: false, two: { three: false } },
     })
     const error = new TestError('test', {
       prop: { one: true, two: { three: true }, four: true },

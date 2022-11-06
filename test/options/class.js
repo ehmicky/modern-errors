@@ -41,7 +41,7 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
 
   test(`Object child options are shallowly merged to parent options | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError', {
-      prop: { one: false, two: { three: false }, five: false },
+      prop: { five: false, one: false, two: { three: false } },
     })
     const SubTestError = TestError.subclass('SubTestError', {
       prop: { one: true, two: { three: true }, four: true },
