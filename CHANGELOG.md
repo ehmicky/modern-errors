@@ -1,3 +1,9 @@
+# 4.1.0
+
+## Features
+
+- Add browser support
+
 # 4.0.0
 
 ## Major features
