@@ -1,6 +1,6 @@
 import { expectError } from 'tsd'
 
-import modernErrors from './main.js'
+import modernErrors from 'modern-errors'
 
 import './any/aggregate.test-d.js'
 import './any/main.test-d.js'
