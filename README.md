@@ -43,7 +43,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
   where to report bugs
 - [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize):
   Serialize/parse errors
-- [`modern-errors-stack`](https://github.com/ehmicky/modern-errors-stack): Clean
+- [`modern-errors-clean`](https://github.com/ehmicky/modern-errors-clean): Clean
   stack traces
 - [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http): Create
   HTTP error responses
