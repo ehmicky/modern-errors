@@ -12,6 +12,7 @@
     "build/src/**/*.{js,json}",
     "build/types/**/*.d.ts"
   ],
+  "sideEffects": false,
   "scripts": {
     "test": "gulp test"
   },
