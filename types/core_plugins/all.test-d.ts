@@ -7,7 +7,7 @@ import cleanPlugin from 'modern-errors-clean'
 import winstonPlugin, { Format } from 'modern-errors-winston'
 import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors, { ErrorInstance } from 'modern-errors'
+import ModernError, { ErrorInstance } from 'modern-errors'
 
 const plugins = [
   bugsPlugin,
@@ -18,10 +18,10 @@ const plugins = [
   cleanPlugin,
   winstonPlugin,
 ]
-const BaseError = modernErrors({ plugins })
-const error = new BaseError('', { cause: '' })
+const BaseError = ModernError.subclass('BaseError', { plugins })
+const error = new BaseError('')
 
-modernErrors({
+ModernError.subclass('TestError', {
   plugins,
   bugs: 'https://example.com',
   cli: { silent: true },

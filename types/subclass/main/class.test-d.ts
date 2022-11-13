@@ -1,12 +1,11 @@
 import { expectAssignable, expectError } from 'tsd'
 
-import modernErrors, { ErrorClass, ErrorInstance } from 'modern-errors'
+import ModernError, { ErrorClass, ErrorInstance } from 'modern-errors'
 
-const BaseError = modernErrors()
-const ChildError = BaseError.subclass('ChildError')
+const ChildError = ModernError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     prop = true
   },
 })
@@ -22,7 +21,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-expectAssignable<ErrorClass>(BaseError)
+expectAssignable<ErrorClass>(ModernError)
 expectAssignable<ErrorClass>(ChildError)
 expectAssignable<ErrorClass>(DeepChildError)
 expectAssignable<ErrorClass>(CustomError)
@@ -30,11 +29,11 @@ expectAssignable<ErrorClass>(ChildCustomError)
 expectAssignable<ErrorClass>(CustomChildError)
 expectAssignable<ErrorClass>(DeepCustomError)
 
-expectError(BaseError.subclass())
+expectError(ModernError.subclass())
 expectError(ChildError.subclass())
-expectError(BaseError.subclass({}))
+expectError(ModernError.subclass({}))
 expectError(ChildError.subclass({}))
-expectError(BaseError.subclass('Test'))
+expectError(ModernError.subclass('Test'))
 expectError(ChildError.subclass('Test'))
 
 expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)

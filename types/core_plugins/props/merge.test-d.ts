@@ -1,31 +1,27 @@
 import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors from 'modern-errors'
+import ModernError from 'modern-errors'
 
-const BaseError = modernErrors()
-
-expectType<true>(
-  new BaseError('', { cause: '', props: { one: true as const } }).one,
-)
+expectType<true>(new ModernError('', { props: { one: true as const } }).one)
 expectAssignable<{ one: true; two: true }>(
-  new BaseError('', {
-    cause: new BaseError('', { cause: '', props: { two: true as const } }),
+  new ModernError('', {
+    cause: new ModernError('', { props: { two: true as const } }),
     props: { one: true as const },
   }),
 )
 
-const ChildError = BaseError.subclass('ChildError')
-expectType<true>(new ChildError('', { props: { one: true as const } }).one)
+const BaseError = ModernError.subclass('BaseError')
+expectType<true>(new BaseError('', { props: { one: true as const } }).one)
 expectAssignable<{ one: true; three: true }>(
-  new ChildError('', {
-    cause: new ChildError('', {
+  new BaseError('', {
+    cause: new BaseError('', {
       props: { two: true as const, three: false as const },
     }),
     props: { one: true as const, three: true as const },
   }),
 )
 
-const PropsError = BaseError.subclass('PropsError', {
+const PropsError = ModernError.subclass('PropsError', {
   props: { one: true as const, three: false as const },
 })
 expectType<true>(new PropsError('').one)
@@ -46,7 +42,7 @@ const DeepPropsError = PropsError.subclass('DeepPropsError', {
 })
 expectAssignable<{ one: true; two: true; three: true }>(new DeepPropsError(''))
 
-const PropsChildError = ChildError.subclass('PropsChildError', {
+const PropsChildError = BaseError.subclass('PropsChildError', {
   props: { one: true as const, three: false as const },
 })
 expectType<true>(new PropsChildError('').one)
@@ -56,13 +52,12 @@ expectAssignable<{ one: true; two: true; three: true }>(
   }),
 )
 
-const BoundBaseError = modernErrors({
+const BoundBaseError = ModernError.subclass('BoundBaseError', {
   props: { one: true as const, three: false as const },
 })
-expectType<true>(new BoundBaseError('', { cause: '' }).one)
+expectType<true>(new BoundBaseError('').one)
 expectAssignable<{ one: true; two: true; three: true }>(
   new BoundBaseError('', {
-    cause: '',
     props: { two: true as const, three: true as const },
   }),
 )

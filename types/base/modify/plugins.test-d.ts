@@ -1,6 +1,6 @@
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
-import modernErrors, { Plugin, ErrorInstance } from 'modern-errors'
+import ModernError, { Plugin, ErrorInstance } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
@@ -8,8 +8,8 @@ const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
 type FullErrorInstance = ErrorInstance<[typeof fullPlugin]>
 
-const BaseError = modernErrors({ plugins: [fullPlugin] })
-const unknownError = new BaseError('', { cause: '' })
+const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
+const unknownError = new BaseError('')
 
 expectAssignable<Error>(unknownError)
 expectAssignable<ErrorInstance>(unknownError)
@@ -28,8 +28,8 @@ expectAssignable<ErrorInstance>(customError)
 expectAssignable<BareErrorInstance>(customError)
 expectAssignable<FullErrorInstance>(customError)
 
-const WideError = modernErrors({ plugins: [{} as Plugin] })
-const wideError = new WideError('', { cause: '' })
+const WideError = ModernError.subclass('WideError', { plugins: [{} as Plugin] })
+const wideError = new WideError('')
 type WideErrorInstance = InstanceType<typeof WideError>
 
 expectType<Error>(wideError)

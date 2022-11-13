@@ -1,13 +1,11 @@
 import { expectError } from 'tsd'
 
-import modernErrors, { InstanceOptions } from 'modern-errors'
+import ModernError, { InstanceOptions } from 'modern-errors'
 
-const BaseError = modernErrors()
-
-const ChildError = BaseError.subclass('ChildError')
-const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const BaseError = ModernError.subclass('BaseError')
+const DeepBaseError = BaseError.subclass('DeepBaseError')
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true },
@@ -18,8 +16,8 @@ const CustomError = BaseError.subclass('CustomError', {
   },
 })
 const ChildCustomError = CustomError.subclass('ChildCustomError')
-const CustomChildError = ChildError.subclass('CustomChildError', {
-  custom: class extends ChildError {
+const CustomBaseError = BaseError.subclass('CustomBaseError', {
+  custom: class extends BaseError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: true },
@@ -41,65 +39,65 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-new BaseError('', { cause: '' })
-new ChildError('')
-new DeepChildError('')
+new ModernError('')
+new BaseError('')
+new DeepBaseError('')
 new CustomError('', { prop: true }, true)
 new ChildCustomError('', { prop: true }, true)
-new CustomChildError('', { prop: true }, true)
+new CustomBaseError('', { prop: true }, true)
 new DeepCustomError('', { prop: true, propTwo: true }, false)
 
+expectError(new ModernError())
 expectError(new BaseError())
-expectError(new ChildError())
-expectError(new DeepChildError())
+expectError(new DeepBaseError())
 expectError(new CustomError())
 expectError(new ChildCustomError())
-expectError(new CustomChildError())
+expectError(new CustomBaseError())
 expectError(new DeepCustomError())
 
+expectError(new ModernError(true))
 expectError(new BaseError(true))
-expectError(new ChildError(true))
-expectError(new DeepChildError(true))
+expectError(new DeepBaseError(true))
 expectError(new CustomError(true))
 expectError(new ChildCustomError(true))
-expectError(new CustomChildError(true))
+expectError(new CustomBaseError(true))
 expectError(new DeepCustomError(true))
 
+expectError(new ModernError('', true))
 expectError(new BaseError('', true))
-expectError(new ChildError('', true))
-expectError(new DeepChildError('', true))
+expectError(new DeepBaseError('', true))
 expectError(new CustomError('', true))
 expectError(new ChildCustomError('', true))
-expectError(new CustomChildError('', true))
+expectError(new CustomBaseError('', true))
 expectError(new DeepCustomError('', true))
 
-expectError(new ChildError('', { other: true }))
-expectError(new DeepChildError('', { other: true }))
+expectError(new BaseError('', { other: true }))
+expectError(new DeepBaseError('', { other: true }))
 expectError(new CustomError('', { other: true }))
 expectError(new ChildCustomError('', { other: true }))
-expectError(new CustomChildError('', { other: true }))
+expectError(new CustomBaseError('', { other: true }))
 expectError(new DeepCustomError('', { other: true }))
 
+expectError(new ModernError('', { cause: '', other: true }))
 expectError(new BaseError('', { cause: '', other: true }))
-expectError(new ChildError('', { cause: '', other: true }))
-expectError(new DeepChildError('', { cause: '', other: true }))
+expectError(new DeepBaseError('', { cause: '', other: true }))
 expectError(new CustomError('', { cause: '', other: true }))
 expectError(new ChildCustomError('', { cause: '', other: true }))
-expectError(new CustomChildError('', { cause: '', other: true }))
+expectError(new CustomBaseError('', { cause: '', other: true }))
 expectError(new DeepCustomError('', { cause: '', other: true }))
 
 expectError(new CustomError('', { prop: false }))
 expectError(new ChildCustomError('', { prop: false }))
-expectError(new CustomChildError('', { prop: false }))
+expectError(new CustomBaseError('', { prop: false }))
 expectError(new DeepCustomError('', { prop: false }))
 expectError(new DeepCustomError('', { propTwo: false }))
 
 expectError(new CustomError('', {}, false))
 expectError(new ChildCustomError('', {}, false))
-expectError(new CustomChildError('', {}, false))
+expectError(new CustomBaseError('', {}, false))
 expectError(new DeepCustomError('', {}, ''))
 
 expectError(new CustomError('', {}, true, true))
 expectError(new ChildCustomError('', {}, true, true))
-expectError(new CustomChildError('', {}, true, true))
-expectError(new CustomChildError('', {}, true, true))
+expectError(new CustomBaseError('', {}, true, true))
+expectError(new CustomBaseError('', {}, true, true))

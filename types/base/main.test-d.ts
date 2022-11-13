@@ -1,6 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import modernErrors, { Plugin, ErrorClass } from 'modern-errors'
+import ModernError, { Plugin, ErrorClass } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
@@ -8,7 +8,7 @@ const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
 type BareErrorClass = ErrorClass<[typeof barePlugin]>
 type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
-const BaseError = modernErrors({ plugins: [fullPlugin] })
+const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
 
 expectAssignable<ErrorClass>(BaseError)
 expectAssignable<BareErrorClass>(BaseError)
@@ -24,7 +24,7 @@ expectAssignable<ErrorClass>(CustomError)
 expectAssignable<BareErrorClass>(CustomError)
 expectAssignable<FullErrorClass>(CustomError)
 
-const WideError = modernErrors({ plugins: [{} as Plugin] })
+const WideError = ModernError.subclass('WideError', { plugins: [{} as Plugin] })
 
 expectAssignable<ErrorClass>(WideError)
 expectAssignable<BareErrorClass>(WideError)

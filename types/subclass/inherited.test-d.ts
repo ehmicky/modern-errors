@@ -1,12 +1,10 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
-import modernErrors from 'modern-errors'
+import ModernError from 'modern-errors'
 
-const BaseError = modernErrors()
-
-const ChildError = BaseError.subclass('ChildError')
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const BaseError = ModernError.subclass('BaseError')
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     static prop = true as const
   },
 })
@@ -16,8 +14,8 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
     static deepProp = true as const
   },
 })
-const CustomChildError = ChildError.subclass('CustomChildError', {
-  custom: class extends ChildError {
+const CustomBaseError = BaseError.subclass('CustomBaseError', {
+  custom: class extends BaseError {
     static prop = true as const
   },
 })
@@ -26,4 +24,4 @@ expectType<true>(CustomError.prop)
 expectType<true>(ChildCustomError.prop)
 expectType<true>(DeepCustomError.prop)
 expectType<true>(DeepCustomError.deepProp)
-expectType<true>(CustomChildError.prop)
+expectType<true>(CustomBaseError.prop)

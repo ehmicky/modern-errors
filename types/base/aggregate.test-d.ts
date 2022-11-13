@@ -1,10 +1,9 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors from 'modern-errors'
+import ModernError from 'modern-errors'
 
-const BaseError = modernErrors()
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     prop = true
   },
 })
@@ -14,22 +13,18 @@ const unknownErrorsArray = [true] as readonly true[]
 const unknownErrors = [true] as readonly [true]
 const knownErrors = [new CustomError('')] as const
 
-expectType<Error[]>(
-  new BaseError('', { cause: '', errors: unknownErrorsArray }).errors,
-)
+expectType<Error[]>(new ModernError('', { errors: unknownErrorsArray }).errors)
 expectType<Error[]>(new CustomError('', { errors: unknownErrorsArray }).errors)
-expectType<[Error]>(
-  new BaseError('', { cause: '', errors: unknownErrors }).errors,
-)
+expectType<[Error]>(new ModernError('', { errors: unknownErrors }).errors)
 expectType<[Error]>(new CustomError('', { errors: unknownErrors }).errors)
 expectType<[CustomInstance]>(
-  new BaseError('', { cause: '', errors: knownErrors }).errors,
+  new ModernError('', { errors: knownErrors }).errors,
 )
 expectType<[CustomInstance]>(
   new CustomError('', { errors: knownErrors }).errors,
 )
 expectType<Error[]>(
-  new BaseError('', {
+  new ModernError('', {
     cause: new CustomError('', { errors: unknownErrorsArray }),
   }).errors,
 )
@@ -39,7 +34,7 @@ expectType<Error[]>(
   }).errors,
 )
 expectType<[Error]>(
-  new BaseError('', { cause: new CustomError('', { errors: unknownErrors }) })
+  new ModernError('', { cause: new CustomError('', { errors: unknownErrors }) })
     .errors,
 )
 expectType<[Error]>(
@@ -47,7 +42,7 @@ expectType<[Error]>(
     .errors,
 )
 expectType<[Error, CustomInstance]>(
-  new BaseError('', {
+  new ModernError('', {
     cause: new CustomError('', { errors: unknownErrors }),
     errors: knownErrors,
   }).errors,
@@ -59,7 +54,7 @@ expectType<[Error, CustomInstance]>(
   }).errors,
 )
 
-expectError(new BaseError('', { cause: '' }).errors)
+expectError(new ModernError('').errors)
 expectError(new CustomError('').errors)
-expectError(new BaseError('', { cause: '', errors: true }))
+expectError(new ModernError('', { errors: true }))
 expectError(new CustomError('', { errors: true }))

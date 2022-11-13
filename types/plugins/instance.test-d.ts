@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { Info, Plugin } from 'modern-errors'
+import ModernError, { Info, Plugin } from 'modern-errors'
 
 const name = 'test' as const
 const emptyPlugin = { name }
@@ -20,17 +20,21 @@ const fullPlugin = {
   getOptions: (input: true) => input,
 }
 
-const BareBaseError = modernErrors({ plugins: [barePlugin] })
-const FullBaseError = modernErrors({ plugins: [fullPlugin] })
-const MixBaseError = modernErrors({
+const BareBaseError = ModernError.subclass('BareBaseError', {
+  plugins: [barePlugin],
+})
+const FullBaseError = ModernError.subclass('FullBaseError', {
+  plugins: [fullPlugin],
+})
+const MixBaseError = ModernError.subclass('MixBaseError', {
   plugins: [emptyPlugin, fullPlugin] as const,
 })
 const BareChildError = BareBaseError.subclass('BareChildError')
 const FullChildError = FullBaseError.subclass('FullChildError')
 const MixChildError = MixBaseError.subclass('MixChildError')
-const bareUnknownError = new BareBaseError('', { cause: '' })
-const fullUnknownError = new FullBaseError('', { cause: '' })
-const mixUnknownError = new MixBaseError('', { cause: '' })
+const bareUnknownError = new BareBaseError('')
+const fullUnknownError = new FullBaseError('')
+const mixUnknownError = new MixBaseError('')
 const bareChildError = new BareChildError('')
 const fullChildError = new FullChildError('')
 const mixChildError = new MixChildError('')
@@ -77,9 +81,11 @@ expectError(fullChildError.instanceMethod(info, ''))
 expectError(mixUnknownError.instanceMethod(info, ''))
 expectError(mixChildError.instanceMethod(info, ''))
 
-const WideBaseError = modernErrors({ plugins: [{} as Plugin] })
+const WideBaseError = ModernError.subclass('WideBaseError', {
+  plugins: [{} as Plugin],
+})
 const ChildWideError = WideBaseError.subclass('ChildWideError')
-const unknownWideError = new WideBaseError('', { cause: '' })
+const unknownWideError = new WideBaseError('')
 const childWideError = new ChildWideError('')
 
 expectError(bareUnknownError.otherMethod())

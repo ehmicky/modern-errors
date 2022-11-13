@@ -1,16 +1,11 @@
-import type { Plugin, Plugins } from './plugins/shape.js'
+import type { Plugin } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
 import type { ErrorInstance } from './base/modify/main.js'
-import type {
-  ErrorClass,
-  SpecificErrorClass,
-  ErrorSubclass,
-} from './subclass/main/main.js'
+import type { ErrorClass, SpecificErrorClass } from './subclass/main/main.js'
 import type { ErrorConstructor } from './subclass/parent/main.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
-import type { ClassOptions, SpecificClassOptions } from './options/class.js'
-import type { ErrorProps } from './core_plugins/props/main.js'
+import type { ClassOptions } from './options/class.js'
 
 export type {
   Plugin,
@@ -21,8 +16,6 @@ export type {
   ErrorInstance,
   ErrorClass,
 }
-
-type ModernError = SpecificErrorClass<[], {}, ErrorConstructor>
 
 /**
  * Creates and returns `BaseError`.
@@ -39,20 +32,8 @@ type ModernError = SpecificErrorClass<[], {}, ErrorConstructor>
  *  export const DatabaseError = BaseError.subclass('DatabaseError')
  * ```
  */
-export default function modernErrors<
-  PluginsArg extends Plugins = [],
-  CustomClass extends ErrorConstructor = ErrorConstructor,
-  ErrorPropsArg extends ErrorProps = {},
->(
-  options?: SpecificClassOptions<
-    [],
-    PluginsArg,
-    {},
-    ErrorPropsArg,
-    ModernError,
-    CustomClass
-  >,
-): ErrorSubclass<PluginsArg, {}, ErrorPropsArg, CustomClass>
+declare const ModernError: SpecificErrorClass<[], {}, ErrorConstructor>
+export default ModernError
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic

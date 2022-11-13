@@ -1,11 +1,10 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors, { Info } from 'modern-errors'
+import ModernError, { Info } from 'modern-errors'
 
 const name = 'test' as const
 
-const BaseError = modernErrors()
-const PropertyBaseError = modernErrors({
+const PropertyBaseError = ModernError.subclass('PropertyBaseError', {
   plugins: [{ name, properties: () => ({ property: true as boolean }) }],
 })
 const PropertyError = PropertyBaseError.subclass('PropertyError', {
@@ -15,17 +14,20 @@ const PropertyError = PropertyBaseError.subclass('PropertyError', {
 })
 expectType<true>(new PropertyError('').property)
 
-const InstanceMethodBaseError = modernErrors({
-  plugins: [
-    {
-      name,
-      instanceMethods: {
-        instanceMethod: (info: Info['instanceMethods'], arg: true) =>
-          true as boolean,
+const InstanceMethodBaseError = ModernError.subclass(
+  'InstanceMethodBaseError',
+  {
+    plugins: [
+      {
+        name,
+        instanceMethods: {
+          instanceMethod: (info: Info['instanceMethods'], arg: true) =>
+            true as boolean,
+        },
       },
-    },
-  ],
-})
+    ],
+  },
+)
 const InstanceMethodError = InstanceMethodBaseError.subclass(
   'InstanceMethodError',
   {
@@ -36,7 +38,7 @@ const InstanceMethodError = InstanceMethodBaseError.subclass(
 )
 expectType<true>(new InstanceMethodError('').instanceMethod(true))
 
-const StaticMethodBaseError = modernErrors({
+const StaticMethodBaseError = ModernError.subclass('StaticMethodBaseError', {
   plugins: [
     {
       name,
@@ -65,7 +67,9 @@ const StaticMethodArrowError = StaticMethodBaseError.subclass(
 )
 expectType<true>(StaticMethodArrowError.staticMethod(true))
 
-const PropsBaseError = modernErrors({ props: { prop: true as boolean } })
+const PropsBaseError = ModernError.subclass('PropsBaseError', {
+  props: { prop: true as boolean },
+})
 const PropsError = PropsBaseError.subclass('PropsError', {
   custom: class extends PropsBaseError {
     prop = true as const
@@ -120,7 +124,7 @@ expectType<true>(new PropsError('').prop)
 //   },
 // )
 // expectError(
-//   class extends BaseError {
+//   class extends ModernError {
 //     message = true
 //   },
 // )

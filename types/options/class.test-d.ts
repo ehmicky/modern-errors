@@ -1,12 +1,13 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
-import modernErrors, { ClassOptions, InstanceOptions } from 'modern-errors'
+import ModernError, { ClassOptions, InstanceOptions } from 'modern-errors'
 
-const BaseError = modernErrors()
-const PluginBaseError = modernErrors({ plugins: [{ name: 'test' as const }] })
-const ChildError = BaseError.subclass('ChildError')
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const PluginBaseError = ModernError.subclass('PluginBaseError', {
+  plugins: [{ name: 'test' as const }],
+})
+const BaseError = ModernError.subclass('BaseError')
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     one = true
   },
 })
@@ -16,46 +17,48 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-expectError(BaseError.subclass('TestError', true))
+expectError(ModernError.subclass('TestError', true))
 expectError(PluginBaseError.subclass('TestError', true))
-expectError(ChildError.subclass('TestError', true))
+expectError(BaseError.subclass('TestError', true))
 
-expectError(BaseError.subclass('TestError', { other: true }))
+expectError(ModernError.subclass('TestError', { other: true }))
 expectError(PluginBaseError.subclass('TestError', { other: true }))
-expectError(ChildError.subclass('TestError', { other: true }))
+expectError(BaseError.subclass('TestError', { other: true }))
 
-expectError(BaseError.subclass('TestError', { custom: true }))
+expectError(ModernError.subclass('TestError', { custom: true }))
 expectError(PluginBaseError.subclass('TestError', { custom: true }))
-expectError(ChildError.subclass('TestError', { custom: true }))
+expectError(BaseError.subclass('TestError', { custom: true }))
 expectNotAssignable<ClassOptions>({ custom: true })
 
-expectError(BaseError.subclass('TestError', { custom: class {} }))
+expectError(ModernError.subclass('TestError', { custom: class {} }))
 expectError(PluginBaseError.subclass('TestError', { custom: class {} }))
-expectError(ChildError.subclass('TestError', { custom: class {} }))
+expectError(BaseError.subclass('TestError', { custom: class {} }))
 
 expectError(
-  BaseError.subclass('TestError', { custom: class extends Object {} }),
+  ModernError.subclass('TestError', { custom: class extends Object {} }),
 )
 expectError(
   PluginBaseError.subclass('TestError', { custom: class extends Object {} }),
 )
 expectError(
-  ChildError.subclass('TestError', { custom: class extends Object {} }),
+  BaseError.subclass('TestError', { custom: class extends Object {} }),
 )
 
-expectError(BaseError.subclass('TestError', { custom: class extends Error {} }))
+expectError(
+  ModernError.subclass('TestError', { custom: class extends Error {} }),
+)
 expectError(
   PluginBaseError.subclass('TestError', { custom: class extends Error {} }),
 )
-expectError(
-  ChildError.subclass('TestError', { custom: class extends Error {} }),
-)
+expectError(BaseError.subclass('TestError', { custom: class extends Error {} }))
 
 expectError(
-  CustomError.subclass('TestError', { custom: class extends BaseError {} }),
+  CustomError.subclass('TestError', { custom: class extends ModernError {} }),
 )
 expectError(
-  DeepCustomError.subclass('TestError', { custom: class extends BaseError {} }),
+  DeepCustomError.subclass('TestError', {
+    custom: class extends ModernError {},
+  }),
 )
 expectError(
   DeepCustomError.subclass('TestError', {
@@ -63,5 +66,5 @@ expectError(
   }),
 )
 
-expectAssignable<ClassOptions>({ custom: BaseError })
-expectNotAssignable<InstanceOptions>({ custom: BaseError })
+expectAssignable<ClassOptions>({ custom: ModernError })
+expectNotAssignable<InstanceOptions>({ custom: ModernError })

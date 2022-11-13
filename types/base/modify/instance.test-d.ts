@@ -1,20 +1,19 @@
 import { expectType, expectAssignable } from 'tsd'
 
-import modernErrors, { ErrorInstance } from 'modern-errors'
+import ModernError, { ErrorInstance } from 'modern-errors'
 
-const BaseError = modernErrors()
-type BaseInstance = InstanceType<typeof BaseError>
+type ModernErrorInstance = InstanceType<typeof ModernError>
 
+const BaseError = ModernError.subclass('BaseError')
 const ChildError = BaseError.subclass('ChildError')
-const DeepChildError = ChildError.subclass('DeepChildError')
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     prop = true
   },
 })
 const ChildCustomError = CustomError.subclass('ChildCustomError')
-const CustomChildError = ChildError.subclass('CustomChildError', {
-  custom: class extends ChildError {
+const CustomChildError = BaseError.subclass('CustomChildError', {
+  custom: class extends BaseError {
     prop = true
   },
 })
@@ -24,9 +23,9 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-const generalError = {} as any as BaseInstance
-const childError = new ChildError('')
-const deepChildError = new DeepChildError('')
+const generalError = {} as any as ModernErrorInstance
+const childError = new BaseError('')
+const deepChildError = new ChildError('')
 const customError = new CustomError('')
 const childCustomError = new ChildCustomError('')
 const customChildError = new CustomChildError('')
@@ -48,17 +47,17 @@ expectAssignable<ErrorInstance>(childCustomError)
 expectAssignable<ErrorInstance>(customChildError)
 expectAssignable<ErrorInstance>(deepCustomError)
 
-expectType<BaseInstance>(generalError)
-expectType<BaseInstance>(childError)
-expectType<BaseInstance>(deepChildError)
-expectAssignable<BaseInstance>(customError)
-expectAssignable<BaseInstance>(childCustomError)
-expectAssignable<BaseInstance>(customChildError)
-expectAssignable<BaseInstance>(deepCustomError)
+expectType<ModernErrorInstance>(generalError)
+expectType<ModernErrorInstance>(childError)
+expectType<ModernErrorInstance>(deepChildError)
+expectAssignable<ModernErrorInstance>(customError)
+expectAssignable<ModernErrorInstance>(childCustomError)
+expectAssignable<ModernErrorInstance>(customChildError)
+expectAssignable<ModernErrorInstance>(deepCustomError)
 
-expectType<typeof BaseError['prototype']>(generalError)
-expectType<typeof ChildError['prototype']>(childError)
-expectType<typeof DeepChildError['prototype']>(deepChildError)
+expectType<typeof ModernError['prototype']>(generalError)
+expectType<typeof BaseError['prototype']>(childError)
+expectType<typeof ChildError['prototype']>(deepChildError)
 expectType<typeof CustomError['prototype']>(customError)
 expectType<typeof ChildCustomError['prototype']>(childCustomError)
 expectType<typeof CustomChildError['prototype']>(customChildError)

@@ -1,7 +1,3 @@
-import { expectError } from 'tsd'
-
-import modernErrors from 'modern-errors'
-
 import './base/aggregate.test-d.js'
 import './base/main.test-d.js'
 import './base/modify/intersect.test-d.js'
@@ -30,9 +26,3 @@ import './subclass/main/plugins.test-d.js'
 import './subclass/name.test-d.js'
 import './subclass/parent/args.test-d.js'
 import './subclass/parent/constructor.test-d.js'
-
-modernErrors()
-modernErrors({})
-modernErrors({ plugins: [{ name: 'test' as const }] })
-expectError(modernErrors(true))
-expectError(modernErrors({}, []))

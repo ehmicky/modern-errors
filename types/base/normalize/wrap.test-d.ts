@@ -1,20 +1,21 @@
 import { expectType, expectError } from 'tsd'
 
-import modernErrors, { Plugin } from 'modern-errors'
+import ModernError, { Plugin } from 'modern-errors'
 
-const BaseError = modernErrors()
-const CustomError = BaseError.subclass('CustomError', {
-  custom: class extends BaseError {
+const CustomError = ModernError.subclass('CustomError', {
+  custom: class extends ModernError {
     prop = true
   },
 })
 const customError = new CustomError('')
 type CustomInstance = typeof CustomError['prototype']
 
-expectType<CustomInstance>(new BaseError('', { cause: customError }))
-expectType<CustomInstance>(BaseError.normalize(customError))
+expectType<CustomInstance>(new ModernError('', { cause: customError }))
+expectType<CustomInstance>(ModernError.normalize(customError))
 
-const PluginBaseError = modernErrors({ plugins: [{ name: 'test' as const }] })
+const PluginBaseError = ModernError.subclass('PluginBaseError', {
+  plugins: [{ name: 'test' as const }],
+})
 const PluginCustomError = PluginBaseError.subclass('PluginCustomError', {
   custom: class extends PluginBaseError {
     prop = true
@@ -28,7 +29,7 @@ expectType<PluginCustomInstance>(
 )
 expectType<PluginCustomInstance>(PluginBaseError.normalize(pluginCustomError))
 
-const WideError = modernErrors({ plugins: [{} as Plugin] })
+const WideError = ModernError.subclass('WideError', { plugins: [{} as Plugin] })
 
 expectType<PluginCustomInstance>(
   new WideError('', { cause: pluginCustomError }),
@@ -36,7 +37,7 @@ expectType<PluginCustomInstance>(
 expectType<PluginCustomInstance>(WideError.normalize(pluginCustomError))
 
 const cause = {} as Error & { prop: true }
-expectType<true>(new BaseError('', { cause }).prop)
-expectType<true>(BaseError.normalize(cause).prop)
+expectType<true>(new ModernError('', { cause }).prop)
+expectType<true>(ModernError.normalize(cause).prop)
 
-expectError(BaseError.normalize('', true))
+expectError(ModernError.normalize('', true))

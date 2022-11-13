@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { Info, Plugin } from 'modern-errors'
+import ModernError, { Info, Plugin } from 'modern-errors'
 
 const name = 'test' as const
 const emptyPlugin = { name }
@@ -14,15 +14,15 @@ const fullPlugin = {
   properties: (info: Info['properties']) => ({ property: true } as const),
 }
 
-const BaseError = modernErrors({ plugins: [fullPlugin] })
-const MixBaseError = modernErrors({
+const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
+const MixBaseError = ModernError.subclass('MixBaseError', {
   plugins: [emptyPlugin, fullPlugin] as const,
 })
 const ChildError = BaseError.subclass('ChildError')
 const MixChildError = MixBaseError.subclass('MixChildError')
-const unknownError = new BaseError('', { cause: '' })
+const unknownError = new BaseError('')
 const childError = new ChildError('')
-const mixUnknownError = new MixBaseError('', { cause: '' })
+const mixUnknownError = new MixBaseError('')
 const mixChildError = new MixChildError('')
 
 expectType<true>(unknownError.property)
@@ -30,9 +30,11 @@ expectType<true>(childError.property)
 expectType<true>(mixUnknownError.property)
 expectType<true>(mixChildError.property)
 
-const WideBaseError = modernErrors({ plugins: [{} as Plugin] })
+const WideBaseError = ModernError.subclass('WideBaseError', {
+  plugins: [{} as Plugin],
+})
 const ChildWideError = WideBaseError.subclass('ChildWideError')
-const unknownWideError = new WideBaseError('', { cause: '' })
+const unknownWideError = new WideBaseError('')
 const childWideError = new ChildWideError('')
 
 expectError(unknownError.otherProperty)

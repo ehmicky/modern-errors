@@ -5,7 +5,7 @@ import {
   expectError,
 } from 'tsd'
 
-import modernErrors, { Info, Plugin } from 'modern-errors'
+import ModernError, { Info, Plugin } from 'modern-errors'
 
 const name = 'test' as const
 const emptyPlugin = { name }
@@ -20,9 +20,13 @@ const fullPlugin = {
   getOptions: (input: true) => input,
 }
 
-const BareBaseError = modernErrors({ plugins: [barePlugin] })
-const FullBaseError = modernErrors({ plugins: [fullPlugin] })
-const MixBaseError = modernErrors({
+const BareBaseError = ModernError.subclass('BareBaseError', {
+  plugins: [barePlugin],
+})
+const FullBaseError = ModernError.subclass('FullBaseError', {
+  plugins: [fullPlugin],
+})
+const MixBaseError = ModernError.subclass('MixBaseError', {
   plugins: [emptyPlugin, fullPlugin] as const,
 })
 const BareChildError = BareBaseError.subclass('BareChildError')
@@ -69,7 +73,9 @@ expectError(BareChildError.staticMethod(info))
 expectError(FullChildError.staticMethod(info, ''))
 expectError(MixChildError.staticMethod(info, ''))
 
-const WideBaseError = modernErrors({ plugins: [{} as Plugin] })
+const WideBaseError = ModernError.subclass('WideBaseError', {
+  plugins: [{} as Plugin],
+})
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 
 expectError(BareBaseError.otherMethod())

@@ -1,101 +1,97 @@
 import { expectType, expectAssignable, expectError } from 'tsd'
 
-import modernErrors from 'modern-errors'
-
-const BaseError = modernErrors()
-const ChildError = BaseError.subclass('ChildError')
+import ModernError from 'modern-errors'
 
 const name = 'test' as const
 
 expectType<true>(
-  new ChildError('', {
-    cause: new ChildError('', { props: { prop: true as const } }),
+  new ModernError('', {
+    cause: new ModernError('', { props: { prop: true as const } }),
   }).prop,
 )
 
-const MessageFuncError = modernErrors({
+const MessageFuncError = ModernError.subclass('MessageFuncError', {
   plugins: [{ name, instanceMethods: { message: () => {} } }],
 })
-expectType<Error['message']>(new MessageFuncError('', { cause: '' }).message)
+expectType<Error['message']>(new MessageFuncError('').message)
 
-const MessagePropertyError = modernErrors({
+const MessagePropertyError = ModernError.subclass('MessagePropertyError', {
   plugins: [{ name, properties: () => ({ message: 'test' as const }) }],
 })
-expectType<string>(new MessagePropertyError('', { cause: '' }).message)
+expectType<string>(new MessagePropertyError('').message)
 expectType<string>(
-  new ChildError('', { props: { message: 'test' as const } }).message,
+  new ModernError('', { props: { message: 'test' as const } }).message,
 )
-expectType<string>(new ChildError('', { props: { message: true } }).message)
+expectType<string>(new ModernError('', { props: { message: true } }).message)
 
-const StackPropertyError = modernErrors({
+const StackPropertyError = ModernError.subclass('StackPropertyError', {
   plugins: [{ name, properties: () => ({ stack: 'test' as const }) }],
 })
-expectType<string | undefined>(new StackPropertyError('', { cause: '' }).stack)
+expectType<string | undefined>(new StackPropertyError('').stack)
 expectType<string | undefined>(
-  new ChildError('', { props: { stack: 'test' as const } }).stack,
+  new ModernError('', { props: { stack: 'test' as const } }).stack,
 )
 expectType<string | undefined>(
-  new ChildError('', { props: { stack: true } }).stack,
+  new ModernError('', { props: { stack: true } }).stack,
 )
 
-const NamePropertyError = modernErrors({
+const NamePropertyError = ModernError.subclass('NamePropertyError', {
   plugins: [{ name, properties: () => ({ name: 'test' }) }],
 })
 const ThreeError = NamePropertyError.subclass('ThreeError')
 expectType<string>(new ThreeError('').name)
-expectType<string>(new ChildError('', { props: { name: 'test' } }).name)
+expectType<string>(new ModernError('', { props: { name: 'test' } }).name)
 
-const CausePropertyError = modernErrors({
+const CausePropertyError = ModernError.subclass('CausePropertyError', {
   plugins: [{ name, properties: () => ({ cause: '' }) }],
 })
 const FourError = CausePropertyError.subclass('FourError')
 expectType<Error['cause']>(new FourError('').cause)
-expectType<Error['cause']>(new ChildError('', { props: { cause: '' } }).cause)
+expectType<Error['cause']>(new ModernError('', { props: { cause: '' } }).cause)
 
-const AggregatePropertyError = modernErrors({
+const AggregatePropertyError = ModernError.subclass('AggregatePropertyError', {
   plugins: [{ name, properties: () => ({ errors: [''] }) }],
 })
-expectError(new AggregatePropertyError('', { cause: '' }).errors)
-expectError(new ChildError('', { props: { errors: [''] } }).errors)
+expectError(new AggregatePropertyError('').errors)
+expectError(new ModernError('', { props: { errors: [''] } }).errors)
 
-const InstanceMethodPropertyError = modernErrors({
-  plugins: [
-    {
-      name,
-      properties: () => ({ prop: 'test' as const }),
-      instanceMethods: { prop: () => {} },
-    },
-  ],
-})
-expectAssignable<Function>(
-  new InstanceMethodPropertyError('', { cause: '' }).prop,
+const InstanceMethodPropertyError = ModernError.subclass(
+  'InstanceMethodPropertyError',
+  {
+    plugins: [
+      {
+        name,
+        properties: () => ({ prop: 'test' as const }),
+        instanceMethods: { prop: () => {} },
+      },
+    ],
+  },
 )
+expectAssignable<Function>(new InstanceMethodPropertyError('').prop)
 
-const InstanceMethodError = modernErrors({
+const InstanceMethodError = ModernError.subclass('InstanceMethodError', {
   plugins: [{ name, instanceMethods: { prop: () => {} } }],
 })
 expectAssignable<Function>(
-  new InstanceMethodError('', { cause: '', props: { prop: '' } }).prop,
+  new InstanceMethodError('', { props: { prop: '' } }).prop,
 )
 expectAssignable<Function>(
-  new ChildError('', { cause: new InstanceMethodError('') }).prop,
+  new ModernError('', { cause: new InstanceMethodError('') }).prop,
 )
 
-const PropertyError = modernErrors({
+const PropertyError = ModernError.subclass('PropertyError', {
   plugins: [{ name, properties: () => ({ prop: 'test' as const }) }],
 })
 expectType<'test'>(
-  new PropertyError('', { cause: '', props: { prop: 'test' as const } }).prop,
+  new PropertyError('', { props: { prop: 'test' as const } }).prop,
 )
-expectType<'test'>(
-  new PropertyError('', { cause: '', props: { prop: '' as const } }).prop,
-)
-expectType<'test'>(new ChildError('', { cause: new PropertyError('') }).prop)
+expectType<'test'>(new PropertyError('', { props: { prop: '' as const } }).prop)
+expectType<'test'>(new ModernError('', { cause: new PropertyError('') }).prop)
 
-const ConflictPropertyError = modernErrors({
+const ConflictPropertyError = ModernError.subclass('ConflictPropertyError', {
   plugins: [
     { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
     { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
   ],
 })
-expectType<undefined>(new ConflictPropertyError('', { cause: '' }).prop)
+expectType<undefined>(new ConflictPropertyError('').prop)
