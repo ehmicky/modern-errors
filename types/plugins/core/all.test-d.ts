@@ -44,5 +44,5 @@ expectType<ErrorObject>(errorObject)
 
 const restore = BaseError.logProcess({ exit: true })
 expectType<void>(restore())
-expectType<ErrorInstance>(BaseError.parse(errorObject))
+expectType<unknown>(BaseError.parse(errorObject))
 expectType<Format>(BaseError.fullFormat({ stack: true }))
