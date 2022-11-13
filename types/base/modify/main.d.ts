@@ -7,12 +7,6 @@ import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
 import type { ErrorConstructor } from '../../subclass/parent/main.js'
 
 /**
- * Core `Error` properties which cannot be redefined by `plugin.properties()`,
- * `props`, instance methods or the `custom` option
- */
-type CoreErrorProps = keyof Error | 'errors'
-
-/**
  * Error instance object, used internally with additional generics.
  * This mixes: `Error`, aggregate errors, plugin instance methods,
  * `plugin.properties()` and `props`, while ensuring those do not overlap each
@@ -28,16 +22,24 @@ export type SpecificErrorInstance<
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
   Omit<
     NormalizedCause<CauseArg>,
-    CoreErrorProps | keyof InstanceType<CustomClass>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
+    | keyof InstanceType<CustomClass>
   > &
-  Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
+  Omit<
+    PluginsInstanceMethods<PluginsArg>,
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
+    | keyof InstanceType<CustomClass>
+  > &
   Omit<
     PluginsProperties<PluginsArg>,
-    CoreErrorProps | keyof PluginsInstanceMethods<PluginsArg>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
+    | keyof InstanceType<CustomClass>
+    | keyof PluginsInstanceMethods<PluginsArg>
   > &
   Omit<
     ErrorPropsArg,
-    | CoreErrorProps
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
+    | keyof InstanceType<CustomClass>
     | keyof PluginsInstanceMethods<PluginsArg>
     | keyof PluginsProperties<PluginsArg>
   >

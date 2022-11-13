@@ -52,8 +52,11 @@ expectType<Error['cause']>(new ModernError('', { props: { cause: '' } }).cause)
 const AggregatePropertyError = ModernError.subclass('AggregatePropertyError', {
   plugins: [{ name, properties: () => ({ errors: [''] }) }],
 })
-expectError(new AggregatePropertyError('').errors)
-expectError(new ModernError('', { props: { errors: [''] } }).errors)
+expectType<string[]>(new AggregatePropertyError('').errors)
+expectType<boolean[]>(new ModernError('', { props: { errors: [true] } }).errors)
+expectType<Error[]>(
+  new ModernError('', { props: { errors: [true] }, errors: [true] }).errors,
+)
 
 const InstanceMethodPropertyError = ModernError.subclass(
   'InstanceMethodPropertyError',
