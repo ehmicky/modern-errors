@@ -2,9 +2,11 @@ import type { ErrorName } from 'error-custom-class'
 
 import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { Plugins } from '../../plugins/shape.js'
-import type { GetAggregateErrors } from '../../base/aggregate.js'
+import type {
+  GetAggregateErrors,
+  AggregateErrors,
+} from '../../base/aggregate.js'
 import type { BaseError } from '../../base/modify/main.js'
-import type { SpecificBaseErrorClass } from '../../base/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -149,7 +151,7 @@ export type CreateSubclass<
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
       CustomInstanceAttributes<
-        InstanceType<SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>>,
+        BaseError<PluginsArg, ErrorPropsArg, CustomAttributes, AggregateErrors>,
         InstanceType<ClassOptionsArg['custom']>
       >
     >
