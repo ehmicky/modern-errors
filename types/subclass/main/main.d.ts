@@ -23,18 +23,18 @@ import type {
  */
 export type ErrorSubclass<
   PluginsArg extends Plugins,
-  ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
+  ChildProps extends ErrorProps,
   CustomClass extends ErrorConstructor,
 > = SpecificErrorClass<
   PluginsArg,
-  MergeErrorProps<ParentProps, ErrorPropsArg>,
+  MergeErrorProps<ErrorPropsArg, ChildProps>,
   CustomClass
 >
 
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
-  ParentProps extends ErrorProps,
+  ErrorPropsArg extends ErrorProps,
   CustomClass extends ErrorConstructor,
 > {
   /**
@@ -46,14 +46,14 @@ interface ErrorSubclassCore<
    * ```
    */
   new <
-    ErrorPropsArg extends ErrorProps = ErrorProps,
+    ChildProps extends ErrorProps = ErrorProps,
     AggregateErrorsArg extends AggregateErrors = AggregateErrors,
     CauseArg extends Cause = Cause,
   >(
     message: string,
     options?: ParentInstanceOptions<
       PluginsArg,
-      ErrorPropsArg,
+      ChildProps,
       CustomClass,
       AggregateErrorsArg,
       CauseArg
@@ -61,14 +61,14 @@ interface ErrorSubclassCore<
     ...extra: ParentExtra<CustomClass>
   ): SpecificErrorInstance<
     PluginsArg,
-    MergeErrorProps<ParentProps, ErrorPropsArg>,
+    MergeErrorProps<ErrorPropsArg, ChildProps>,
     CustomClass,
     AggregateErrorsArg,
     CauseArg
   >
 
   readonly prototype: InstanceType<
-    ErrorSubclassCore<PluginsArg, ParentProps, CustomClass>
+    ErrorSubclassCore<PluginsArg, ErrorPropsArg, CustomClass>
   >
 
   /**
@@ -82,18 +82,18 @@ interface ErrorSubclassCore<
   subclass<
     ChildPlugins extends Plugins = [],
     ChildCustomClass extends ErrorConstructor = CustomClass,
-    ErrorPropsArg extends ErrorProps = {},
+    ChildProps extends ErrorProps = {},
   >(
     errorName: ErrorName,
     options?: SpecificClassOptions<
       PluginsArg,
       ChildPlugins,
-      ParentProps,
       ErrorPropsArg,
+      ChildProps,
       CustomClass,
       ChildCustomClass
     >,
-  ): ErrorSubclass<PluginsArg, ParentProps, ErrorPropsArg, ChildCustomClass>
+  ): ErrorSubclass<PluginsArg, ErrorPropsArg, ChildProps, ChildCustomClass>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
@@ -111,7 +111,7 @@ interface ErrorSubclassCore<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<PluginsArg, ParentProps, ErrorArg, CustomClass>
+  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg, CustomClass>
 }
 
 /**

@@ -27,12 +27,12 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
 interface KnownClassOptions<
   PluginsArg extends Plugins,
   ChildPlugins extends Plugins,
-  ParentProps extends ErrorProps,
+  ErrorPropsArg extends ErrorProps,
   CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
   // TODO: fix
   // NonGenericConstructor<
-  //   SpecificErrorClass<PluginsArg, ParentProps, CustomClass>
+  //   SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClass>
   // >,
 > {
   readonly plugins?: ChildPlugins
@@ -79,18 +79,18 @@ interface KnownClassOptions<
 export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ChildPlugins extends Plugins,
-  ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
+  ChildProps extends ErrorProps,
   CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
 > = KnownClassOptions<
   PluginsArg,
   ChildPlugins,
-  ParentProps,
+  ErrorPropsArg,
   CustomClass,
   ChildCustomClass
 > &
-  PluginsOptions<ChildPlugins, ErrorPropsArg>
+  PluginsOptions<ChildPlugins, ChildProps>
 
 /**
  * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or

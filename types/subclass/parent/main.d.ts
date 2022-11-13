@@ -18,17 +18,12 @@ export type ErrorConstructor = new (
  */
 export type ParentInstanceOptions<
   PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
+  ChildProps extends ErrorProps,
   CustomClass extends ErrorConstructor,
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = ConstructorParameters<CustomClass>[1] &
-  SpecificInstanceOptions<
-    PluginsArg,
-    ErrorPropsArg,
-    AggregateErrorsArg,
-    CauseArg
-  >
+  SpecificInstanceOptions<PluginsArg, ChildProps, AggregateErrorsArg, CauseArg>
 
 /**
  * Last variadic arguments of the `constructor` of the parent error class

@@ -66,11 +66,11 @@ type MainInstanceOptions<
  */
 export type SpecificInstanceOptions<
   PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
+  ChildProps extends ErrorProps,
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = MainInstanceOptions<AggregateErrorsArg, CauseArg> &
-  PluginsOptions<PluginsArg, ErrorPropsArg>
+  PluginsOptions<PluginsArg, ChildProps>
 
 /**
  * Options passed to error constructors: `new ErrorClass('message', options)`

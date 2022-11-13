@@ -31,7 +31,7 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 /**
  * Options of all core plugins
  */
-type CorePluginsOptions<ErrorPropsArg extends ErrorProps> = {
+type CorePluginsOptions<ChildProps extends ErrorProps> = {
   /**
    * Error properties.
    *
@@ -50,7 +50,7 @@ type CorePluginsOptions<ErrorPropsArg extends ErrorProps> = {
    * console.log(error.isUserError) // true
    * ```
    */
-  readonly props?: ErrorPropsArg
+  readonly props?: ChildProps
 }
 
 /**
@@ -58,7 +58,7 @@ type CorePluginsOptions<ErrorPropsArg extends ErrorProps> = {
  */
 export type PluginsOptions<
   PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
+  ChildProps extends ErrorProps,
 > = keyof ExternalPluginsOptions<PluginsArg> extends never
-  ? CorePluginsOptions<ErrorPropsArg>
-  : CorePluginsOptions<ErrorPropsArg> & ExternalPluginsOptions<PluginsArg>
+  ? CorePluginsOptions<ChildProps>
+  : CorePluginsOptions<ChildProps> & ExternalPluginsOptions<PluginsArg>
