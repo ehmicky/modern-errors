@@ -498,12 +498,80 @@ when possible.
 #### Separate options
 
 `modern-errors` provides with a
-[consistent pattern](../README.md#plugin-options) for options. Plugins should
-avoid alternatives like:
+[consistent pattern](../README.md#plugin-options) for options. That pattern
+should be preferred as it allows users to set options at multiple stages.
 
-- Functions taking options as input and returning the plugin:
-  `(options) => plugin`
-- Setting options using the properties/methods of the plugin or another object
+```js
+export default {
+  name: 'example',
+  getOptions(options) {
+    return options
+  },
+  instanceMethods: {
+    exampleMethod(info) {
+      console.log(info.options.exampleOption)
+    },
+  },
+}
+```
+
+Plugins should avoid alternatives like using:
+
+- Error method arguments
+
+```js
+export default {
+  name: 'example',
+  instanceMethods: {
+    exampleMethod(exampleOption) {
+      console.log(exampleOption)
+    },
+  },
+}
+```
+
+- Error properties
+
+```js
+export default {
+  name: 'example',
+  instanceMethods: {
+    exampleMethod(info) {
+      console.log(info.error.exampleOption)
+    },
+  },
+}
+```
+
+- Top-level objects
+
+```js
+export const pluginOptions = {}
+
+export default {
+  name: 'example',
+  instanceMethods: {
+    exampleMethod() {
+      console.log(pluginOptions.exampleOption)
+    },
+  },
+}
+```
+
+- Functions taking options as input and returning the plugin
+
+```js
+export default function getPlugin(exampleOption) {
+  return {
+    name: 'example',
+    instanceMethods: {
+      exampleMethod() {
+        console.log(exampleOption)
+      },
+    },
+  }
+}
+```
 
 ### State
 
