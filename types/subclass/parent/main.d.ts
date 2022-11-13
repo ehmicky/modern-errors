@@ -10,10 +10,10 @@ import type { AggregateErrors } from '../../base/aggregate.js'
 /**
  * `custom` option
  */
-export type CustomClass = new (
-  message: string,
-  options?: InstanceOptions,
-) => Error
+export type CustomClass = {
+  new (message: string, options?: InstanceOptions): Error
+  subclass: unknown
+}
 
 /**
  * Second argument of the `constructor` of the parent error class
