@@ -8,7 +8,7 @@ import type {
 import type { ErrorInstance, SpecificErrorInstance } from '../modify/main.js'
 
 /**
- * Return value of `new BaseError()` or `BaseError.normalize()`.
+ * Return value of `new ErrorClass()` or `ErrorClass.normalize()`.
  */
 export type BaseErrorInstance<
   PluginsArg extends Plugins,
@@ -25,7 +25,7 @@ export type BaseErrorInstance<
 >
 
 /**
- * `BaseError.normalize()`.
+ * `ErrorClass.normalize()`.
  */
 export type NormalizeError<
   PluginsArg extends Plugins,
