@@ -47,14 +47,12 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   })
 
   test(`Mixed plugin.instanceMethods are passed the error | ${title}`, (t) => {
-    const { getInstance } = ErrorClass
     const error = new ErrorClass('message')
-    t.deepEqual(getInstance(error, 0).error, error)
+    t.deepEqual(ErrorClass.getInstance(error, 0).error, error)
   })
 
   test(`Mixed plugin.instanceMethods are passed the normalized error | ${title}`, (t) => {
-    const { getInstance } = ErrorClass
-    const { error } = getInstance()
+    const { error } = ErrorClass.getInstance()
     t.true(error instanceof ErrorClass)
     t.is(error.message, '')
   })
