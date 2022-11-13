@@ -26,9 +26,10 @@ export type SpecificErrorInstance<
   CauseArg extends Cause,
 > = InstanceType<CustomClass> &
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
-  (CauseArg extends Error
-    ? Omit<CauseArg, CoreErrorProps | keyof InstanceType<CustomClass>>
-    : {}) &
+  Omit<
+    CauseArg extends Error ? CauseArg : {},
+    CoreErrorProps | keyof InstanceType<CustomClass>
+  > &
   Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
   Omit<
     PluginsProperties<PluginsArg>,
