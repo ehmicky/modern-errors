@@ -9,6 +9,12 @@ expectType<true>(
     cause: new ModernError('', { props: { prop: true as const } }),
   }).prop,
 )
+expectType<false>(
+  new ModernError('', {
+    cause: new ModernError('', { props: { prop: true as const } }),
+    props: { prop: false as const },
+  }).prop,
+)
 
 const MessageFuncError = ModernError.subclass('MessageFuncError', {
   plugins: [{ name, instanceMethods: { message: () => {} } }],
@@ -81,15 +87,26 @@ expectAssignable<Function>(
 expectAssignable<Function>(
   new ModernError('', { cause: new InstanceMethodError('') }).prop,
 )
+expectType<false>(
+  new ModernError('', {
+    cause: new InstanceMethodError(''),
+    props: { prop: false as const },
+  }).prop,
+)
 
 const PropertyError = ModernError.subclass('PropertyError', {
-  plugins: [{ name, properties: () => ({ prop: 'test' as const }) }],
+  plugins: [{ name, properties: () => ({ prop: true as const }) }],
 })
-expectType<'test'>(
-  new PropertyError('', { props: { prop: 'test' as const } }).prop,
+expectType<true>(
+  new PropertyError('', { props: { prop: false as const } }).prop,
 )
-expectType<'test'>(new PropertyError('', { props: { prop: '' as const } }).prop)
-expectType<'test'>(new ModernError('', { cause: new PropertyError('') }).prop)
+expectType<true>(new ModernError('', { cause: new PropertyError('') }).prop)
+expectType<false>(
+  new ModernError('', {
+    cause: new PropertyError(''),
+    props: { prop: false as const },
+  }).prop,
+)
 
 const ConflictPropertyError = ModernError.subclass('ConflictPropertyError', {
   plugins: [
