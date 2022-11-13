@@ -55,9 +55,9 @@ interface ErrorSubclassCore<
    * ```
    */
   new <
-    ErrorPropsArg extends ErrorProps = {},
-    AggregateErrorsArg extends AggregateErrors = undefined,
-    CauseArg extends Cause = undefined,
+    ErrorPropsArg extends ErrorProps = ErrorProps,
+    AggregateErrorsArg extends AggregateErrors = AggregateErrors,
+    CauseArg extends Cause = Cause,
   >(
     message: string,
     options?: ParentInstanceOptions<
