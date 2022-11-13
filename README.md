@@ -90,7 +90,7 @@ try {
 try {
   throw 'Missing file path.'
 } catch (error) {
-  // Normalized from a string to an `Error` instance
+  // Normalized from a string to a `BaseError` instance
   throw BaseError.normalize(error)
 }
 ```
@@ -102,7 +102,6 @@ import ModernError from 'modern-errors'
 import modernErrorsSerialize from 'modern-errors-serialize'
 
 export const BaseError = ModernError.subclass('BaseError', {
-  // Use a plugin to serialize errors as JSON
   plugins: [modernErrorsSerialize],
 })
 
@@ -372,11 +371,14 @@ export const main = function () {
 
 ### Normalizing unknown errors
 
-An error is _unknown_ if its class is not a subclass of the
+An error is _unknown_ if its class is not a
+[subclass](#errorclasssubclassname-options) of the
 [`BaseError`](#create-error-classes). This indicates an unexpected exception,
 usually a bug.
+
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeanyexception-newerrorclass)
-assigns the [`UnknownError` class](#create-error-classes) to those errors.
+assigns the `UnknownError` class to those errors. This is usually performed in
+the [top-level error handler](#top-level-error-handler).
 
 ```js
 export const UnknownError = BaseError.subclass('UnknownError')
@@ -387,9 +389,9 @@ export const UnknownError = BaseError.subclass('UnknownError')
 ```js
 try {
   return regExp.test(value)
-} catch (unknownError) {
+} catch (error) {
   // Now an `UnknownError` instance
-  throw BaseError.normalize(unknownError, UnknownError)
+  throw BaseError.normalize(error, UnknownError)
 }
 ```
 
@@ -405,9 +407,9 @@ prevent catching other unrelated _unknown_ errors.
 ```js
 try {
   return regExp.test(value)
-} catch (unknownError) {
+} catch (error) {
   // Now an `InputError` instance
-  throw new InputError('Invalid regular expression:', { cause: unknownError })
+  throw new InputError('Invalid regular expression:', { cause: error })
 }
 ```
 
@@ -421,10 +423,10 @@ required for [_unknown_ errors](#-unknown-errors) to use [plugins](#-plugins).
 ```js
 try {
   return regExp.test(value)
-} catch (unknownError) {
-  unknownError.examplePluginMethod() // This throws
+} catch (error) {
+  error.examplePluginMethod() // This throws
 
-  const normalizedError = BaseError.normalize(unknownError)
+  const normalizedError = BaseError.normalize(error)
   normalizedError.examplePluginMethod() // This works
 }
 ```
