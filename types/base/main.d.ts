@@ -1,7 +1,6 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { PluginsStaticMethods } from '../plugins/static.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
-import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { CustomStaticAttributes } from '../subclass/inherited.js'
