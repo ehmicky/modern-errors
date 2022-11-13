@@ -47,7 +47,12 @@ export default function modernErrors<
 ): SpecificBaseErrorClass<
   PluginsArg,
   GetPropsOption<GlobalOptionsArg>,
-  ErrorConstructor<PluginsArg>,
+  SpecificBaseErrorClass<
+    PluginsArg,
+    GetPropsOption<GlobalOptionsArg>,
+    BaseErrorClass<PluginsArg>,
+    {}
+  >,
   {}
 >
 

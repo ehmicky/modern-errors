@@ -71,12 +71,7 @@ interface BaseErrorClassCore<
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    SpecificBaseErrorClass<
-      PluginsArg,
-      ErrorPropsArg,
-      ParentErrorClass,
-      CustomAttributesArg
-    >,
+    ParentErrorClass,
     CustomAttributesArg
   >
 
