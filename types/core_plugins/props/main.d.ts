@@ -11,6 +11,8 @@ export type ErrorProps = object
 export type MergeErrorProps<
   PropsOne extends ErrorProps,
   PropsTwo extends ErrorProps,
-> = keyof PropsOne & keyof PropsTwo extends never
+> = keyof PropsTwo extends never
+  ? PropsOne
+  : keyof PropsOne & keyof PropsTwo extends never
   ? PropsOne & PropsTwo
   : OmitKeys<PropsOne, keyof PropsTwo> & PropsTwo
