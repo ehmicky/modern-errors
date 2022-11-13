@@ -530,7 +530,7 @@ Plugin options can apply to (in priority order):
 export const BaseError = ModernError.subclass('BaseError', options)
 ```
 
-- Any error of a specific class (and all its subclasses): second argument to
+- Any error of a specific class (and its subclasses): second argument to
   [`ErrorClass.subclass()`](#options-1)
 
 ```js
