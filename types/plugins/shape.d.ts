@@ -17,14 +17,15 @@ import type { StaticMethods } from './static.js'
  *     return {}
  *   },
  *
- *   // Add error instance methods like `error.exampleMethod(...args)`
+ *   // Add instance methods like `ErrorClass.exampleMethod(error, ...args)` or
+ *   // `error.exampleMethod(...args)`
  *   instanceMethods: {
  *     exampleMethod(info, ...args) {
  *       // ...
  *     },
  *   },
  *
- *   // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
+ *   // Add static methods like `ErrorClass.staticMethod(...args)`
  *   staticMethods: {
  *     staticMethod(info, ...args) {
  *       // ...
@@ -101,10 +102,10 @@ export interface Plugin {
    *
    * @example
    * ```js
-   * // `error.exampleMethod('one', true)` results in:
+   * // `ErrorClass.exampleMethod(error, 'one', true)` results in:
    * //   options: true
    * //   args: ['one']
-   * // `error.exampleMethod('one', 'two')` results in:
+   * // `ErrorClass.exampleMethod(error, 'one', 'two')` results in:
    * //   options: undefined
    * //   args: ['one', 'two']
    * export default {
@@ -126,23 +127,23 @@ export interface Plugin {
   readonly isOptions?: IsOptions
 
   /**
-   * Add error instance methods like `error.methodName(...args)`.
+   * Add error instance methods like `ErrorClass.methodName(error, ...args)` or
+   * `error.methodName(...args)`. Unlike static methods, this should be used
+   * when the method's main argument is an `error` instance.
    *
-   * The first argument `info` is provided by `modern-errors`.
-   * The other `...args` are forwarded from the method's call.
-   *
-   * If the logic involves an `error` instance or error-specific `options`,
-   * instance methods should be preferred over static methods.
-   * Otherwise, static methods should be used.
+   * The first argument `info` is provided by `modern-errors`. The `error`
+   * argument is passed as `info.error`. The other `...args` are forwarded from
+   * the method's call.
    *
    * @example
    * ```js
    * export default {
    *   name: 'example',
-   *   // `error.concatMessage("one")` returns `${error.message} - one`
+   *   // `ErrorClass.concatMessage(error, "one")` or `error.concatMessage("one")`
+   *   // return `${error.message} - one`
    *   instanceMethods: {
-   *     concatMessage({ error }, string) {
-   *       return `${error.message} - ${string}`
+   *     concatMessage(info, string) {
+   *       return `${info.error.message} - ${string}`
    *     },
    *   },
    * }
@@ -151,10 +152,12 @@ export interface Plugin {
   readonly instanceMethods?: InstanceMethods
 
   /**
-   * Add error static methods like `ErrorClass.methodName(...args)`.
+   * Add error static methods like `ErrorClass.methodName(...args)`. Unlike
+   * instance methods, this should be used when the method's main argument is
+   * _not_ an `error` instance.
    *
-   * The first argument `info` is provided by `modern-errors`.
-   * The other `...args` are forwarded from the method's call.
+   * The first argument `info` is provided by `modern-errors`. `info.error` is
+   * not defined. The other `...args` are forwarded from the method's call.
    *
    * @example
    * ```js
