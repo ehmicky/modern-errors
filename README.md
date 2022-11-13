@@ -312,8 +312,7 @@ throw new InputError(`Could not read the file:\n`, { cause })
 
 ### Wrap error class
 
-The outer error's class replaces the inner one's, unless it is a parent class
-(such as [`AnyError`](#create-error-classes)).
+The outer error's class replaces the inner one.
 
 ```js
 try {
@@ -323,6 +322,8 @@ try {
   throw new InputError('...', { cause })
 }
 ```
+
+Except when the outer error's class is a parent class, such as [`AnyError`](#create-error-classes).
 
 ```js
 try {
