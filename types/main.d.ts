@@ -53,8 +53,8 @@ export default ModernError
 //       `undefined`
 //     - This problem does not apply to error core properties (`message` and
 //       `stack`) which are always kept correct
-//  - Type narrowing with `instanceof BaseError` does not work if there are any
-//    plugins with static methods. This is due to the following bug:
+//  - Type narrowing with `instanceof` does not work if there are any plugins
+//    with static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
