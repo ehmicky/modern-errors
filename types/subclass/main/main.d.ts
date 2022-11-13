@@ -99,6 +99,11 @@ interface ErrorSubclassCore<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
+    UnknownErrorClass?: SpecificErrorClass<
+      PluginsArg,
+      ErrorPropsArg,
+      CustomClassArg
+    >,
   ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg, CustomClassArg>
 }
 

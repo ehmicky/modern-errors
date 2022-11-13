@@ -7,6 +7,7 @@ const CustomError = ModernError.subclass('CustomError', {
     prop = true
   },
 })
+const PropsError = ModernError.subclass('PropsError', { props: { prop: true } })
 const customError = new CustomError('')
 type CustomInstance = typeof CustomError['prototype']
 
@@ -40,4 +41,8 @@ const cause = {} as Error & { prop: true }
 expectType<true>(new ModernError('', { cause }).prop)
 expectType<true>(ModernError.normalize(cause).prop)
 
+ModernError.normalize('', ModernError)
+ModernError.normalize('', PropsError)
 expectError(ModernError.normalize('', true))
+expectError(ModernError.normalize('', Error))
+expectError(PropsError.normalize('', ModernError))
