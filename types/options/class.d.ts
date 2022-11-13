@@ -25,21 +25,17 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
  * Class-specific options, excluding plugin options
  */
 interface KnownClassOptions<
-  ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
+  ChildPlugins extends Plugins,
   ParentProps extends ErrorProps,
   CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
   // TODO: fix
   // NonGenericConstructor<
-  //   SpecificErrorClass<
-  //     ParentPlugins,
-  //     ParentProps,
-  //     CustomClass
-  //   >
+  //   SpecificErrorClass<PluginsArg, ParentProps, CustomClass>
   // >,
 > {
-  readonly plugins?: PluginsArg
+  readonly plugins?: ChildPlugins
 
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -81,20 +77,20 @@ interface KnownClassOptions<
  * Class-specific options, used internally only with additional generics
  */
 export type SpecificClassOptions<
-  ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
+  ChildPlugins extends Plugins,
   ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
   CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
 > = KnownClassOptions<
-  ParentPlugins,
   PluginsArg,
+  ChildPlugins,
   ParentProps,
   CustomClass,
   ChildCustomClass
 > &
-  PluginsOptions<PluginsArg, ErrorPropsArg>
+  PluginsOptions<ChildPlugins, ErrorPropsArg>
 
 /**
  * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or
