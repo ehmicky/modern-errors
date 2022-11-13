@@ -10,13 +10,13 @@ export type NormalizeError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-  ParentCustomClass extends ErrorConstructor,
+  CustomClass extends ErrorConstructor,
 > = ErrorArg extends ErrorInstance<PluginsArg>
   ? ErrorArg
   : SpecificErrorInstance<
       PluginsArg,
       ErrorPropsArg,
-      ParentCustomClass,
+      CustomClass,
       undefined,
       ErrorArg
     >

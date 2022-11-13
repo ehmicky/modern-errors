@@ -1,6 +1,5 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
-import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { SpecificErrorClass } from '../subclass/main/main.js'
 import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { PluginsOptions } from './plugins.js'
@@ -29,14 +28,14 @@ interface KnownClassOptions<
   ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
-  ParentCustomClass extends ErrorConstructor,
   CustomClass extends ErrorConstructor,
+  ChildCustomClass extends ErrorConstructor,
   // TODO: fix
   // NonGenericConstructor<
   //   SpecificErrorClass<
   //     ParentPlugins,
   //     ParentProps,
-  //     ParentCustomClass
+  //     CustomClass
   //   >
   // >,
 > {
@@ -75,7 +74,7 @@ interface KnownClassOptions<
    * console.log(error.isUserInput())
    * ```
    */
-  readonly custom?: CustomClass
+  readonly custom?: ChildCustomClass
 }
 
 /**
@@ -86,14 +85,14 @@ export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
-  ParentCustomClass extends ErrorConstructor,
   CustomClass extends ErrorConstructor,
+  ChildCustomClass extends ErrorConstructor,
 > = KnownClassOptions<
   ParentPlugins,
   PluginsArg,
   ParentProps,
-  ParentCustomClass,
-  CustomClass
+  CustomClass,
+  ChildCustomClass
 > &
   PluginsOptions<PluginsArg, ErrorPropsArg>
 

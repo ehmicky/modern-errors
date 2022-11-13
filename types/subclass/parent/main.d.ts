@@ -19,10 +19,10 @@ export type ErrorConstructor = new (
 export type ParentInstanceOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentCustomClass extends ErrorConstructor,
+  CustomClass extends ErrorConstructor,
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
-> = ConstructorParameters<ParentCustomClass>[1] &
+> = ConstructorParameters<CustomClass>[1] &
   SpecificInstanceOptions<
     PluginsArg,
     ErrorPropsArg,
@@ -33,8 +33,8 @@ export type ParentInstanceOptions<
 /**
  * Last variadic arguments of the `constructor` of the parent error class
  */
-export type ParentExtra<ParentCustomClass extends ErrorConstructor> =
-  ConstructorParameters<ParentCustomClass> extends readonly [
+export type ParentExtra<CustomClass extends ErrorConstructor> =
+  ConstructorParameters<CustomClass> extends readonly [
     unknown,
     unknown?,
     ...infer Extra extends readonly unknown[],
