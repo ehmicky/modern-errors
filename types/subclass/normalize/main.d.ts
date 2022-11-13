@@ -1,4 +1,4 @@
-import type { ErrorInstance } from '../../base/modify/main.js'
+import type { ErrorInstance } from '../../base/cause/main.js'
 import type {
   DefinedAggregateErrors,
   AggregateErrorOption,

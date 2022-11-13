@@ -1,6 +1,6 @@
 import type { Plugin } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
-import type { ErrorInstance } from './base/modify/main.js'
+import type { ErrorInstance } from './base/cause/main.js'
 import type { ErrorClass, SpecificErrorClass } from './subclass/main/main.js'
 import type { CustomClass } from './subclass/parent/main.js'
 import type { MethodOptions } from './options/method.js'
