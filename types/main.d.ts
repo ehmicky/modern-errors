@@ -86,6 +86,7 @@ export default ModernError
 //       only if that parent type has a `custom` option itself
 //     - Should always fail if `custom` is extending from a child type of
 //       `ErrorClass` (as opposed to `ErrorClass` itself)
+//  - Defining the same plugin twice should fail, but it is a noop instead
 // Minor limitations:
 //  - Plugin static methods should not be allowed to override `Error.*`
 //    (e.g. `prepareStackTrace()`)
