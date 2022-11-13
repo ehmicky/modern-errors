@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType, expectAssignable, expectError } from 'tsd'
 
 import ModernError, { Plugin } from 'modern-errors'
 
@@ -10,7 +10,7 @@ const CustomError = ModernError.subclass('CustomError', {
 const customError = new CustomError('')
 type CustomInstance = typeof CustomError['prototype']
 
-expectType<CustomInstance>(new ModernError('', { cause: customError }))
+expectAssignable<CustomInstance>(new ModernError('', { cause: customError }))
 expectType<CustomInstance>(ModernError.normalize(customError))
 
 const PluginBaseError = ModernError.subclass('PluginBaseError', {
@@ -24,14 +24,14 @@ const PluginCustomError = PluginBaseError.subclass('PluginCustomError', {
 const pluginCustomError = new PluginCustomError('')
 type PluginCustomInstance = typeof PluginCustomError['prototype']
 
-expectType<PluginCustomInstance>(
+expectAssignable<PluginCustomInstance>(
   new PluginBaseError('', { cause: pluginCustomError }),
 )
 expectType<PluginCustomInstance>(PluginBaseError.normalize(pluginCustomError))
 
 const WideError = ModernError.subclass('WideError', { plugins: [{} as Plugin] })
 
-expectType<PluginCustomInstance>(
+expectAssignable<PluginCustomInstance>(
   new WideError('', { cause: pluginCustomError }),
 )
 expectType<PluginCustomInstance>(WideError.normalize(pluginCustomError))

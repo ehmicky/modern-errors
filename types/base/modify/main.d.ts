@@ -3,7 +3,6 @@ import type { PluginsInstanceMethods } from '../../plugins/instance.js'
 import type { Cause } from '../../options/instance.js'
 import type { PluginsProperties } from '../../plugins/properties.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
-import type { OmitKeys } from '../../utils.js'
 import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
 import type { ErrorConstructor } from '../../subclass/parent/main.js'
 
@@ -28,14 +27,14 @@ export type SpecificErrorInstance<
 > = InstanceType<CustomClass> &
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
   (CauseArg extends Error
-    ? OmitKeys<CauseArg, CoreErrorProps | keyof InstanceType<CustomClass>>
+    ? Omit<CauseArg, CoreErrorProps | keyof InstanceType<CustomClass>>
     : {}) &
-  OmitKeys<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
-  OmitKeys<
+  Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &
+  Omit<
     PluginsProperties<PluginsArg>,
     CoreErrorProps | keyof PluginsInstanceMethods<PluginsArg>
   > &
-  OmitKeys<
+  Omit<
     ErrorPropsArg,
     | CoreErrorProps
     | keyof PluginsInstanceMethods<PluginsArg>

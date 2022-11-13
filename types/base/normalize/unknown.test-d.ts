@@ -1,4 +1,4 @@
-import { expectType } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
 import ModernError from 'modern-errors'
 
@@ -9,7 +9,7 @@ expectType<ModernErrorInstance>(
 )
 expectType<ModernErrorInstance>(ModernError.normalize(new ModernError('')))
 expectType<ModernErrorInstance>(new ModernError('', { cause: new Error('') }))
-expectType<ModernErrorInstance>(ModernError.normalize(new Error('')))
+expectAssignable<ModernErrorInstance>(ModernError.normalize(new Error('')))
 expectType<ModernErrorInstance>(new ModernError('', { cause: undefined }))
 expectType<ModernErrorInstance>(ModernError.normalize(undefined))
 expectType<ModernErrorInstance>(new ModernError('', { cause: '' }))

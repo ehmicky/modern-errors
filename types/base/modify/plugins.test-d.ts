@@ -32,7 +32,7 @@ const WideError = ModernError.subclass('WideError', { plugins: [{} as Plugin] })
 const wideError = new WideError('')
 type WideErrorInstance = InstanceType<typeof WideError>
 
-expectType<Error>(wideError)
+expectAssignable<Error>(wideError)
 expectAssignable<ErrorInstance>(wideError)
 expectAssignable<BareErrorInstance>(wideError)
 expectNotAssignable<FullErrorInstance>(wideError)
