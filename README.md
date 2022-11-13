@@ -438,7 +438,7 @@ try {
 The [`custom` option](#optionscustom) can be used to provide an error `class`
 with additional methods, `constructor` or properties.
 
-<!-- eslint-disable no-param-reassign, fp/no-mutation, fp/no-this,
+<!-- eslint-disable no-param-reassign, fp/no-mutation,
      class-methods-use-this -->
 
 ```js
@@ -446,17 +446,9 @@ export const InputError = BaseError.subclass('InputError', {
   // The `class` must extend from `BaseError`
   custom: class extends BaseError {
     // If a `constructor` is defined, its parameters must be (message, options)
-    // like `BaseError`
     constructor(message, options) {
-      // Modifying `message` or `options` should be done before `super()`
       message += message.endsWith('.') ? '' : '.'
-
-      // All arguments should be forwarded to `super()`, including any
-      // custom `options` or additional `constructor` parameters
       super(message, options)
-
-      // `name` is automatically added, so this is not necessary
-      // this.name = 'InputError'
     }
 
     isUserInput() {
@@ -474,8 +466,6 @@ console.log(error.isUserInput())
 
 [`ErrorClass.subclass()`](#errorclasssubclassname-options) can be used to share
 logic between error classes.
-
-<!-- eslint-disable fp/no-this, class-methods-use-this -->
 
 ```js
 const SharedError = BaseError.subclass('SharedError', {
