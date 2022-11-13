@@ -1,8 +1,7 @@
 import type { Plugins } from '../../plugins/shape.js'
-import type { GetAggregateErrors } from '../aggregate.js'
+import type { AggregateErrors } from '../aggregate.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomInstanceAttributes } from '../../subclass/custom/main.js'
-import type { MainInstanceOptions } from '../../options/instance.js'
 import type { ErrorInstance, BaseError } from '../modify/main.js'
 
 /**
@@ -12,12 +11,12 @@ export type BaseErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
-  MainInstanceOptionsArg extends MainInstanceOptions,
+  AggregateErrorsArg extends AggregateErrors,
 > = BaseError<
   PluginsArg,
   ErrorPropsArg,
   CustomInstanceAttributes<Error, ErrorArg>,
-  GetAggregateErrors<MainInstanceOptionsArg>
+  AggregateErrorsArg
 >
 
 /**
@@ -27,6 +26,7 @@ export type NormalizeError<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
+  AggregateErrorsArg extends AggregateErrors,
 > = ErrorArg extends ErrorInstance<PluginsArg>
   ? ErrorArg
-  : BaseErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, MainInstanceOptions>
+  : BaseErrorInstance<PluginsArg, ErrorPropsArg, ErrorArg, AggregateErrorsArg>

@@ -11,6 +11,8 @@ import type {
   ParentExtra,
 } from '../subclass/parent/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
+import type { GetAggregateErrors } from './aggregate.js'
+import { MainInstanceOptions } from '../options/instance.js'
 
 interface BaseErrorClassCore<
   PluginsArg extends Plugins,
@@ -47,7 +49,7 @@ interface BaseErrorClassCore<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     InstanceOptionsArg['cause'],
-    InstanceOptionsArg
+    GetAggregateErrors<InstanceOptionsArg>
   >
 
   readonly prototype: InstanceType<
@@ -92,7 +94,12 @@ interface BaseErrorClassCore<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg>
+  ): NormalizeError<
+    PluginsArg,
+    ErrorPropsArg,
+    ErrorArg,
+    GetAggregateErrors<MainInstanceOptions>
+  >
 }
 
 /**
