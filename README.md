@@ -336,8 +336,8 @@ try {
 
 ### Wrap error options
 
-The outer error's options ([`props`](#error-instance-properties) and
-[plugin options](#plugin-options)) are merged.
+The outer error's [`props`](#error-instance-properties) and
+[plugin options](#plugin-options) are merged.
 
 ```js
 try {
