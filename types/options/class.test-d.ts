@@ -72,6 +72,13 @@ expectNotAssignable<
 expectAssignable<ClassOptions>({ custom: ModernError })
 expectNotAssignable<InstanceOptions>({ custom: ModernError })
 
+expectError(ModernError.subclass('TestError', { plugins: true }))
+expectNotAssignable<ClassOptions>({ plugins: true })
+expectError(ModernError.subclass('TestError', { plugins: [true] }))
+expectNotAssignable<ClassOptions>({ plugins: [true] })
+expectError(ModernError.subclass('TestError', { plugins: [{}] }))
+expectNotAssignable<ClassOptions>({ plugins: [{}] })
+
 expectAssignable<ClassOptions>({ plugins: [plugin] })
 expectAssignable<ClassOptions<[typeof plugin]>>({ plugins: [plugin] })
 expectNotAssignable<InstanceOptions>({ plugins: [plugin] })
