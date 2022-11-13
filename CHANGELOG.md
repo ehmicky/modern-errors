@@ -141,10 +141,10 @@ try {
 
 ### Aggregate errors
 
-[Aggregate errors](README.md#aggregate-errors) must now be
+[Aggregate errors](README.md#aggregate-errors) must now be explicitly
 [normalized](README.md#-normalize-errors) by
 [`BaseError.normalize()`](README.md#errorclassnormalizeerror-newerrorclass)
-instead of [`new ErrorClass()`](README.md#new-errorclassmessage-options).
+instead of being automatically normalized on creation.
 
 ## Features
 
@@ -152,8 +152,8 @@ instead of [`new ErrorClass()`](README.md#new-errorclassmessage-options).
 
 Global [custom logic](README.md#class-custom-logic) can now be specified by
 passing the [`custom` option](README.md#optionscustom) to the
-[`BaseError`](README.md#errorclasssubclassname-options), as opposed to its
-subclasses.
+[`BaseError`](README.md#errorclasssubclassname-options). Previously, only
+class-specific custom logic could be specified.
 
 ### Class-specific plugins
 
