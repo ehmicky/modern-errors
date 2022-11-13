@@ -150,7 +150,7 @@ export const DatabaseError = BaseError.subclass('DatabaseError')
 
 ### Export error classes
 
-Exporting and documenting all error classes (except
+Exporting and documenting all error classes (except for
 [`ModernError`](#modernerror)) allows consumers to check them. This also enables
 sharing error classes between modules.
 
@@ -343,7 +343,7 @@ try {
 } catch (invalidError) {
   const normalizedError = BaseError.normalize(invalidError)
   // This works: 'Missing file path.'
-  // `normalizedError` is an `Error` instance.
+  // `normalizedError` is a `BaseError` instance.
   console.log(normalizedError.message.trim())
 }
 ```
@@ -442,7 +442,7 @@ with additional methods, `constructor` or properties.
 
 ```js
 export const InputError = BaseError.subclass('InputError', {
-  // The `class` must extend from `BaseError`
+  // The `class` must extend from the parent error class
   custom: class extends BaseError {
     // If a `constructor` is defined, its parameters must be (message, options)
     constructor(message, options) {
