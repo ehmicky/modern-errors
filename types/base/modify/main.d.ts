@@ -1,6 +1,6 @@
 import type { Plugins } from '../../plugins/shape.js'
 import type { PluginsInstanceMethods } from '../../plugins/instance.js'
-import type { Cause } from '../../options/instance.js'
+import type { Cause, NormalizedCause } from '../../options/instance.js'
 import type { PluginsProperties } from '../../plugins/properties.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
@@ -27,7 +27,7 @@ export type SpecificErrorInstance<
 > = InstanceType<CustomClass> &
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
   Omit<
-    CauseArg extends Error ? CauseArg : {},
+    NormalizedCause<CauseArg>,
     CoreErrorProps | keyof InstanceType<CustomClass>
   > &
   Omit<PluginsInstanceMethods<PluginsArg>, CoreErrorProps> &

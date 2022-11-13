@@ -4,6 +4,13 @@ import type { PluginsOptions } from './plugins.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
 
 /**
+ * The `cause` option, as used when merged to the error instance
+ */
+export type NormalizedCause<CauseArg extends Cause> = CauseArg extends Error
+  ? CauseArg
+  : {}
+
+/**
  * Optional `cause` option
  */
 export type Cause = unknown | undefined
