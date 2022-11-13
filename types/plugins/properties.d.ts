@@ -28,4 +28,4 @@ type PluginProperties<PluginArg extends Plugin> = PluginArg extends Plugin
  */
 export type PluginsProperties<PluginsArg extends Plugins> = UnionToIntersection<
   PluginProperties<PluginsArg[number]>
->
+> & {}

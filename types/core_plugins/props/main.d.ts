@@ -1,3 +1,5 @@
+import type { SimpleSetProps } from '../../utils.js'
+
 /**
  * Error properties
  */
@@ -9,10 +11,4 @@ export type ErrorProps = object
 export type MergeErrorProps<
   PropsOne extends ErrorProps,
   PropsTwo extends ErrorProps,
-> = keyof PropsTwo extends keyof PropsOne
-  ? PropsOne
-  : keyof PropsOne extends keyof PropsTwo
-  ? PropsTwo
-  : keyof PropsOne & keyof PropsTwo extends never
-  ? PropsOne & PropsTwo
-  : Omit<PropsOne, keyof PropsTwo> & PropsTwo
+> = SimpleSetProps<PropsOne, PropsTwo>

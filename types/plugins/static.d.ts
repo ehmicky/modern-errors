@@ -66,4 +66,4 @@ type PluginStaticMethods<PluginArg extends Plugin> = PluginArg extends {
  * Bound static methods of all plugins
  */
 export type PluginsStaticMethods<PluginsArg extends Plugins> =
-  UnionToIntersection<PluginStaticMethods<PluginsArg[number]>>
+  UnionToIntersection<PluginStaticMethods<PluginsArg[number]>> & {}

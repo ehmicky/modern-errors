@@ -69,4 +69,4 @@ type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends {
  * Bound instance methods of all plugins
  */
 export type PluginsInstanceMethods<PluginsArg extends Plugins> =
-  UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>>
+  UnionToIntersection<PluginInstanceMethods<PluginsArg[number]>> & {}
