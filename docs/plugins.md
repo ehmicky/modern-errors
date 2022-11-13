@@ -497,9 +497,13 @@ when possible.
 
 #### Separate options
 
-`modern-errors` provides with a
-[consistent pattern](../README.md#plugin-options) for options. That pattern
-should be preferred as it allows users to set options at multiple stages.
+`modern-errors` provides with a consistent pattern for options. That pattern has
+several props:
+
+- It allows users to set options
+  [at multiple stages](../README.md#plugin-options)
+- Options are validated as soon as users pass them
+- Options are [automatically typed](#getoptions-1)
 
 ```js
 export default {
