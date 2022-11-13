@@ -5,11 +5,13 @@ import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { CreateSubclass } from '../subclass/main/main.js'
+import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
 
 interface BaseErrorClassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
@@ -40,7 +42,12 @@ interface BaseErrorClassCore<
   >
 
   readonly prototype: InstanceType<
-    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg, CustomAttributesArg>
+    SpecificBaseErrorClass<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >
   >
 
   /**
@@ -56,7 +63,12 @@ interface BaseErrorClassCore<
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg, CustomAttributesArg>,
+    SpecificBaseErrorClass<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >,
     CustomAttributesArg
   >
 
@@ -85,12 +97,23 @@ interface BaseErrorClassCore<
 export type SpecificBaseErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
-> = BaseErrorClassCore<PluginsArg, ErrorPropsArg, CustomAttributesArg> &
+> = BaseErrorClassCore<
+  PluginsArg,
+  ErrorPropsArg,
+  ParentErrorClass,
+  CustomAttributesArg
+> &
   PluginsStaticMethods<PluginsArg>
 
 /**
  * Base error class `BaseError`
  */
 export type BaseErrorClass<PluginsArg extends Plugins = []> =
-  SpecificBaseErrorClass<PluginsArg, ErrorProps, CustomAttributes>
+  SpecificBaseErrorClass<
+    PluginsArg,
+    ErrorProps,
+    ErrorConstructor<PluginsArg>,
+    CustomAttributes
+  >

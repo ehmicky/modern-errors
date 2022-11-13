@@ -3,6 +3,7 @@ import type { Info } from './plugins/info.js'
 import type { BaseErrorClass, SpecificBaseErrorClass } from './base/main.js'
 import type { ErrorInstance } from './base/modify/main.js'
 import type { ErrorClass } from './subclass/main/main.js'
+import type { ErrorConstructor } from './subclass/parent/main.js'
 import type { PluginsOptions } from './options/plugins.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
@@ -43,7 +44,12 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): SpecificBaseErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>, {}>
+): SpecificBaseErrorClass<
+  PluginsArg,
+  GetPropsOption<GlobalOptionsArg>,
+  ErrorConstructor<PluginsArg>,
+  {}
+>
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
