@@ -30,8 +30,17 @@ interface KnownClassOptions<
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
-  CustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
+  CustomClass extends ErrorConstructor,
+  // TODO: fix
+  // NonGenericConstructor<
+  //   SpecificErrorClass<
+  //     ParentPlugins,
+  //     ParentProps,
+  //     ParentErrorClass,
+  //     CustomAttributesArg
+  //   >
+  // >,
 > {
   readonly plugins?: PluginsArg
 
@@ -69,16 +78,6 @@ interface KnownClassOptions<
    * ```
    */
   readonly custom?: CustomClass
-
-  // TODO: fix
-  /*NonGenericConstructor<
-    SpecificErrorClass<
-      ParentPlugins,
-      ParentProps,
-      ParentErrorClass,
-      CustomAttributesArg
-    >
-  >*/
 }
 
 /**
@@ -97,8 +96,8 @@ export type SpecificClassOptions<
   PluginsArg,
   ParentProps,
   ParentErrorClass,
-  CustomClass,
-  CustomAttributesArg
+  CustomAttributesArg,
+  CustomClass
 > &
   PluginsOptions<PluginsArg, ErrorPropsArg>
 
