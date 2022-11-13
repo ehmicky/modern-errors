@@ -67,17 +67,16 @@ Before:
 
 ```js
 const error = new Error('example')
-const normalizedError = BaseError.normalize(error)
-console.log(normalizedError instanceof UnknownError) // true
+assert(BaseError.normalize(error) instanceof UnknownError)
 ```
 
 After:
 
 ```js
 const error = new Error('example')
-const normalizedError = BaseError.normalize(error)
-console.log(normalizedError instanceof UnknownError) // false
-console.log(normalizedError instanceof BaseError) // true
+assert(BaseError.normalize(error) instanceof BaseError)
+assert(!(BaseError.normalize(error) instanceof UnknownError))
+assert(BaseError.normalize(error, UnknownError) instanceof UnknownError)
 ```
 
 ### Wrap error options
