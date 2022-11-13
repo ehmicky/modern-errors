@@ -2,6 +2,7 @@ import type { Plugins } from '../../plugins/shape.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomClass } from '../../subclass/parent/main.js'
 import type { SpecificErrorClass } from '../../subclass/main/main.js'
+import type { ErrorInstance } from '../modify/main.js'
 import type { SetProps } from '../../utils.js'
 
 /**
@@ -21,10 +22,18 @@ export type NormalizeError<
 >(
   error: ErrorArg,
   UnknownErrorClass?: UnknownErrorClass,
-) => ErrorArg extends InstanceType<
-  SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>
+) => NormalizeSingleError<
+  ErrorArg,
+  InstanceType<SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>>,
+  InstanceType<UnknownErrorClass>
 >
+
+type NormalizeSingleError<
+  ErrorArg extends unknown,
+  ParentError extends ErrorInstance,
+  UnknownError extends ErrorInstance,
+> = ErrorArg extends ParentError
   ? ErrorArg
   : ErrorArg extends Error
-  ? SetProps<ErrorArg, InstanceType<UnknownErrorClass>>
-  : InstanceType<UnknownErrorClass>
+  ? SetProps<ErrorArg, UnknownError>
+  : UnknownError
