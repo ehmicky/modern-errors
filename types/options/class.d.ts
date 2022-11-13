@@ -31,6 +31,8 @@ interface KnownClassOptions<
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
   CustomAttributesArg extends CustomAttributes,
 > {
+  readonly plugins?: Plugins
+
   /**
    * Custom class to add any methods, `constructor` or properties.
    *
