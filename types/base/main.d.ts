@@ -4,6 +4,7 @@ import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
 import type { CustomAttributes } from '../subclass/custom/main.js'
+import type { CustomStaticAttributes } from '../subclass/inherited.js'
 import type { CreateSubclass } from '../subclass/main/main.js'
 import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
@@ -105,6 +106,16 @@ export type SpecificBaseErrorClass<
   ParentErrorClass,
   CustomAttributesArg
 > &
+  CustomStaticAttributes<
+    PluginsArg,
+    ParentErrorClass,
+    keyof BaseErrorClassCore<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >
+  > &
   PluginsStaticMethods<PluginsArg>
 
 /**
