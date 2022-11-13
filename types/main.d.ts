@@ -46,6 +46,19 @@ export default ModernError
 //        - Properties set after instantiation
 //        - `custom` instance properties
 // Medium limitations:
+//  - Some logic relies on determining if an error class is a subclass of
+//    another
+//     - However, this is not perfectly possible with TypeScript since it is
+//       based on structural typing
+//        - Unrelated classes will be considered identical if they have the same
+//          options
+//        - The `props` and `plugins` option do manage to create proper
+//          inheritance, but not the `custom` option
+//     - This impacts:
+//        - `ErrorClass.normalize()` second argument might not always fail when
+//          it is not a subclass of `ErrorClass`
+//        - `ErrorClass.normalize(new ErrorClass(''), ErrorSubClass)` returns
+//          an instance of `ErrorClass` instead of `ErrorSubclass`
 //  - If two `plugin.properties()` (or `props`) return the same property, they
 //    are intersected using `&`, instead of the second one overriding the first.
 //     - Therefore, the type of `plugin.properties()` that are not unique should
