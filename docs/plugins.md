@@ -11,8 +11,10 @@ Plugins can add error:
 
 - [Properties](#properties): `error.message`, `error.stack` or any other
   `error.*`
-- [Instance methods](#instancemethodsmethodname): `error.exampleMethod()`
-- [Static methods](#staticmethodsmethodname): `ErrorClass.exampleMethod()`
+- [Instance methods](#instancemethodsmethodname):
+  `ErrorClass.exampleMethod(error, ...args)` or `error.exampleMethod(...args)`
+- [Static methods](#staticmethodsmethodname):
+  `ErrorClass.exampleMethod(...args)`
 
 ## Examples
 
@@ -63,14 +65,15 @@ export default {
     return {}
   },
 
-  // Add error instance methods like `error.exampleMethod(...args)`
+  // Add instance methods like `ErrorClass.exampleMethod(error, ...args)` or
+  // `error.exampleMethod(...args)`
   instanceMethods: {
     exampleMethod(info, ...args) {
       // ...
     },
   },
 
-  // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
+  // Add static methods like `ErrorClass.staticMethod(...args)`
   staticMethods: {
     staticMethod(info, ...args) {
       // ...
@@ -129,19 +132,27 @@ export default {
 
 _Type_: `(info, ...args) => any`
 
-Add error instance methods like `error.methodName(...args)`.
+Add error instance methods like `ErrorClass.methodName(error, ...args)` or
+`error.methodName(...args)`.
+
+This should be used when the method's main argument is an `error` instance.
+
+If the `error` argument is not an error instance, it is
+[normalized](../README.md#invalid-errors) to one. This normalization only occurs
+if `ErrorClass.methodName(error, ...args)` was used, not
+`error.methodName(...args)`. For this reason, we discourage using or documenting
+`error.methodName(...args)` unless there is a strong use case for it, since
+users might accidentally call it without
+[normalizing](../README.md#-normalize-errors) `error` first.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
 
-If the logic involves an `error` instance or error-specific `options`, instance
-methods should be preferred over [static methods](#staticmethodsmethodname).
-Otherwise, static methods should be used.
-
 ```js
 export default {
   name: 'example',
-  // `error.concatMessage("one")` returns `${error.message} - one`
+  // `ErrorClass.concatMessage(error, "one")` or `error.concatMessage("one")`
+  // return `${error.message} - one`
   instanceMethods: {
     concatMessage({ error }, string) {
       return `${error.message} - ${string}`
@@ -155,6 +166,9 @@ export default {
 _Type_: `(info, ...args) => any`
 
 Add error static methods like `ErrorClass.methodName(...args)`.
+
+This should be used when the method's main argument is _not_ an `error`
+instance.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
@@ -253,10 +267,10 @@ any plugin's method, `isOptions()` should still return `true`. This allows
 `getOptions()` to validate them and throw proper error messages.
 
 ```js
-// `error.exampleMethod('one', true)` results in:
+// `ErrorClass.exampleMethod(error, 'one', true)` results in:
 //   options: true
 //   args: ['one']
-// `error.exampleMethod('one', 'two')` results in:
+// `ErrorClass.exampleMethod(error, 'one', 'two')` results in:
 //   options: undefined
 //   args: ['one', 'two']
 export default {
@@ -419,7 +433,8 @@ Please note
 currently ignored.
 
 ```ts
-// Any `error.exampleMethod(input)` call will be validated
+// Any `ErrorClass.exampleMethod(error, input)` or `error.exampleMethod(input)`
+// call will be validated
 export default {
   // ...
   instanceMethods: {
