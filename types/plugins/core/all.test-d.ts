@@ -37,9 +37,10 @@ expectAssignable<Error>(error)
 expectType<Error['message']>(error.message)
 expectType<Error['stack']>(error.stack)
 
+expectType<HttpResponse>(BaseError.httpResponse(error, { type: '' }))
 expectType<HttpResponse>(error.httpResponse({ type: '' }))
-expectType<void>(error.exit({ silent: true }))
 expectType<void>(BaseError.exit(error, { silent: true }))
+expectType<void>(error.exit({ silent: true }))
 const errorObject = error.toJSON()
 expectType<ErrorObject>(errorObject)
 
