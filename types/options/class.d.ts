@@ -31,9 +31,10 @@ interface KnownClassOptions<
   CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
   // TODO: fix
-  // NonGenericConstructor<
+  // ChildCustomClass extends NonGenericConstructor<
   //   SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClass>
   // >,
+  // ChildCustomClass extends CustomClass,
 > {
   readonly plugins?: ChildPlugins
 
