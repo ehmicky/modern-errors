@@ -1,5 +1,9 @@
 import type { Plugins } from '../../plugins/shape.js'
-import type { SpecificInstanceOptions, Cause } from '../../options/instance.js'
+import type {
+  SpecificInstanceOptions,
+  InstanceOptions,
+  Cause,
+} from '../../options/instance.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { AggregateErrors } from '../../base/aggregate.js'
 
@@ -8,8 +12,7 @@ import type { AggregateErrors } from '../../base/aggregate.js'
  */
 export type ErrorConstructor = new (
   message: string,
-  options?: object,
-  ...extra: readonly any[]
+  options?: InstanceOptions,
 ) => Error
 
 /**

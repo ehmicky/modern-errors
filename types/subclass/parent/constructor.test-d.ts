@@ -90,7 +90,7 @@ const CustomError = ModernError.subclass('CustomError', {
       options?: InstanceOptions & { prop?: true },
       extra?: true,
     ) {
-      super(message, options, extra)
+      super(message, options)
     }
   },
 })
