@@ -97,17 +97,7 @@ interface ErrorSubclassCore<
    * }
    * ```
    */
-  normalize<
-    ErrorArg extends unknown,
-    UnknownErrorClass extends SpecificErrorClass<
-      PluginsArg,
-      ErrorPropsArg,
-      CustomClassArg
-    > = SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>,
-  >(
-    error: ErrorArg,
-    UnknownErrorClass?: UnknownErrorClass,
-  ): NormalizeError<PluginsArg, ErrorPropsArg, ErrorArg, CustomClassArg>
+  normalize: NormalizeError<PluginsArg, ErrorPropsArg, CustomClassArg>
 }
 
 /**
