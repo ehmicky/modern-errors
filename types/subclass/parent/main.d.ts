@@ -6,7 +6,6 @@ import type { AggregateErrors } from '../../base/aggregate.js'
 /**
  * `constructor` of the `custom` option
  */
-// TODO: fix, return type should be ErrorInstance
 export type ErrorConstructor = new (
   message: string,
   options?: object,
