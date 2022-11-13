@@ -18,10 +18,11 @@ const plugins = [
   cleanPlugin,
   winstonPlugin,
 ]
-const BaseError = modernErrors(plugins)
+const BaseError = modernErrors({ plugins })
 const error = new BaseError('', { cause: '' })
 
-modernErrors(plugins, {
+modernErrors({
+  plugins,
   bugs: 'https://example.com',
   cli: { silent: true },
   http: { type: '' },

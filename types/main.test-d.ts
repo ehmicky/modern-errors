@@ -31,7 +31,8 @@ import './subclass/name.test-d.js'
 import './subclass/parent/args.test-d.js'
 import './subclass/parent/constructor.test-d.js'
 
-modernErrors([])
-modernErrors([], {})
-modernErrors([{ name: 'test' as const }], {})
+modernErrors()
+modernErrors({})
+modernErrors({ plugins: [{ name: 'test' as const }] })
 expectError(modernErrors(true))
+expectError(modernErrors({}, []))

@@ -137,7 +137,7 @@ expectError(
 )
 
 const plugins = [{ name: 'test' as const }]
-const PluginBaseError = modernErrors(plugins)
+const PluginBaseError = modernErrors({ plugins })
 
 PluginBaseError.subclass('TestError', {
   custom: class extends PluginBaseError {

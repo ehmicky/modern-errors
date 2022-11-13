@@ -5,9 +5,9 @@ import modernErrors, { Info } from 'modern-errors'
 const name = 'test' as const
 
 const BaseError = modernErrors()
-const PropertyBaseError = modernErrors([
-  { name, properties: () => ({ property: true as boolean }) },
-])
+const PropertyBaseError = modernErrors({
+  plugins: [{ name, properties: () => ({ property: true as boolean }) }],
+})
 const PropertyError = PropertyBaseError.subclass('PropertyError', {
   custom: class extends PropertyBaseError {
     property = true as const
@@ -15,15 +15,17 @@ const PropertyError = PropertyBaseError.subclass('PropertyError', {
 })
 expectType<true>(new PropertyError('').property)
 
-const InstanceMethodBaseError = modernErrors([
-  {
-    name,
-    instanceMethods: {
-      instanceMethod: (info: Info['instanceMethods'], arg: true) =>
-        true as boolean,
+const InstanceMethodBaseError = modernErrors({
+  plugins: [
+    {
+      name,
+      instanceMethods: {
+        instanceMethod: (info: Info['instanceMethods'], arg: true) =>
+          true as boolean,
+      },
     },
-  },
-])
+  ],
+})
 const InstanceMethodError = InstanceMethodBaseError.subclass(
   'InstanceMethodError',
   {
@@ -34,14 +36,17 @@ const InstanceMethodError = InstanceMethodBaseError.subclass(
 )
 expectType<true>(new InstanceMethodError('').instanceMethod(true))
 
-const StaticMethodBaseError = modernErrors([
-  {
-    name,
-    staticMethods: {
-      staticMethod: (info: Info['staticMethods'], arg: true) => true as boolean,
+const StaticMethodBaseError = modernErrors({
+  plugins: [
+    {
+      name,
+      staticMethods: {
+        staticMethod: (info: Info['staticMethods'], arg: true) =>
+          true as boolean,
+      },
     },
-  },
-])
+  ],
+})
 const StaticMethodError = StaticMethodBaseError.subclass('StaticMethodError', {
   custom: class extends StaticMethodBaseError {
     static staticMethod(arg: boolean) {
@@ -60,7 +65,7 @@ const StaticMethodArrowError = StaticMethodBaseError.subclass(
 )
 expectType<true>(StaticMethodArrowError.staticMethod(true))
 
-const PropsBaseError = modernErrors([], { props: { prop: true as boolean } })
+const PropsBaseError = modernErrors({ props: { prop: true as boolean } })
 const PropsError = PropsBaseError.subclass('PropsError', {
   custom: class extends PropsBaseError {
     prop = true as const

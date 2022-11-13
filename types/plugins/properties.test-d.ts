@@ -14,8 +14,10 @@ const fullPlugin = {
   properties: (info: Info['properties']) => ({ property: true } as const),
 }
 
-const BaseError = modernErrors([fullPlugin])
-const MixBaseError = modernErrors([emptyPlugin, fullPlugin] as const)
+const BaseError = modernErrors({ plugins: [fullPlugin] })
+const MixBaseError = modernErrors({
+  plugins: [emptyPlugin, fullPlugin] as const,
+})
 const ChildError = BaseError.subclass('ChildError')
 const MixChildError = MixBaseError.subclass('MixChildError')
 const unknownError = new BaseError('', { cause: '' })
@@ -28,7 +30,7 @@ expectType<true>(childError.property)
 expectType<true>(mixUnknownError.property)
 expectType<true>(mixChildError.property)
 
-const WideBaseError = modernErrors([{} as Plugin])
+const WideBaseError = modernErrors({ plugins: [{} as Plugin] })
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 const unknownWideError = new WideBaseError('', { cause: '' })
 const childWideError = new ChildWideError('')

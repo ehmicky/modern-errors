@@ -14,7 +14,7 @@ type CustomInstance = typeof CustomError['prototype']
 expectType<CustomInstance>(new BaseError('', { cause: customError }))
 expectType<CustomInstance>(BaseError.normalize(customError))
 
-const PluginBaseError = modernErrors([{ name: 'test' as const }])
+const PluginBaseError = modernErrors({ plugins: [{ name: 'test' as const }] })
 const PluginCustomError = PluginBaseError.subclass('PluginCustomError', {
   custom: class extends PluginBaseError {
     prop = true
@@ -28,7 +28,7 @@ expectType<PluginCustomInstance>(
 )
 expectType<PluginCustomInstance>(PluginBaseError.normalize(pluginCustomError))
 
-const WideError = modernErrors([{} as Plugin])
+const WideError = modernErrors({ plugins: [{} as Plugin] })
 
 expectType<PluginCustomInstance>(
   new WideError('', { cause: pluginCustomError }),

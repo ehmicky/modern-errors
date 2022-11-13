@@ -56,7 +56,7 @@ expectAssignable<{ one: true; two: true; three: true }>(
   }),
 )
 
-const BoundBaseError = modernErrors([], {
+const BoundBaseError = modernErrors({
   props: { one: true as const, three: false as const },
 })
 expectType<true>(new BoundBaseError('', { cause: '' }).one)

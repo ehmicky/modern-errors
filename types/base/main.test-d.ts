@@ -8,7 +8,7 @@ const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
 type BareErrorClass = ErrorClass<[typeof barePlugin]>
 type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
-const BaseError = modernErrors([fullPlugin])
+const BaseError = modernErrors({ plugins: [fullPlugin] })
 
 expectAssignable<ErrorClass>(BaseError)
 expectAssignable<BareErrorClass>(BaseError)
@@ -24,7 +24,7 @@ expectAssignable<ErrorClass>(CustomError)
 expectAssignable<BareErrorClass>(CustomError)
 expectAssignable<FullErrorClass>(CustomError)
 
-const WideError = modernErrors([{} as Plugin])
+const WideError = modernErrors({ plugins: [{} as Plugin] })
 
 expectAssignable<ErrorClass>(WideError)
 expectAssignable<BareErrorClass>(WideError)

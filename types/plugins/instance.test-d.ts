@@ -20,9 +20,11 @@ const fullPlugin = {
   getOptions: (input: true) => input,
 }
 
-const BareBaseError = modernErrors([barePlugin])
-const FullBaseError = modernErrors([fullPlugin])
-const MixBaseError = modernErrors([emptyPlugin, fullPlugin] as const)
+const BareBaseError = modernErrors({ plugins: [barePlugin] })
+const FullBaseError = modernErrors({ plugins: [fullPlugin] })
+const MixBaseError = modernErrors({
+  plugins: [emptyPlugin, fullPlugin] as const,
+})
 const BareChildError = BareBaseError.subclass('BareChildError')
 const FullChildError = FullBaseError.subclass('FullChildError')
 const MixChildError = MixBaseError.subclass('MixChildError')
@@ -75,7 +77,7 @@ expectError(fullChildError.instanceMethod(info, ''))
 expectError(mixUnknownError.instanceMethod(info, ''))
 expectError(mixChildError.instanceMethod(info, ''))
 
-const WideBaseError = modernErrors([{} as Plugin])
+const WideBaseError = modernErrors({ plugins: [{} as Plugin] })
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 const unknownWideError = new WideBaseError('', { cause: '' })
 const childWideError = new ChildWideError('')

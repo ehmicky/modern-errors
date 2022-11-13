@@ -13,23 +13,23 @@ expectType<true>(
   }).prop,
 )
 
-const MessageFuncError = modernErrors([
-  { name, instanceMethods: { message: () => {} } },
-])
+const MessageFuncError = modernErrors({
+  plugins: [{ name, instanceMethods: { message: () => {} } }],
+})
 expectType<Error['message']>(new MessageFuncError('', { cause: '' }).message)
 
-const MessagePropertyError = modernErrors([
-  { name, properties: () => ({ message: 'test' as const }) },
-])
+const MessagePropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ message: 'test' as const }) }],
+})
 expectType<string>(new MessagePropertyError('', { cause: '' }).message)
 expectType<string>(
   new ChildError('', { props: { message: 'test' as const } }).message,
 )
 expectType<string>(new ChildError('', { props: { message: true } }).message)
 
-const StackPropertyError = modernErrors([
-  { name, properties: () => ({ stack: 'test' as const }) },
-])
+const StackPropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ stack: 'test' as const }) }],
+})
 expectType<string | undefined>(new StackPropertyError('', { cause: '' }).stack)
 expectType<string | undefined>(
   new ChildError('', { props: { stack: 'test' as const } }).stack,
@@ -38,40 +38,42 @@ expectType<string | undefined>(
   new ChildError('', { props: { stack: true } }).stack,
 )
 
-const NamePropertyError = modernErrors([
-  { name, properties: () => ({ name: 'test' }) },
-])
+const NamePropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ name: 'test' }) }],
+})
 const ThreeError = NamePropertyError.subclass('ThreeError')
 expectType<string>(new ThreeError('').name)
 expectType<string>(new ChildError('', { props: { name: 'test' } }).name)
 
-const CausePropertyError = modernErrors([
-  { name, properties: () => ({ cause: '' }) },
-])
+const CausePropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ cause: '' }) }],
+})
 const FourError = CausePropertyError.subclass('FourError')
 expectType<Error['cause']>(new FourError('').cause)
 expectType<Error['cause']>(new ChildError('', { props: { cause: '' } }).cause)
 
-const AggregatePropertyError = modernErrors([
-  { name, properties: () => ({ errors: [''] }) },
-])
+const AggregatePropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ errors: [''] }) }],
+})
 expectError(new AggregatePropertyError('', { cause: '' }).errors)
 expectError(new ChildError('', { props: { errors: [''] } }).errors)
 
-const InstanceMethodPropertyError = modernErrors([
-  {
-    name,
-    properties: () => ({ prop: 'test' as const }),
-    instanceMethods: { prop: () => {} },
-  },
-])
+const InstanceMethodPropertyError = modernErrors({
+  plugins: [
+    {
+      name,
+      properties: () => ({ prop: 'test' as const }),
+      instanceMethods: { prop: () => {} },
+    },
+  ],
+})
 expectAssignable<Function>(
   new InstanceMethodPropertyError('', { cause: '' }).prop,
 )
 
-const InstanceMethodError = modernErrors([
-  { name, instanceMethods: { prop: () => {} } },
-])
+const InstanceMethodError = modernErrors({
+  plugins: [{ name, instanceMethods: { prop: () => {} } }],
+})
 expectAssignable<Function>(
   new InstanceMethodError('', { cause: '', props: { prop: '' } }).prop,
 )
@@ -79,9 +81,9 @@ expectAssignable<Function>(
   new ChildError('', { cause: new InstanceMethodError('') }).prop,
 )
 
-const PropertyError = modernErrors([
-  { name, properties: () => ({ prop: 'test' as const }) },
-])
+const PropertyError = modernErrors({
+  plugins: [{ name, properties: () => ({ prop: 'test' as const }) }],
+})
 expectType<'test'>(
   new PropertyError('', { cause: '', props: { prop: 'test' as const } }).prop,
 )
@@ -90,8 +92,10 @@ expectType<'test'>(
 )
 expectType<'test'>(new ChildError('', { cause: new PropertyError('') }).prop)
 
-const ConflictPropertyError = modernErrors([
-  { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
-  { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
-])
+const ConflictPropertyError = modernErrors({
+  plugins: [
+    { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },
+    { name: 'two' as const, properties: () => ({ prop: 'two' as const }) },
+  ],
+})
 expectType<undefined>(new ConflictPropertyError('', { cause: '' }).prop)

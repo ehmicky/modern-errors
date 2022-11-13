@@ -3,13 +3,15 @@ import { expectType } from 'tsd'
 import modernErrors from 'modern-errors'
 
 const NoPluginsBaseError = modernErrors()
-const BaseError = modernErrors([
-  {
-    name: 'test' as const,
-    instanceMethods: { instanceMethod: () => {} },
-    staticMethods: { staticMethod: () => {} },
-  },
-])
+const BaseError = modernErrors({
+  plugins: [
+    {
+      name: 'test' as const,
+      instanceMethods: { instanceMethod: () => {} },
+      staticMethods: { staticMethod: () => {} },
+    },
+  ],
+})
 
 const ChildError = BaseError.subclass('ChildError')
 const DeepChildError = ChildError.subclass('DeepChildError')
