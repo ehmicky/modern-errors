@@ -36,11 +36,11 @@ declare const plugin: {
 
   // staticMethods: {
   //   /**
-  //    * Description of `BaseError.staticMethod()`.
+  //    * Description of `ErrorClass.staticMethod()`.
   //    *
   //    * @example
   //    * ```js
-  //    * const value = BaseError.staticMethod(arg)
+  //    * const value = ErrorClass.staticMethod(arg)
   //    * ```
   //    */
   //   staticMethod: (info: Info['staticMethods'], arg: unknown) => unknown

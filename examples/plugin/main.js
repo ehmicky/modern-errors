@@ -14,7 +14,7 @@ export default {
   //   },
   // },
 
-  // // Add `BaseError` static methods like `BaseError.staticMethod(...args)`
+  // // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
   // staticMethods: {
   //   staticMethod(info, ...args) {
   //     // ...

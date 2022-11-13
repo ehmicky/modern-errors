@@ -41,14 +41,14 @@ export default {
   //   },
   // },
 
-  // // Add `BaseError` static methods like `BaseError.staticMethod(...args)`
+  // // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
   // staticMethods: {
   //   /**
-  //    * Description of `BaseError.staticMethod()`.
+  //    * Description of `ErrorClass.staticMethod()`.
   //    *
   //    * @example
   //    * ```js
-  //    * const value = BaseError.staticMethod(arg)
+  //    * const value = ErrorClass.staticMethod(arg)
   //    * ```
   //    */
   //   staticMethod(info: Info['staticMethods'], ...args: unknown[]): void {
