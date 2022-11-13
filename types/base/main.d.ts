@@ -49,6 +49,7 @@ interface BaseErrorClassCore<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     InstanceOptionsArg['cause'],
+    CustomAttributesArg,
     GetAggregateErrors<InstanceOptionsArg>
   >
 
@@ -98,6 +99,7 @@ interface BaseErrorClassCore<
     PluginsArg,
     ErrorPropsArg,
     ErrorArg,
+    CustomAttributesArg,
     GetAggregateErrors<MainInstanceOptions>
   >
 }
