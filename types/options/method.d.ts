@@ -3,7 +3,7 @@ import type { ExternalPluginOptions } from './plugins.js'
 
 /**
  * Options passed to plugin methods: `error.{instanceMethod}(..., options)` or
- * `BaseError.{staticMethod}(..., options)`
+ * `ErrorClass.{staticMethod}(..., options)`
  */
 export type MethodOptions<PluginArg extends Plugin> =
   ExternalPluginOptions<PluginArg>

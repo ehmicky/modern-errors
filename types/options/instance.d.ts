@@ -82,5 +82,5 @@ export type SpecificInstanceOptions<
 /**
  * Options passed to error constructors: `new ErrorClass('message', options)`
  */
-export type InstanceOptions<PluginsArg extends Plugins = []> =
+export type InstanceOptions<PluginsArg extends Plugins = Plugins> =
   SpecificInstanceOptions<PluginsArg, ErrorProps, AggregateErrors, Cause>
