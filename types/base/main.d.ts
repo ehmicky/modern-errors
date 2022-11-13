@@ -6,7 +6,10 @@ import type { NoAdditionalProps } from '../utils.js'
 import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { CustomStaticAttributes } from '../subclass/inherited.js'
 import type { CreateSubclass } from '../subclass/main/main.js'
-import type { ErrorConstructor } from '../subclass/parent/main.js'
+import type {
+  ErrorConstructor,
+  ParentInstanceOptions,
+} from '../subclass/parent/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
 
 interface BaseErrorClassCore<
@@ -28,11 +31,16 @@ interface BaseErrorClassCore<
    * }
    * ```
    */
-  new <InstanceOptionsArg extends SpecificInstanceOptions<PluginsArg> = {}>(
+  new <
+    InstanceOptionsArg extends ParentInstanceOptions<
+      PluginsArg,
+      ParentErrorClass
+    > = {},
+  >(
     message: string,
     options?: NoAdditionalProps<
       InstanceOptionsArg,
-      SpecificInstanceOptions<PluginsArg>
+      ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
     ...extra: readonly any[]
   ): BaseErrorInstance<
