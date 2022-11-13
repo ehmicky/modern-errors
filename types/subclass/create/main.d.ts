@@ -12,7 +12,7 @@ import type { Plugins } from '../../plugins/shape.js'
 import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { OmitKeys } from '../../utils.js'
 import type { NormalizeError } from '../normalize/main.js'
-import type { ParentExtra, ParentInstanceOptions } from '../parent/main.js'
+import type { ParentExtra, ParentInstanceOptions } from '../custom/main.js'
 import type { CustomClass } from '../custom/main.js'
 
 /**
