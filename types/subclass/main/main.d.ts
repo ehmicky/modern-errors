@@ -29,21 +29,21 @@ export type ErrorSubclass<
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentCustomClass extends ErrorConstructor,
 > = SpecificErrorClass<
   PluginsArg,
   MergeErrorProps<ParentProps, ErrorPropsArg>,
-  ParentErrorClass,
+  ParentCustomClass,
   CustomInstanceAttributes<
     SpecificErrorInstance<PluginsArg, ParentProps, {}, undefined, undefined>,
-    InstanceType<ParentErrorClass>
+    InstanceType<ParentCustomClass>
   >
 >
 
 interface ErrorSubclassCore<
   ParentPlugins extends Plugins,
   ParentProps extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentCustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
@@ -63,11 +63,11 @@ interface ErrorSubclassCore<
     options?: ParentInstanceOptions<
       ParentPlugins,
       ErrorPropsArg,
-      ParentErrorClass,
+      ParentCustomClass,
       AggregateErrorsArg,
       CauseArg
     >,
-    ...extra: ParentExtra<ParentErrorClass>
+    ...extra: ParentExtra<ParentCustomClass>
   ): SpecificErrorInstance<
     ParentPlugins,
     MergeErrorProps<ParentProps, ErrorPropsArg>,
@@ -80,7 +80,7 @@ interface ErrorSubclassCore<
     ErrorSubclassCore<
       ParentPlugins,
       ParentProps,
-      ParentErrorClass,
+      ParentCustomClass,
       CustomAttributesArg
     >
   >
@@ -95,7 +95,7 @@ interface ErrorSubclassCore<
    */
   subclass<
     PluginsArg extends Plugins = [],
-    CustomClass extends ErrorConstructor = ParentErrorClass,
+    CustomClass extends ErrorConstructor = ParentCustomClass,
     ErrorPropsArg extends ErrorProps = {},
   >(
     errorName: ErrorName,
@@ -104,7 +104,7 @@ interface ErrorSubclassCore<
       PluginsArg,
       ParentProps,
       ErrorPropsArg,
-      ParentErrorClass,
+      ParentCustomClass,
       CustomClass,
       CustomAttributesArg
     >,
@@ -135,20 +135,20 @@ interface ErrorSubclassCore<
 export type SpecificErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentCustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = ErrorSubclassCore<
   PluginsArg,
   ErrorPropsArg,
-  ParentErrorClass,
+  ParentCustomClass,
   CustomAttributesArg
 > &
   OmitKeys<
-    ParentErrorClass,
+    ParentCustomClass,
     keyof ErrorSubclassCore<
       PluginsArg,
       ErrorPropsArg,
-      ParentErrorClass,
+      ParentCustomClass,
       CustomAttributesArg
     >
   > &

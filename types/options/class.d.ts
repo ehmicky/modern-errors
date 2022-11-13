@@ -29,7 +29,7 @@ interface KnownClassOptions<
   ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentCustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
   CustomClass extends ErrorConstructor,
   // TODO: fix
@@ -37,7 +37,7 @@ interface KnownClassOptions<
   //   SpecificErrorClass<
   //     ParentPlugins,
   //     ParentProps,
-  //     ParentErrorClass,
+  //     ParentCustomClass,
   //     CustomAttributesArg
   //   >
   // >,
@@ -88,14 +88,14 @@ export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor,
+  ParentCustomClass extends ErrorConstructor,
   CustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = KnownClassOptions<
   ParentPlugins,
   PluginsArg,
   ParentProps,
-  ParentErrorClass,
+  ParentCustomClass,
   CustomAttributesArg,
   CustomClass
 > &

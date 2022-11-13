@@ -41,7 +41,7 @@ type ModernError = SpecificErrorClass<[], {}, ErrorConstructor, {}>
  */
 export default function modernErrors<
   PluginsArg extends Plugins = [],
-  CustomClass extends ErrorConstructor = ModernError,
+  CustomClass extends ErrorConstructor = ErrorConstructor,
   ErrorPropsArg extends ErrorProps = {},
 >(
   options?: SpecificClassOptions<
