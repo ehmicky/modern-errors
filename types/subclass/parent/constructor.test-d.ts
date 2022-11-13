@@ -1,4 +1,4 @@
-import { expectError } from 'tsd'
+import { expectError, expectNotAssignable } from 'tsd'
 
 import ModernError, { InstanceOptions } from 'modern-errors'
 
@@ -102,28 +102,30 @@ CustomError.subclass('TestError', {
   },
 })
 
-expectError(
-  CustomError.subclass('TestError', {
-    custom: class extends CustomError {
-      constructor(
-        message: string,
-        options?: InstanceOptions & { prop?: false },
-        extra?: true,
-      ) {
-        super(message, options, true)
-      }
-    },
-  }),
+// `tsd`'s `expectError()` fails at validating the following, so we need to
+// use more complex `expectNotAssignable` assertions.
+expectNotAssignable<
+  NonNullable<NonNullable<Parameters<typeof CustomError.subclass>[1]>['custom']>
+>(
+  class extends CustomError {
+    constructor(
+      message: string,
+      options?: InstanceOptions & { prop?: false },
+      extra?: true,
+    ) {
+      super(message, {}, true)
+    }
+  },
 )
 
-expectError(
-  CustomError.subclass('TestError', {
-    custom: class extends CustomError {
-      constructor(message: string, options?: InstanceOptions, extra?: false) {
-        super(message, options, true)
-      }
-    },
-  }),
+expectNotAssignable<
+  NonNullable<NonNullable<Parameters<typeof CustomError.subclass>[1]>['custom']>
+>(
+  class extends CustomError {
+    constructor(message: string, options?: InstanceOptions, extra?: false) {
+      super(message, options, true)
+    }
+  },
 )
 
 expectError(

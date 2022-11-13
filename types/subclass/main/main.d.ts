@@ -67,16 +67,14 @@ interface ErrorSubclassCore<
    */
   subclass<
     ChildPlugins extends Plugins = [],
-    ChildCustomClass extends ErrorConstructor = CustomClass,
+    ChildCustomClass extends CustomClass = CustomClass,
     ChildProps extends ErrorProps = {},
   >(
     errorName: ErrorName,
     options?: SpecificClassOptions<
       PluginsArg,
       ChildPlugins,
-      ErrorPropsArg,
       ChildProps,
-      CustomClass,
       ChildCustomClass
     >,
   ): SpecificErrorClass<

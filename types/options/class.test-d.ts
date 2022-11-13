@@ -52,19 +52,21 @@ expectError(
 )
 expectError(BaseError.subclass('TestError', { custom: class extends Error {} }))
 
-expectError(
-  CustomError.subclass('TestError', { custom: class extends ModernError {} }),
-)
-expectError(
-  DeepCustomError.subclass('TestError', {
-    custom: class extends ModernError {},
-  }),
-)
-expectError(
-  DeepCustomError.subclass('TestError', {
-    custom: class extends CustomError {},
-  }),
-)
+// `tsd`'s `expectError()` fails at validating the following, so we need to
+// use more complex `expectNotAssignable` assertions.
+expectNotAssignable<
+  NonNullable<NonNullable<Parameters<typeof CustomError.subclass>[1]>['custom']>
+>(class extends ModernError {})
+expectNotAssignable<
+  NonNullable<
+    NonNullable<Parameters<typeof DeepCustomError.subclass>[1]>['custom']
+  >
+>(class extends ModernError {})
+expectNotAssignable<
+  NonNullable<
+    NonNullable<Parameters<typeof DeepCustomError.subclass>[1]>['custom']
+  >
+>(class extends CustomError {})
 
 expectAssignable<ClassOptions>({ custom: ModernError })
 expectNotAssignable<InstanceOptions>({ custom: ModernError })

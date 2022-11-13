@@ -1,6 +1,5 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
-import type { SpecificErrorClass } from '../subclass/main/main.js'
 import type { ErrorConstructor } from '../subclass/parent/main.js'
 import type { PluginsOptions } from './plugins.js'
 
@@ -25,16 +24,8 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
  * Class-specific options, excluding plugin options
  */
 interface KnownClassOptions<
-  PluginsArg extends Plugins,
   ChildPlugins extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
-  // TODO: fix
-  // ChildCustomClass extends NonGenericConstructor<
-  //   SpecificErrorClass<[...PluginsArg, ...ChildPlugins], ErrorPropsArg, CustomClass>
-  // >,
-  // ChildCustomClass extends CustomClass,
 > {
   /**
    * Plugins to add.
@@ -93,17 +84,9 @@ interface KnownClassOptions<
 export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ChildPlugins extends Plugins,
-  ErrorPropsArg extends ErrorProps,
   ChildProps extends ErrorProps,
-  CustomClass extends ErrorConstructor,
   ChildCustomClass extends ErrorConstructor,
-> = KnownClassOptions<
-  PluginsArg,
-  ChildPlugins,
-  ErrorPropsArg,
-  CustomClass,
-  ChildCustomClass
-> &
+> = KnownClassOptions<ChildPlugins, ChildCustomClass> &
   PluginsOptions<[...PluginsArg, ...ChildPlugins], ChildProps>
 
 /**
@@ -111,11 +94,4 @@ export type SpecificClassOptions<
  * `ErrorClass.subclass('ErrorName', options)`
  */
 export type ClassOptions<PluginsArg extends Plugins = []> =
-  SpecificClassOptions<
-    PluginsArg,
-    PluginsArg,
-    ErrorProps,
-    ErrorProps,
-    ErrorConstructor,
-    ErrorConstructor
-  >
+  SpecificClassOptions<PluginsArg, PluginsArg, ErrorProps, ErrorConstructor>
