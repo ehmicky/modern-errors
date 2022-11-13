@@ -28,7 +28,7 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
 interface KnownClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > {
   readonly plugins?: Plugins
@@ -82,7 +82,7 @@ interface KnownClassOptions<
 export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = KnownClassOptions<
   PluginsArg,
@@ -100,6 +100,6 @@ export type ClassOptions<PluginsArg extends Plugins = []> =
   SpecificClassOptions<
     PluginsArg,
     ErrorProps,
-    ErrorConstructor<PluginsArg>,
+    ErrorConstructor,
     CustomAttributes
   >

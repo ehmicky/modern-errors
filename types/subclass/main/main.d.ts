@@ -33,7 +33,7 @@ import type {
 export type CreateSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = <
   ErrorNameArg extends ErrorName,
@@ -46,7 +46,7 @@ export type CreateSubclass<
 >(
   errorName: ErrorNameArg,
   options?: ClassOptionsArg,
-) => ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
+) => ClassOptionsArg extends { custom: ErrorConstructor }
   ? SpecificErrorClass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
@@ -71,7 +71,7 @@ export type CreateSubclass<
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
@@ -93,7 +93,7 @@ interface ErrorSubclassCore<
       InstanceOptionsArg,
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
-    ...extra: ParentExtra<PluginsArg, ParentErrorClass>
+    ...extra: ParentExtra<ParentErrorClass>
   ): SpecificErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
@@ -156,7 +156,7 @@ interface ErrorSubclassCore<
 export type SpecificErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = ErrorSubclassCore<
   PluginsArg,
@@ -165,7 +165,6 @@ export type SpecificErrorClass<
   CustomAttributesArg
 > &
   CustomStaticAttributes<
-    PluginsArg,
     ParentErrorClass,
     keyof ErrorSubclassCore<
       PluginsArg,
@@ -182,6 +181,6 @@ export type SpecificErrorClass<
 export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
   PluginsArg,
   ErrorProps,
-  ErrorConstructor<PluginsArg>,
+  ErrorConstructor,
   CustomAttributes
 >
