@@ -12,14 +12,14 @@ Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 [`custom`](../README.md#-custom-logic) methods/properties are typed.
 
 ```ts
-const InputError = BaseError.subclass('InputError', {
-  custom: class extends BaseError {
+const BaseError = ModernError.subclass('BaseError', {
+  custom: class extends ModernError {
     isUserInput() {
       return true as const
     }
   },
 })
-const error = new InputError('Wrong user name', {
+const error = new BaseError('Wrong user name', {
   props: { userId: 5 as const },
 })
 const { userId } = error // Inferred type: `5`
@@ -28,10 +28,13 @@ const result = error.isUserInput() // Inferred type: `true`
 
 ## Plugins
 
-Plugin methods, properties and [options](../README.md#plugin-options) are typed.
+Plugin [methods](plugins.md#staticmethodsmethodname),
+[properties](plugins.md#properties) and [options](../README.md#plugin-options)
+are typed.
 
 ```ts
 import ModernError from 'modern-errors'
+
 // This plugin adds an `error.httpResponse()` method
 import modernErrorsHttp from 'modern-errors-http'
 
@@ -39,13 +42,10 @@ const BaseError = ModernError.subclass('BaseError', {
   plugins: [modernErrorsHttp],
 })
 
-const UnknownError = BaseError.subclass('UnknownError')
-const InputError = BaseError.subclass('InputError')
-
-const inputError = new InputError('Wrong user name', {
+const error = new BaseError('Wrong user name', {
   http: { title: false }, // Type error: `title` must be a string
 })
-const httpResponse = inputError.httpResponse() // Inferred type: response object
+const httpResponse = error.httpResponse() // Inferred type: response object
 ```
 
 ## Narrowing
@@ -91,9 +91,9 @@ printErrorClass(InputError)
 
 The following types are exported:
 [`ErrorInstance`](../README.md#new-errorclassmessage-options),
-[`ErrorClass`](../README.md#%EF%B8%8F-error-classes), `BaseErrorClass`,
-`GlobalOptions`, [`ClassOptions`](../README.md#errorclasssubclassname-options),
-[`InstanceOptions`](../README.md#new-errorclassmessage-options),
+[`ErrorClass`](../README.md#%EF%B8%8F-error-classes),
+[`ClassOptions`](../README.md#options),
+[`InstanceOptions`](../README.md#options-2),
 [`MethodOptions`](../README.md#plugin-options),
 [`Plugin`](../README.md#-plugins) and [`Info`](plugins.md#info-1).
 
