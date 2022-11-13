@@ -1,6 +1,4 @@
-import type { Plugins } from '../plugins/shape.js'
-import type { MainInstanceOptions } from '../options/instance.js'
-import type { ErrorProps } from '../core_plugins/props/main.js'
+import type { Cause } from '../options/instance.js'
 
 /**
  * Single aggregate error
@@ -10,32 +8,7 @@ type AggregateErrorOption = unknown
 /**
  * Aggregate `errors` array
  */
-type AggregateErrorsArray = readonly AggregateErrorOption[]
-
-/**
- * Aggregate `errors` object
- */
-export interface AggregateErrors {
-  /**
-   * The `errors` option aggregates multiple errors into one. This is like
-   * [`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
-   * except that it works with any error class.
-   *
-   * @example
-   * ```js
-   * const databaseError = new DatabaseError('...')
-   * const authError = new AuthError('...')
-   * throw new InputError('...', { errors: [databaseError, authError] })
-   * // InputError: ... {
-   * //   [errors]: [
-   * //     DatabaseError: ...
-   * //     AuthError: ...
-   * //   ]
-   * // }
-   * ```
-   */
-  readonly errors?: AggregateErrorsArray
-}
+export type AggregateErrors = readonly AggregateErrorOption[]
 
 /**
  * Normalize each error in the `errors` option to `Error` instances
@@ -46,12 +19,12 @@ type NormalizeAggregateError<ErrorArg extends AggregateErrorOption> =
 /**
  * Normalize all errors in the `errors` option to `Error` instances
  */
-type NormalizeAggregateErrors<AggregateErrorsArg extends AggregateErrorsArray> =
+type NormalizeAggregateErrors<AggregateErrorsArg extends AggregateErrors> =
   AggregateErrorsArg extends never[]
     ? []
     : AggregateErrorsArg extends readonly [
         infer AggregateErrorArg extends AggregateErrorOption,
-        ...infer Rest extends AggregateErrorsArray,
+        ...infer Rest extends AggregateErrors,
       ]
     ? [
         NormalizeAggregateError<AggregateErrorArg>,
@@ -62,31 +35,31 @@ type NormalizeAggregateErrors<AggregateErrorsArg extends AggregateErrorsArray> =
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined
  */
-type ConcatAggregateErrors<MainInstanceOptionsArg extends MainInstanceOptions> =
-  MainInstanceOptionsArg['errors'] extends AggregateErrorsArray
-    ? 'errors' extends keyof MainInstanceOptionsArg['cause']
-      ? MainInstanceOptionsArg['cause']['errors'] extends AggregateErrorsArray
-        ? [
-            ...MainInstanceOptionsArg['cause']['errors'],
-            ...MainInstanceOptionsArg['errors'],
-          ]
-        : MainInstanceOptionsArg['errors']
-      : MainInstanceOptionsArg['errors']
-    : 'errors' extends keyof MainInstanceOptionsArg['cause']
-    ? MainInstanceOptionsArg['cause']['errors'] extends AggregateErrorsArray
-      ? MainInstanceOptionsArg['cause']['errors']
-      : never
+type ConcatAggregateErrors<
+  AggregateErrorsArg extends AggregateErrors,
+  CauseArg extends Cause,
+> = AggregateErrorsArg extends AggregateErrors
+  ? 'errors' extends keyof CauseArg
+    ? CauseArg['errors'] extends AggregateErrors
+      ? [...CauseArg['errors'], ...AggregateErrorsArg]
+      : AggregateErrorsArg
+    : AggregateErrorsArg
+  : 'errors' extends keyof CauseArg
+  ? CauseArg['errors'] extends AggregateErrors
+    ? CauseArg['errors']
     : never
+  : never
 
 /**
  * Retrieve the aggregate errors from the `errors` option
  */
 export type GetAggregateErrors<
-  MainInstanceOptionsArg extends MainInstanceOptions,
-> = ConcatAggregateErrors<MainInstanceOptionsArg> extends never
+  AggregateErrorsArg extends AggregateErrors,
+  CauseArg extends Cause,
+> = ConcatAggregateErrors<AggregateErrorsArg, CauseArg> extends never
   ? {}
   : {
       errors: NormalizeAggregateErrors<
-        ConcatAggregateErrors<MainInstanceOptionsArg>
+        ConcatAggregateErrors<AggregateErrorsArg, CauseArg>
       >
     }

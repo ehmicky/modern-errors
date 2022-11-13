@@ -8,14 +8,6 @@ export type OmitKeys<
 > = keyof Source extends OmittedKeys ? {} : Omit<Source, OmittedKeys>
 
 /**
- * Forbid `Source` from having keys not present in `Forbidden`
- */
-export type NoAdditionalProps<
-  Source extends object,
-  Forbidden extends object,
-> = keyof Source extends keyof Forbidden ? Source : never
-
-/**
  * Turn `T | T2 | ...` into `T & T2 & ...`
  */
 export type UnionToIntersection<T> = (

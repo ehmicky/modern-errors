@@ -2,10 +2,7 @@ import type { ErrorName } from 'error-custom-class'
 
 import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { Plugins } from '../../plugins/shape.js'
-import type {
-  GetAggregateErrors,
-  AggregateErrors,
-} from '../../base/aggregate.js'
+import type { AggregateErrors } from '../../base/aggregate.js'
 import type { SpecificErrorInstance } from '../../base/modify/main.js'
 import type { NormalizeError } from '../../base/normalize/main.js'
 import type {
@@ -15,11 +12,10 @@ import type {
 import type {
   CustomAttributes,
   CustomInstanceAttributes,
-  AddInstanceAttributes,
 } from '../custom/main.js'
 import type { SpecificClassOptions } from '../../options/class.js'
-import type { MainInstanceOptions } from '../../options/instance.js'
-import type { NoAdditionalProps, OmitKeys } from '../../utils.js'
+import type { Cause } from '../../options/instance.js'
+import type { OmitKeys } from '../../utils.js'
 import type {
   ErrorConstructor,
   ParentInstanceOptions,
@@ -29,42 +25,24 @@ import type {
 /**
  * Return value of `ErrorClass.subclass()`
  */
-type ErrorSubclass<
+export type ErrorSubclass<
   PluginsArg extends Plugins,
+  ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
-  CustomAttributesArg extends CustomAttributes,
-  ClassOptionsArg extends SpecificClassOptions<
-    PluginsArg,
-    ErrorPropsArg,
-    ParentErrorClass,
-    CustomAttributesArg
-  >,
-> = ClassOptionsArg extends { custom: ErrorConstructor }
-  ? SpecificErrorClass<
-      PluginsArg,
-      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
-      ClassOptionsArg['custom'],
-      CustomInstanceAttributes<
-        SpecificErrorInstance<
-          PluginsArg,
-          ErrorPropsArg,
-          CustomAttributes,
-          AggregateErrors
-        >,
-        InstanceType<ClassOptionsArg['custom']>
-      >
-    >
-  : SpecificErrorClass<
-      PluginsArg,
-      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
-      ParentErrorClass,
-      CustomAttributesArg
-    >
+> = SpecificErrorClass<
+  PluginsArg,
+  MergeErrorProps<ParentProps, ErrorPropsArg>,
+  ParentErrorClass,
+  CustomInstanceAttributes<
+    SpecificErrorInstance<PluginsArg, ParentProps, {}, never, never>,
+    InstanceType<ParentErrorClass>
+  >
+>
 
 interface ErrorSubclassCore<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
+  ParentPlugins extends Plugins,
+  ParentProps extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > {
@@ -77,28 +55,31 @@ interface ErrorSubclassCore<
    * ```
    */
   new <
-    InstanceOptionsArg extends ParentInstanceOptions<
-      PluginsArg,
-      ParentErrorClass
-    > = {},
+    ErrorPropsArg extends ErrorProps = {},
+    AggregateErrorsArg extends AggregateErrors = never,
+    CauseArg extends Cause = never,
   >(
     message: string,
-    options?: NoAdditionalProps<
-      InstanceOptionsArg,
-      ParentInstanceOptions<PluginsArg, ParentErrorClass>
+    options?: ParentInstanceOptions<
+      ParentPlugins,
+      ErrorPropsArg,
+      ParentErrorClass,
+      AggregateErrorsArg,
+      CauseArg
     >,
     ...extra: ParentExtra<ParentErrorClass>
   ): SpecificErrorInstance<
-    PluginsArg,
-    MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-    AddInstanceAttributes<InstanceOptionsArg['cause'], CustomAttributesArg>,
-    GetAggregateErrors<InstanceOptionsArg>
+    ParentPlugins,
+    MergeErrorProps<ParentProps, ErrorPropsArg>,
+    CustomAttributesArg,
+    CauseArg,
+    AggregateErrorsArg
   >
 
   readonly prototype: InstanceType<
-    SpecificErrorClass<
-      PluginsArg,
-      ErrorPropsArg,
+    ErrorSubclassCore<
+      ParentPlugins,
+      ParentProps,
       ParentErrorClass,
       CustomAttributesArg
     >
@@ -113,23 +94,21 @@ interface ErrorSubclassCore<
    * ```
    */
   subclass<
-    ErrorNameArg extends ErrorName,
-    ClassOptionsArg extends SpecificClassOptions<
+    PluginsArg extends Plugins = [],
+    CustomClass extends ErrorConstructor = ParentErrorClass,
+    ErrorPropsArg extends ErrorProps = {},
+  >(
+    errorName: ErrorName,
+    options?: SpecificClassOptions<
+      ParentPlugins,
       PluginsArg,
+      ParentProps,
       ErrorPropsArg,
       ParentErrorClass,
+      CustomClass,
       CustomAttributesArg
     >,
-  >(
-    errorName: ErrorNameArg,
-    options?: ClassOptionsArg,
-  ): ErrorSubclass<
-    PluginsArg,
-    ErrorPropsArg,
-    ParentErrorClass,
-    CustomAttributesArg,
-    ClassOptionsArg
-  >
+  ): ErrorSubclass<ParentPlugins, ParentProps, ErrorPropsArg, CustomClass>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
@@ -147,13 +126,7 @@ interface ErrorSubclassCore<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<
-    PluginsArg,
-    ErrorPropsArg,
-    ErrorArg,
-    CustomAttributesArg,
-    GetAggregateErrors<MainInstanceOptions>
-  >
+  ): NormalizeError<ParentPlugins, ParentProps, ErrorArg, CustomAttributesArg>
 }
 
 /**

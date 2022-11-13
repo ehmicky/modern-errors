@@ -26,12 +26,14 @@ type NonGenericConstructor<ConstructorArg extends BareConstructor> = {
  * Class-specific options, excluding plugin options
  */
 interface KnownClassOptions<
+  ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
+  ParentProps extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
+  CustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > {
-  readonly plugins?: Plugins
+  readonly plugins?: PluginsArg
 
   /**
    * Custom class to add any methods, `constructor` or properties.
@@ -66,31 +68,39 @@ interface KnownClassOptions<
    * console.log(error.isUserInput())
    * ```
    */
-  readonly custom?: NonGenericConstructor<
+  readonly custom?: CustomClass
+
+  // TODO: fix
+  /*NonGenericConstructor<
     SpecificErrorClass<
-      PluginsArg,
-      ErrorPropsArg,
+      ParentPlugins,
+      ParentProps,
       ParentErrorClass,
       CustomAttributesArg
     >
-  >
+  >*/
 }
 
 /**
  * Class-specific options, used internally only with additional generics
  */
 export type SpecificClassOptions<
+  ParentPlugins extends Plugins,
   PluginsArg extends Plugins,
+  ParentProps extends ErrorProps,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
+  CustomClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
 > = KnownClassOptions<
+  ParentPlugins,
   PluginsArg,
-  ErrorPropsArg,
+  ParentProps,
   ParentErrorClass,
+  CustomClass,
   CustomAttributesArg
 > &
-  PluginsOptions<PluginsArg>
+  PluginsOptions<PluginsArg, ErrorPropsArg>
 
 /**
  * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or
@@ -99,7 +109,10 @@ export type SpecificClassOptions<
 export type ClassOptions<PluginsArg extends Plugins = []> =
   SpecificClassOptions<
     PluginsArg,
+    PluginsArg,
     ErrorProps,
+    ErrorProps,
+    ErrorConstructor,
     ErrorConstructor,
     CustomAttributes
   >

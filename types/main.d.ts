@@ -10,7 +10,7 @@ import type { ErrorConstructor } from './subclass/parent/main.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
 import type { ClassOptions, SpecificClassOptions } from './options/class.js'
-import type { GetPropsOption } from './core_plugins/props/main.js'
+import type { ErrorProps } from './core_plugins/props/main.js'
 
 export type {
   Plugin,
@@ -40,16 +40,20 @@ type ModernError = SpecificErrorClass<[], {}, ErrorConstructor, {}>
  * ```
  */
 export default function modernErrors<
-  ClassOptionsArg extends SpecificClassOptions<[], {}, ModernError, {}> = {},
+  PluginsArg extends Plugins = [],
+  CustomClass extends ErrorConstructor = ModernError,
+  ErrorPropsArg extends ErrorProps = {},
 >(
-  options?: ClassOptionsArg,
-): ErrorSubclass<
-  ClassOptionsArg['plugins'] extends Plugins ? ClassOptionsArg['plugins'] : [],
-  GetPropsOption<ClassOptionsArg>,
-  ModernError,
-  {},
-  {}
->
+  options?: SpecificClassOptions<
+    [],
+    PluginsArg,
+    {},
+    ErrorPropsArg,
+    ModernError,
+    CustomClass,
+    {}
+  >,
+): ErrorSubclass<PluginsArg, {}, ErrorPropsArg, CustomClass>
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic

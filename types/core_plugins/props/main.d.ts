@@ -1,4 +1,4 @@
-import type { CorePluginsOptions } from '../../options/plugins.js'
+import type { OmitKeys } from '../../utils.js'
 
 /**
  * Error properties
@@ -8,27 +8,9 @@ export type ErrorProps = object
 /**
  * Merge error `props` from the class options and instance options
  */
-type MergeProps<
+export type MergeErrorProps<
   PropsOne extends ErrorProps,
   PropsTwo extends ErrorProps,
-> = keyof PropsTwo extends never
-  ? PropsOne
-  : Omit<PropsOne, keyof PropsTwo> & PropsTwo
-
-/**
- * Retrieve the `props` option, if defined
- */
-export type GetPropsOption<CorePluginsOptionsArg extends CorePluginsOptions> =
-  unknown extends CorePluginsOptionsArg
-    ? {}
-    : CorePluginsOptionsArg['props'] extends ErrorProps
-    ? CorePluginsOptionsArg['props']
-    : {}
-
-/**
- * Merge new error `props`, if defined as option
- */
-export type MergeErrorProps<
-  Props extends ErrorProps,
-  CorePluginsOptionsArg extends CorePluginsOptions,
-> = MergeProps<Props, GetPropsOption<CorePluginsOptionsArg>>
+> = keyof PropsOne & keyof PropsTwo extends never
+  ? PropsOne & PropsTwo
+  : OmitKeys<PropsOne, keyof PropsTwo> & PropsTwo
