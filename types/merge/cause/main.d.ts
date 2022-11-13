@@ -5,7 +5,7 @@ import type { PluginsProperties } from '../../plugins/properties.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { CustomClass } from '../../subclass/custom/main.js'
 import type { SetProps } from '../../utils.js'
-import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
+import type { AggregateErrors, AggregateErrorsProperty } from '../aggregate.js'
 
 /**
  * Error instance object, used internally with additional generics.
@@ -28,7 +28,7 @@ export type SpecificErrorInstance<
       SetProps<
         PluginsInstanceMethods<PluginsArg>,
         SetProps<
-          GetAggregateErrors<AggregateErrorsArg, CauseArg>,
+          AggregateErrorsProperty<AggregateErrorsArg, CauseArg>,
           InstanceType<CustomClassArg>
         >
       >

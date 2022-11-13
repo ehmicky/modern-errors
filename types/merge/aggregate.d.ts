@@ -57,9 +57,9 @@ type ConcatAggregateErrors<
   : never
 
 /**
- * Retrieve the aggregate errors from the `errors` option
+ * Object with an `errors` property to set as `error.errors`
  */
-export type GetAggregateErrors<
+export type AggregateErrorsProperty<
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = ConcatAggregateErrors<AggregateErrorsArg, CauseArg> extends never
