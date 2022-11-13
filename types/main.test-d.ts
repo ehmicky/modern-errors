@@ -1,5 +1,6 @@
 import './base/aggregate.test-d.js'
 import './base/main.test-d.js'
+import './base/modify/cause.test-d.js'
 import './base/modify/intersect.test-d.js'
 import './base/modify/instance.test-d.js'
 import './base/modify/plugins.test-d.js'

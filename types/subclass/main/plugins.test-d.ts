@@ -26,10 +26,10 @@ const WideBaseError = ModernError.subclass('WideBaseError', {
 
 expectAssignable<ErrorClass>(WideBaseError)
 expectAssignable<BareErrorClass>(WideBaseError)
-expectNotAssignable<FullErrorClass>(WideBaseError)
+expectAssignable<FullErrorClass>(WideBaseError)
 
 const WideError = WideBaseError.subclass('WideError')
 
 expectAssignable<ErrorClass>(WideError)
 expectAssignable<BareErrorClass>(WideError)
-expectNotAssignable<FullErrorClass>(WideError)
+expectAssignable<FullErrorClass>(WideError)

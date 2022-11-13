@@ -43,6 +43,7 @@ expectType<true>(ModernError.normalize(cause).prop)
 
 ModernError.normalize('', ModernError)
 ModernError.normalize('', PropsError)
+expectError(ModernError.normalize())
 expectError(ModernError.normalize('', true))
 expectError(ModernError.normalize('', Error))
 expectError(PropsError.normalize('', ModernError))
