@@ -7,12 +7,12 @@ and [configure](../README.md#plugin-options) plugins, please refer to the
 
 ## Features
 
-Plugins can add:
+Plugins can add error:
 
-- Error [properties](#properties): `error.message`, `error.stack` or any other
+- [Properties](#properties): `error.message`, `error.stack` or any other
   `error.*`
-- Error [instance methods](#instancemethodsmethodname): `error.exampleMethod()`
-- Error [static methods](#staticmethodsmethodname): `ErrorClass.exampleMethod()`
+- [Instance methods](#instancemethodsmethodname): `error.exampleMethod()`
+- [Static methods](#staticmethodsmethodname): `ErrorClass.exampleMethod()`
 
 ## Examples
 
@@ -154,7 +154,7 @@ automatically prepended with `Invalid "${plugin.name}" options:`. Regular
 [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)s
 should be thrown, as opposed to using `modern-errors` itself.
 
-The plugin's `options` can have any type.
+The plugin's `options`'s type can be anything.
 
 <!-- eslint-disable unicorn/prefer-type-error -->
 
@@ -252,18 +252,15 @@ export default {
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
 and [static methods](#staticmethodsmethodname).
 
-[`info.error`](#error) is not passed to
-[static methods](#staticmethodsmethodname).
-
 Its members are readonly and should not be mutated, except for
-[`info.error`](#error) inside [instance methods](#instancemethodsmethodname)
-(not inside [`properties()`](#properties)).
+[`info.error`](#error) inside [instance methods](#instancemethodsmethodname).
 
 ### error
 
 _Type_: `Error`
 
-[Normalized](../README.md#-normalize-errors) error instance.
+[Normalized](../README.md#-normalize-errors) error instance. This is not defined
+in [static methods](#staticmethodsmethodname).
 
 ```js
 export default {
