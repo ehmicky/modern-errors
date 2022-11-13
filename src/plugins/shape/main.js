@@ -3,7 +3,7 @@ import isPlainObj from 'is-plain-obj'
 import { normalizeGetOptions } from '../../options/get.js'
 import { normalizeIsOptions } from '../../options/method.js'
 
-import { validateDuplicatePlugins } from './duplicate.js'
+import { validateDuplicatePlugins, validateSameMethods } from './duplicate.js'
 import { normalizeAllMethods } from './methods.js'
 import { validatePluginName } from './name.js'
 
@@ -39,6 +39,7 @@ const normalizePlugin = function (plugin, ParentError) {
   const pluginA = validatePluginName(plugin)
   validateOptionalFuncs(pluginA)
   const pluginB = normalizeAllMethods(pluginA)
+  validateSameMethods(pluginB)
   const pluginC = normalizeIsOptions({ plugin: pluginB })
   const pluginD = normalizeGetOptions({ plugin: pluginC })
   return pluginD

@@ -1,3 +1,22 @@
+// Ensure each plugin does not define the same method as both instanceMethod
+// and staticMethod
+export const validateSameMethods = function ({
+  instanceMethods,
+  staticMethods,
+  fullName,
+}) {
+  const staticMethodNames = Object.keys(staticMethods)
+  const duplicateName = Object.keys(instanceMethods).find(
+    (instanceMethodName) => staticMethodNames.includes(instanceMethodName),
+  )
+
+  if (duplicateName !== undefined) {
+    throw new TypeError(
+      `The plugin "${fullName}" must not define "${duplicateName}()" as both "instanceMethods" and "staticMethods".`,
+    )
+  }
+}
+
 // Ensure the same plugin is not passed twice.
 // Also ensure two plugins do not define the same instanceMethods|staticMethods
 export const validateDuplicatePlugins = function (plugins, ParentError) {

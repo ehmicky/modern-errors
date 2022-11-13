@@ -45,3 +45,19 @@ each(
     })
   },
 )
+
+each(ErrorClasses, ({ title }, ErrorClass) => {
+  test(`plugin.staticMethods and instanceMethods cannot share the same names | ${title}`, (t) => {
+    t.throws(
+      ErrorClass.subclass.bind(undefined, 'TestError', {
+        plugins: [
+          {
+            name: 'one',
+            staticMethods: { one() {} },
+            instanceMethods: { one() {} },
+          },
+        ],
+      }),
+    )
+  })
+})
