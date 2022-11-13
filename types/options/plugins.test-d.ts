@@ -11,7 +11,6 @@ const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, getOptions: (input: true) => input }
 
 const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
-const ChildError = BaseError.subclass('ChildError')
 
 expectError(
   ModernError.subclass('TestError', { plugins: [barePlugin], test: true }),
@@ -20,7 +19,6 @@ expectError(
 ModernError.subclass('TestError', { plugins: [fullPlugin], test: true })
 BaseError.subclass('TestError', { test: true })
 new BaseError('', { test: true })
-new ChildError('', { test: true })
 expectAssignable<ClassOptions<[typeof fullPlugin]>>({ test: true })
 expectAssignable<InstanceOptions<[typeof fullPlugin]>>({ test: true })
 expectAssignable<MethodOptions<typeof fullPlugin>>(true)
@@ -30,7 +28,6 @@ expectError(
 )
 expectError(BaseError.subclass('TestError', { test: 'true' }))
 expectError(new BaseError('', { test: 'true' }))
-expectError(new ChildError('', { test: 'true' }))
 expectNotAssignable<ClassOptions<[typeof fullPlugin]>>({ test: 'true' })
 expectNotAssignable<InstanceOptions<[typeof fullPlugin]>>({ test: 'true' })
 expectNotAssignable<MethodOptions<typeof fullPlugin>>('true')
@@ -49,8 +46,6 @@ expectError(
   }),
 )
 expectError(new BaseError('', { other: true }))
-expectError(new ChildError('', { other: true }))
-expectError(new ChildError('', { other: true }))
 expectNotAssignable<ClassOptions>({ other: true })
 expectNotAssignable<InstanceOptions>({ other: true })
 
