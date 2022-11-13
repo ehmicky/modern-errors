@@ -18,18 +18,16 @@ export type {
 }
 
 /**
- * Creates and returns `BaseError`.
+ * Top-level `ErrorClass`.
  *
  * @example
  * ```js
- *  // Base error class
- *  export const BaseError = modernErrors()
+ * export const BaseError = ModernError.subclass('BaseError')
  *
- *  // The first error class must be named "UnknownError"
- *  export const UnknownError = BaseError.subclass('UnknownError')
- *  export const InputError = BaseError.subclass('InputError')
- *  export const AuthError = BaseError.subclass('AuthError')
- *  export const DatabaseError = BaseError.subclass('DatabaseError')
+ * export const UnknownError = BaseError.subclass('UnknownError')
+ * export const InputError = BaseError.subclass('InputError')
+ * export const AuthError = BaseError.subclass('AuthError')
+ * export const DatabaseError = BaseError.subclass('DatabaseError')
  * ```
  */
 declare const ModernError: SpecificErrorClass<[], {}, CustomClass>
