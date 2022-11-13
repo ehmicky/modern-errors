@@ -46,20 +46,3 @@ expectType<ChildErrorInstance>(ChildError.normalize(new ParentError('')))
 expectType<ChildErrorInstance>(
   ChildError.normalize(new ParentError(''), ChildError),
 )
-
-expectType<ParentErrorInstance[]>(
-  ParentError.normalize(new ParentError('', { errors: [''] as string[] }))
-    .errors,
-)
-const parentAggregateError = new ParentError('', { errors: [''] as [''] })
-expectType<[ParentErrorInstance]>(
-  ParentError.normalize(parentAggregateError).errors,
-)
-expectType<[ParentErrorInstance]>(
-  ParentError.normalize(
-    new ParentError('', {
-      errors: [parentAggregateError] as [typeof parentAggregateError],
-    }),
-  ).errors[0].errors,
-)
-expectError(ParentError.normalize(new ParentError('')).errors)
