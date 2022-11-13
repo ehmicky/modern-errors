@@ -1,11 +1,11 @@
-import type { Plugins } from '../../plugins/shape.js'
-import type {
-  SpecificInstanceOptions,
-  InstanceOptions,
-  Cause,
-} from '../../options/instance.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
-import type { AggregateErrors } from '../../base/aggregate.js'
+import type { AggregateErrors } from '../../merge/aggregate.js'
+import type {
+  Cause,
+  InstanceOptions,
+  SpecificInstanceOptions,
+} from '../../options/instance.js'
+import type { Plugins } from '../../plugins/shape.js'
 
 /**
  * `custom` option

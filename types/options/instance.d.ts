@@ -1,7 +1,7 @@
-import type { Plugins } from '../plugins/shape.js'
-import type { AggregateErrors } from '../base/aggregate.js'
-import type { PluginsOptions } from './plugins.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
+import type { AggregateErrors } from '../merge/aggregate.js'
+import type { Plugins } from '../plugins/shape.js'
+import type { PluginsOptions } from './plugins.js'
 
 /**
  * The `cause` option, as used when merged to the error instance
