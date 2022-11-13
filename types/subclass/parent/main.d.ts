@@ -8,9 +8,9 @@ import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { AggregateErrors } from '../../base/aggregate.js'
 
 /**
- * `constructor` of the `custom` option
+ * `custom` option
  */
-export type ErrorConstructor = new (
+export type CustomClass = new (
   message: string,
   options?: InstanceOptions,
 ) => Error
@@ -21,17 +21,17 @@ export type ErrorConstructor = new (
 export type ParentInstanceOptions<
   PluginsArg extends Plugins,
   ChildProps extends ErrorProps,
-  CustomClass extends ErrorConstructor,
+  CustomClassArg extends CustomClass,
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
-> = ConstructorParameters<CustomClass>[1] &
+> = ConstructorParameters<CustomClassArg>[1] &
   SpecificInstanceOptions<PluginsArg, ChildProps, AggregateErrorsArg, CauseArg>
 
 /**
  * Last variadic arguments of the `constructor` of the parent error class
  */
-export type ParentExtra<CustomClass extends ErrorConstructor> =
-  ConstructorParameters<CustomClass> extends readonly [
+export type ParentExtra<CustomClassArg extends CustomClass> =
+  ConstructorParameters<CustomClassArg> extends readonly [
     unknown,
     unknown?,
     ...infer Extra extends readonly unknown[],

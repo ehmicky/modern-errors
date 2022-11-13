@@ -2,7 +2,7 @@ import type { Plugin } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
 import type { ErrorInstance } from './base/modify/main.js'
 import type { ErrorClass, SpecificErrorClass } from './subclass/main/main.js'
-import type { ErrorConstructor } from './subclass/parent/main.js'
+import type { CustomClass } from './subclass/parent/main.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
 import type { ClassOptions } from './options/class.js'
@@ -32,7 +32,7 @@ export type {
  *  export const DatabaseError = BaseError.subclass('DatabaseError')
  * ```
  */
-declare const ModernError: SpecificErrorClass<[], {}, ErrorConstructor>
+declare const ModernError: SpecificErrorClass<[], {}, CustomClass>
 export default ModernError
 
 // Major limitations of current types:

@@ -4,7 +4,7 @@ import type { Cause, NormalizedCause } from '../../options/instance.js'
 import type { PluginsProperties } from '../../plugins/properties.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
-import type { ErrorConstructor } from '../../subclass/parent/main.js'
+import type { CustomClass } from '../../subclass/parent/main.js'
 import type { SetProps } from '../../utils.js'
 
 /**
@@ -16,7 +16,7 @@ import type { SetProps } from '../../utils.js'
 export type SpecificErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-  CustomClass extends ErrorConstructor,
+  CustomClassArg extends CustomClass,
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = SetProps<
@@ -29,7 +29,7 @@ export type SpecificErrorInstance<
         PluginsInstanceMethods<PluginsArg>,
         SetProps<
           GetAggregateErrors<AggregateErrorsArg, CauseArg>,
-          InstanceType<CustomClass>
+          InstanceType<CustomClassArg>
         >
       >
     >
@@ -43,7 +43,7 @@ export type ErrorInstance<PluginsArg extends Plugins = []> =
   SpecificErrorInstance<
     PluginsArg,
     ErrorProps,
-    ErrorConstructor,
+    CustomClass,
     AggregateErrors,
     Cause
   >

@@ -1,6 +1,6 @@
 import type { Plugins } from '../plugins/shape.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
-import type { ErrorConstructor } from '../subclass/parent/main.js'
+import type { CustomClass } from '../subclass/parent/main.js'
 import type { PluginsOptions } from './plugins.js'
 
 /**
@@ -8,7 +8,7 @@ import type { PluginsOptions } from './plugins.js'
  */
 interface KnownClassOptions<
   ChildPlugins extends Plugins,
-  ChildCustomClass extends ErrorConstructor,
+  ChildCustomClass extends CustomClass,
 > {
   /**
    * Plugins to add.
@@ -68,7 +68,7 @@ export type SpecificClassOptions<
   PluginsArg extends Plugins,
   ChildPlugins extends Plugins,
   ChildProps extends ErrorProps,
-  ChildCustomClass extends ErrorConstructor,
+  ChildCustomClass extends CustomClass,
 > = KnownClassOptions<ChildPlugins, ChildCustomClass> &
   PluginsOptions<[...PluginsArg, ...ChildPlugins], ChildProps>
 
@@ -77,4 +77,4 @@ export type SpecificClassOptions<
  * `ErrorClass.subclass('ErrorName', options)`
  */
 export type ClassOptions<PluginsArg extends Plugins = []> =
-  SpecificClassOptions<PluginsArg, PluginsArg, ErrorProps, ErrorConstructor>
+  SpecificClassOptions<PluginsArg, PluginsArg, ErrorProps, CustomClass>
