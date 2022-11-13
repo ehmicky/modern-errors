@@ -1,10 +1,6 @@
-import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
+import { expectAssignable, expectError } from 'tsd'
 
-import modernErrors, {
-  BaseErrorClass,
-  ErrorClass,
-  ErrorInstance,
-} from 'modern-errors'
+import modernErrors, { ErrorClass, ErrorInstance } from 'modern-errors'
 
 const BaseError = modernErrors()
 const ChildError = BaseError.subclass('ChildError')
@@ -33,14 +29,6 @@ expectAssignable<ErrorClass>(CustomError)
 expectAssignable<ErrorClass>(ChildCustomError)
 expectAssignable<ErrorClass>(CustomChildError)
 expectAssignable<ErrorClass>(DeepCustomError)
-
-expectAssignable<BaseErrorClass>(BaseError)
-expectAssignable<BaseErrorClass>(ChildError)
-expectAssignable<BaseErrorClass>(DeepChildError)
-expectNotAssignable<BaseErrorClass>(CustomError)
-expectNotAssignable<BaseErrorClass>(ChildCustomError)
-expectNotAssignable<BaseErrorClass>(CustomChildError)
-expectNotAssignable<BaseErrorClass>(DeepCustomError)
 
 expectError(BaseError.subclass())
 expectError(ChildError.subclass())

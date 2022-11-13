@@ -1,18 +1,18 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import modernErrors, { Plugin, BaseErrorClass } from 'modern-errors'
+import modernErrors, { Plugin, ErrorClass } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, staticMethods: { staticMethod() {} } }
 
-type BareBaseErrorClass = BaseErrorClass<[typeof barePlugin]>
-type FullBaseErrorClass = BaseErrorClass<[typeof fullPlugin]>
+type BareErrorClass = ErrorClass<[typeof barePlugin]>
+type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
 const BaseError = modernErrors([fullPlugin])
 
-expectAssignable<BaseErrorClass>(BaseError)
-expectAssignable<BareBaseErrorClass>(BaseError)
-expectAssignable<FullBaseErrorClass>(BaseError)
+expectAssignable<ErrorClass>(BaseError)
+expectAssignable<BareErrorClass>(BaseError)
+expectAssignable<FullErrorClass>(BaseError)
 
 const CustomError = BaseError.subclass('CustomError', {
   custom: class extends BaseError {
@@ -20,15 +20,15 @@ const CustomError = BaseError.subclass('CustomError', {
   },
 })
 
-expectNotAssignable<BaseErrorClass>(CustomError)
-expectNotAssignable<BareBaseErrorClass>(CustomError)
-expectNotAssignable<FullBaseErrorClass>(CustomError)
+expectAssignable<ErrorClass>(CustomError)
+expectAssignable<BareErrorClass>(CustomError)
+expectAssignable<FullErrorClass>(CustomError)
 
 const WideError = modernErrors([{} as Plugin])
 
-expectAssignable<BaseErrorClass>(WideError)
-expectAssignable<BareBaseErrorClass>(WideError)
-expectNotAssignable<FullBaseErrorClass>(WideError)
+expectAssignable<ErrorClass>(WideError)
+expectAssignable<BareErrorClass>(WideError)
+expectNotAssignable<FullErrorClass>(WideError)
 
 const CustomWideError = WideError.subclass('CustomWideError', {
   custom: class extends WideError {
@@ -36,6 +36,6 @@ const CustomWideError = WideError.subclass('CustomWideError', {
   },
 })
 
-expectNotAssignable<BaseErrorClass>(CustomWideError)
-expectNotAssignable<BareBaseErrorClass>(CustomWideError)
-expectNotAssignable<FullBaseErrorClass>(CustomWideError)
+expectAssignable<ErrorClass>(CustomWideError)
+expectAssignable<BareErrorClass>(CustomWideError)
+expectNotAssignable<FullErrorClass>(CustomWideError)

@@ -1,4 +1,3 @@
-import type { BaseErrorClass } from '../base/main.js'
 import type { ErrorInstance } from '../base/modify/main.js'
 import type { ErrorClass } from '../subclass/main/main.js'
 import type { Plugins } from './shape.js'

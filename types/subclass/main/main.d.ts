@@ -7,7 +7,10 @@ import type {
   AggregateErrors,
 } from '../../base/aggregate.js'
 import type { BaseError } from '../../base/modify/main.js'
-import type { BaseErrorInstance } from '../../base/normalize/main.js'
+import type {
+  BaseErrorInstance,
+  NormalizeError,
+} from '../../base/normalize/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -18,6 +21,7 @@ import type {
 } from '../custom/main.js'
 import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
+import type { MainInstanceOptions } from '../../options/instance.js'
 import type { NoAdditionalProps } from '../../utils.js'
 import type {
   ErrorConstructor,
@@ -81,6 +85,30 @@ interface ErrorSubclassCore<
     ErrorPropsArg,
     ParentErrorClass,
     CustomAttributesArg
+  >
+
+  /**
+   * Normalizes invalid errors and assigns the `UnknownError` class to
+   * _unknown_ errors.
+   *
+   * @example
+   * ```js
+   * try {
+   *   throw 'Missing file path.'
+   * } catch (error) {
+   *   // Normalized from a string to an `Error` instance
+   *   throw BaseError.normalize(error)
+   * }
+   * ```
+   */
+  normalize<ErrorArg extends unknown>(
+    error: ErrorArg,
+  ): NormalizeError<
+    PluginsArg,
+    ErrorPropsArg,
+    ErrorArg,
+    CustomAttributesArg,
+    GetAggregateErrors<MainInstanceOptions>
   >
 }
 

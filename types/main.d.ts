@@ -1,8 +1,7 @@
 import type { Plugin, Plugins } from './plugins/shape.js'
 import type { Info } from './plugins/info.js'
-import type { BaseErrorClass, SpecificBaseErrorClass } from './base/main.js'
 import type { ErrorInstance } from './base/modify/main.js'
-import type { ErrorClass } from './subclass/main/main.js'
+import type { ErrorClass, SpecificErrorClass } from './subclass/main/main.js'
 import type { ErrorConstructor } from './subclass/parent/main.js'
 import type { PluginsOptions } from './options/plugins.js'
 import type { MethodOptions } from './options/method.js'
@@ -20,7 +19,6 @@ export type {
   GlobalOptions,
   ErrorInstance,
   ErrorClass,
-  BaseErrorClass,
 }
 
 /**
@@ -44,10 +42,10 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): SpecificBaseErrorClass<
+): SpecificErrorClass<
   PluginsArg,
   GetPropsOption<GlobalOptionsArg>,
-  SpecificBaseErrorClass<
+  SpecificErrorClass<
     PluginsArg,
     GetPropsOption<GlobalOptionsArg>,
     ErrorConstructor<PluginsArg>,
