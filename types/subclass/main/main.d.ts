@@ -26,26 +26,18 @@ import type {
   ParentExtra,
 } from '../parent/main.js'
 
-/**
- * `ErrorClass.subclass()`
- */
-export type CreateSubclass<
+type ErrorSubclass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentErrorClass extends ErrorConstructor,
   CustomAttributesArg extends CustomAttributes,
-> = <
-  ErrorNameArg extends ErrorName,
   ClassOptionsArg extends SpecificClassOptions<
     PluginsArg,
     ErrorPropsArg,
     ParentErrorClass,
     CustomAttributesArg
   >,
->(
-  errorName: ErrorNameArg,
-  options?: ClassOptionsArg,
-) => ClassOptionsArg extends { custom: ErrorConstructor }
+> = ClassOptionsArg extends { custom: ErrorConstructor }
   ? SpecificErrorClass<
       PluginsArg,
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
@@ -66,6 +58,33 @@ export type CreateSubclass<
       ParentErrorClass,
       CustomAttributesArg
     >
+
+/**
+ * `ErrorClass.subclass()`
+ */
+type CreateSubclass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor,
+  CustomAttributesArg extends CustomAttributes,
+> = <
+  ErrorNameArg extends ErrorName,
+  ClassOptionsArg extends SpecificClassOptions<
+    PluginsArg,
+    ErrorPropsArg,
+    ParentErrorClass,
+    CustomAttributesArg
+  >,
+>(
+  errorName: ErrorNameArg,
+  options?: ClassOptionsArg,
+) => ErrorSubclass<
+  PluginsArg,
+  ErrorPropsArg,
+  ParentErrorClass,
+  CustomAttributesArg,
+  ClassOptionsArg
+>
 
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
