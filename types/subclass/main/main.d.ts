@@ -7,6 +7,7 @@ import type {
   AggregateErrors,
 } from '../../base/aggregate.js'
 import type { BaseError } from '../../base/modify/main.js'
+import type { BaseErrorInstance } from '../../base/normalize/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -50,14 +51,11 @@ interface ErrorSubclassCore<
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
     ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-  ): BaseError<
+  ): BaseErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-    CustomAttributesArg &
-      Omit<
-        CustomInstanceAttributes<Error, InstanceOptionsArg['cause']>,
-        keyof CustomAttributesArg
-      >,
+    InstanceOptionsArg['cause'],
+    CustomAttributesArg,
     GetAggregateErrors<InstanceOptionsArg>
   >
 
