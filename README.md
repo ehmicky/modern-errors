@@ -202,7 +202,7 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 
 ### Export error classes
 
-Exporting and documenting all error classes (excluding
+Exporting and documenting all error classes (except
 [`ModernError`](#modernerror)) allows consumers to check them. This also enables
 sharing error classes between modules.
 
