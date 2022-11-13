@@ -5,10 +5,7 @@ export const validateSameMethods = function ({
   staticMethods,
   fullName,
 }) {
-  const staticMethodNames = Object.keys(staticMethods)
-  const duplicateName = Object.keys(instanceMethods).find(
-    (instanceMethodName) => staticMethodNames.includes(instanceMethodName),
-  )
+  const duplicateName = findDuplicateKey(staticMethods, instanceMethods)
 
   if (duplicateName !== undefined) {
     throw new TypeError(
@@ -49,29 +46,23 @@ const validateEachPlugin = function ({
 
   if (pluginA.name === pluginB.name) {
     throw new TypeError(
-      `The "plugins" option of ${ParentError.name}.subclass() must not include "${pluginA.fullName}": this plugin has already been included.`,
+      `The "plugins" option of "${ParentError.name}.subclass()" must not include "${pluginA.fullName}": this plugin has already been included.`,
     )
   }
 
-  validateDuplicateMethods(pluginA, pluginB, 'staticMethods')
-  validateDuplicateMethods(pluginA, pluginB, 'instanceMethods')
-}
+  const duplicateName = findDuplicateKey(
+    { ...pluginA.instanceMethods, ...pluginA.staticMethods },
+    { ...pluginB.instanceMethods, ...pluginB.staticMethods },
+  )
 
-const validateDuplicateMethods = function (pluginA, pluginB, propName) {
-  Object.keys(pluginA[propName]).forEach((methodName) => {
-    validateDuplicateMethod({ pluginA, pluginB, propName, methodName })
-  })
-}
-
-const validateDuplicateMethod = function ({
-  pluginA,
-  pluginB,
-  propName,
-  methodName,
-}) {
-  if (pluginB[propName][methodName] !== undefined) {
+  if (duplicateName !== undefined) {
     throw new TypeError(
-      `The plugins "${pluginA.fullName}" and "${pluginB.fullName}" must not both define the same "${propName}.${methodName}" property.`,
+      `The plugins "${pluginA.fullName}" and "${pluginB.fullName}" must not both define the same "${duplicateName}()" method.`,
     )
   }
+}
+
+const findDuplicateKey = function (objectA, objectB) {
+  const keysA = Object.keys(objectA)
+  return Object.keys(objectB).find((key) => keysA.includes(key))
 }

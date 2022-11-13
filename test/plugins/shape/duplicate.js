@@ -23,23 +23,22 @@ each(
     test(`Cannot pass twice same plugins | ${title}`, (t) => {
       t.throws(definePlugins(ErrorClass, { name: 'one' }, { name: 'one' }))
     })
+  },
+)
 
-    test(`plugin.staticMethods cannot be defined twice by different plugins | ${title}`, (t) => {
+each(
+  ErrorClasses,
+  [definePluginsSameClass, definePluginsSubClass],
+  ['staticMethods', 'instanceMethods'],
+  ['staticMethods', 'instanceMethods'],
+  // eslint-disable-next-line max-params
+  ({ title }, ErrorClass, definePlugins, methodTypeA, methodTypeB) => {
+    test(`plugin methods cannot be defined twice by different plugins | ${title}`, (t) => {
       t.throws(
         definePlugins(
           ErrorClass,
-          { name: 'one', staticMethods: { one() {} } },
-          { name: 'two', staticMethods: { one() {} } },
-        ),
-      )
-    })
-
-    test(`plugin.instanceMethods cannot be defined twice by different plugins | ${title}`, (t) => {
-      t.throws(
-        definePlugins(
-          ErrorClass,
-          { name: 'one', instanceMethods: { one() {} } },
-          { name: 'two', instanceMethods: { one() {} } },
+          { name: 'one', [methodTypeA]: { one() {} } },
+          { name: 'two', [methodTypeB]: { one() {} } },
         ),
       )
     })
