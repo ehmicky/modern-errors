@@ -28,11 +28,10 @@ expectType<true>(new PropsError('').one)
 expectAssignable<{ one: true; two: true; three: true }>(
   new PropsError('', { props: { two: true as const, three: true as const } }),
 )
-// TODO: fix
-// const exception = {} as unknown
-// if (exception instanceof PropsError) {
-//   expectAssignable<{ one: true; three: false }>(exception)
-// }
+const exception = {} as unknown
+if (exception instanceof PropsError) {
+  expectAssignable<{ one: true; three: false }>(exception)
+}
 
 const ChildPropsError = PropsError.subclass('ChildPropsError')
 expectType<true>(new ChildPropsError('').one)

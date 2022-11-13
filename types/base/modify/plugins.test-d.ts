@@ -58,7 +58,6 @@ expectNotAssignable<FullErrorInstance>(customWideError)
 expectAssignable<WideErrorInstance>(customWideError)
 expectType<CustomWideErrorInstance>(customWideError)
 
-// TODO: fix
-// if (exception instanceof CustomWideError) {
-//   expectType<CustomWideErrorInstance>(exception)
-// }
+if (exception instanceof CustomWideError) {
+  expectType<CustomWideErrorInstance>(exception)
+}

@@ -97,17 +97,16 @@ expectError(mixChildError.otherMethod())
 expectError(unknownWideError.otherMethod())
 expectError(childWideError.otherMethod())
 
-// TODO: fix
-// const exception = {} as unknown
-// if (exception instanceof BareChildError) {
-//   expectType<''>(exception.instanceMethod(''))
-// }
-// if (exception instanceof FullChildError) {
-//   expectType<''>(exception.instanceMethod(''))
-// }
-// if (exception instanceof MixChildError) {
-//   expectType<''>(exception.instanceMethod(''))
-// }
+const exception = {} as unknown
+if (exception instanceof BareChildError) {
+  expectType<''>(exception.instanceMethod(''))
+}
+if (exception instanceof FullChildError) {
+  expectType<''>(exception.instanceMethod(''))
+}
+if (exception instanceof MixChildError) {
+  expectType<''>(exception.instanceMethod(''))
+}
 
 expectAssignable<Plugin>({
   name,
