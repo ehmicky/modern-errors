@@ -44,7 +44,7 @@ expectError(
     custom: class extends ModernError {
       constructor(
         message: string,
-        options?: InstanceOptions & { cause?: true },
+        options?: InstanceOptions & { cause: true },
       ) {
         super(message, options)
       }
