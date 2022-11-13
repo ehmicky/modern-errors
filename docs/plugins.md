@@ -252,7 +252,7 @@ export default {
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
 and [static methods](#staticmethodsmethodname).
 
-Its members are readonly and should not be mutated. Exception:
+Its members are readonly and should not be directly mutated. Exception:
 [instance methods](#instancemethodsmethodname) can mutate
 [`info.error`](#error).
 
@@ -295,7 +295,7 @@ export default {
 
 _Type_: `ErrorClass`
 
-Current error class.
+Current [error class](../README.md#%EF%B8%8F-error-classes)
 
 ```js
 export default {
