@@ -636,7 +636,8 @@ _Return value_: `Error`
 Normalizes [invalid errors](#invalid-errors).
 
 If the `error`'s class is a subclass of `ErrorClass`, it is left as is.
-Otherwise, it is converted to `NewErrorClass`, which defaults to `ErrorClass`.
+Otherwise, it is [converted to `NewErrorClass`](#normalizing-unknown-errors),
+which defaults to `ErrorClass`.
 
 # Modules
 
