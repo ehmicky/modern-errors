@@ -1,7 +1,38 @@
 import isPlainObj from 'is-plain-obj'
 
 // Validate and normalize `plugin.instanceMethods|staticMethods`
-export const normalizeMethods = function ({
+export const normalizeAllMethods = function (plugin) {
+  const pluginA = normalizeMethods({
+    ...INSTANCE_METHODS,
+    plugin,
+    propName: 'instanceMethods',
+  })
+  const pluginB = normalizeMethods({
+    ...STATIC_METHODS,
+    plugin: pluginA,
+    propName: 'instanceMethods',
+  })
+  const pluginC = normalizeMethods({
+    ...STATIC_METHODS,
+    plugin: pluginB,
+    propName: 'staticMethods',
+  })
+  return pluginC
+}
+
+const INSTANCE_METHODS = {
+  coreObject: Error.prototype,
+  coreObjectName: 'error',
+  forbiddenNames: new Set([]),
+}
+
+const STATIC_METHODS = {
+  coreObject: Error,
+  coreObjectName: 'Error',
+  forbiddenNames: new Set(['normalize', 'subclass']),
+}
+
+const normalizeMethods = function ({
   plugin,
   propName,
   coreObject,

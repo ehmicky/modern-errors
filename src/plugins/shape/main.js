@@ -4,7 +4,7 @@ import { normalizeGetOptions } from '../../options/get.js'
 import { normalizeIsOptions } from '../../options/method.js'
 
 import { validateDuplicatePlugins } from './duplicate.js'
-import { normalizeMethods } from './methods.js'
+import { normalizeAllMethods } from './methods.js'
 import { validatePluginName } from './name.js'
 
 // Validate and normalize plugins.
@@ -38,23 +38,10 @@ const normalizePlugin = function (plugin, ParentError) {
 
   const pluginA = validatePluginName(plugin)
   validateOptionalFuncs(pluginA)
-  const pluginB = normalizeMethods({
-    plugin: pluginA,
-    propName: 'instanceMethods',
-    coreObject: Error.prototype,
-    coreObjectName: 'error',
-    forbiddenNames: new Set([]),
-  })
-  const pluginC = normalizeMethods({
-    plugin: pluginB,
-    propName: 'staticMethods',
-    coreObject: Error,
-    coreObjectName: 'Error',
-    forbiddenNames: new Set(['normalize', 'subclass']),
-  })
-  const pluginD = normalizeIsOptions({ plugin: pluginC })
-  const pluginE = normalizeGetOptions({ plugin: pluginD })
-  return pluginE
+  const pluginB = normalizeAllMethods(pluginA)
+  const pluginC = normalizeIsOptions({ plugin: pluginB })
+  const pluginD = normalizeGetOptions({ plugin: pluginC })
+  return pluginD
 }
 
 const validateOptionalFuncs = function (plugin) {

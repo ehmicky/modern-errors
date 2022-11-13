@@ -28,12 +28,14 @@ each(
 
 each(
   ErrorClasses,
+  ['staticMethods', 'instanceMethods'],
   [...Reflect.ownKeys(Error), 'normalize', 'subclass'],
-  ({ title }, ErrorClass, propName) => {
-    test(`plugin.staticMethods cannot redefine native Error.* | ${title}`, (t) => {
+  // eslint-disable-next-line max-params
+  ({ title }, ErrorClass, methodType, propName) => {
+    test(`plugin.instanceMethods|staticMethods cannot redefine native Error.* | ${title}`, (t) => {
       t.throws(
         ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, staticMethods: { [propName]() {} } }],
+          plugins: [{ ...TEST_PLUGIN, [methodType]: { [propName]() {} } }],
         }),
       )
     })
