@@ -109,22 +109,22 @@ try {
 ### Wrap error class
 
 When wrapping errors, the inner error's
-[class is now used](README.md#wrap-error-class) if the outer error's class is a
+[class is now kept](README.md#wrap-error-class) if the outer error's class is a
 parent (including `BaseError`).
+
+```js
+export const ParentError = BaseError.subclass('ParentError')
+export const ChildError = ParentError.subclass('ChildError')
+```
 
 Before:
 
 ```js
-export const UserError = BaseError.subclass('UserError')
-export const AuthError = UserError.subclass('AuthError')
-```
-
-```js
 try {
-  throw new AuthError('...')
+  throw new ChildError('...')
 } catch (cause) {
-  // Now an UserError
-  throw new UserError('...', { cause })
+  // Now an ParentError
+  throw new ParentError('...', { cause })
 }
 ```
 
@@ -132,10 +132,10 @@ After:
 
 ```js
 try {
-  throw new AuthError('...')
+  throw new ChildError('...')
 } catch (cause) {
-  // Still an AuthError, because that is a subclass of UserError
-  throw new UserError('...', { cause })
+  // Still an AuthError, because that is a subclass of ParentError
+  throw new ParentError('...', { cause })
 }
 ```
 
