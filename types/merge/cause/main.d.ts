@@ -39,7 +39,7 @@ export type SpecificErrorInstance<
 /**
  * Error instance object
  */
-export type ErrorInstance<PluginsArg extends Plugins = []> =
+export type ErrorInstance<PluginsArg extends Plugins = Plugins> =
   SpecificErrorInstance<
     PluginsArg,
     ErrorProps,
