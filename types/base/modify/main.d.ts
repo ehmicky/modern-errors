@@ -21,11 +21,6 @@ export type SpecificErrorInstance<
 > = InstanceType<CustomClass> &
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
   Omit<
-    NormalizedCause<CauseArg>,
-    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
-    | keyof InstanceType<CustomClass>
-  > &
-  Omit<
     PluginsInstanceMethods<PluginsArg>,
     | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof InstanceType<CustomClass>
@@ -42,6 +37,14 @@ export type SpecificErrorInstance<
     | keyof InstanceType<CustomClass>
     | keyof PluginsInstanceMethods<PluginsArg>
     | keyof PluginsProperties<PluginsArg>
+  > &
+  Omit<
+    NormalizedCause<CauseArg>,
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
+    | keyof InstanceType<CustomClass>
+    | keyof PluginsInstanceMethods<PluginsArg>
+    | keyof PluginsProperties<PluginsArg>
+    | keyof ErrorPropsArg
   >
 
 /**
