@@ -7,10 +7,9 @@ import type {
   ErrorSubclass,
 } from './subclass/main/main.js'
 import type { ErrorConstructor } from './subclass/parent/main.js'
-import type { PluginsOptions } from './options/plugins.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
-import type { ClassOptions } from './options/class.js'
+import type { ClassOptions, SpecificClassOptions } from './options/class.js'
 import type { GlobalOptions } from './options/global.js'
 import type { GetPropsOption } from './core_plugins/props/main.js'
 
@@ -44,13 +43,18 @@ type ModernError = SpecificErrorClass<[], {}, ErrorConstructor, {}>
  */
 export default function modernErrors<
   PluginsArg extends Plugins = [],
-  GlobalOptionsArg extends PluginsOptions<PluginsArg> = {},
+  ClassOptionsArg extends SpecificClassOptions<
+    PluginsArg,
+    {},
+    ModernError,
+    {}
+  > = {},
 >(
   plugins?: PluginsArg,
-  options?: GlobalOptionsArg,
+  options?: ClassOptionsArg,
 ): ErrorSubclass<
   PluginsArg,
-  GetPropsOption<GlobalOptionsArg>,
+  GetPropsOption<ClassOptionsArg>,
   ModernError,
   {},
   {}
