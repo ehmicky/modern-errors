@@ -151,8 +151,8 @@ instead of being automatically normalized on creation.
 
 ### Global custom logic
 
-Global [custom logic](README.md#class-custom-logic) can now be specified by
-passing the [`custom` option](README.md#optionscustom) to the
+Global [custom logic](README.md#-custom-logic) can now be specified by passing
+the [`custom` option](README.md#optionscustom) to the
 [`BaseError`](README.md#errorclasssubclassname-options). Previously, only
 class-specific custom logic could be specified.
 
