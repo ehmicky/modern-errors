@@ -1,7 +1,7 @@
 import type { MethodOptions } from '../options/method.js'
 import type { SliceFirst, UnionToIntersection } from '../utils.js'
-import type { Plugin, Plugins } from './shape.js'
 import type { InfoParameter } from './info.js'
+import type { Plugin, Plugins } from './shape.js'
 
 /**
  * Unbound instance method of a plugin
