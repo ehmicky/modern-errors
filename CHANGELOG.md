@@ -165,15 +165,16 @@ Previously plugins had to be applied to all error classes.
 
 The `BaseError` can now be instantiating without
 [wrapping an error](README.md#-wrap-errors). The
-[`cause` option](README.md#optionscause) is not required anymore.
+[`cause` option](README.md#optionscause) is now optional.
 
 ### Missing stack trace
 
-Improve the stack trace produced when wrapping an error that does not have one.
+The stack trace produced when wrapping an error that does not have one has been
+improved.
 
 ## Plugins
 
-The following changes only impact [custom plugin](docs/plugins.md) authors.
+The following changes only impact authors of [custom plugins](docs/plugins.md).
 
 ### `info.ErrorClass`
 
