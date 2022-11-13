@@ -7,7 +7,7 @@ import type { ErrorInstance } from '../../base/modify/main.js'
  */
 export type ErrorConstructor<PluginsArg extends Plugins> = new (
   message: string,
-  options?: SpecificInstanceOptions<PluginsArg>,
+  options?: object,
   ...extra: readonly any[]
 ) => ErrorInstance<PluginsArg>
 
