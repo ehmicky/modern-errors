@@ -8,7 +8,7 @@ import type {
 } from '../../base/aggregate.js'
 import type { SpecificErrorInstance } from '../../base/modify/main.js'
 import type {
-  BaseErrorInstance,
+  GivenErrorInstance,
   NormalizeError,
 } from '../../base/normalize/main.js'
 import type {
@@ -55,7 +55,7 @@ interface ErrorSubclassCore<
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
     ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-  ): BaseErrorInstance<
+  ): GivenErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
     InstanceOptionsArg['cause'],

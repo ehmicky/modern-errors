@@ -10,7 +10,7 @@ import type { ErrorInstance, SpecificErrorInstance } from '../modify/main.js'
 /**
  * Return value of `new ErrorClass()` or `ErrorClass.normalize()`.
  */
-export type BaseErrorInstance<
+export type GivenErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ErrorArg extends unknown,
@@ -35,7 +35,7 @@ export type NormalizeError<
   AggregateErrorsArg extends AggregateErrors,
 > = ErrorArg extends ErrorInstance<PluginsArg>
   ? ErrorArg
-  : BaseErrorInstance<
+  : GivenErrorInstance<
       PluginsArg,
       ErrorPropsArg,
       ErrorArg,
