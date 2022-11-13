@@ -7,7 +7,7 @@ import type { ErrorProps } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { SetProps } from '../../utils.js'
 import type { SpecificErrorClass } from '../create/main.js'
-import type { CustomClass } from '../parent/main.js'
+import type { CustomClass } from '../custom/main.js'
 
 /**
  * `ErrorClass.normalize()`.

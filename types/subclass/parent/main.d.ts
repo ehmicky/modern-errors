@@ -1,19 +1,8 @@
 import type { AggregateErrors } from '../../merge/aggregate.js'
-import type {
-  Cause,
-  InstanceOptions,
-  SpecificInstanceOptions,
-} from '../../options/instance.js'
+import type { Cause, SpecificInstanceOptions } from '../../options/instance.js'
 import type { ErrorProps } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape.js'
-
-/**
- * `custom` option
- */
-export type CustomClass = {
-  new (message: string, options?: InstanceOptions): Error
-  subclass: unknown
-}
+import type { CustomClass } from '../custom/main.js'
 
 /**
  * Second argument of the `constructor` of the parent error class
