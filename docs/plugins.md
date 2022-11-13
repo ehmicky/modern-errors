@@ -16,9 +16,36 @@ Plugins can add error:
 
 ## Examples
 
-The [following directory](../examples/plugin) contains examples of a plugin.
+### Simple example
+
+```js
+export default {
+  name: 'secret',
+  properties({ error }) {
+    return { message: error.message.replaceAll('secret', '******') }
+  },
+}
+```
+
+```js
+import ModernError from 'modern-errors'
+
+import secretPlugin from './secret.js'
+
+const BaseError = ModernError.subclass('BaseError', { plugins: [secretPlugin] })
+const error = new BaseError('Message with a secret')
+console.log(error.message) // 'Message with a ******'
+```
+
+### Real-life examples
 
 [Existing plugins](../README.md#plugins) can be used for inspiration.
+
+### Template
+
+The [following directory](../examples/plugin) contains a template to start a new
+plugin, including [types](#typescript) and
+[tests](../examples/plugin/main.test.ts).
 
 ## API
 
