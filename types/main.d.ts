@@ -50,7 +50,7 @@ export default ModernError
 //        - `ErrorClass.normalize(new ErrorClass(''), ErrorSubClass)` returns
 //          an instance of `ErrorClass` instead of `ErrorSubclass`
 //  - If two `plugin.properties()` (or `props`) return the same property, they
-//    are intersected using `&`, instead of the second one overriding the first.
+//    are intersected using `&`, instead of the second one overriding the first
 //     - Therefore, the type of `plugin.properties()` that are not unique should
 //       currently be wide to avoid the `&` intersection resulting in
 //       `undefined`
@@ -66,13 +66,11 @@ export default ModernError
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `instanceMethods`, `properties()` or `props`, it should work even if it is
 //    not a subtype of it
-//  - `ErrorClass.subclass(..., { custom })`:
-//     - Currently fails if `custom` is not a `ModernError` child, which is
-//       expected
-//     - Fails if `custom` is extending from a parent type of `ErrorClass`, but
-//       only if that parent type has a `custom` option itself
-//     - Should always fail if `custom` is extending from a child type of
-//       `ErrorClass` (as opposed to `ErrorClass` itself)
+//  - `ErrorClass.subclass(..., { custom })` should fail if `custom` is not
+//    directly extending from `ErrorClass`, but it currently always succeed
+//    except when either:
+//     - `custom` class is not a `ModernError`
+//     - `ErrorClass` (or a parent) has a `custom` class itself
 //  - Defining the same plugin twice should fail, but it is a noop instead
 // Minor limitations:
 //  - Plugin static methods should not be allowed to override `Error.*`
