@@ -52,7 +52,8 @@ export interface Plugin {
    *
    * @example
    * ```js
-   * // Users configure this plugin using `ErrorClass.subclass({ example: ... })`
+   * // Users configure this plugin using
+   * // `ErrorClass.subclass('ErrorName', { example: ... })`
    * // or `new ErrorClass('...', { example: ... })
    * export default {
    *   name: 'example',

@@ -1,9 +1,11 @@
-import assert from 'assert'
+import assert from 'node:assert'
 
-import modernErrors from 'modern-errors'
+import ModernError from 'modern-errors'
 import modernErrorsExample from 'modern-errors-example'
 
-const BaseError = modernErrors([modernErrorsExample])
-const error = new BaseError('', { cause: '' })
+const BaseError = ModernError.subclass('BaseError', {
+  plugins: [modernErrorsExample],
+})
+const error = new BaseError('')
 
 assert.equal(error.exampleMethod(), 'expectedValue')
