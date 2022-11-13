@@ -35,14 +35,6 @@ export default ModernError
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
-//  - When wrapping an error as `cause` without `BaseError`:
-//     - The following properties of `cause` are ignored, which is expected:
-//        - Error core properties
-//        - Class-specific properties: `custom` methods, instance methods,
-//          `plugin.properties()` and `props`
-//     - However, the following should be kept and are currently not:
-//        - Properties set after instantiation
-//        - `custom` instance properties
 // Medium limitations:
 //  - Some logic relies on determining if an error class is a subclass of
 //    another
@@ -74,11 +66,8 @@ export default ModernError
 //  - When a `custom` class overrides a core error property, a plugin's
 //    `instanceMethods`, `properties()` or `props`, it should work even if it is
 //    not a subtype of it
-//  - Error normalization (`BaseError.normalize()`) is not applied on errors
-//    coming from another `modernErrors()` call, even though it should (as
-//    opposed to errors coming from the same `modernErrors()` call)
 //  - `ErrorClass.subclass(..., { custom })`:
-//     - Currently fails if `custom` is not an `BaseError` child, which is
+//     - Currently fails if `custom` is not a `ModernError` child, which is
 //       expected
 //     - Fails if `custom` is extending from a parent type of `ErrorClass`, but
 //       only if that parent type has a `custom` option itself
