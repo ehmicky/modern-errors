@@ -159,6 +159,7 @@ class-specific custom logic could be specified.
 
 [Plugins](README.md#-plugins) can now be specific to an error class (and its
 subclasses) by using the [`plugins` option](README.md#optionsplugins).
+Previously plugins had to be applied to all error classes.
 
 ### Optional wrapping
 
