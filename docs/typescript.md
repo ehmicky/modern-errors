@@ -35,7 +35,7 @@ are typed.
 ```ts
 import ModernError from 'modern-errors'
 
-// This plugin adds an `error.httpResponse()` method
+// This plugin adds an `BaseError.httpResponse(error)` method
 import modernErrorsHttp from 'modern-errors-http'
 
 const BaseError = ModernError.subclass('BaseError', {
@@ -45,7 +45,7 @@ const BaseError = ModernError.subclass('BaseError', {
 const error = new BaseError('Wrong user name', {
   http: { title: false }, // Type error: `title` must be a string
 })
-const httpResponse = error.httpResponse() // Inferred type: response object
+const httpResponse = BaseError.httpResponse(error) // Inferred type: response object
 ```
 
 ## Narrowing

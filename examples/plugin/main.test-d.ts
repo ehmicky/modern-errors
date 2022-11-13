@@ -20,7 +20,7 @@ expectError(error.unknownProp)
 
 // Check `plugin.instanceMethods`
 expectType<string>(BaseError.exampleMethod(error, 'validArgument'))
-expectError(Baserror.exampleMethod(error, 'invalidArgument'))
+expectError(BaseError.exampleMethod(error, 'invalidArgument'))
 
 // Check `plugin.staticMethods`
 expectType<string>(BaseError.staticMethod('validArgument'))
