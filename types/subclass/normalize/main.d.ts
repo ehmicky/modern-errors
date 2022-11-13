@@ -1,9 +1,9 @@
-import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type {
   AggregateErrorOption,
   DefinedAggregateErrors,
 } from '../../merge/aggregate.js'
 import type { ErrorInstance } from '../../merge/cause/main.js'
+import type { ErrorProps } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { SpecificErrorClass } from '../../subclass/main/main.js'
 import type { CustomClass } from '../../subclass/parent/main.js'

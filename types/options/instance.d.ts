@@ -1,5 +1,5 @@
-import type { ErrorProps } from '../core_plugins/props/main.js'
 import type { AggregateErrors } from '../merge/aggregate.js'
+import type { ErrorProps } from '../plugins/core/props/main.js'
 import type { Plugins } from '../plugins/shape.js'
 import type { PluginsOptions } from './plugins.js'
 

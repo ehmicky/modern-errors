@@ -1,11 +1,11 @@
-import type { Plugins } from '../../plugins/shape.js'
-import type { PluginsInstanceMethods } from '../../plugins/instance.js'
 import type { Cause, NormalizedCause } from '../../options/instance.js'
+import type { ErrorProps } from '../../plugins/core/props/main.js'
+import type { PluginsInstanceMethods } from '../../plugins/instance.js'
 import type { PluginsProperties } from '../../plugins/properties.js'
-import type { ErrorProps } from '../../core_plugins/props/main.js'
-import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
+import type { Plugins } from '../../plugins/shape.js'
 import type { CustomClass } from '../../subclass/parent/main.js'
 import type { SetProps } from '../../utils.js'
+import type { AggregateErrors, GetAggregateErrors } from '../aggregate.js'
 
 /**
  * Error instance object, used internally with additional generics.

@@ -1,13 +1,13 @@
 import type { ErrorName } from 'error-custom-class'
 
-import type {
-  ErrorProps,
-  MergeErrorProps,
-} from '../../core_plugins/props/main.js'
 import type { AggregateErrors } from '../../merge/aggregate.js'
 import type { SpecificErrorInstance } from '../../merge/cause/main.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { Cause } from '../../options/instance.js'
+import type {
+  ErrorProps,
+  MergeErrorProps,
+} from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { OmitKeys } from '../../utils.js'

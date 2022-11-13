@@ -1,4 +1,4 @@
-import type { SimpleSetProps } from '../../utils.js'
+import type { SimpleSetProps } from '../../../utils.js'
 
 /**
  * Error properties
