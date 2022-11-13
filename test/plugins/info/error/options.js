@@ -4,13 +4,14 @@ import { each } from 'test-each'
 import {
   getPropertiesInfo,
   getInstanceInfo,
+  getMixInfo,
   getStaticInfo,
 } from '../../../helpers/info.js'
 import { ErrorSubclasses } from '../../../helpers/plugin.js'
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`errorInfo returns instance options | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass)
@@ -34,7 +35,7 @@ each(
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`errorInfo ignores parent instance options | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass, { prop: true })
@@ -45,7 +46,7 @@ each(
 
 each(
   ErrorSubclasses,
-  [getInstanceInfo, getStaticInfo],
+  [getInstanceInfo, getMixInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`errorInfo returns method options | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass, {}, true)

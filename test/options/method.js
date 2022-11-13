@@ -1,7 +1,11 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { callStaticMethod, callInstanceMethod } from '../helpers/info.js'
+import {
+  callStaticMethod,
+  callInstanceMethod,
+  callMixMethod,
+} from '../helpers/info.js'
 import { ErrorSubclasses } from '../helpers/main.js'
 import {
   ErrorSubclasses as PluginErrorClasses,
@@ -10,7 +14,7 @@ import {
 
 each(
   PluginErrorClasses,
-  [callStaticMethod, callInstanceMethod],
+  [callStaticMethod, callInstanceMethod, callMixMethod],
   ({ title }, ErrorClass, callMethod) => {
     test(`plugin methods can pass method options | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', { prop: false })
@@ -44,7 +48,7 @@ each(
 
 each(
   ErrorSubclasses,
-  [callStaticMethod, callInstanceMethod],
+  [callStaticMethod, callInstanceMethod, callMixMethod],
   ({ title }, ErrorClass, callMethod) => {
     test(`plugin methods pass last argument as method options if plugin.isOptions() is undefined | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', {

@@ -4,6 +4,7 @@ import { each } from 'test-each'
 import {
   getPropertiesInfo,
   getInstanceInfo,
+  getMixInfo,
   getStaticInfo,
 } from '../../helpers/info.js'
 import { ErrorSubclasses, getPluginClasses } from '../../helpers/plugin.js'
@@ -13,7 +14,7 @@ const { propertyIsEnumerable: isEnum } = Object.prototype
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`plugin.properties|instanceMethods|staticMethods is passed ErrorClass | ${title}`, (t) => {
       t.is(getInfo(ErrorClass).ErrorClass, ErrorClass)
@@ -58,7 +59,7 @@ each(
 
 each(
   OtherSubclasses,
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
     const expectedErrorClasses = [
       ErrorClass,
@@ -83,7 +84,7 @@ each(
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`plugin.properties|instanceMethods gets the instance options | ${title}`, (t) => {
       t.true(getInfo(ErrorClass, { prop: true }).options.prop)

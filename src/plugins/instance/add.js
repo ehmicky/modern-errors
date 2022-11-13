@@ -1,6 +1,6 @@
 import { setNonEnumProp } from '../../utils/descriptors.js'
 
-import { callInstanceMethod } from './call.js'
+import { callInstanceMethod, callMixedMethod } from './call.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `ErrorClass.prototype.*`.
@@ -35,6 +35,16 @@ const addInstanceMethod = function (
         args,
       })
     },
+  )
+  setNonEnumProp(
+    ErrorClass,
+    methodName,
+    callMixedMethod.bind(undefined, {
+      methodFunc,
+      plugin,
+      plugins,
+      ErrorClass,
+    }),
   )
 }
 

@@ -4,6 +4,7 @@ import { each } from 'test-each'
 import {
   getPropertiesInfo,
   getInstanceInfo,
+  getMixInfo,
   getStaticInfo,
 } from '../../../helpers/info.js'
 import { ErrorSubclasses } from '../../../helpers/plugin.js'
@@ -11,7 +12,7 @@ import { getUnknownErrors } from '../../../helpers/unknown.js'
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo, getStaticInfo],
   getUnknownErrors(),
   // eslint-disable-next-line max-params
   ({ title }, ErrorClass, getInfo, getUnknownError) => {
@@ -38,7 +39,7 @@ each(
 
 each(
   ErrorSubclasses,
-  [getPropertiesInfo, getInstanceInfo, getStaticInfo],
+  [getPropertiesInfo, getInstanceInfo, getMixInfo, getStaticInfo],
   ({ title }, ErrorClass, getInfo) => {
     test(`errorInfo returns error | ${title}`, (t) => {
       const { errorInfo } = getInfo(ErrorClass)
