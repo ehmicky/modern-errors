@@ -576,15 +576,14 @@ about TypeScript types.
 
 ## ModernError
 
-Top-level [`ErrorClass`](#errorclass).
+Top-level `ErrorClass`.
 
 ## ErrorClass.subclass(name, options?)
 
 `name`: `string`\
-`options`: [`ClassOptions?`](#options)\
-_Return value_: `class extends ErrorClass {}`
+`options`: [`ClassOptions?`](#options)
 
-Creates and returns a child [`ErrorClass`](#errorclass).
+Creates and returns a child `ErrorClass`.
 
 ### options
 
@@ -600,7 +599,7 @@ _Type_: [`Plugin[]`](#-plugins)
 
 #### options.custom
 
-_Type_: `class extends ErrorClass`
+_Type_: `class extends ErrorClass {}`
 
 [Custom class](#-custom-logic) to add any methods, `constructor` or properties.
 
@@ -611,7 +610,7 @@ Any [plugin options](#plugin-options) can also be specified.
 ## new ErrorClass(message, options?)
 
 `message`: `string`\
-`options`: `object?`\
+`options`: [`InstanceOptions?`](#options-2)\
 _Return value_: `Error`
 
 ### options
