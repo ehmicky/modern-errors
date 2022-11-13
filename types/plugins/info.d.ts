@@ -41,16 +41,15 @@ interface CommonInfo {
   readonly options: never
 
   /**
-   * Reference to `BaseError`. This can be used to call `BaseError.normalize()` or
-   * `error instanceof BaseError`.
+   * Current error class.
    *
    * @example
    * ```js
    * export default {
    *   name: 'example',
    *   instanceMethods: {
-   *     addErrors({ error, BaseError }, errors = []) {
-   *       error.errors = errors.map(BaseError.normalize)
+   *     addErrors({ error, ErrorClass }, errors = []) {
+   *       error.errors = errors.map(ErrorClass.normalize)
    *     },
    *   },
    * }
@@ -59,8 +58,8 @@ interface CommonInfo {
   readonly ErrorClass: ErrorClass<Plugins>
 
   /**
-   * Object with all error classes created with `BaseError.subclass()` or
-   * `ErrorClass.subclass()`.
+   * Array containing both the current error class and all its subclasses
+   * (including deep ones).
    *
    * @example
    * ```js
@@ -68,7 +67,7 @@ interface CommonInfo {
    *   name: 'example',
    *   staticMethods: {
    *     isKnownErrorClass({ ErrorClasses }, value) {
-   *       return Object.values(ErrorClasses).includes(value)
+   *       return ErrorClasses.includes(value)
    *     },
    *   },
    * }
@@ -77,8 +76,8 @@ interface CommonInfo {
   readonly ErrorClasses: readonly ErrorClass[]
 
   /**
-   * Returns the `info` object from a specific `Error`, except from
-   * `info.BaseError`, `info.ErrorClasses` and `info.errorInfo`.
+   * Returns the `info` object from a specific `Error`.
+   * All members are present except for `info.errorInfo` itself.
    *
    * @example
    * ```js

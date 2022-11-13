@@ -73,7 +73,8 @@ Only lowercase letters must be used (as opposed to `_` `-` `.` or uppercase
 letters).
 
 ```js
-// Users configure this plugin using `modernErrors([plugin], { example: ... })`
+// Users configure this plugin using `ErrorClass.subclass({ example: ... })`
+// or `new ErrorClass('...', { example: ... })
 export default {
   name: 'example',
 }

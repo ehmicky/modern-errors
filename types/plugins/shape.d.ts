@@ -13,23 +13,33 @@ import type { StaticMethods } from './static.js'
  *   name: 'example',
  *
  *   // Set error properties
- *   properties() {},
- *
- *   // Add error instance methods like `error.exampleMethod()`
- *   instanceMethods: {
- *     exampleMethod() {},
+ *   properties(info) {
+ *     return {}
  *   },
  *
- *   // Add `BaseError` static methods like `BaseError.staticMethod()`
+ *   // Add error instance methods like `error.exampleMethod(...args)`
+ *   instanceMethods: {
+ *     exampleMethod(info, ...args) {
+ *       // ...
+ *     },
+ *   },
+ *
+ *   // Add `ErrorClass` static methods like `ErrorClass.staticMethod(...args)`
  *   staticMethods: {
- *     staticMethod() {},
+ *     staticMethod(info, ...args) {
+ *       // ...
+ *     },
  *   },
  *
  *   // Validate and normalize options
- *   getOptions() {},
+ *   getOptions(options, full) {
+ *     return options
+ *   },
  *
  *   // Determine if a value is plugin's options
- *   isOptions() {},
+ *   isOptions(options) {
+ *     return typeof options === 'boolean'
+ *   },
  * }
  * ```
  */
@@ -42,7 +52,8 @@ export interface Plugin {
    *
    * @example
    * ```js
-   * // Users configure this plugin using `modernErrors([plugin], { example: ... })`
+   * // Users configure this plugin using `ErrorClass.subclass({ example: ... })`
+   * // or `new ErrorClass('...', { example: ... })
    * export default {
    *   name: 'example',
    * }
@@ -139,7 +150,7 @@ export interface Plugin {
   readonly instanceMethods?: InstanceMethods
 
   /**
-   * Add `BaseError` static methods like `BaseError.methodName(...args)`.
+   * Add error static methods like `ErrorClass.methodName(...args)`.
    *
    * The first argument `info` is provided by `modern-errors`.
    * The other `...args` are forwarded from the method's call.
@@ -148,7 +159,7 @@ export interface Plugin {
    * ```js
    * export default {
    *   name: 'example',
-   *   // `BaseError.multiply(2, 3)` returns `6`
+   *   // `ErrorClass.multiply(2, 3)` returns `6`
    *   staticMethods: {
    *     multiply(info, first, second) {
    *       return first * second
