@@ -8,6 +8,7 @@ import type { CreateSubclass } from '../subclass/main/main.js'
 import type {
   ErrorConstructor,
   ParentInstanceOptions,
+  ParentExtra,
 } from '../subclass/parent/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
 
@@ -41,7 +42,7 @@ interface BaseErrorClassCore<
       InstanceOptionsArg,
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
-    ...extra: readonly any[]
+    ...extra: ParentExtra<PluginsArg, ParentErrorClass>
   ): BaseErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
