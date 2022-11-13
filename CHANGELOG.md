@@ -123,7 +123,7 @@ Before:
 try {
   throw new ChildError('...')
 } catch (cause) {
-  // Now an ParentError
+  // Now a ParentError
   throw new ParentError('...', { cause })
 }
 ```
@@ -134,7 +134,7 @@ After:
 try {
   throw new ChildError('...')
 } catch (cause) {
-  // Still an AuthError, because that is a subclass of ParentError
+  // Still a ChildError, because that is a subclass of ParentError
   throw new ParentError('...', { cause })
 }
 ```
