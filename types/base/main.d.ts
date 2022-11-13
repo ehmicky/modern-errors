@@ -3,12 +3,14 @@ import type { PluginsStaticMethods } from '../plugins/static.js'
 import type { ErrorProps, MergeErrorProps } from '../core_plugins/props/main.js'
 import type { SpecificInstanceOptions } from '../options/instance.js'
 import type { NoAdditionalProps } from '../utils.js'
+import type { CustomAttributes } from '../subclass/custom/main.js'
 import type { CreateSubclass } from '../subclass/main/main.js'
 import type { BaseErrorInstance, NormalizeError } from './normalize/main.js'
 
 interface BaseErrorClassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
+  CustomAttributesArg extends CustomAttributes,
 > {
   /**
    * Base error class.
@@ -38,7 +40,7 @@ interface BaseErrorClassCore<
   >
 
   readonly prototype: InstanceType<
-    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>
+    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg, CustomAttributesArg>
   >
 
   /**
@@ -54,8 +56,8 @@ interface BaseErrorClassCore<
   readonly subclass: CreateSubclass<
     PluginsArg,
     ErrorPropsArg,
-    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>,
-    {}
+    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg, CustomAttributesArg>,
+    CustomAttributesArg
   >
 
   /**
@@ -83,11 +85,12 @@ interface BaseErrorClassCore<
 export type SpecificBaseErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
-> = BaseErrorClassCore<PluginsArg, ErrorPropsArg> &
+  CustomAttributesArg extends CustomAttributes,
+> = BaseErrorClassCore<PluginsArg, ErrorPropsArg, CustomAttributesArg> &
   PluginsStaticMethods<PluginsArg>
 
 /**
  * Base error class `BaseError`
  */
 export type BaseErrorClass<PluginsArg extends Plugins = []> =
-  SpecificBaseErrorClass<PluginsArg, ErrorProps>
+  SpecificBaseErrorClass<PluginsArg, ErrorProps, CustomAttributes>

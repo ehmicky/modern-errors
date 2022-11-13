@@ -43,7 +43,7 @@ export default function modernErrors<
 >(
   plugins?: PluginsArg,
   options?: GlobalOptionsArg,
-): SpecificBaseErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>>
+): SpecificBaseErrorClass<PluginsArg, GetPropsOption<GlobalOptionsArg>, {}>
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
