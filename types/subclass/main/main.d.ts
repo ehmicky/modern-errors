@@ -6,7 +6,7 @@ import type {
   GetAggregateErrors,
   AggregateErrors,
 } from '../../base/aggregate.js'
-import type { BaseError } from '../../base/modify/main.js'
+import type { SpecificErrorInstance } from '../../base/modify/main.js'
 import type {
   BaseErrorInstance,
   NormalizeError,
@@ -173,7 +173,12 @@ export type CreateSubclass<
       MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
       ClassOptionsArg['custom'],
       CustomInstanceAttributes<
-        BaseError<PluginsArg, ErrorPropsArg, CustomAttributes, AggregateErrors>,
+        SpecificErrorInstance<
+          PluginsArg,
+          ErrorPropsArg,
+          CustomAttributes,
+          AggregateErrors
+        >,
         InstanceType<ClassOptionsArg['custom']>
       >
     >

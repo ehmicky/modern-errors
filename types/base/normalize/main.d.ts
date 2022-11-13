@@ -5,7 +5,7 @@ import type {
   CustomInstanceAttributes,
   CustomAttributes,
 } from '../../subclass/custom/main.js'
-import type { ErrorInstance, BaseError } from '../modify/main.js'
+import type { ErrorInstance, SpecificErrorInstance } from '../modify/main.js'
 
 /**
  * Return value of `new BaseError()` or `BaseError.normalize()`.
@@ -16,7 +16,7 @@ export type BaseErrorInstance<
   ErrorArg extends unknown,
   CustomAttributesArg extends CustomAttributes,
   AggregateErrorsArg extends AggregateErrors,
-> = BaseError<
+> = SpecificErrorInstance<
   PluginsArg,
   ErrorPropsArg,
   CustomAttributesArg &

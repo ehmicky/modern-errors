@@ -18,7 +18,7 @@ type CoreErrorProps = keyof Error | 'errors'
  * `plugin.properties()` and `props`, while ensuring those do not overlap each
  * other.
  */
-export type BaseError<
+export type SpecificErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
@@ -41,9 +41,10 @@ export type BaseError<
 /**
  * Error instance object
  */
-export type ErrorInstance<PluginsArg extends Plugins = []> = BaseError<
-  PluginsArg,
-  ErrorProps,
-  CustomAttributes,
-  AggregateErrors
->
+export type ErrorInstance<PluginsArg extends Plugins = []> =
+  SpecificErrorInstance<
+    PluginsArg,
+    ErrorProps,
+    CustomAttributes,
+    AggregateErrors
+  >
