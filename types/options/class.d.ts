@@ -91,7 +91,7 @@ export type SpecificClassOptions<
   CustomClass,
   ChildCustomClass
 > &
-  PluginsOptions<ChildPlugins, ChildProps>
+  PluginsOptions<[...PluginsArg, ...ChildPlugins], ChildProps>
 
 /**
  * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or
