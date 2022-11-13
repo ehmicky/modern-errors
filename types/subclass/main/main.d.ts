@@ -103,7 +103,7 @@ interface ErrorSubclassCore<
       PluginsArg,
       ErrorPropsArg,
       CustomClassArg
-    >,
+    > = SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>,
   >(
     error: ErrorArg,
     UnknownErrorClass?: UnknownErrorClass,
