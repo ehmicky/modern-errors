@@ -430,53 +430,6 @@ try {
 }
 ```
 
-## 🔧 Custom logic
-
-### Class custom logic
-
-The [`custom` option](#optionscustom) can be used to provide an error `class`
-with additional methods, `constructor` or properties.
-
-<!-- eslint-disable no-param-reassign, fp/no-mutation,
-     class-methods-use-this -->
-
-```js
-export const InputError = BaseError.subclass('InputError', {
-  // The `class` must extend from the parent error class
-  custom: class extends BaseError {
-    // If a `constructor` is defined, its parameters must be (message, options)
-    constructor(message, options) {
-      message += message.endsWith('.') ? '' : '.'
-      super(message, options)
-    }
-
-    isUserInput() {
-      // ...
-    }
-  },
-})
-
-const error = new InputError('Wrong user name')
-console.log(error.message) // 'Wrong user name.'
-console.log(error.isUserInput())
-```
-
-### Shared custom logic
-
-[`ErrorClass.subclass()`](#errorclasssubclassname-options) can be used to share
-logic between error classes.
-
-```js
-const SharedError = BaseError.subclass('SharedError', {
-  custom: class extends BaseError {
-    // ...
-  },
-})
-
-export const InputError = SharedError.subclass('InputError')
-export const AuthError = SharedError.subclass('AuthError')
-```
-
 ## 🔌 Plugins
 
 ### List of plugins
@@ -556,6 +509,53 @@ error[methodName](...args, options[pluginName])
 
 Please see the [following documentation](docs/plugins.md) to create your own
 plugin.
+
+## 🔧 Custom logic
+
+### Class custom logic
+
+The [`custom` option](#optionscustom) can be used to provide an error `class`
+with additional methods, `constructor` or properties.
+
+<!-- eslint-disable no-param-reassign, fp/no-mutation,
+     class-methods-use-this -->
+
+```js
+export const InputError = BaseError.subclass('InputError', {
+  // The `class` must extend from the parent error class
+  custom: class extends BaseError {
+    // If a `constructor` is defined, its parameters must be (message, options)
+    constructor(message, options) {
+      message += message.endsWith('.') ? '' : '.'
+      super(message, options)
+    }
+
+    isUserInput() {
+      // ...
+    }
+  },
+})
+
+const error = new InputError('Wrong user name')
+console.log(error.message) // 'Wrong user name.'
+console.log(error.isUserInput())
+```
+
+### Shared custom logic
+
+[`ErrorClass.subclass()`](#errorclasssubclassname-options) can be used to share
+logic between error classes.
+
+```js
+const SharedError = BaseError.subclass('SharedError', {
+  custom: class extends BaseError {
+    // ...
+  },
+})
+
+export const InputError = SharedError.subclass('InputError')
+export const AuthError = SharedError.subclass('AuthError')
+```
 
 ## 🤓 TypeScript
 
