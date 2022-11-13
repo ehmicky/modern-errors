@@ -77,7 +77,7 @@ interface ErrorSubclassCore<
    *
    * @example
    * ```js
-   * export const InputError = BaseError.subclass('InputError', options)
+   * export const InputError = ErrorClass.subclass('InputError', options)
    * ```
    */
   readonly subclass: CreateSubclass<
@@ -149,7 +149,7 @@ export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
 >
 
 /**
- * `BaseError.subclass()` or `ErrorClass.subclass()`
+ * `ErrorClass.subclass()`
  */
 export type CreateSubclass<
   PluginsArg extends Plugins,
