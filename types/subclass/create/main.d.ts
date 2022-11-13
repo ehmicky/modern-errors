@@ -40,6 +40,9 @@ type CreateSubclass<
   ChildCustomClass
 >
 
+/**
+ * Non-dynamic members of error classes
+ */
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -80,7 +83,7 @@ interface ErrorSubclassCore<
   >
 
   /**
-   * Creates and returns an error subclass.
+   * Creates and returns a child `ErrorClass`.
    *
    * @example
    * ```js
@@ -90,16 +93,21 @@ interface ErrorSubclassCore<
   subclass: CreateSubclass<PluginsArg, ErrorPropsArg, CustomClassArg>
 
   /**
-   * Normalizes invalid errors and assigns the `UnknownError` class to
-   * _unknown_ errors.
+   * Normalizes invalid errors.
+   *
+   * If the `error`'s class is a subclass of `ErrorClass`, it is left as is.
+   * Otherwise, it is converted to `NewErrorClass`, which defaults to
+   * `ErrorClass` itself.
    *
    * @example
    * ```js
    * try {
    *   throw 'Missing file path.'
-   * } catch (error) {
-   *   // Normalized from a string to an `Error` instance
-   *   throw BaseError.normalize(error)
+   * } catch (invalidError) {
+   *   const normalizedError = BaseError.normalize(invalidError)
+   *   // This works: 'Missing file path.'
+   *   // `normalizedError` is a `BaseError` instance.
+   *   console.log(normalizedError.message.trim())
    * }
    * ```
    */
@@ -123,8 +131,5 @@ export type SpecificErrorClass<
 /**
  * Error class
  */
-export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
-  PluginsArg,
-  ErrorProps,
-  CustomClass
->
+export type ErrorClass<PluginsArg extends Plugins = Plugins> =
+  SpecificErrorClass<PluginsArg, ErrorProps, CustomClass>

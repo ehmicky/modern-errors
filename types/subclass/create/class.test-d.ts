@@ -30,10 +30,7 @@ expectAssignable<ErrorClass>(CustomChildError)
 expectAssignable<ErrorClass>(DeepCustomError)
 
 expectError(ModernError.subclass())
-expectError(ChildError.subclass())
 expectError(ModernError.subclass({}))
-expectError(ChildError.subclass({}))
 expectError(ModernError.subclass('Test'))
-expectError(ChildError.subclass('Test'))
 
 expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)

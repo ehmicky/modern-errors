@@ -18,18 +18,18 @@ export type NormalizeError<
   CustomClassArg extends CustomClass,
 > = <
   ErrorArg extends unknown,
-  UnknownErrorClass extends SpecificErrorClass<
+  NewErrorClass extends SpecificErrorClass<
     PluginsArg,
     ErrorPropsArg,
     CustomClassArg
   > = SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>,
 >(
   error: ErrorArg,
-  UnknownErrorClass?: UnknownErrorClass,
+  NewErrorClass?: NewErrorClass,
 ) => NormalizeDeepError<
   ErrorArg,
   InstanceType<SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>>,
-  InstanceType<UnknownErrorClass>
+  InstanceType<NewErrorClass>
 >
 
 /**
@@ -38,14 +38,14 @@ export type NormalizeError<
 type NormalizeDeepError<
   ErrorArg extends unknown,
   ParentError extends ErrorInstance,
-  UnknownError extends ErrorInstance,
+  NewError extends ErrorInstance,
 > = ErrorArg extends {
   errors: infer AggregateErrorsArg extends DefinedAggregateErrors
 }
-  ? Omit<NormalizeOneError<ErrorArg, ParentError, UnknownError>, 'errors'> & {
-      errors: NormalizeManyErrors<AggregateErrorsArg, ParentError, UnknownError>
+  ? Omit<NormalizeOneError<ErrorArg, ParentError, NewError>, 'errors'> & {
+      errors: NormalizeManyErrors<AggregateErrorsArg, ParentError, NewError>
     }
-  : NormalizeOneError<ErrorArg, ParentError, UnknownError>
+  : NormalizeOneError<ErrorArg, ParentError, NewError>
 
 /**
  * Apply `ErrorClass.normalize()` on `error.errors`
@@ -53,7 +53,7 @@ type NormalizeDeepError<
 type NormalizeManyErrors<
   AggregateErrorsArg extends DefinedAggregateErrors,
   ParentError extends ErrorInstance,
-  UnknownError extends ErrorInstance,
+  NewError extends ErrorInstance,
 > = AggregateErrorsArg extends never[]
   ? []
   : AggregateErrorsArg extends readonly [
@@ -61,10 +61,10 @@ type NormalizeManyErrors<
       ...infer Rest extends DefinedAggregateErrors,
     ]
   ? [
-      NormalizeDeepError<AggregateErrorArg, ParentError, UnknownError>,
-      ...NormalizeManyErrors<Rest, ParentError, UnknownError>,
+      NormalizeDeepError<AggregateErrorArg, ParentError, NewError>,
+      ...NormalizeManyErrors<Rest, ParentError, NewError>,
     ]
-  : NormalizeDeepError<AggregateErrorsArg[number], ParentError, UnknownError>[]
+  : NormalizeDeepError<AggregateErrorsArg[number], ParentError, NewError>[]
 
 /**
  * Apply `ErrorClass.normalize()` on `error`, but not `error.errors`
@@ -72,9 +72,9 @@ type NormalizeManyErrors<
 type NormalizeOneError<
   ErrorArg extends unknown,
   ParentError extends ErrorInstance,
-  UnknownError extends ErrorInstance,
+  NewError extends ErrorInstance,
 > = ErrorArg extends ParentError
   ? ErrorArg
   : ErrorArg extends Error
-  ? SetProps<ErrorArg, UnknownError>
-  : UnknownError
+  ? SetProps<ErrorArg, NewError>
+  : NewError
