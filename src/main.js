@@ -1,4 +1,4 @@
-import { ponyfillCause, ensureCorrectClass } from 'error-class-utils'
+import errorCustomClass from 'error-custom-class'
 
 import { setAggregateErrors } from './merge/aggregate.js'
 import { mergeCause } from './merge/cause.js'
@@ -9,6 +9,8 @@ import { createClass } from './subclass/create.js'
 import { classesData, instancesData } from './subclass/map.js'
 import { validateSubclass } from './subclass/validate.js'
 
+const BaseModernError = errorCustomClass('BaseModernError')
+
 // Base class for all error classes.
 // We do not call `Error.captureStackTrace(this, CustomErrorClass)` because:
 //  - It is V8 specific
@@ -17,8 +19,8 @@ import { validateSubclass } from './subclass/validate.js'
 //  - Also, this would force child classes to also use
 //    `Error.captureStackTrace()`
 /* c8 ignore start */
-/* eslint-disable fp/no-this, max-statements, no-constructor-return */
-class ModernBaseError extends Error {
+/* eslint-disable fp/no-this, no-constructor-return */
+class CustomModernError extends BaseModernError {
   constructor(message, opts) {
     const ErrorClass = new.target
     validateSubclass(ErrorClass)
@@ -31,10 +33,7 @@ class ModernBaseError extends Error {
 
     super(message, nativeOpts)
 
-    ensureCorrectClass(this, ErrorClass)
-    ponyfillCause(this, nativeOpts)
     setAggregateErrors(this, errors)
-
     const error = mergeCause(this, ErrorClass)
     instancesData.set(error, { pluginsOpts })
     setPluginsProperties(error, plugins)
@@ -42,12 +41,12 @@ class ModernBaseError extends Error {
     return error
   }
 }
-/* eslint-enable fp/no-this, max-statements, no-constructor-return */
+/* eslint-enable fp/no-this, no-constructor-return */
 /* c8 ignore stop */
 
 const ModernError = createClass({
   ParentError: Error,
-  ErrorClass: ModernBaseError,
+  ErrorClass: CustomModernError,
   parentOpts: {},
   classOpts: {},
   parentPlugins: [],

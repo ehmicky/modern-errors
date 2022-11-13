@@ -1,4 +1,4 @@
-import type { ErrorName } from 'error-class-utils'
+import type { ErrorName } from 'error-custom-class'
 
 import type { AggregateErrors } from '../../merge/aggregate.js'
 import type { SpecificErrorInstance } from '../../merge/cause/main.js'
