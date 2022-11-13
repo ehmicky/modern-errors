@@ -93,7 +93,12 @@ interface ErrorSubclassCore<
       CustomClass,
       ChildCustomClass
     >,
-  ): ErrorSubclass<PluginsArg, ErrorPropsArg, ChildProps, ChildCustomClass>
+  ): ErrorSubclass<
+    [...PluginsArg, ...ChildPlugins],
+    ErrorPropsArg,
+    ChildProps,
+    ChildCustomClass
+  >
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
