@@ -7,6 +7,6 @@ import type { OmitKeys } from '../utils.js'
  */
 export type CustomStaticAttributes<
   PluginsArg extends Plugins,
-  ParentBaseErrorClass extends ErrorConstructor<PluginsArg>,
   ParentErrorClass extends ErrorConstructor<PluginsArg>,
-> = OmitKeys<ParentErrorClass, keyof ParentBaseErrorClass>
+  ChildKeys extends PropertyKey,
+> = OmitKeys<ParentErrorClass, ChildKeys>

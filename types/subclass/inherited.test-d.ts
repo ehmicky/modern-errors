@@ -5,7 +5,6 @@ import modernErrors from 'modern-errors'
 const BaseError = modernErrors()
 
 const ChildError = BaseError.subclass('ChildError')
-const GrandChildError = ChildError.subclass('GrandChildError')
 const CustomError = BaseError.subclass('CustomError', {
   custom: class extends BaseError {
     static prop = true as const
@@ -28,6 +27,3 @@ expectType<true>(ChildCustomError.prop)
 expectType<true>(DeepCustomError.prop)
 expectType<true>(DeepCustomError.deepProp)
 expectType<true>(CustomChildError.prop)
-
-expectError(ChildError.normalize(''))
-expectError(GrandChildError.normalize(''))

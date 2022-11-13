@@ -104,8 +104,13 @@ export type SpecificErrorClass<
 > &
   CustomStaticAttributes<
     PluginsArg,
-    SpecificBaseErrorClass<PluginsArg, ErrorPropsArg>,
-    ParentErrorClass
+    ParentErrorClass,
+    keyof ErrorSubclassCore<
+      PluginsArg,
+      ErrorPropsArg,
+      ParentErrorClass,
+      CustomAttributesArg
+    >
   > &
   PluginsStaticMethods<PluginsArg>
 
