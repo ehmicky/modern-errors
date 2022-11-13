@@ -7,9 +7,10 @@ const ChildError = BaseError.subclass('ChildError')
 
 const name = 'test' as const
 
-expectError(
-  new ChildError('', { cause: new ChildError('', { props: { prop: true } }) })
-    .prop,
+expectType<true>(
+  new ChildError('', {
+    cause: new ChildError('', { props: { prop: true as const } }),
+  }).prop,
 )
 
 const MessageFuncError = modernErrors([
@@ -74,7 +75,9 @@ const InstanceMethodError = modernErrors([
 expectAssignable<Function>(
   new InstanceMethodError('', { cause: '', props: { prop: '' } }).prop,
 )
-expectError(new ChildError('', { cause: new InstanceMethodError('') }).prop)
+expectAssignable<Function>(
+  new ChildError('', { cause: new InstanceMethodError('') }).prop,
+)
 
 const PropertyError = modernErrors([
   { name, properties: () => ({ prop: 'test' as const }) },
@@ -85,7 +88,7 @@ expectType<'test'>(
 expectType<'test'>(
   new PropertyError('', { cause: '', props: { prop: '' as const } }).prop,
 )
-expectError(new ChildError('', { cause: new PropertyError('') }).prop)
+expectType<'test'>(new ChildError('', { cause: new PropertyError('') }).prop)
 
 const ConflictPropertyError = modernErrors([
   { name: 'one' as const, properties: () => ({ prop: 'one' as const }) },

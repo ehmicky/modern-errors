@@ -53,7 +53,11 @@ interface ErrorSubclassCore<
   ): BaseError<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-    CustomAttributesArg,
+    CustomAttributesArg &
+      Omit<
+        CustomInstanceAttributes<Error, InstanceOptionsArg['cause']>,
+        keyof CustomAttributesArg
+      >,
     GetAggregateErrors<InstanceOptionsArg>
   >
 
