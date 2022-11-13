@@ -36,6 +36,20 @@ interface KnownClassOptions<
   // >,
   // ChildCustomClass extends CustomClass,
 > {
+  /**
+   * Plugins to add.
+   *
+   * @example
+   * ```js
+   * import modernErrorsBugs from 'modern-errors-bugs'
+   * import modernErrorsSerialize from 'modern-errors-serialize'
+   *
+   * export const BaseError = ModernError.subclass('BaseError', {
+   *   plugins: [modernErrorsBugs, modernErrorsSerialize],
+   * })
+   * // ...
+   * ```
+   */
   readonly plugins?: ChildPlugins
 
   /**
