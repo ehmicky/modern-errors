@@ -48,4 +48,26 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.is(message, names.join(''))
     t.true(stack.includes(names.join('')))
   })
+
+  test(`plugin.properties() child plugins are not called again when wrapped | ${title}`, (t) => {
+    // eslint-disable-next-line fp/no-let
+    let count = 0
+    const TestError = ErrorClass.subclass('TestError', {
+      plugins: [
+        {
+          ...TEST_PLUGIN,
+          properties() {
+            // eslint-disable-next-line fp/no-mutation
+            count += 1
+            return { count }
+          },
+        },
+      ],
+    })
+    const cause = new TestError('causeMessage')
+    t.is(cause.count, 1)
+    const error = new ErrorClass('message', { cause })
+    t.is(error, cause)
+    t.is(error.count, 1)
+  })
 })
