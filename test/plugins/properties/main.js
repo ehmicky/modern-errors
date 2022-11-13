@@ -2,7 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { ErrorClasses } from '../../helpers/main.js'
-import { TEST_PLUGIN } from '../../helpers/plugin.js'
+import { TEST_PLUGIN, ErrorSubclasses } from '../../helpers/plugin.js'
 
 each(ErrorClasses, [undefined, true], ({ title }, ErrorClass, value) => {
   test(`plugin.properties() must return a plain object | ${title}`, (t) => {
@@ -49,7 +49,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(stack.includes(names.join('')))
   })
 
-  test(`plugin.properties() child plugins are not called again when wrapped | ${title}`, (t) => {
+  test(`plugin.properties() child plugins are not called when wrapping | ${title}`, (t) => {
     // eslint-disable-next-line fp/no-let
     let count = 0
     const TestError = ErrorClass.subclass('TestError', {
@@ -69,5 +69,21 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const error = new ErrorClass('message', { cause })
     t.is(error, cause)
     t.is(error.count, 1)
+  })
+})
+
+each(ErrorSubclasses, ({ title }, ErrorClass) => {
+  test(`plugin.properties() parent plugins are called when wrapping with options | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage', { prop: false })
+    const error = new ErrorClass('message', { cause, prop: true })
+    t.true(error.properties.options.prop)
+  })
+
+  test(`plugin.properties() parent plugins are called when wrapping without options | ${title}`, (t) => {
+    const cause = new ErrorClass('causeMessage', { prop: true })
+    // eslint-disable-next-line fp/no-delete
+    delete cause.properties.options.prop
+    const error = new ErrorClass('message', { cause, prop: undefined })
+    t.true(error.properties.options.prop)
   })
 })
