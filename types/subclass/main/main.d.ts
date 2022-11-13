@@ -4,7 +4,7 @@ import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { AggregateErrors } from '../../base/aggregate.js'
 import type { SpecificErrorInstance } from '../../base/modify/main.js'
-import type { NormalizeError } from '../../base/normalize/main.js'
+import type { NormalizeError } from '../normalize/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,

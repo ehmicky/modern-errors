@@ -1,12 +1,12 @@
+import type { ErrorInstance } from '../../base/modify/main.js'
+import type {
+  DefinedAggregateErrors,
+  AggregateErrorOption,
+} from '../../base/aggregate.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomClass } from '../../subclass/parent/main.js'
 import type { SpecificErrorClass } from '../../subclass/main/main.js'
-import type { ErrorInstance } from '../modify/main.js'
-import type {
-  DefinedAggregateErrors,
-  AggregateErrorOption,
-} from '../aggregate.js'
 import type { SetProps } from '../../utils.js'
 
 /**
