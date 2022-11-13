@@ -6,7 +6,7 @@ import type { Plugin, Plugins } from './shape.js'
 /**
  * Unbound instance method of a plugin
  */
-type InstanceMethod = (
+export type InstanceMethod = (
   info: InfoParameter['instanceMethods'],
   ...args: readonly never[]
 ) => unknown

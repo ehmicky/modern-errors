@@ -4,12 +4,7 @@ import ModernError from 'modern-errors'
 
 const BaseError = ModernError.subclass('BaseError')
 const PluginBaseError = ModernError.subclass('PluginBaseError', {
-  plugins: [
-    {
-      name: 'test' as const,
-      instanceMethods: { instanceMethod: () => {} },
-    },
-  ],
+  plugins: [{ name: 'test' as const, properties: () => ({}) }],
 })
 
 const ChildError = PluginBaseError.subclass('ChildError')

@@ -57,7 +57,7 @@ export default ModernError
 //     - This problem does not apply to error core properties (`message` and
 //       `stack`) which are always kept correct
 //  - Type narrowing with `instanceof` does not work if there are any plugins
-//    with static methods. This is due to the following bug:
+//    with instance|static methods. This is due to the following bug:
 //      https://github.com/microsoft/TypeScript/issues/50844
 //  - When a `custom` class overrides a plugin's instance method, it must be
 //    set as a class property `methodName = (...) => ...` instead of as a
@@ -73,7 +73,7 @@ export default ModernError
 //     - `ErrorClass` (or a parent) has a `custom` class itself
 //  - Defining the same plugin twice should fail, but it is a noop instead
 // Minor limitations:
-//  - Plugin static methods should not be allowed to override `Error.*`
+//  - Plugin instance|static methods should not be allowed to override `Error.*`
 //    (e.g. `prepareStackTrace()`)
-//  - Plugins should not be allowed to define static or instance methods already
+//  - Plugins should not be allowed to define instance|static methods already
 //    defined by other plugins

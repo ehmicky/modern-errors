@@ -10,6 +10,7 @@ import type {
 } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape.js'
 import type { PluginsStaticMethods } from '../../plugins/static.js'
+import type { PluginsMixedMethods } from '../../plugins/mixed.js'
 import type { OmitKeys } from '../../utils.js'
 import type { NormalizeError } from '../normalize/main.js'
 import type { ParentExtra, ParentInstanceOptions } from '../custom/main.js'
@@ -126,7 +127,8 @@ export type SpecificErrorClass<
     CustomClassArg,
     keyof ErrorSubclassCore<PluginsArg, ErrorPropsArg, CustomClassArg>
   > &
-  PluginsStaticMethods<PluginsArg>
+  PluginsStaticMethods<PluginsArg> &
+  PluginsMixedMethods<PluginsArg>
 
 /**
  * Error class

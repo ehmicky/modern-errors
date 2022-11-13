@@ -39,12 +39,12 @@ expectType<''>(MixBaseError.staticMethod(''))
 expectType<''>(BareChildError.staticMethod(''))
 expectType<''>(FullChildError.staticMethod(''))
 expectType<''>(MixChildError.staticMethod(''))
-expectError(expectType<''>(BareBaseError.staticMethod(true)))
-expectError(expectType<''>(FullBaseError.staticMethod(true)))
-expectError(expectType<''>(MixBaseError.staticMethod(true)))
-expectError(expectType<''>(BareChildError.staticMethod(true)))
-expectError(expectType<''>(FullChildError.staticMethod(true)))
-expectError(expectType<''>(MixChildError.staticMethod(true)))
+expectError(BareBaseError.staticMethod(true))
+expectError(FullBaseError.staticMethod(true))
+expectError(MixBaseError.staticMethod(true))
+expectError(BareChildError.staticMethod(true))
+expectError(FullChildError.staticMethod(true))
+expectError(MixChildError.staticMethod(true))
 
 expectType<''>(FullBaseError.staticMethod('', true))
 expectType<''>(FullChildError.staticMethod('', true))
@@ -87,7 +87,7 @@ expectError(FullChildError.otherMethod())
 expectError(MixChildError.otherMethod())
 expectError(ChildWideError.otherMethod())
 
-expectError(ChildWideError.staticMethod())
+expectError(ChildWideError.staticMethod(''))
 
 expectAssignable<Plugin>({
   name,
