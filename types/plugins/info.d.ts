@@ -1,5 +1,5 @@
 import type { ErrorInstance } from '../merge/cause/main.js'
-import type { ErrorClass } from '../subclass/main/main.js'
+import type { ErrorClass } from '../subclass/create/main.js'
 import type { Plugins } from './shape.js'
 
 /**

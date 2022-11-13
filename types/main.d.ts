@@ -4,7 +4,7 @@ import type { InstanceOptions } from './options/instance.js'
 import type { MethodOptions } from './options/method.js'
 import type { Info } from './plugins/info.js'
 import type { Plugin } from './plugins/shape.js'
-import type { ErrorClass, SpecificErrorClass } from './subclass/main/main.js'
+import type { ErrorClass, SpecificErrorClass } from './subclass/create/main.js'
 import type { CustomClass } from './subclass/parent/main.js'
 
 export type {
