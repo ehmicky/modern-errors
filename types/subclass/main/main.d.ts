@@ -9,10 +9,6 @@ import type {
   ErrorProps,
   MergeErrorProps,
 } from '../../core_plugins/props/main.js'
-import type {
-  CustomAttributes,
-  CustomInstanceAttributes,
-} from '../custom/main.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { Cause } from '../../options/instance.js'
 import type { OmitKeys } from '../../utils.js'
@@ -33,18 +29,13 @@ export type ErrorSubclass<
 > = SpecificErrorClass<
   PluginsArg,
   MergeErrorProps<ParentProps, ErrorPropsArg>,
-  ParentCustomClass,
-  CustomInstanceAttributes<
-    SpecificErrorInstance<PluginsArg, ParentProps, {}, undefined, undefined>,
-    InstanceType<ParentCustomClass>
-  >
+  ParentCustomClass
 >
 
 interface ErrorSubclassCore<
   ParentPlugins extends Plugins,
   ParentProps extends ErrorProps,
   ParentCustomClass extends ErrorConstructor,
-  CustomAttributesArg extends CustomAttributes,
 > {
   /**
    * Error subclass
@@ -71,18 +62,13 @@ interface ErrorSubclassCore<
   ): SpecificErrorInstance<
     ParentPlugins,
     MergeErrorProps<ParentProps, ErrorPropsArg>,
-    CustomAttributesArg,
+    ParentCustomClass,
     AggregateErrorsArg,
     CauseArg
   >
 
   readonly prototype: InstanceType<
-    ErrorSubclassCore<
-      ParentPlugins,
-      ParentProps,
-      ParentCustomClass,
-      CustomAttributesArg
-    >
+    ErrorSubclassCore<ParentPlugins, ParentProps, ParentCustomClass>
   >
 
   /**
@@ -105,8 +91,7 @@ interface ErrorSubclassCore<
       ParentProps,
       ErrorPropsArg,
       ParentCustomClass,
-      CustomClass,
-      CustomAttributesArg
+      CustomClass
     >,
   ): ErrorSubclass<ParentPlugins, ParentProps, ErrorPropsArg, CustomClass>
 
@@ -126,7 +111,7 @@ interface ErrorSubclassCore<
    */
   normalize<ErrorArg extends unknown>(
     error: ErrorArg,
-  ): NormalizeError<ParentPlugins, ParentProps, ErrorArg, CustomAttributesArg>
+  ): NormalizeError<ParentPlugins, ParentProps, ErrorArg, ParentCustomClass>
 }
 
 /**
@@ -136,21 +121,10 @@ export type SpecificErrorClass<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   ParentCustomClass extends ErrorConstructor,
-  CustomAttributesArg extends CustomAttributes,
-> = ErrorSubclassCore<
-  PluginsArg,
-  ErrorPropsArg,
-  ParentCustomClass,
-  CustomAttributesArg
-> &
+> = ErrorSubclassCore<PluginsArg, ErrorPropsArg, ParentCustomClass> &
   OmitKeys<
     ParentCustomClass,
-    keyof ErrorSubclassCore<
-      PluginsArg,
-      ErrorPropsArg,
-      ParentCustomClass,
-      CustomAttributesArg
-    >
+    keyof ErrorSubclassCore<PluginsArg, ErrorPropsArg, ParentCustomClass>
   > &
   PluginsStaticMethods<PluginsArg>
 
@@ -160,6 +134,5 @@ export type SpecificErrorClass<
 export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
   PluginsArg,
   ErrorProps,
-  ErrorConstructor,
-  CustomAttributes
+  ErrorConstructor
 >

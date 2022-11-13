@@ -22,7 +22,7 @@ export type {
   ErrorClass,
 }
 
-type ModernError = SpecificErrorClass<[], {}, ErrorConstructor, {}>
+type ModernError = SpecificErrorClass<[], {}, ErrorConstructor>
 
 /**
  * Creates and returns `BaseError`.
@@ -50,8 +50,7 @@ export default function modernErrors<
     {},
     ErrorPropsArg,
     ModernError,
-    CustomClass,
-    {}
+    CustomClass
   >,
 ): ErrorSubclass<PluginsArg, {}, ErrorPropsArg, CustomClass>
 
