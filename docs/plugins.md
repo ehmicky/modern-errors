@@ -419,8 +419,8 @@ export default {
 
 A `Plugin` type is available to validate the plugin's shape.
 [`satisfies Plugin`](https://devblogs.microsoft.com/typescript/announcing-typescript-4-9-rc/#the-satisfies-operator)
-should be used (not `const plugin: Plugin = { ... }`) to prevent widening it and
-removing any specific types declared by that plugin.
+should be used (as opposed to `const plugin: Plugin = { ... }`) to prevent
+widening it and removing any specific types declared by that plugin.
 
 ```ts
 import type { Plugin } from 'modern-errors'
