@@ -47,7 +47,6 @@ interface KnownClassOptions<
    * export const BaseError = ModernError.subclass('BaseError', {
    *   plugins: [modernErrorsBugs, modernErrorsSerialize],
    * })
-   * // ...
    * ```
    */
   readonly plugins?: ChildPlugins
