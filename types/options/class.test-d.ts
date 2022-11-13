@@ -1,10 +1,6 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
-import modernErrors, {
-  ClassOptions,
-  InstanceOptions,
-  GlobalOptions,
-} from 'modern-errors'
+import modernErrors, { ClassOptions, InstanceOptions } from 'modern-errors'
 
 const BaseError = modernErrors()
 const PluginBaseError = modernErrors([{ name: 'test' as const }])
@@ -69,4 +65,3 @@ expectError(
 
 expectAssignable<ClassOptions>({ custom: BaseError })
 expectNotAssignable<InstanceOptions>({ custom: BaseError })
-expectNotAssignable<GlobalOptions>({ custom: BaseError })

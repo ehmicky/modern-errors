@@ -1,10 +1,6 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
-import modernErrors, {
-  ClassOptions,
-  InstanceOptions,
-  GlobalOptions,
-} from 'modern-errors'
+import modernErrors, { ClassOptions, InstanceOptions } from 'modern-errors'
 
 const BaseError = modernErrors()
 const ChildError = BaseError.subclass('ChildError')
@@ -14,7 +10,6 @@ BaseError.subclass('TestError', { props: {} })
 ChildError.subclass('TestError', { props: {} })
 new BaseError('', { cause: '', props: {} })
 new ChildError('', { props: {} })
-expectAssignable<GlobalOptions>({ props: {} })
 expectAssignable<ClassOptions>({ props: {} })
 expectAssignable<InstanceOptions>({ props: {} })
 
@@ -23,6 +18,5 @@ expectError(BaseError.subclass('TestError', { props: true }))
 expectError(ChildError.subclass('TestError', { props: true }))
 expectError(new BaseError('', { cause: '', props: true }))
 expectError(new ChildError('', { props: true }))
-expectNotAssignable<GlobalOptions>({ props: true })
 expectNotAssignable<ClassOptions>({ props: true })
 expectNotAssignable<InstanceOptions>({ props: true })

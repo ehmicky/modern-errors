@@ -10,7 +10,6 @@ import type { ErrorConstructor } from './subclass/parent/main.js'
 import type { MethodOptions } from './options/method.js'
 import type { InstanceOptions } from './options/instance.js'
 import type { ClassOptions, SpecificClassOptions } from './options/class.js'
-import type { GlobalOptions } from './options/global.js'
 import type { GetPropsOption } from './core_plugins/props/main.js'
 
 export type {
@@ -19,7 +18,6 @@ export type {
   MethodOptions,
   InstanceOptions,
   ClassOptions,
-  GlobalOptions,
   ErrorInstance,
   ErrorClass,
 }
