@@ -8,18 +8,18 @@ const BaseError = ModernError.subclass('BaseError')
 const ChildError = BaseError.subclass('ChildError')
 const CustomError = ModernError.subclass('CustomError', {
   custom: class extends ModernError {
-    prop = true
+    one = true
   },
 })
 const ChildCustomError = CustomError.subclass('ChildCustomError')
 const CustomChildError = BaseError.subclass('CustomChildError', {
   custom: class extends BaseError {
-    prop = true
+    one = true
   },
 })
 const DeepCustomError = CustomError.subclass('DeepCustomError', {
   custom: class extends CustomError {
-    propTwo = true
+    two = true
   },
 })
 

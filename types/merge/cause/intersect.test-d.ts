@@ -44,15 +44,13 @@ expectType<string | undefined>(
 const NamePropertyError = ModernError.subclass('NamePropertyError', {
   plugins: [{ name, properties: () => ({ name: 'test' }) }],
 })
-const ThreeError = NamePropertyError.subclass('ThreeError')
-expectType<string>(new ThreeError('').name)
+expectType<string>(new NamePropertyError('').name)
 expectType<string>(new ModernError('', { props: { name: 'test' } }).name)
 
 const CausePropertyError = ModernError.subclass('CausePropertyError', {
   plugins: [{ name, properties: () => ({ cause: '' }) }],
 })
-const FourError = CausePropertyError.subclass('FourError')
-expectType<Error['cause']>(new FourError('').cause)
+expectType<Error['cause']>(new CausePropertyError('').cause)
 expectType<Error['cause']>(new ModernError('', { props: { cause: '' } }).cause)
 
 const AggregatePropertyError = ModernError.subclass('AggregatePropertyError', {

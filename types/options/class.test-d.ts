@@ -2,8 +2,9 @@ import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
 import ModernError, { ClassOptions, InstanceOptions } from 'modern-errors'
 
+const plugin = { name: 'test' as const }
 const PluginBaseError = ModernError.subclass('PluginBaseError', {
-  plugins: [{ name: 'test' as const }],
+  plugins: [plugin],
 })
 const BaseError = ModernError.subclass('BaseError')
 const CustomError = ModernError.subclass('CustomError', {
@@ -70,3 +71,7 @@ expectNotAssignable<
 
 expectAssignable<ClassOptions>({ custom: ModernError })
 expectNotAssignable<InstanceOptions>({ custom: ModernError })
+
+expectAssignable<ClassOptions>({ plugins: [plugin] })
+expectAssignable<ClassOptions<[typeof plugin]>>({ plugins: [plugin] })
+expectNotAssignable<InstanceOptions>({ plugins: [plugin] })

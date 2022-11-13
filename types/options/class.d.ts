@@ -31,20 +31,12 @@ interface KnownClassOptions<
    * @example
    * ```js
    * export const InputError = BaseError.subclass('InputError', {
-   *   // The `class` must extend from `BaseError`
+   *   // The `class` must extend from the parent error class
    *   custom: class extends BaseError {
    *     // If a `constructor` is defined, its parameters must be (message, options)
-   *     // like `BaseError`
    *     constructor(message, options) {
-   *       // Modifying `message` or `options` should be done before `super()`
    *       message += message.endsWith('.') ? '' : '.'
-   *
-   *       // All arguments should be forwarded to `super()`, including any
-   *       // custom `options` or additional `constructor` parameters
    *       super(message, options)
-   *
-   *       // `name` is automatically added, so this is not necessary
-   *       // this.name = 'InputError'
    *     }
    *
    *     isUserInput() {
@@ -73,8 +65,7 @@ export type SpecificClassOptions<
   PluginsOptions<[...PluginsArg, ...ChildPlugins], ChildProps>
 
 /**
- * Class-specific options passed to `BaseError.subclass('ErrorName', options)` or
- * `ErrorClass.subclass('ErrorName', options)`
+ * Class-specific options passed to `ErrorClass.subclass('ErrorName', options)`
  */
-export type ClassOptions<PluginsArg extends Plugins = []> =
+export type ClassOptions<PluginsArg extends Plugins = Plugins> =
   SpecificClassOptions<PluginsArg, PluginsArg, ErrorProps, CustomClass>

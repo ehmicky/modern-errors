@@ -9,12 +9,12 @@ type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
 type FullErrorInstance = ErrorInstance<[typeof fullPlugin]>
 
 const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
-const unknownError = new BaseError('')
+const baseError = new BaseError('')
 
-expectAssignable<Error>(unknownError)
-expectAssignable<ErrorInstance>(unknownError)
-expectAssignable<BareErrorInstance>(unknownError)
-expectAssignable<FullErrorInstance>(unknownError)
+expectAssignable<Error>(baseError)
+expectAssignable<ErrorInstance>(baseError)
+expectAssignable<BareErrorInstance>(baseError)
+expectAssignable<FullErrorInstance>(baseError)
 
 const CustomError = BaseError.subclass('CustomError', {
   custom: class extends BaseError {
