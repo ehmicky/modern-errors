@@ -18,6 +18,31 @@ import type {
   ParentExtra,
 } from '../parent/main.js'
 
+/**
+ * `ErrorClass.subclass()`
+ */
+type CreateSubclass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  CustomClassArg extends CustomClass,
+> = <
+  ChildPlugins extends Plugins = [],
+  ChildCustomClass extends CustomClassArg = CustomClassArg,
+  ChildProps extends ErrorProps = {},
+>(
+  errorName: ErrorName,
+  options?: SpecificClassOptions<
+    PluginsArg,
+    ChildPlugins,
+    ChildProps,
+    ChildCustomClass
+  >,
+) => SpecificErrorClass<
+  [...PluginsArg, ...ChildPlugins],
+  MergeErrorProps<ErrorPropsArg, ChildProps>,
+  ChildCustomClass
+>
+
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -65,23 +90,7 @@ interface ErrorSubclassCore<
    * export const InputError = ErrorClass.subclass('InputError', options)
    * ```
    */
-  subclass<
-    ChildPlugins extends Plugins = [],
-    ChildCustomClass extends CustomClassArg = CustomClassArg,
-    ChildProps extends ErrorProps = {},
-  >(
-    errorName: ErrorName,
-    options?: SpecificClassOptions<
-      PluginsArg,
-      ChildPlugins,
-      ChildProps,
-      ChildCustomClass
-    >,
-  ): SpecificErrorClass<
-    [...PluginsArg, ...ChildPlugins],
-    MergeErrorProps<ErrorPropsArg, ChildProps>,
-    ChildCustomClass
-  >
+  subclass: CreateSubclass<PluginsArg, ErrorPropsArg, CustomClassArg>
 
   /**
    * Normalizes invalid errors and assigns the `UnknownError` class to
