@@ -295,7 +295,7 @@ export default {
 
 _Type_: `ErrorClass`
 
-Current [error class](../README.md#%EF%B8%8F-error-classes)
+Current [error class](../README.md#%EF%B8%8F-error-classes).
 
 ```js
 export default {
@@ -312,7 +312,7 @@ export default {
 
 _Type_: `ErrorClass[]`
 
-Array containing both the current error class and all its
+Array containing both the [current error class](#errorclass) and all its
 [subclasses](../README.md#errorclasssubclassname-options) (including deep ones).
 
 ```js
