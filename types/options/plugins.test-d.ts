@@ -78,3 +78,14 @@ expectNotAssignable<ClassOptions<[typeof fullPlugin]>>(true)
 expectNotAssignable<InstanceOptions>(true)
 expectNotAssignable<InstanceOptions<[typeof fullPlugin]>>(true)
 expectNotAssignable<MethodOptions<typeof barePlugin>>(true)
+
+const secondPlugin = { ...fullPlugin, name: 'second' as const }
+const SecondPluginError = BaseError.subclass('SecondPluginError', {
+  plugins: [secondPlugin],
+  test: true,
+  second: true,
+})
+new SecondPluginError('', { test: true, second: true })
+expectError(new SecondPluginError('', { test: 'true' }))
+expectError(new SecondPluginError('', { second: 'true' }))
+expectError(new SecondPluginError('', { other: true }))
