@@ -3,12 +3,12 @@ import type { Cause } from '../options/instance.js'
 /**
  * Single aggregate error
  */
-type AggregateErrorOption = unknown
+export type AggregateErrorOption = unknown
 
 /**
  * Aggregate `errors` array
  */
-type DefinedAggregateErrors = readonly AggregateErrorOption[]
+export type DefinedAggregateErrors = readonly AggregateErrorOption[]
 
 /**
  * Optional aggregate `errors` array

@@ -3,6 +3,10 @@ import type { ErrorProps } from '../../core_plugins/props/main.js'
 import type { CustomClass } from '../../subclass/parent/main.js'
 import type { SpecificErrorClass } from '../../subclass/main/main.js'
 import type { ErrorInstance } from '../modify/main.js'
+import type {
+  DefinedAggregateErrors,
+  AggregateErrorOption,
+} from '../aggregate.js'
 import type { SetProps } from '../../utils.js'
 
 /**
@@ -22,13 +26,50 @@ export type NormalizeError<
 >(
   error: ErrorArg,
   UnknownErrorClass?: UnknownErrorClass,
-) => NormalizeSingleError<
+) => NormalizeDeepError<
   ErrorArg,
   InstanceType<SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>>,
   InstanceType<UnknownErrorClass>
 >
 
-type NormalizeSingleError<
+/**
+ * Apply `ErrorClass.normalize()` on both `error` and `error.errors`
+ */
+type NormalizeDeepError<
+  ErrorArg extends unknown,
+  ParentError extends ErrorInstance,
+  UnknownError extends ErrorInstance,
+> = ErrorArg extends {
+  errors: infer AggregateErrorsArg extends DefinedAggregateErrors
+}
+  ? Omit<NormalizeOneError<ErrorArg, ParentError, UnknownError>, 'errors'> & {
+      errors: NormalizeManyErrors<AggregateErrorsArg, ParentError, UnknownError>
+    }
+  : NormalizeOneError<ErrorArg, ParentError, UnknownError>
+
+/**
+ * Apply `ErrorClass.normalize()` on `error.errors`
+ */
+type NormalizeManyErrors<
+  AggregateErrorsArg extends DefinedAggregateErrors,
+  ParentError extends ErrorInstance,
+  UnknownError extends ErrorInstance,
+> = AggregateErrorsArg extends never[]
+  ? []
+  : AggregateErrorsArg extends readonly [
+      infer AggregateErrorArg extends AggregateErrorOption,
+      ...infer Rest extends DefinedAggregateErrors,
+    ]
+  ? [
+      NormalizeDeepError<AggregateErrorArg, ParentError, UnknownError>,
+      ...NormalizeManyErrors<Rest, ParentError, UnknownError>,
+    ]
+  : NormalizeDeepError<AggregateErrorsArg[number], ParentError, UnknownError>[]
+
+/**
+ * Apply `ErrorClass.normalize()` on `error`, but not `error.errors`
+ */
+type NormalizeOneError<
   ErrorArg extends unknown,
   ParentError extends ErrorInstance,
   UnknownError extends ErrorInstance,
