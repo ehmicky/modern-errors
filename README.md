@@ -138,7 +138,7 @@ not `require()`.
 
 ## ModernError
 
-Base [`ErrorClass`](#errorclass).
+Top-level [`ErrorClass`](#errorclass).
 
 ## ErrorClass
 
