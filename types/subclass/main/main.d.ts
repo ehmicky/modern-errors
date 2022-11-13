@@ -35,7 +35,7 @@ export type ErrorSubclass<
   MergeErrorProps<ParentProps, ErrorPropsArg>,
   ParentErrorClass,
   CustomInstanceAttributes<
-    SpecificErrorInstance<PluginsArg, ParentProps, {}, never, never>,
+    SpecificErrorInstance<PluginsArg, ParentProps, {}, undefined, undefined>,
     InstanceType<ParentErrorClass>
   >
 >
@@ -55,9 +55,9 @@ interface ErrorSubclassCore<
    * ```
    */
   new <
-    ErrorPropsArg extends ErrorProps = ErrorProps,
-    AggregateErrorsArg extends AggregateErrors = AggregateErrors,
-    CauseArg extends Cause = Cause,
+    ErrorPropsArg extends ErrorProps = {},
+    AggregateErrorsArg extends AggregateErrors = undefined,
+    CauseArg extends Cause = undefined,
   >(
     message: string,
     options?: ParentInstanceOptions<
@@ -72,8 +72,8 @@ interface ErrorSubclassCore<
     ParentPlugins,
     MergeErrorProps<ParentProps, ErrorPropsArg>,
     CustomAttributesArg,
-    CauseArg,
-    AggregateErrorsArg
+    AggregateErrorsArg,
+    CauseArg
   >
 
   readonly prototype: InstanceType<

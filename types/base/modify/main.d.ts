@@ -23,8 +23,8 @@ export type SpecificErrorInstance<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
   CustomAttributesArg extends CustomAttributes,
-  CauseArg extends Cause,
   AggregateErrorsArg extends AggregateErrors,
+  CauseArg extends Cause,
 > = Error &
   GetAggregateErrors<AggregateErrorsArg, CauseArg> &
   OmitKeys<CustomAttributesArg, CoreErrorProps> &
@@ -49,6 +49,6 @@ export type ErrorInstance<PluginsArg extends Plugins = []> =
     PluginsArg,
     ErrorProps,
     CustomAttributes,
-    Cause,
-    AggregateErrors
+    AggregateErrors,
+    Cause
   >

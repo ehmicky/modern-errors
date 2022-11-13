@@ -17,6 +17,6 @@ export type NormalizeError<
       PluginsArg,
       ErrorPropsArg,
       CustomAttributesArg,
-      ErrorArg,
-      never
+      undefined,
+      ErrorArg
     >

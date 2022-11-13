@@ -3,7 +3,10 @@ import type { AggregateErrors } from '../base/aggregate.js'
 import type { PluginsOptions } from './plugins.js'
 import type { ErrorProps } from '../core_plugins/props/main.js'
 
-export type Cause = unknown
+/**
+ * Optional `cause` option
+ */
+export type Cause = unknown | undefined
 
 /**
  * Options passed to error constructors, excluding any plugin options
