@@ -7,10 +7,7 @@ import type {
   AggregateErrors,
 } from '../../base/aggregate.js'
 import type { SpecificErrorInstance } from '../../base/modify/main.js'
-import type {
-  GivenErrorInstance,
-  NormalizeError,
-} from '../../base/normalize/main.js'
+import type { NormalizeError } from '../../base/normalize/main.js'
 import type {
   ErrorProps,
   MergeErrorProps,
@@ -18,6 +15,7 @@ import type {
 import type {
   CustomAttributes,
   CustomInstanceAttributes,
+  AddInstanceAttributes,
 } from '../custom/main.js'
 import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
@@ -96,11 +94,10 @@ interface ErrorSubclassCore<
       ParentInstanceOptions<PluginsArg, ParentErrorClass>
     >,
     ...extra: ParentExtra<PluginsArg, ParentErrorClass>
-  ): GivenErrorInstance<
+  ): SpecificErrorInstance<
     PluginsArg,
     MergeErrorProps<ErrorPropsArg, InstanceOptionsArg>,
-    InstanceOptionsArg['cause'],
-    CustomAttributesArg,
+    AddInstanceAttributes<InstanceOptionsArg['cause'], CustomAttributesArg>,
     GetAggregateErrors<InstanceOptionsArg>
   >
 

@@ -33,3 +33,9 @@ export type CustomInstanceAttributes<
       >]: Child[ChildKey]
     }
   : {}
+
+export type AddInstanceAttributes<
+  ErrorArg extends unknown,
+  CustomAttributesArg extends CustomAttributes,
+> = CustomAttributesArg &
+  Omit<CustomInstanceAttributes<Error, ErrorArg>, keyof CustomAttributesArg>
