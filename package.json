@@ -67,7 +67,7 @@
     "modern-errors-bugs": "^2.1.0",
     "modern-errors-clean": "^3.1.0",
     "modern-errors-cli": "^2.2.0",
-    "modern-errors-http": "^2.1.0",
+    "modern-errors-http": "^2.2.0",
     "modern-errors-process": "^2.1.0",
     "modern-errors-serialize": "^2.1.0",
     "modern-errors-winston": "^2.1.0",
