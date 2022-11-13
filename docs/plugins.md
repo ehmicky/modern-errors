@@ -250,10 +250,9 @@ export default {
 
 `info` is a plain object passed as the first argument to
 [`properties()`](#properties), [instance methods](#instancemethodsmethodname)
-and [static methods](#staticmethodsmethodname).
-
-Its members are readonly and should not be mutated, except for
-[`info.error`](#error) inside [instance methods](#instancemethodsmethodname).
+and [static methods](#staticmethodsmethodname). Its members are readonly and
+should not be mutated. Exception: [instance methods](#instancemethodsmethodname)
+can mutate [`info.error`](#error).
 
 ### error
 
