@@ -69,19 +69,11 @@ interface ErrorSubclassCore<
   >
 
   /**
-   * Creates and returns an error subclass, to share logic between error
-   * classes.
+   * Creates and returns an error subclass.
    *
    * @example
    * ```js
-   * const SharedError = BaseError.subclass('SharedError', {
-   *   custom: class extends BaseError {
-   *     // ...
-   *   },
-   * })
-   *
-   * export const InputError = SharedError.subclass('InputError')
-   * export const AuthError = SharedError.subclass('AuthError')
+   * export const InputError = BaseError.subclass('InputError', options)
    * ```
    */
   readonly subclass: CreateSubclass<
@@ -93,7 +85,7 @@ interface ErrorSubclassCore<
 }
 
 /**
- * Error class, including `BaseError`, with specific `props`, `custom`, etc.
+ * Error class, with specific `props`, `custom`, etc.
  */
 export type SpecificErrorClass<
   PluginsArg extends Plugins,
@@ -119,7 +111,7 @@ export type SpecificErrorClass<
   PluginsStaticMethods<PluginsArg>
 
 /**
- * Error class, including `BaseError`
+ * Error class
  */
 export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
   PluginsArg,

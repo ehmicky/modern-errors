@@ -21,16 +21,11 @@ interface BaseErrorClassCore<
   CustomAttributesArg extends CustomAttributes,
 > {
   /**
-   * Base error class.
+   * Error subclass
    *
    * @example
    * ```js
-   * try {
-   *   throw new AuthError('...')
-   * } catch (cause) {
-   *   // Still an AuthError
-   *   throw new BaseError('...', { cause })
-   * }
+   * throw new InputError('Missing file path.')
    * ```
    */
   new <
@@ -64,8 +59,6 @@ interface BaseErrorClassCore<
 
   /**
    * Creates and returns an error subclass.
-   * The first one must be named `UnknownError`.
-   * Subclasses can also call `ErrorClass.subclass()` themselves.
    *
    * @example
    * ```js
@@ -105,7 +98,7 @@ interface BaseErrorClassCore<
 }
 
 /**
- * Base error class `BaseError`, used internally only with additional generics
+ * Error class, with specific `props`, `custom`, etc.
  */
 export type SpecificBaseErrorClass<
   PluginsArg extends Plugins,
@@ -131,7 +124,7 @@ export type SpecificBaseErrorClass<
   PluginsStaticMethods<PluginsArg>
 
 /**
- * Base error class `BaseError`
+ * Error class
  */
 export type BaseErrorClass<PluginsArg extends Plugins = []> =
   SpecificBaseErrorClass<
