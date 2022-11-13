@@ -1,6 +1,6 @@
 {
   "name": "modern-errors",
-  "version": "5.0.0-beta.1",
+  "version": "5.0.0",
   "type": "module",
   "exports": {
     "types": "./build/types/main.d.ts",
