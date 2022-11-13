@@ -1,3 +1,11 @@
+# 5.1.0 (unreleased)
+
+## Features
+
+- Any `error[exampleMethod](...)` plugin method can now
+  [also be called](docs/plugins.md#instancemethodsmethodname) using
+  `ErrorClass[exampleMethod](error, ...)`
+
 # 5.0.0
 
 ## Breaking changes
