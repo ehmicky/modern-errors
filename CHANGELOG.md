@@ -4,7 +4,15 @@
 
 - Any `error[exampleMethod](...)` plugin method can now
   [also be called](docs/plugins.md#instancemethodsmethodname) using
-  `ErrorClass[exampleMethod](error, ...)`
+  `ErrorClass[exampleMethod](error, ...)`. We recommend using the latter since
+  it is safer when `error` is [unknown](README.md#-unknown-errors) or
+  [invalid](README.md#invalid-errors).
+  - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli):
+    `error.exit()` -> `BaseError.exit(error)`
+  - [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize):
+    `error.toJSON()` -> `BaseError.toJSON(error)`
+  - [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http):
+    `error.httpResponse()` -> `BaseError.httpResponse(error)`
 
 # 5.0.0
 
