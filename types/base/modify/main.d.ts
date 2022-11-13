@@ -19,29 +19,32 @@ export type SpecificErrorInstance<
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = InstanceType<CustomClass> &
-  GetAggregateErrors<AggregateErrorsArg, CauseArg> &
+  Omit<
+    GetAggregateErrors<AggregateErrorsArg, CauseArg>,
+    keyof InstanceType<CustomClass>
+  > &
   Omit<
     PluginsInstanceMethods<PluginsArg>,
-    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof InstanceType<CustomClass>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
   > &
   Omit<
     PluginsProperties<PluginsArg>,
-    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof InstanceType<CustomClass>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof PluginsInstanceMethods<PluginsArg>
   > &
   Omit<
     ErrorPropsArg,
-    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof InstanceType<CustomClass>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof PluginsInstanceMethods<PluginsArg>
     | keyof PluginsProperties<PluginsArg>
   > &
   Omit<
     NormalizedCause<CauseArg>,
-    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof InstanceType<CustomClass>
+    | keyof GetAggregateErrors<AggregateErrorsArg, CauseArg>
     | keyof PluginsInstanceMethods<PluginsArg>
     | keyof PluginsProperties<PluginsArg>
     | keyof ErrorPropsArg
