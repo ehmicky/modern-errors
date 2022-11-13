@@ -29,6 +29,47 @@ import type {
   ParentExtra,
 } from '../parent/main.js'
 
+/**
+ * `ErrorClass.subclass()`
+ */
+export type CreateSubclass<
+  PluginsArg extends Plugins,
+  ErrorPropsArg extends ErrorProps,
+  ParentErrorClass extends ErrorConstructor<PluginsArg>,
+  CustomAttributesArg extends CustomAttributes,
+> = <
+  ErrorNameArg extends ErrorName,
+  ClassOptionsArg extends SpecificClassOptions<
+    PluginsArg,
+    ErrorPropsArg,
+    ParentErrorClass,
+    CustomAttributesArg
+  >,
+>(
+  errorName: ErrorNameArg,
+  options?: ClassOptionsArg,
+) => ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
+  ? SpecificErrorClass<
+      PluginsArg,
+      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
+      ClassOptionsArg['custom'],
+      CustomInstanceAttributes<
+        SpecificErrorInstance<
+          PluginsArg,
+          ErrorPropsArg,
+          CustomAttributes,
+          AggregateErrors
+        >,
+        InstanceType<ClassOptionsArg['custom']>
+      >
+    >
+  : SpecificErrorClass<
+      PluginsArg,
+      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
+      ParentErrorClass,
+      CustomAttributesArg
+    >
+
 interface ErrorSubclassCore<
   PluginsArg extends Plugins,
   ErrorPropsArg extends ErrorProps,
@@ -147,44 +188,3 @@ export type ErrorClass<PluginsArg extends Plugins = []> = SpecificErrorClass<
   ErrorConstructor<PluginsArg>,
   CustomAttributes
 >
-
-/**
- * `ErrorClass.subclass()`
- */
-export type CreateSubclass<
-  PluginsArg extends Plugins,
-  ErrorPropsArg extends ErrorProps,
-  ParentErrorClass extends ErrorConstructor<PluginsArg>,
-  CustomAttributesArg extends CustomAttributes,
-> = <
-  ErrorNameArg extends ErrorName,
-  ClassOptionsArg extends SpecificClassOptions<
-    PluginsArg,
-    ErrorPropsArg,
-    ParentErrorClass,
-    CustomAttributesArg
-  >,
->(
-  errorName: ErrorNameArg,
-  options?: ClassOptionsArg,
-) => ClassOptionsArg extends { custom: ErrorConstructor<PluginsArg> }
-  ? SpecificErrorClass<
-      PluginsArg,
-      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
-      ClassOptionsArg['custom'],
-      CustomInstanceAttributes<
-        SpecificErrorInstance<
-          PluginsArg,
-          ErrorPropsArg,
-          CustomAttributes,
-          AggregateErrors
-        >,
-        InstanceType<ClassOptionsArg['custom']>
-      >
-    >
-  : SpecificErrorClass<
-      PluginsArg,
-      MergeErrorProps<ErrorPropsArg, ClassOptionsArg>,
-      ParentErrorClass,
-      CustomAttributesArg
-    >
