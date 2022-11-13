@@ -17,10 +17,9 @@ import type {
   CustomInstanceAttributes,
   AddInstanceAttributes,
 } from '../custom/main.js'
-import type { CustomStaticAttributes } from '../inherited.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { MainInstanceOptions } from '../../options/instance.js'
-import type { NoAdditionalProps } from '../../utils.js'
+import type { NoAdditionalProps, OmitKeys } from '../../utils.js'
 import type {
   ErrorConstructor,
   ParentInstanceOptions,
@@ -164,7 +163,7 @@ export type SpecificErrorClass<
   ParentErrorClass,
   CustomAttributesArg
 > &
-  CustomStaticAttributes<
+  OmitKeys<
     ParentErrorClass,
     keyof ErrorSubclassCore<
       PluginsArg,
