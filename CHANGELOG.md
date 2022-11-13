@@ -32,8 +32,8 @@ export const BaseError = ModernError.subclass('BaseError', {
 ### Error normalization
 
 Creating an `UnknownError` class is now optional, although still recommended. To
-normalize unknown errors, `UnknownError` must now be explicitly passed as a
-second argument to
+[normalize unknown errors](README.md#normalizing-unknown-errors), `UnknownError`
+must now be explicitly passed as a second argument to
 [`BaseError.normalize()`](README.md#errorclassnormalizeerror-newerrorclass).
 
 Before:
@@ -61,7 +61,8 @@ export const main = function () {
 ```
 
 When `UnknownError` is not passed as a second argument, `BaseError.normalize()`
-now converts unknown errors to `BaseError` instances instead.
+now [converts](README.md#invalid-errors) unknown errors to `BaseError` instances
+instead.
 
 Before:
 
@@ -163,7 +164,7 @@ Previously plugins had to be applied to all error classes.
 
 ### Optional wrapping
 
-The `BaseError` can now be instantiating without
+The `BaseError` can now be instantiated without
 [wrapping an error](README.md#-wrap-errors). The
 [`cause` option](README.md#optionscause) is now optional.
 
