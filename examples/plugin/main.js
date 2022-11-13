@@ -7,7 +7,8 @@ export default {
   //   return {}
   // },
 
-  // // Add error instance methods like `error.exampleMethod(...args)`
+  // // Add error instance methods like
+  // // `ErrorClass.exampleMethod(error, ...args)`
   // instanceMethods: {
   //   exampleMethod(info, ...args) {
   //     // ...

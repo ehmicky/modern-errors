@@ -24,11 +24,11 @@ declare const plugin: {
 
   // instanceMethods: {
   //   /**
-  //    * Description of `error.exampleMethod()`.
+  //    * Description of `ErrorClass.exampleMethod(error)`.
   //    *
   //    * @example
   //    * ```js
-  //    * const value = error.exampleMethod(arg)
+  //    * const value = ErrorClass.exampleMethod(error, arg)
   //    * ```
   //    */
   //   exampleMethod: (info: Info['instanceMethods'], arg: unknown) => unknown

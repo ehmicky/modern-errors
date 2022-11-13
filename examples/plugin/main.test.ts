@@ -8,4 +8,4 @@ const BaseError = ModernError.subclass('BaseError', {
 })
 const error = new BaseError('')
 
-assert.equal(error.exampleMethod(), 'expectedValue')
+assert.equal(BaseError.exampleMethod(error), 'expectedValue')

@@ -26,14 +26,15 @@ export default {
   //   return {}
   // },
 
-  // // Add error instance methods like `error.exampleMethod(...args)`
+  // // Add error instance methods like
+  // // `ErrorClass.exampleMethod(error, ...args)`
   // instanceMethods: {
   //   /**
-  //    * Description of `error.exampleMethod()`.
+  //    * Description of `ErrorClass.exampleMethod(error)`.
   //    *
   //    * @example
   //    * ```js
-  //    * const value = error.exampleMethod(arg)
+  //    * const value = ErrorClass.exampleMethod(error, arg)
   //    * ```
   //    */
   //   exampleMethod(info: Info['instanceMethods'], ...args: unknown[]): void {

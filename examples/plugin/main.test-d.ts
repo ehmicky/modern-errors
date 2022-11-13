@@ -19,8 +19,8 @@ expectType<string>(error.exampleProp)
 expectError(error.unknownProp)
 
 // Check `plugin.instanceMethods`
-expectType<string>(error.exampleMethod('validArgument'))
-expectError(error.exampleMethod('invalidArgument'))
+expectType<string>(BaseError.exampleMethod(error, 'validArgument'))
+expectError(Baserror.exampleMethod(error, 'invalidArgument'))
 
 // Check `plugin.staticMethods`
 expectType<string>(BaseError.staticMethod('validArgument'))
@@ -31,7 +31,9 @@ ModernError.subclass('TestError', {
   plugins: [modernErrorsExample],
   exampleOption: 'validOption',
 })
-error.exampleMethod('validArgument', { exampleOption: 'validOption' })
+BaseError.exampleMethod(error, 'validArgument', {
+  exampleOption: 'validOption',
+})
 BaseError.staticMethod('validArgument', { exampleOption: 'validOption' })
 expectAssignable<Options>({ exampleOption: 'validOption' })
 expectError(
@@ -41,7 +43,9 @@ expectError(
   }),
 )
 expectError(
-  error.exampleMethod('validArgument', { exampleOption: 'invalidOption' }),
+  BaseError.exampleMethod(error, 'validArgument', {
+    exampleOption: 'invalidOption',
+  }),
 )
 expectError(
   BaseError.staticMethod('validArgument', { exampleOption: 'invalidOption' }),
