@@ -374,7 +374,7 @@ try {
 Wrapping a module's main functions with
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
 ensures every error being thrown is [valid](#invalid-errors), applies
-[plugins](#using-plugins-with-unknown-errors), and has a class that is either
+[plugins](#-plugins), and has a class that is either
 [_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
 
 ```js
@@ -429,24 +429,6 @@ try {
 } catch (error) {
   // Now an `InputError` instance
   throw new InputError('Invalid regular expression:', { cause: error })
-}
-```
-
-### Using plugins with unknown errors
-
-[`BaseError.normalize()`](#errorclassnormalizeerror-newerrorclass) is required
-for [_unknown_ errors](#-unknown-errors) to use [plugins](#-plugins).
-
-<!-- eslint-skip -->
-
-```js
-try {
-  return regExp.test(value)
-} catch (error) {
-  error.examplePluginMethod() // This throws
-
-  const normalizedError = BaseError.normalize(error)
-  normalizedError.examplePluginMethod() // This works
 }
 ```
 
