@@ -166,7 +166,7 @@ if (error instanceof InputError) {
 
 [`ErrorClass.subclass()`](#errorclasssubclassname-options) returns
 [`class extends ErrorClass {}`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
-Parent classes [options](#options) are merged to their subclasses:
+Parent classes' [options](#options) are merged to their subclasses:
 [`props`](#error-class-properties), [`plugins`](#adding-plugins),
 [plugin options](#plugin-options), [`custom` logic](#-custom-logic).
 
@@ -178,7 +178,7 @@ export const InputError = BaseError.subclass('InputError', {
   props: { isUserError: true },
 })
 
-const error = new InputError('...', { props: { isUserError: true } })
+const error = new InputError('...')
 console.log(error.isError) // true
 console.log(error.isUserError) // true
 console.log(error instanceof BaseError) // true
