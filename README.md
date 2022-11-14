@@ -460,6 +460,11 @@ export const BaseError = ModernError.subclass('BaseError', {
 // ...
 ```
 
+### Custom plugins
+
+Please see the [following documentation](docs/plugins.md) to create your own
+plugin.
+
 ### Plugin options
 
 Most plugins can be configured with options. The option's name is the same as
@@ -504,11 +509,6 @@ ErrorClass[methodName](...args, options[pluginName])
 ```js
 error[methodName](...args, options[pluginName])
 ```
-
-### Custom plugins
-
-Please see the [following documentation](docs/plugins.md) to create your own
-plugin.
 
 ## 🔧 Custom logic
 
