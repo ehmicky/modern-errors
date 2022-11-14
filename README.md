@@ -437,11 +437,6 @@ try {
 Plugins extend `modern-errors` features. All available plugins are
 [listed here](#plugins).
 
-### Custom plugins
-
-Please see the [following documentation](docs/plugins.md) to create your own
-plugin.
-
 ### Adding plugins
 
 To use a plugin, please install it, then pass it to the
@@ -464,6 +459,11 @@ export const BaseError = ModernError.subclass('BaseError', {
 })
 // ...
 ```
+
+### Custom plugins
+
+Please see the [following documentation](docs/plugins.md) to create your own
+plugin.
 
 ### Plugin options
 
