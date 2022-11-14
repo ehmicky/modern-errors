@@ -9,7 +9,7 @@ Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 [instances'](../README.md#simple-errors)
 [`props`](../README.md#error-instance-properties), aggregate
 [`errors`](../README.md#aggregate-errors) and
-[`custom`](../README.md#class-custom-logic) methods/properties are typed.
+[`custom`](../README.md#-custom-logic) methods/properties are typed.
 
 ```ts
 const InputError = BaseError.subclass('InputError', {
@@ -100,9 +100,9 @@ The following types are exported:
 Those types are wide: they do not include any information about specific
 [`props`](../README.md#error-instance-properties), aggregate
 [`errors`](../README.md#aggregate-errors) nor
-[`custom`](../README.md#class-custom-logic) methods/properties. However, they
-can include specific plugins' methods, properties and options by passing those
-as a generic parameter, such as `ErrorClass<[typeof plugin]>`.
+[`custom`](../README.md#-custom-logic) methods/properties. However, they can
+include specific plugins' methods, properties and options by passing those as a
+generic parameter, such as `ErrorClass<[typeof plugin]>`.
 
 They should only be used to type unknown error instances and classes, when no
 variable nor [type inference](#type-inference) is available. For example, they

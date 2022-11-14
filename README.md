@@ -162,6 +162,29 @@ if (error instanceof InputError) {
 }
 ```
 
+### Error subclasses
+
+[`ErrorClass.subclass()`](#errorclasssubclassname-options) returns
+[`class extends ErrorClass {}`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
+Parent classes [options](#options) are merged to their subclasses:
+[`props`](#error-class-properties), [`plugins`](#adding-plugins),
+[plugin options](#plugin-options), [`custom` logic](#-custom-logic).
+
+```js
+export const BaseError = ModernError.subclass('BaseError', {
+  props: { isError: true },
+})
+export const InputError = BaseError.subclass('InputError', {
+  props: { isUserError: true },
+})
+
+const error = new InputError('...', { props: { isUserError: true } })
+console.log(error.isError) // true
+console.log(error.isUserError) // true
+console.log(error instanceof BaseError) // true
+console.log(error instanceof InputError) // true
+```
+
 ## 🏷️ Throw errors
 
 ### Simple errors
@@ -512,8 +535,6 @@ error[methodName](...args, options[pluginName])
 
 ## 🔧 Custom logic
 
-### Class custom logic
-
 The [`custom` option](#optionscustom) can be used to provide an error `class`
 with additional methods, `constructor` or properties.
 
@@ -539,22 +560,6 @@ export const InputError = BaseError.subclass('InputError', {
 const error = new InputError('Wrong user name')
 console.log(error.message) // 'Wrong user name.'
 console.log(error.isUserInput())
-```
-
-### Shared custom logic
-
-[`ErrorClass.subclass()`](#errorclasssubclassname-options) can be used to share
-logic between error classes.
-
-```js
-const SharedError = BaseError.subclass('SharedError', {
-  custom: class extends BaseError {
-    // ...
-  },
-})
-
-export const InputError = SharedError.subclass('InputError')
-export const AuthError = SharedError.subclass('AuthError')
 ```
 
 ## 🤓 TypeScript
