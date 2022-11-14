@@ -166,9 +166,7 @@ if (error instanceof InputError) {
 
 [`ErrorClass.subclass()`](#errorclasssubclassname-options) returns
 [`class extends ErrorClass {}`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
-Parent classes' [options](#options) are merged to their subclasses:
-[`props`](#error-class-properties), [`plugins`](#adding-plugins),
-[plugin options](#plugin-options), [`custom` logic](#-custom-logic).
+Parent classes' [options](#options) are merged to their subclasses.
 
 ```js
 export const BaseError = ModernError.subclass('BaseError', {
