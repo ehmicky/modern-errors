@@ -178,7 +178,7 @@ Plugin users can pass additional `options`
 `getOptions()`.
 
 - When error classes are defined:
-  [`ErrorClass.subclass('ExampleError', options)`](../README.md#errorclasssubclassname-options)
+  [`ErrorClass.subclass('ExampleError', options)`](../README.md#create-error-classes)
 - When new errors are created:
   [`new ErrorClass('message', options)`](../README.md#simple-errors)
 - As a last argument to [instance methods](#instancemethodsmethodname) or
@@ -294,7 +294,7 @@ export default {
 _Type_: `ErrorClass[]`
 
 Array containing both the [current error class](#errorclass) and all its
-[subclasses](../README.md#errorclasssubclassname-options) (including deep ones).
+[subclasses](../README.md#error-subclasses) (including deep ones).
 
 ```js
 export default {

@@ -372,8 +372,8 @@ try {
 ### Top-level error handler
 
 Wrapping a module's main functions with
-[`BaseError.normalize()`](#errorclassnormalizeerror-newerrorclass) ensures every
-error being thrown is [valid](#invalid-errors), applies
+[`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
+ensures every error being thrown is [valid](#invalid-errors), applies
 [plugins](#using-plugins-with-unknown-errors), and has a class that is either
 [_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
 
@@ -391,8 +391,7 @@ export const main = function () {
 
 ### Normalizing unknown errors
 
-An error is _unknown_ if its class is not a
-[subclass](#errorclasssubclassname-options) of the
+An error is _unknown_ if its class is not a [subclass](#error-subclasses) of the
 [`BaseError`](#create-error-classes). This indicates an unexpected exception,
 usually a bug.
 
