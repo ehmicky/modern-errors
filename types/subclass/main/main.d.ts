@@ -11,6 +11,7 @@ import type {
 } from '../../core_plugins/props/main.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { Cause } from '../../options/instance.js'
+import type { OmitKeys } from '../../utils.js'
 import type {
   ErrorConstructor,
   ParentInstanceOptions,
@@ -111,7 +112,7 @@ export type SpecificErrorClass<
   ErrorPropsArg extends ErrorProps,
   CustomClass extends ErrorConstructor,
 > = ErrorSubclassCore<PluginsArg, ErrorPropsArg, CustomClass> &
-  Omit<
+  OmitKeys<
     CustomClass,
     keyof ErrorSubclassCore<PluginsArg, ErrorPropsArg, CustomClass>
   > &
