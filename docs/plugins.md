@@ -497,8 +497,8 @@ when possible.
 
 #### Separate options
 
-`modern-errors` provides with a consistent pattern for options, which enables
-options to be:
+`modern-errors` provides with a consistent pattern for options which enables
+them to be:
 
 - Passed [at multiple stages](../README.md#plugin-options)
 - Validated as soon as users pass them
@@ -518,7 +518,8 @@ export default {
 }
 ```
 
-Plugins should avoid alternatives like using:
+Plugins should avoid alternatives since they would not benefit from the above.
+This includes:
 
 - Error method arguments
 
