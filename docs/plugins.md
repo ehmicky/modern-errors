@@ -521,7 +521,7 @@ export default {
 Plugins should avoid alternatives since they would lose those benefits. This
 includes:
 
-- Error method arguments
+- Error method arguments, for any configuration option
 
 ```js
 export default {
