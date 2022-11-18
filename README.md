@@ -164,8 +164,7 @@ if (error instanceof InputError) {
 
 ### Error subclasses
 
-[`ErrorClass.subclass()`](#errorclasssubclassname-options) returns a subclass
-([`class extends ErrorClass {}`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends)).
+[`ErrorClass.subclass()`](#errorclasssubclassname-options) returns a [subclass](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
 Parent classes' [options](#options) are merged to their subclasses.
 
 ```js
