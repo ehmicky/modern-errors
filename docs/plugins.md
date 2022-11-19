@@ -135,11 +135,12 @@ _Type_: `(info, ...args) => any`
 Add error instance methods like `ErrorClass.methodName(error, ...args)` or
 `error.methodName(...args)`.
 
-This should be used when the method's main argument is an `error` instance.
+Unlike [static methods](#staticmethodsmethodname), this should be used when the
+method's main argument is an `error` instance.
 
-If the `error` argument is not an error instance, it is
-[normalized](../README.md#invalid-errors) to one. This normalization only occurs
-if `ErrorClass.methodName(error, ...args)` was used, not
+[Invalid errors](../README.md#invalid-errors) passed as `error` argument are
+automatically [normalized](../README.md#-normalize-errors). This only occurs
+when using `ErrorClass.methodName(error, ...args)`, not
 `error.methodName(...args)`. For this reason, we discourage using or documenting
 `error.methodName(...args)` unless there is a strong use case for it, since
 users might accidentally call it without
@@ -167,8 +168,8 @@ _Type_: `(info, ...args) => any`
 
 Add error static methods like `ErrorClass.methodName(...args)`.
 
-This should be used when the method's main argument is _not_ an `error`
-instance.
+Unlike [instance methods](#instancemethodsmethodname), this should be used when
+the method's main argument is _not_ an `error` instance.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
