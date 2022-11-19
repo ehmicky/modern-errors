@@ -181,8 +181,9 @@ Add error static methods like `ErrorClass.methodName(...args)`. Unlike
 [instance methods](#instancemethodsmethodname), this should be used when the
 method's main argument is _not_ an `error` instance.
 
-The first argument [`info`](#info) is provided by `modern-errors`. The other
-`...args` are forwarded from the method's call.
+The first argument [`info`](#info) is provided by `modern-errors`.
+[`info.error`](#error) is not defined. The other `...args` are forwarded from
+the method's call.
 
 ```js
 export default {
