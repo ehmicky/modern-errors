@@ -157,9 +157,9 @@ export default {
 automatically [normalized](../README.md#-normalize-errors). This only occurs
 when using `ErrorClass.methodName(error, ...args)`, not
 `error.methodName(...args)`. For this reason, we discourage using or documenting
-`error.methodName(...args)` unless there is a strong use case for it, since
-users might accidentally call it without
-[normalizing](../README.md#-normalize-errors) `error` first.
+`error.methodName(...args)` unless there is a use case for it, since users might
+accidentally call it without [normalizing](../README.md#-normalize-errors)
+`error` first.
 
 <!-- eslint-skip -->
 
@@ -168,6 +168,7 @@ try {
   return regExp.test(value)
 } catch (error) {
   ErrorClass.exampleMethod(error, ...args) // This works
+  ErrorClass.normalize(error).exampleMethod(...args) // This works
   error.exampleMethod(...args) // This throws
 }
 ```
