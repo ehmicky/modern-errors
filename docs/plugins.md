@@ -133,10 +133,8 @@ export default {
 _Type_: `(info, ...args) => any`
 
 Add error instance methods like `ErrorClass.methodName(error, ...args)` or
-`error.methodName(...args)`.
-
-Unlike [static methods](#staticmethodsmethodname), this should be used when the
-method's main argument is an `error` instance.
+`error.methodName(...args)`. Unlike [static methods](#staticmethodsmethodname),
+this should be used when the method's main argument is an `error` instance.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
@@ -177,10 +175,9 @@ try {
 
 _Type_: `(info, ...args) => any`
 
-Add error static methods like `ErrorClass.methodName(...args)`.
-
-Unlike [instance methods](#instancemethodsmethodname), this should be used when
-the method's main argument is _not_ an `error` instance.
+Add error static methods like `ErrorClass.methodName(...args)`. Unlike
+[instance methods](#instancemethodsmethodname), this should be used when the
+method's main argument is _not_ an `error` instance.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
