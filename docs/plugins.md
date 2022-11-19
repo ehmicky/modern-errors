@@ -137,7 +137,8 @@ Add error instance methods like `ErrorClass.methodName(error, ...args)` or
 this should be used when the method's main argument is an `error` instance.
 
 The first argument [`info`](#info) is provided by `modern-errors`. The other
-`...args` are forwarded from the method's call.
+`...args` are forwarded from the method's call. The `error` argument is passed
+as [`info.error`](#error).
 
 ```js
 export default {
@@ -145,8 +146,8 @@ export default {
   // `ErrorClass.concatMessage(error, "one")` or `error.concatMessage("one")`
   // return `${error.message} - one`
   instanceMethods: {
-    concatMessage({ error }, string) {
-      return `${error.message} - ${string}`
+    concatMessage(info, string) {
+      return `${info.error.message} - ${string}`
     },
   },
 }
