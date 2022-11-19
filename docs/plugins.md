@@ -138,14 +138,6 @@ Add error instance methods like `ErrorClass.methodName(error, ...args)` or
 Unlike [static methods](#staticmethodsmethodname), this should be used when the
 method's main argument is an `error` instance.
 
-[Invalid errors](../README.md#invalid-errors) passed as `error` argument are
-automatically [normalized](../README.md#-normalize-errors). This only occurs
-when using `ErrorClass.methodName(error, ...args)`, not
-`error.methodName(...args)`. For this reason, we discourage using or documenting
-`error.methodName(...args)` unless there is a strong use case for it, since
-users might accidentally call it without
-[normalizing](../README.md#-normalize-errors) `error` first.
-
 The first argument [`info`](#info) is provided by `modern-errors`. The other
 `...args` are forwarded from the method's call.
 
@@ -159,6 +151,25 @@ export default {
       return `${error.message} - ${string}`
     },
   },
+}
+```
+
+[Invalid errors](../README.md#invalid-errors) passed as `error` argument are
+automatically [normalized](../README.md#-normalize-errors). This only occurs
+when using `ErrorClass.methodName(error, ...args)`, not
+`error.methodName(...args)`. For this reason, we discourage using or documenting
+`error.methodName(...args)` unless there is a strong use case for it, since
+users might accidentally call it without
+[normalizing](../README.md#-normalize-errors) `error` first.
+
+<!-- eslint-skip -->
+
+```js
+try {
+  return regExp.test(value)
+} catch (error) {
+  ErrorClass.exampleMethod(error, ...args) // This works
+  error.exampleMethod(...args) // This throws
 }
 ```
 
