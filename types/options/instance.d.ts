@@ -53,7 +53,7 @@ type MainInstanceOptions<
    * [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
    * [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
    * [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-   * and any [additional property](#error-instance-properties).
+   * and any [additional property](#%EF%B8%8F-error-properties).
    *
    * @example
    * ```js

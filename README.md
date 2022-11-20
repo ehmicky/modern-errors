@@ -18,7 +18,7 @@ Handle errors in a simple, stable, consistent way.
 Simple patterns to:
 
 - ⛑️ Create error [classes](#create-error-classes)
-- 🏷️ Set error [properties](#error-instance-properties)
+- 🏷️ Set error [properties](#%EF%B8%8F-error-properties)
 - 🎀 [Wrap](#-wrap-errors) or [aggregate](#aggregate-errors) errors
 - 🐞 Separate known and [unknown](#-unknown-errors) errors
 
@@ -220,7 +220,7 @@ including its
 [`stack`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stack),
 [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/name),
 [`AggregateError.errors`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
-and any [additional property](#error-instance-properties).
+and any [additional property](#%EF%B8%8F-error-properties).
 
 ```js
 try {
@@ -285,7 +285,7 @@ try {
 
 ### Wrap error options
 
-The outer error's [`props`](#error-instance-properties) and
+The outer error's [`props`](#%EF%B8%8F-error-properties) and
 [plugin options](#plugin-options) are merged.
 
 ```js

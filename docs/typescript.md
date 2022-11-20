@@ -7,7 +7,7 @@ The [API](../README.md#api) is fully typed for TypeScript users
 
 Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 [instances'](../README.md#throw-errors)
-[`props`](../README.md#error-instance-properties), aggregate
+[`props`](../README.md#%EF%B8%8F-error-properties), aggregate
 [`errors`](../README.md#aggregate-errors) and
 [`custom`](../README.md#-custom-logic) methods/properties are typed.
 
@@ -98,7 +98,7 @@ The following types are exported:
 [`Plugin`](../README.md#-plugins) and [`Info`](plugins.md#info-1).
 
 Those types are wide: they do not include any information about specific
-[`props`](../README.md#error-instance-properties), aggregate
+[`props`](../README.md#%EF%B8%8F-error-properties), aggregate
 [`errors`](../README.md#aggregate-errors) nor
 [`custom`](../README.md#-custom-logic) methods/properties. However, they can
 include specific plugins' methods, properties and options by passing those as a
