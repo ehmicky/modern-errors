@@ -1,3 +1,9 @@
+# 5.2.0
+
+## Documentation
+
+- Improve documentation
+
 # 5.1.1
 
 ## Bug fixes
