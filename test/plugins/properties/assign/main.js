@@ -28,7 +28,6 @@ each(
 )
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.properties() can return an empty object | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
     t.notThrows(() => new ErrorClass('test', { prop: { toSet: {} } }))
   })
 

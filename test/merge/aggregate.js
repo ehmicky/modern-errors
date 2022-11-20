@@ -9,7 +9,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 
   test(`error.errors is validated | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
     t.throws(() => new ErrorClass('test', { errors: true }))
   })
 

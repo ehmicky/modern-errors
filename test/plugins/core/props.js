@@ -6,7 +6,6 @@ import { TEST_PLUGIN } from '../../helpers/plugin.js'
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`"props" are validated | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
     t.throws(() => new ErrorClass('message', { props: true }))
   })
 

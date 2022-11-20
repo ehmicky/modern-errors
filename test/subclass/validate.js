@@ -6,7 +6,6 @@ import { ErrorClasses } from '../helpers/main.js'
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Cannot extend without subclass() | ${title}`, (t) => {
     class TestError extends ErrorClass {}
-    // eslint-disable-next-line max-nested-callbacks
     t.throws(() => new TestError('test'))
   })
 
