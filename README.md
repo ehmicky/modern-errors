@@ -30,7 +30,7 @@ It emphasizes stability:
 
 # Plugins
 
-Plugins make advanced error handling safe and simple:
+Plugins make advanced error handling safe and easy:
 
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli): Handle
   errors in CLI modules
