@@ -50,7 +50,7 @@ Stability:
 
 # Example
 
-Create [error classes](#%EF%B8%8F-error-classes).
+Create error [classes](#%EF%B8%8F-error-classes).
 
 ```js
 import ModernError from 'modern-errors'
@@ -63,10 +63,10 @@ export const AuthError = BaseError.subclass('AuthError')
 export const DatabaseError = BaseError.subclass('DatabaseError')
 ```
 
-[Throw](#throw-errors) errors.
+Set error [properties](#%EF%B8%8F-error-properties).
 
 ```js
-throw new InputError('Missing file path.')
+throw new InputError('Invalid file path', { props: { filePath: '/...' } })
 ```
 
 [Wrap](#-wrap-errors) errors.
