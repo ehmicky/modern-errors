@@ -1,21 +1,22 @@
+import ModernError, { ErrorInstance } from 'modern-errors'
 import bugsPlugin from 'modern-errors-bugs'
+import cleanPlugin from 'modern-errors-clean'
 import cliPlugin from 'modern-errors-cli'
 import httpPlugin, { HttpResponse } from 'modern-errors-http'
 import processPlugin from 'modern-errors-process'
 import serializePlugin, { ErrorObject } from 'modern-errors-serialize'
-import cleanPlugin from 'modern-errors-clean'
+import switchPlugin from 'modern-errors-switch'
 import winstonPlugin, { Format } from 'modern-errors-winston'
-import { expectType, expectAssignable } from 'tsd'
-
-import ModernError, { ErrorInstance } from 'modern-errors'
+import { expectAssignable, expectType } from 'tsd'
 
 const plugins = [
   bugsPlugin,
+  cleanPlugin,
   cliPlugin,
   httpPlugin,
   processPlugin,
   serializePlugin,
-  cleanPlugin,
+  switchPlugin,
   winstonPlugin,
 ]
 const BaseError = ModernError.subclass('BaseError', { plugins })
@@ -48,4 +49,7 @@ expectType<ErrorObject>(error.toJSON())
 const restore = BaseError.logProcess({ exit: true })
 expectType<void>(restore())
 expectType<ErrorInstance>(BaseError.parse(errorObject))
+expectType<ErrorInstance>(
+  BaseError.switch('').case(TypeError, 'message').default(),
+)
 expectType<Format>(BaseError.fullFormat({ stack: true }))
