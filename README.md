@@ -15,22 +15,20 @@ Handle errors in a simple, stable, consistent way.
 
 # Features
 
-This provides with simple patterns to:
+Simple patterns to:
 
 - ⛑️ Create [error classes](#create-error-classes)
 - 🏷️ Set [error properties](#error-instance-properties)
 - 🎀 [Wrap](#-wrap-errors) or [aggregate](#aggregate-errors) errors
 - 🐞 Separate known and [unknown errors](#-unknown-errors)
 
-It emphasizes stability:
+Stability:
 
 - 🚨 Invalid errors are [normalized](#-normalize-errors)
 - 🛡️ 100% [test coverage](https://app.codecov.io/gh/ehmicky/modern-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
 
 # Plugins
-
-Plugins make advanced error handling safe and easy:
 
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli): Handle
   errors in CLI modules
