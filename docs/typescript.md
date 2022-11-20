@@ -35,7 +35,7 @@ are typed.
 ```ts
 import ModernError from 'modern-errors'
 
-// This plugin adds an `BaseError.httpResponse(error)` method
+// This plugin adds a `BaseError.httpResponse(error)` method
 import modernErrorsHttp from 'modern-errors-http'
 
 const BaseError = ModernError.subclass('BaseError', {
@@ -106,4 +106,4 @@ generic parameter, such as `ErrorClass<[typeof plugin]>`.
 
 They should only be used to type unknown error instances and classes, when no
 variable nor [type inference](#type-inference) is available. For example, they
-can be useful when [creating plugins](plugins.md#-typescript).
+can be useful when [creating plugins](plugins.md#typescript).

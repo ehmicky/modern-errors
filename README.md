@@ -147,9 +147,8 @@ export const DatabaseError = BaseError.subclass('DatabaseError')
 
 ### Export error classes
 
-Exporting and documenting all error classes (except for
-[`ModernError`](#modernerror)) allows consumers to check them. This also enables
-sharing error classes between modules.
+Exporting and documenting all error classes allows consumers to check them. This
+also enables sharing error classes between modules.
 
 ### Check error classes
 
@@ -163,7 +162,7 @@ if (error instanceof InputError) {
 
 [`ErrorClass.subclass()`](#errorclasssubclassname-options) returns a
 [subclass](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends).
-Parent classes' [options](#options) are merged to their subclasses.
+Parent classes' [options](#options) are merged with their subclasses.
 
 ```js
 export const BaseError = ModernError.subclass('BaseError', {
@@ -390,7 +389,6 @@ try {
 
 If an error is not handled as described [above](#handling-known-errors), it is
 considered _unknown_. This indicates an unexpected exception, usually a bug.
-
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
 assigns the `UnknownError` class to those errors.
 
@@ -608,8 +606,8 @@ Any [plugin options](#plugin-options) can also be specified.
 
 ## ErrorClass.normalize(error, NewErrorClass?)
 
-`error`: `any`\
-`NewErrorClass`: `subclass of ErrorClass`\
+`error`: `Error | any`\
+`NewErrorClass`: subclass of `ErrorClass`\
 _Return value_: `Error`
 
 Normalizes [invalid errors](#invalid-errors).

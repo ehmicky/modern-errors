@@ -506,7 +506,7 @@ If the plugin is published on npm, we recommend the following conventions:
         ([example](https://github.com/ehmicky/modern-errors-cli#example))
   - [ ] Configure options, if there are any
         ([example](https://github.com/ehmicky/modern-errors-cli#configuration))
-- [ ] The plugin should export its [types](#-typescript) for TypeScript users
+- [ ] The plugin should export its [types](#typescript) for TypeScript users
 - [ ] Please create an issue on the `modern-errors` repository so we can add the
       plugin to the [list of available ones](../README.md#plugins)! 🎉
 
@@ -548,7 +548,7 @@ export default {
 Plugins should avoid alternatives since they would lose those benefits. This
 includes:
 
-- Error method arguments, for any configuration option
+- Error method arguments, for configuration options
 
 ```js
 export default {
@@ -642,7 +642,7 @@ be safely used in parallel `async` logic. Instead, plugins should either:
 ### Separation of concerns
 
 If the plugin contains some logic that is not specific to `modern-errors`,
-splitting it to a separate library allows using it without `modern-errors`. It
+splitting it to a separate library allows using it without `modern-errors`. This
 also keeps the plugin smaller and focused on integrating with `modern-errors`.
 
 Some examples include:
@@ -656,3 +656,9 @@ Some examples include:
 - [`modern-errors-process`](https://github.com/ehmicky/modern-errors-process)
   (underlying module:
   [`log-process-errors`](https://github.com/ehmicky/log-process-errors))
+- [`modern-errors-winston`](https://github.com/ehmicky/modern-errors-winston)
+  (underlying module:
+  [`winston-error-format`](https://github.com/ehmicky/winston-error-format))
+- [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http)
+  (underlying module:
+  [`error-http-response`](https://github.com/ehmicky/error-http-response))
