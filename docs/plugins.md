@@ -638,3 +638,17 @@ be safely used in parallel `async` logic. Instead, plugins should either:
 
 - Provide with methods returning such objects
 - Let users create those objects and pass them as arguments to plugin methods
+
+### Separation of concerns
+
+If the plugin contains some logic that is not specific to `modern-errors`,
+splitting it to a separate library allows using it without `modern-errors`. It
+also keeps the plugin smaller and focused on integrating with `modern-errors`.
+
+Some examples include:
+[`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
+([underlying module](https://github.com/ehmicky/handle-cli-error)),
+[`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
+([underlying module](https://github.com/ehmicky/error-serializer)) or
+[`modern-errors-process`](https://github.com/ehmicky/modern-errors-process)
+([underlying module](https://github.com/ehmicky/log-process-errors)).
