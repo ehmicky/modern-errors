@@ -178,6 +178,11 @@ export interface Plugin {
    * Set properties on `error.*` (including `message` or `stack`).
    * The properties to set must be returned as an object.
    *
+   * Error properties that are internal or secret can be prefixed with `_`.
+   * This makes them
+   * [non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties),
+   * which prevents iterating or logging them.
+   *
    * @example
    * ```js
    * export default {

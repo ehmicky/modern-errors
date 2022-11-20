@@ -118,9 +118,10 @@ _Type_: `(info) => object`
 Set properties on `error.*` (including `message` or `stack`). The properties to
 set must be returned as an object.
 
-If a property's name starts with `_`, it is marked as
+Error properties that are internal or secret can be prefixed with `_`. This
+makes them
 [non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties),
-i.e. it can neither be iterated nor logged.
+which prevents iterating or logging them.
 
 ```js
 export default {

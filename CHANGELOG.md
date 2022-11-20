@@ -2,6 +2,11 @@
 
 ## Features
 
+- Error [`props`](README.md#%EF%B8%8F-error-properties) now preserve
+  [property descriptors](https://github.com/ehmicky/redefine-property)
+- Error [`props`](README.md#%EF%B8%8F-error-properties) can be marked as
+  [non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)
+  by [prefixing their name](README.md#internal-error-properties) with `_`
 - [`plugin.properties()`](docs/plugins.md#properties) can now also return
   non-enumerable properties by prefixing their name with `_`
 

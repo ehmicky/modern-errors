@@ -198,6 +198,25 @@ const error = new InputError('...', { props: { isUserError: true } })
 console.log(error.isUserError) // true
 ```
 
+### Internal error properties
+
+Error properties that are internal or secret can be prefixed with `_`. This
+makes them
+[non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties),
+which prevents iterating or logging them.
+
+<!-- eslint-disable no-underscore-dangle -->
+
+```js
+const error = new InputError('...', {
+  props: { userId: 6, _isUserError: true },
+})
+console.log(error.userId) // 6
+console.log(error._isUserError) // true
+console.log(Object.keys(error)) // ['userId']
+console.log(error) // `userId` is logged, but not `_isUserError`
+```
+
 ## 🎀 Wrap errors
 
 ### Throw errors
