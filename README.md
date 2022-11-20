@@ -26,8 +26,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
   missing `stack`, etc.)
 - 🐞 Separate known and [unknown errors](#-unknown-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
-- 📖 Based on modern JavaScript:
-  [`cause`](#-wrap-errors), [`error.errors`](#aggregate-errors)
+- 📖 Based on modern JavaScript: [`cause`](#-wrap-errors),
+  [`error.errors`](#aggregate-errors)
 
 # Plugins
 
@@ -372,8 +372,9 @@ try {
 ### Handling known errors
 
 Known errors should be handled in a `try {} catch {}` block and
-[wrapped](#wrap-error-class) with a [specific class](#create-error-classes). That block should only cover the statement that might throw in order to
-prevent catching other unrelated errors.
+[wrapped](#wrap-error-class) with a [specific class](#create-error-classes).
+That block should only cover the statement that might throw in order to prevent
+catching other unrelated errors.
 
 <!-- eslint-skip -->
 
@@ -388,8 +389,8 @@ try {
 
 ### Normalizing unknown errors
 
-If an error is not handled as described [above](#handling-known-errors), it is considered _unknown_. This indicates an unexpected exception,
-usually a bug.
+If an error is not handled as described [above](#handling-known-errors), it is
+considered _unknown_. This indicates an unexpected exception, usually a bug.
 
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
 assigns the `UnknownError` class to those errors.
