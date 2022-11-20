@@ -11,25 +11,26 @@
 [![Mastodon](https://img.shields.io/badge/-Mastodon-808080.svg?logo=mastodon&colorA=404040&logoColor=9590F9)](https://fosstodon.org/@ehmicky)
 [![Medium](https://img.shields.io/badge/-Medium-808080.svg?logo=medium&colorA=404040)](https://medium.com/@ehmicky)
 
-Handle errors like it's 2023 🔮
-
-Error handling framework that is pluggable, minimalist yet featureful.
+Handle errors in a simple, stable, consistent way.
 
 # Features
 
+This provides with consistent patterns to:
+
 - ⛑️ Create [error classes](#create-error-classes)
-- 🏷️ Set properties on [individual errors](#error-instance-properties) or on
-  [all errors of the same class](#error-class-properties)
-- 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
-  [properties](#wrap-error-options)
-- 🚨 Normalize [invalid errors](#invalid-errors) (not an `Error` instance,
-  missing `stack`, etc.)
+- 🏷️ Set [error properties](#error-instance-properties)
+- 🎀 [Wrap](#-wrap-errors) or [aggregate](#aggregate-errors) errors
 - 🐞 Separate known and [unknown errors](#-unknown-errors)
+
+It emphasizes stability:
+
+- 🚨 Invalid errors are [normalized](#-normalize-errors)
+- 🛡️ 100% [test coverage](https://app.codecov.io/gh/ehmicky/modern-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
-- 📖 Based on modern JavaScript: [`cause`](#-wrap-errors),
-  [`error.errors`](#aggregate-errors)
 
 # Plugins
+
+Plugins make advanced error handling safe and simple:
 
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli): Handle
   errors in CLI modules

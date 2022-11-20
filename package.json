@@ -16,7 +16,7 @@
   "scripts": {
     "test": "gulp test"
   },
-  "description": "Handle errors like it's 2023 🔮",
+  "description": "Handle errors in a simple, stable, consistent way",
   "keywords": [
     "nodejs",
     "javascript",
