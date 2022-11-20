@@ -35,6 +35,8 @@ export default ModernError
 
 // Major limitations of current types:
 //  - Plugin methods cannot be generic
+//  - Plugin types can use `ErrorClass` or `Info`, but not export them.
+//    See the comment in info.d.ts for an explanation.
 // Medium limitations:
 //  - Some logic relies on determining if an error class is a subclass of
 //    another
