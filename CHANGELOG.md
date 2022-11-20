@@ -1,3 +1,10 @@
+# 5.3.0
+
+## Features
+
+- [`plugin.properties()`](docs/plugins.md#properties) can now also return
+  non-enumerable properties by prefixing their name with `_`
+
 # 5.2.0
 
 ## Documentation

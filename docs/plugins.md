@@ -118,6 +118,10 @@ _Type_: `(info) => object`
 Set properties on `error.*` (including `message` or `stack`). The properties to
 set must be returned as an object.
 
+If a property's name starts with `_`, it is marked as
+[non-enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties),
+i.e. it can neither be iterated nor logged.
+
 ```js
 export default {
   name: 'example',
@@ -610,25 +614,6 @@ export default function getPlugin(exampleOption) {
 
 Plugins should be usable by libraries. Therefore, modifying global objects (such
 as `Error.prepareStackTrace()`) should be avoided.
-
-#### Error-specific state
-
-`WeakMap`s should be used to keep error-specific internal state, as opposed to
-using error properties (even with `symbol` keys). This ensures those properties
-are not exposed to users not printed or serialized.
-
-```js
-const state = new WeakMap()
-
-export default {
-  name: 'example',
-  instanceMethods: {
-    exampleMethod({ error }) {
-      state.set(error, { example: true })
-    },
-  },
-}
-```
 
 #### State objects
 
