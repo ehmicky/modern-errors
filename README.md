@@ -17,10 +17,10 @@ Handle errors in a simple, stable, consistent way.
 
 Simple patterns to:
 
-- ⛑️ Create [error classes](#create-error-classes)
-- 🏷️ Set [error properties](#error-instance-properties)
+- ⛑️ Create error [classes](#create-error-classes)
+- 🏷️ Set error [properties](#error-instance-properties)
 - 🎀 [Wrap](#-wrap-errors) or [aggregate](#aggregate-errors) errors
-- 🐞 Separate known and [unknown errors](#-unknown-errors)
+- 🐞 Separate known and [unknown](#-unknown-errors) errors
 
 Stability:
 
