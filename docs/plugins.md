@@ -648,8 +648,11 @@ also keeps the plugin smaller and focused on integrating with `modern-errors`.
 Some examples include:
 
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
-  ([underlying module](https://github.com/ehmicky/handle-cli-error))
+  (underlying module:
+  [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error))
 - [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
-  ([underlying module](https://github.com/ehmicky/error-serializer))
+  (underlying module:
+  [`error-serializer`](https://github.com/ehmicky/error-serializer))
 - [`modern-errors-process`](https://github.com/ehmicky/modern-errors-process)
-  ([underlying module](https://github.com/ehmicky/log-process-errors))
+  (underlying module:
+  [`log-process-errors`](https://github.com/ehmicky/log-process-errors))
