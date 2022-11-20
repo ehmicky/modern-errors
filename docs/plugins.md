@@ -646,9 +646,10 @@ splitting it to a separate library allows using it without `modern-errors`. It
 also keeps the plugin smaller and focused on integrating with `modern-errors`.
 
 Some examples include:
-[`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
-([underlying module](https://github.com/ehmicky/handle-cli-error)),
-[`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
-([underlying module](https://github.com/ehmicky/error-serializer)) or
-[`modern-errors-process`](https://github.com/ehmicky/modern-errors-process)
-([underlying module](https://github.com/ehmicky/log-process-errors)).
+
+- [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
+  ([underlying module](https://github.com/ehmicky/handle-cli-error))
+- [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
+  ([underlying module](https://github.com/ehmicky/error-serializer))
+- [`modern-errors-process`](https://github.com/ehmicky/modern-errors-process)
+  ([underlying module](https://github.com/ehmicky/log-process-errors))
