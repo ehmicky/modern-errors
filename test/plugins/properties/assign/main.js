@@ -1,14 +1,9 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorSubclasses } from '../../helpers/plugin.js'
+import { ErrorSubclasses } from '../../../helpers/plugin.js'
 
 each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
-  test(`plugin.properties() can return an empty object | ${title}`, (t) => {
-    // eslint-disable-next-line max-nested-callbacks
-    t.notThrows(() => new ErrorClass('test', { prop: { toSet: {} } }))
-  })
-
   test(`plugin.properties() can set properties | ${title}`, (t) => {
     t.true(new ErrorClass('test', { prop: { toSet: { [key]: true } } })[key])
   })
@@ -16,42 +11,6 @@ each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
   test(`plugin.properties() changes are not reverted by parent error | ${title}`, (t) => {
     const cause = new ErrorClass('test', { prop: { toSet: { [key]: true } } })
     t.true(new ErrorClass('test', { cause })[key])
-  })
-
-  test(`plugin.properties() updates stack when message is updated | ${title}`, (t) => {
-    const error = new ErrorClass('test', {
-      prop: { toSet: { message: 'testMessage' } },
-    })
-    t.true(error.stack.includes('testMessage'))
-  })
-
-  const stack = new ErrorClass('test').stack.replace(
-    `${ErrorClass.name}: test`,
-    `${ErrorClass.name}: testMessage`,
-  )
-
-  test(`plugin.properties() updates message when stack is updated | ${title}`, (t) => {
-    const error = new ErrorClass('test', {
-      prop: { toSet: { stack } },
-    })
-    t.is(error.message, 'testMessage')
-  })
-
-  test(`plugin.properties() can update both message and stack | ${title}`, (t) => {
-    const error = new ErrorClass('test', {
-      prop: { toSet: { message: 'otherMessage', stack } },
-    })
-    t.is(error.message, 'otherMessage')
-    t.true(error.stack.includes('otherMessage'))
-    t.false(error.stack.includes('testMessage'))
-  })
-})
-
-each(ErrorSubclasses, ['message', 'stack'], ({ title }, ErrorClass, key) => {
-  test(`plugin.properties() can set some core properties | ${title}`, (t) => {
-    const error = new ErrorClass('test', { prop: { toSet: { [key]: '0' } } })
-    t.is(error[key], '0')
-    t.false(Object.getOwnPropertyDescriptor(error, key).enumerable)
   })
 })
 
@@ -68,15 +27,9 @@ each(
   },
 )
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
-  test(`plugin.properties() can set both message and stack | ${title}`, (t) => {
-    const oldMessage = 'one'
-    const message = 'two'
-    const stackPrefix = 'Stack: '
-    const error = new ErrorClass(oldMessage, {
-      prop: { toSet: { message, stack: `${stackPrefix}${oldMessage}` } },
-    })
-    t.is(error.message, message)
-    t.is(error.stack, `${stackPrefix}${message}`)
+  test(`plugin.properties() can return an empty object | ${title}`, (t) => {
+    // eslint-disable-next-line max-nested-callbacks
+    t.notThrows(() => new ErrorClass('test', { prop: { toSet: {} } }))
   })
 
   test(`plugin.properties() shallow merge properties | ${title}`, (t) => {
