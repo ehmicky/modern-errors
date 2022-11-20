@@ -24,7 +24,7 @@ Simple patterns to:
 
 Stability:
 
-- 🚨 Invalid errors are [normalized](#-normalize-errors)
+- 🚨 [Normalize](#-normalize-errors) invalid errors
 - 🛡️ 100% [test coverage](https://app.codecov.io/gh/ehmicky/modern-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
 
