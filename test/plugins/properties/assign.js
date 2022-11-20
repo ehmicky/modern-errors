@@ -17,6 +17,34 @@ each(ErrorSubclasses, ['one', Symbol('one')], ({ title }, ErrorClass, key) => {
     const cause = new ErrorClass('test', { prop: { toSet: { [key]: true } } })
     t.true(new ErrorClass('test', { cause })[key])
   })
+
+  test(`plugin.properties() updates stack when message is updated | ${title}`, (t) => {
+    const error = new ErrorClass('test', {
+      prop: { toSet: { message: 'testMessage' } },
+    })
+    t.true(error.stack.includes('testMessage'))
+  })
+
+  const stack = new ErrorClass('test').stack.replace(
+    `${ErrorClass.name}: test`,
+    `${ErrorClass.name}: testMessage`,
+  )
+
+  test(`plugin.properties() updates message when stack is updated | ${title}`, (t) => {
+    const error = new ErrorClass('test', {
+      prop: { toSet: { stack } },
+    })
+    t.is(error.message, 'testMessage')
+  })
+
+  test(`plugin.properties() can update both message and stack | ${title}`, (t) => {
+    const error = new ErrorClass('test', {
+      prop: { toSet: { message: 'otherMessage', stack } },
+    })
+    t.is(error.message, 'otherMessage')
+    t.true(error.stack.includes('otherMessage'))
+    t.false(error.stack.includes('testMessage'))
+  })
 })
 
 each(ErrorSubclasses, ['message', 'stack'], ({ title }, ErrorClass, key) => {

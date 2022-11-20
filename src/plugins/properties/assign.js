@@ -1,8 +1,8 @@
 import { excludeKeys } from 'filter-obj'
 import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
+import setErrorStack from 'set-error-stack'
 
-import { setNonEnumProp } from '../../utils/descriptors.js'
 import { getPluginsMethodNames } from '../instance/add.js'
 
 // `plugin.properties()` returns an object of properties to set.
@@ -23,7 +23,7 @@ export const assignError = function (
   plugins,
 ) {
   if (stack !== undefined) {
-    setNonEnumProp(error, 'stack', stack)
+    setErrorStack(error, stack)
   }
 
   if (message !== undefined) {

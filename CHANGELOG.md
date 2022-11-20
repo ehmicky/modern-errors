@@ -1,3 +1,9 @@
+# 5.1.1
+
+## Bug fixes
+
+- Fix bug duplicating the stack trace when wrapping the error message
+
 # 5.1.0
 
 ## Features
