@@ -59,7 +59,7 @@
     "merge-error-cause": "^3.4.0",
     "normalize-exception": "^2.11.0",
     "set-error-message": "^1.6.0",
-    "set-error-props": "^3.5.0",
+    "set-error-props": "^4.0.0",
     "set-error-stack": "^1.0.0"
   },
   "devDependencies": {
