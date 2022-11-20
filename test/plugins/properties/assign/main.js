@@ -77,4 +77,25 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
       four: true,
     })
   })
+
+  test(`plugin.properties() can set non-enumerable properties | ${title}`, (t) => {
+    const error = new ErrorClass('test', { prop: { toSet: { _prop: true } } })
+    // eslint-disable-next-line no-underscore-dangle
+    t.true(error._prop)
+    t.false(Object.getOwnPropertyDescriptor(error, '_prop').enumerable)
+  })
+
+  test(`plugin.properties() keeps descriptors | ${title}`, (t) => {
+    const cause = new ErrorClass('test')
+    // eslint-disable-next-line fp/no-mutating-methods
+    Object.defineProperty(cause, 'prop', {
+      value: false,
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    })
+    const error = new ErrorClass('', { cause, prop: { toSet: { prop: true } } })
+    t.true(error.prop)
+    t.false(Object.getOwnPropertyDescriptor(error, 'prop').enumerable)
+  })
 })
