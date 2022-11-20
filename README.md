@@ -15,7 +15,7 @@ Handle errors in a simple, stable, consistent way.
 
 # Features
 
-This provides with consistent patterns to:
+This provides with simple patterns to:
 
 - ⛑️ Create [error classes](#create-error-classes)
 - 🏷️ Set [error properties](#error-instance-properties)
