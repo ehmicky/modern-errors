@@ -63,7 +63,7 @@ export const AuthError = BaseError.subclass('AuthError')
 export const DatabaseError = BaseError.subclass('DatabaseError')
 ```
 
-[Throw](#%EF%B8%8F-throw-errors) errors.
+[Throw](#throw-errors) errors.
 
 ```js
 throw new InputError('Missing file path.')
@@ -179,20 +179,7 @@ console.log(error instanceof BaseError) // true
 console.log(error instanceof InputError) // true
 ```
 
-## 🏷️ Throw errors
-
-### Simple errors
-
-```js
-throw new InputError('Missing file path.')
-```
-
-### Error instance properties
-
-```js
-const error = new InputError('...', { props: { isUserError: true } })
-console.log(error.isUserError) // true
-```
+## 🏷️ Error properties
 
 ### Error class properties
 
@@ -204,26 +191,20 @@ const error = new InputError('...')
 console.log(error.isUserError) // true
 ```
 
-### Aggregate errors
-
-The [`errors` option](#optionserrors) aggregates multiple errors into one. This
-is like
-[`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
-except that it works with any error class.
+### Error instance properties
 
 ```js
-const databaseError = new DatabaseError('...')
-const authError = new AuthError('...')
-throw new InputError('...', { errors: [databaseError, authError] })
-// InputError: ... {
-//   [errors]: [
-//     DatabaseError: ...
-//     AuthError: ...
-//   ]
-// }
+const error = new InputError('...', { props: { isUserError: true } })
+console.log(error.isUserError) // true
 ```
 
 ## 🎀 Wrap errors
+
+### Throw errors
+
+```js
+throw new InputError('Missing file path.')
+```
 
 ### Wrap inner error
 
@@ -316,12 +297,32 @@ try {
 }
 ```
 
+### Aggregate errors
+
+The [`errors` option](#optionserrors) aggregates multiple errors into one. This
+is like
+[`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)
+except that it works with any error class.
+
+```js
+const databaseError = new DatabaseError('...')
+const authError = new AuthError('...')
+throw new InputError('...', { errors: [databaseError, authError] })
+// InputError: ... {
+//   [errors]: [
+//     DatabaseError: ...
+//     AuthError: ...
+//   ]
+// }
+```
+
 ## 🚨 Normalize errors
 
 ### Wrapped errors
 
-Any error can be directly passed to the [`cause` option](#wrap-inner-error),
-even if it is [invalid](#invalid-errors), [unknown](#-unknown-errors) or not
+Any error can be directly passed to the [`cause`](#wrap-inner-error) or
+[`errors`](#aggregate-errors) option, even if it is [invalid](#invalid-errors),
+[unknown](#-unknown-errors) or not
 [normalized](#errorclassnormalizeerror-newerrorclass).
 
 ```js

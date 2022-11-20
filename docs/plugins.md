@@ -235,7 +235,7 @@ Plugin users can pass additional `options`
 - When error classes are defined:
   [`ErrorClass.subclass('ExampleError', options)`](../README.md#create-error-classes)
 - When new errors are created:
-  [`new ErrorClass('message', options)`](../README.md#simple-errors)
+  [`new ErrorClass('message', options)`](../README.md#throw-errors)
 - As a last argument to [instance methods](#instancemethodsmethodname) or
   [static methods](#staticmethodsmethodname)
 
