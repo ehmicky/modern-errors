@@ -648,6 +648,8 @@ individually:
   update an error's message
 - [`set-error-props`](https://github.com/ehmicky/set-error-props): Properly
   update an error's properties
+- [`set-error-stack`](https://github.com/ehmicky/set-error-stack): Properly
+  update an error's stack
 - [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error): 💣 Error
   handler for CLI applications 💥
 - [`log-process-errors`](https://github.com/ehmicky/log-process-errors): Show
