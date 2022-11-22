@@ -17,8 +17,7 @@ Error handling framework that is pluggable, minimalist yet featureful.
 
 # Features
 
-- ⛑️ Create [error classes](#create-error-classes) (including with
-  [custom logic](#-custom-logic))
+- ⛑️ Create [error classes](#create-error-classes)
 - 🏷️ Set properties on [individual errors](#error-instance-properties) or on
   [all errors of the same class](#error-class-properties)
 - 🎀 Wrap errors' [message](#wrap-error-message), [class](#wrap-error-class) and
@@ -27,11 +26,8 @@ Error handling framework that is pluggable, minimalist yet featureful.
   missing `stack`, etc.)
 - 🐞 Separate known and [unknown errors](#-unknown-errors)
 - 🤓 Strict [TypeScript types](docs/typescript.md)
-- 📖 Based on standard JavaScript: [`throw`](#%EF%B8%8F-throw-errors),
-  [`try/catch`](#-wrap-errors), [`new Error()`](#%EF%B8%8F-throw-errors),
-  [`error.cause`](#-wrap-errors), [`instanceof`](#check-error-classes),
-  [`class`](#-custom-logic),
-  [`toJSON()`](https://github.com/ehmicky/modern-errors-serialize#errortojson)
+- 📖 Based on modern JavaScript:
+  [`cause`](#-wrap-errors), [`error.errors`](#aggregate-errors)
 
 # Plugins
 
