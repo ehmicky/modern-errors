@@ -414,10 +414,9 @@ try {
 
 ### Handling unknown errors
 
-_Unknown_ errors should be handled in a `try {} catch {}` block and
-[wrapped](#wrap-error-class) with a [_known_ class](#create-error-classes)
-instead. That block should only cover the statement that might throw in order to
-prevent catching other unrelated _unknown_ errors.
+Errors should be handled in a `try {} catch {}` block and
+[wrapped](#wrap-error-class) with a [specific class](#create-error-classes). That block should only cover the statement that might throw in order to
+prevent catching other unrelated errors.
 
 <!-- eslint-skip -->
 
