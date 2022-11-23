@@ -388,8 +388,7 @@ try {
 
 ### Normalizing unknown errors
 
-An error is _unknown_ if its class is not a [subclass](#error-subclasses) of the
-[`BaseError`](#create-error-classes). This indicates an unexpected exception,
+If an error is not handled as described [above](#handling-known-errors), it is considered _unknown_. This indicates an unexpected exception,
 usually a bug.
 
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
