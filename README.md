@@ -387,6 +387,23 @@ export const main = function () {
 
 ## 🐞 Unknown errors
 
+### Handling known errors
+
+Known errors should be handled in a `try {} catch {}` block and
+[wrapped](#wrap-error-class) with a [specific class](#create-error-classes). That block should only cover the statement that might throw in order to
+prevent catching other unrelated errors.
+
+<!-- eslint-skip -->
+
+```js
+try {
+  return regExp.test(value)
+} catch (error) {
+  // Now an `InputError` instance
+  throw new InputError('Invalid regular expression:', { cause: error })
+}
+```
+
 ### Normalizing unknown errors
 
 An error is _unknown_ if its class is not a [subclass](#error-subclasses) of the
@@ -409,23 +426,6 @@ try {
 } catch (error) {
   // Now an `UnknownError` instance
   throw BaseError.normalize(error, UnknownError)
-}
-```
-
-### Handling known errors
-
-Known errors should be handled in a `try {} catch {}` block and
-[wrapped](#wrap-error-class) with a [specific class](#create-error-classes). That block should only cover the statement that might throw in order to
-prevent catching other unrelated errors.
-
-<!-- eslint-skip -->
-
-```js
-try {
-  return regExp.test(value)
-} catch (error) {
-  // Now an `InputError` instance
-  throw new InputError('Invalid regular expression:', { cause: error })
 }
 ```
 
