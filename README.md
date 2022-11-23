@@ -412,9 +412,9 @@ try {
 }
 ```
 
-### Handling unknown errors
+### Handling known errors
 
-Errors should be handled in a `try {} catch {}` block and
+Known errors should be handled in a `try {} catch {}` block and
 [wrapped](#wrap-error-class) with a [specific class](#create-error-classes). That block should only cover the statement that might throw in order to
 prevent catching other unrelated errors.
 
