@@ -367,24 +367,6 @@ try {
 }
 ```
 
-### Top-level error handler
-
-Wrapping a module's main functions with
-[`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
-ensures every error being thrown is [valid](#invalid-errors), applies
-[plugins](#-plugins), and has a class that is either
-[_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
-
-```js
-export const main = function () {
-  try {
-    // ...
-  } catch (error) {
-    throw BaseError.normalize(error, UnknownError)
-  }
-}
-```
-
 ## 🐞 Unknown errors
 
 ### Handling known errors
@@ -411,8 +393,7 @@ An error is _unknown_ if its class is not a [subclass](#error-subclasses) of the
 usually a bug.
 
 [`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
-assigns the `UnknownError` class to those errors. This is usually performed in
-the [top-level error handler](#top-level-error-handler).
+assigns the `UnknownError` class to those errors.
 
 ```js
 export const UnknownError = BaseError.subclass('UnknownError')
@@ -426,6 +407,24 @@ try {
 } catch (error) {
   // Now an `UnknownError` instance
   throw BaseError.normalize(error, UnknownError)
+}
+```
+
+### Top-level error handler
+
+Wrapping a module's main functions with
+[`BaseError.normalize(error, UnknownError)`](#errorclassnormalizeerror-newerrorclass)
+ensures every error being thrown is [valid](#invalid-errors), applies
+[plugins](#-plugins), and has a class that is either
+[_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
+
+```js
+export const main = function () {
+  try {
+    // ...
+  } catch (error) {
+    throw BaseError.normalize(error, UnknownError)
+  }
 }
 ```
 
