@@ -23,5 +23,6 @@
       ]
     }
   ],
-  "contributorsPerLine": 7
+  "contibutorsPerLine": 7,
+  "commitConvention": "none"
 }
