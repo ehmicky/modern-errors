@@ -3,7 +3,7 @@ import type { ErrorProps } from '../plugins/core/props/main.js'
 import type { PluginsInstanceMethods } from '../plugins/instance/main.js'
 import type { PluginsProperties } from '../plugins/properties/main.js'
 import type { Plugins } from '../plugins/shape/main.js'
-import type { CustomClass } from '../subclass/custom/main.js'
+import type { CustomClass } from '../subclass/custom.js'
 import type { SetProps } from '../utils/omit.js'
 import type { AggregateErrors, AggregateErrorsProperty } from './aggregate.js'
 

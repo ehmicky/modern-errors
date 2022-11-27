@@ -13,7 +13,7 @@ import type {
   CustomClass,
   ParentExtra,
   ParentInstanceOptions,
-} from './custom/main.js'
+} from './custom.js'
 import type { NormalizeError } from './normalize/main.js'
 
 /**

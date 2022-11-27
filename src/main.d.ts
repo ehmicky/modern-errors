@@ -5,7 +5,7 @@ import type { MethodOptions } from './options/method.js'
 import type { Info } from './plugins/info/main.js'
 import type { Plugin } from './plugins/shape/main.js'
 import type { ErrorClass, SpecificErrorClass } from './subclass/create.js'
-import type { CustomClass } from './subclass/custom/main.js'
+import type { CustomClass } from './subclass/custom.js'
 
 export type {
   Plugin,
