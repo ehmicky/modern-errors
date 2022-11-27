@@ -1,4 +1,4 @@
-import { checkCustom } from './check.js'
+import { checkCustom } from '../check.js'
 
 // The `custom` option can be used to customize a specific error class.
 // It must extend directly from the parent class.
