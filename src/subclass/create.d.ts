@@ -14,7 +14,7 @@ import type {
   ParentExtra,
   ParentInstanceOptions,
 } from './custom.js'
-import type { NormalizeError } from './normalize/main.js'
+import type { NormalizeError } from './normalize.js'
 
 /**
  * `ErrorClass.subclass()`
