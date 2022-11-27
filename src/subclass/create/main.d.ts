@@ -8,7 +8,7 @@ import type {
   ErrorProps,
   MergeErrorProps,
 } from '../../plugins/core/props/main.js'
-import type { PluginsMixedMethods } from '../../plugins/mixed/main.js'
+import type { PluginsMixedMethods } from '../../plugins/instance/mixed.js'
 import type { Plugins } from '../../plugins/shape/main.js'
 import type { PluginsStaticMethods } from '../../plugins/static/main.js'
 import type { OmitKeys } from '../../utils/main.js'
