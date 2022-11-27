@@ -3,7 +3,7 @@ import setErrorMessage from 'set-error-message'
 import setErrorProps from 'set-error-props'
 import setErrorStack from 'set-error-stack'
 
-import { getPluginsMethodNames } from '../instance/main.js'
+import { getPluginsMethodNames } from '../../instance/main.js'
 
 // `plugin.properties()` returns an object of properties to set.
 // `undefined` values delete properties.

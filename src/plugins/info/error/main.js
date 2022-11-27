@@ -1,6 +1,6 @@
-import { mergePluginsOpts } from '../../options/merge.js'
-import { finalizePluginsOpts } from '../../options/plugins.js'
-import { instancesData, classesData } from '../../subclass/map.js'
+import { mergePluginsOpts } from '../../../options/merge.js'
+import { finalizePluginsOpts } from '../../../options/plugins.js'
+import { instancesData, classesData } from '../../../subclass/map.js'
 
 // Create `info.errorInfo(error)` which returns error-specific information:
 // `ErrorClass`, `ErrorClasses` and `options`.

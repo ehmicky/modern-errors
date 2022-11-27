@@ -1,6 +1,10 @@
 import { instancesData } from '../../subclass/map.js'
 
-import { getAnyErrorInfo, getKnownErrorInfo, getSubclasses } from './error.js'
+import {
+  getAnyErrorInfo,
+  getKnownErrorInfo,
+  getSubclasses,
+} from './error/main.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
 // `staticMethods` since it does not have access to an error.

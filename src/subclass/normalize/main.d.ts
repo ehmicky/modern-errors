@@ -1,13 +1,13 @@
 import type {
   AggregateErrorOption,
   DefinedAggregateErrors,
-} from '../merge/aggregate.js'
-import type { ErrorInstance } from '../merge/cause.js'
-import type { ErrorProps } from '../plugins/core/props/main.js'
-import type { Plugins } from '../plugins/shape/main.js'
-import type { SetProps } from '../utils/omit.js'
-import type { SpecificErrorClass } from './create.js'
-import type { CustomClass } from './custom.js'
+} from '../../merge/aggregate.js'
+import type { ErrorInstance } from '../../merge/cause.js'
+import type { ErrorProps } from '../../plugins/core/props/main.js'
+import type { Plugins } from '../../plugins/shape/main.js'
+import type { SetProps } from '../../utils/omit.js'
+import type { SpecificErrorClass } from '../create.js'
+import type { CustomClass } from '../custom.js'
 
 /**
  * `ErrorClass.normalize()`.

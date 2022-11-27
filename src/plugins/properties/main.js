@@ -2,7 +2,7 @@ import isPlainObj from 'is-plain-obj'
 
 import { getErrorPluginInfo } from '../info/main.js'
 
-import { assignError } from './assign.js'
+import { assignError } from './assign/main.js'
 
 // Set each `plugin.properties()`.
 // A `reduce()` function is used so that plugins can override the same

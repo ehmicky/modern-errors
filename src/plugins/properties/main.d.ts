@@ -2,7 +2,7 @@ import type { UnionToIntersection } from '../../utils/intersect.js'
 import type { InfoParameter } from '../info/main.js'
 import type { Plugin, Plugins } from '../shape/main.js'
 
-import type { AddedProperties } from './assign.js'
+import type { AddedProperties } from './assign/main.js'
 
 /**
  * Bound added properties of a plugin, always defined

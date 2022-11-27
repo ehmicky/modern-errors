@@ -1,6 +1,6 @@
 import setErrorMessage from 'set-error-message'
 
-import { isSubclass } from '../utils/subclass.js'
+import { isSubclass } from '../../utils/subclass.js'
 
 // When switching error classes, we keep the old class name in the error
 // message, except:

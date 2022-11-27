@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorSubclasses } from '../helpers/plugin.test.js'
+import { ErrorSubclasses } from '../../helpers/plugin.test.js'
 
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.staticMethods are set on ErrorClass | ${title}`, (t) => {
