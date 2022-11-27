@@ -62,7 +62,7 @@
     "set-error-stack": "^1.0.0"
   },
   "devDependencies": {
-    "@ehmicky/dev-tasks": "^1.0.143",
+    "@ehmicky/dev-tasks": "^2.0.1",
     "is-error-instance": "^1.3.0",
     "modern-errors-bugs": "^2.1.0",
     "modern-errors-clean": "^3.1.0",
