@@ -2,7 +2,7 @@ import type {
   AggregateErrorOption,
   DefinedAggregateErrors,
 } from '../../merge/aggregate.js'
-import type { ErrorInstance } from '../../merge/cause/main.js'
+import type { ErrorInstance } from '../../merge/cause.js'
 import type { ErrorProps } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape/main.js'
 import type { SetProps } from '../../utils/omit.js'

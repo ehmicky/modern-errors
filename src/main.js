@@ -1,7 +1,7 @@
 import errorCustomClass from 'error-custom-class'
 
 import { setAggregateErrors } from './merge/aggregate.js'
-import { mergeCause } from './merge/cause/main.js'
+import { mergeCause } from './merge/cause.js'
 import { computePluginsOpts } from './options/instance.js'
 import { CORE_PLUGINS } from './plugins/core/main.js'
 import { setPluginsProperties } from './plugins/properties/main.js'

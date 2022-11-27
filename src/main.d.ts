@@ -1,4 +1,4 @@
-import type { ErrorInstance } from './merge/cause/main.js'
+import type { ErrorInstance } from './merge/cause.js'
 import type { ClassOptions } from './options/class.js'
 import type { InstanceOptions } from './options/instance.js'
 import type { MethodOptions } from './options/method.js'

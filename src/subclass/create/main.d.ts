@@ -1,7 +1,7 @@
 import type { ErrorName } from 'error-custom-class'
 
 import type { AggregateErrors } from '../../merge/aggregate.js'
-import type { SpecificErrorInstance } from '../../merge/cause/main.js'
+import type { SpecificErrorInstance } from '../../merge/cause.js'
 import type { SpecificClassOptions } from '../../options/class.js'
 import type { Cause } from '../../options/instance.js'
 import type {

@@ -1,8 +1,9 @@
 import isErrorInstance from 'is-error-instance'
 import mergeErrorCause from 'merge-error-cause'
 
-import { isSubclass } from '../../utils/subclass.js'
-import { shouldPrefixCause, prefixCause, undoPrefixCause } from '../prefix.js'
+import { isSubclass } from '../utils/subclass.js'
+
+import { shouldPrefixCause, prefixCause, undoPrefixCause } from './prefix.js'
 
 // Like `mergeCause()` but run outside of `new ErrorClass(...)`
 export const mergeSpecificCause = function (error, cause) {
