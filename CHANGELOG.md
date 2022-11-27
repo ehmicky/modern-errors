@@ -1,3 +1,9 @@
+# 5.3.1
+
+## Bug fixes
+
+- Fixed TypeScript types
+
 # 5.3.0
 
 ## Features
