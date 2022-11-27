@@ -28,8 +28,9 @@ export type NormalizeError<
   NewErrorClass?: NewErrorClass,
 ) => NormalizeDeepError<
   ErrorArg,
-  InstanceType<SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>>,
-  InstanceType<NewErrorClass>
+  InstanceType<SpecificErrorClass<PluginsArg, ErrorPropsArg, CustomClassArg>> &
+    ErrorInstance,
+  InstanceType<NewErrorClass> & ErrorInstance
 >
 
 /**
