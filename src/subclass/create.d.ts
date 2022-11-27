@@ -1,23 +1,20 @@
 import type { ErrorName } from 'error-custom-class'
 
-import type { AggregateErrors } from '../../merge/aggregate.js'
-import type { SpecificErrorInstance } from '../../merge/cause.js'
-import type { SpecificClassOptions } from '../../options/class.js'
-import type { Cause } from '../../options/instance.js'
-import type {
-  ErrorProps,
-  MergeErrorProps,
-} from '../../plugins/core/props/main.js'
-import type { PluginsMixedMethods } from '../../plugins/instance/mixed.js'
-import type { Plugins } from '../../plugins/shape/main.js'
-import type { PluginsStaticMethods } from '../../plugins/static/main.js'
-import type { OmitKeys } from '../../utils/omit.js'
+import type { AggregateErrors } from '../merge/aggregate.js'
+import type { SpecificErrorInstance } from '../merge/cause.js'
+import type { SpecificClassOptions } from '../options/class.js'
+import type { Cause } from '../options/instance.js'
+import type { ErrorProps, MergeErrorProps } from '../plugins/core/props/main.js'
+import type { PluginsMixedMethods } from '../plugins/instance/mixed.js'
+import type { Plugins } from '../plugins/shape/main.js'
+import type { PluginsStaticMethods } from '../plugins/static/main.js'
+import type { OmitKeys } from '../utils/omit.js'
 import type {
   CustomClass,
   ParentExtra,
   ParentInstanceOptions,
-} from '../custom/main.js'
-import type { NormalizeError } from '../normalize/main.js'
+} from './custom/main.js'
+import type { NormalizeError } from './normalize/main.js'
 
 /**
  * `ErrorClass.subclass()`
