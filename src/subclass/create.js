@@ -1,9 +1,9 @@
 import { setErrorName } from 'error-class-utils'
 
 import { normalizeClassOpts, getClassOpts } from '../options/class.js'
-import { addAllInstanceMethods } from '../plugins/instance/add.js'
+import { addAllInstanceMethods } from '../plugins/instance/main.js'
 import { normalizePlugins } from '../plugins/shape/main.js'
-import { addAllStaticMethods } from '../plugins/static/add.js'
+import { addAllStaticMethods } from '../plugins/static/main.js'
 import { setNonEnumProp } from '../utils/descriptors.js'
 
 import { getErrorClass } from './custom.js'

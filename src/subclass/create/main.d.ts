@@ -10,7 +10,7 @@ import type {
 } from '../../plugins/core/props/main.js'
 import type { PluginsMixedMethods } from '../../plugins/mixed.js'
 import type { Plugins } from '../../plugins/shape/main.js'
-import type { PluginsStaticMethods } from '../../plugins/static/add.js'
+import type { PluginsStaticMethods } from '../../plugins/static/main.js'
 import type { OmitKeys } from '../../utils/main.js'
 import type {
   CustomClass,

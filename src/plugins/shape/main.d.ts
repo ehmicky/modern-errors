@@ -1,7 +1,7 @@
 import type { GetOptions, IsOptions } from '../../options/get.js'
-import type { InstanceMethods } from '../instance/add.js'
+import type { InstanceMethods } from '../instance/main.js'
 import type { GetProperties } from '../properties/main.js'
-import type { StaticMethods } from '../static/add.js'
+import type { StaticMethods } from '../static/main.js'
 
 /**
  * Plugins extend `modern-errors` features.

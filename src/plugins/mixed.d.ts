@@ -1,6 +1,6 @@
 import type { MethodOptions } from '../options/method.js'
 import type { SliceFirst, UnionToIntersection } from '../utils/main.js'
-import type { InstanceMethod, InstanceMethods } from './instance/add.js'
+import type { InstanceMethod, InstanceMethods } from './instance/main.js'
 import type { Plugin, Plugins } from './shape/main.js'
 
 /**
