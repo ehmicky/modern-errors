@@ -5,7 +5,11 @@ import {
   expectError,
 } from 'tsd'
 
-import ModernError, { Plugin, ErrorClass, ErrorInstance } from 'modern-errors'
+import ModernError, {
+  type Plugin,
+  type ErrorClass,
+  type ErrorInstance,
+} from 'modern-errors'
 
 const BaseError = ModernError.subclass('BaseError')
 const ChildError = BaseError.subclass('ChildError')

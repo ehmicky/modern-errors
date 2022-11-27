@@ -1,6 +1,6 @@
 import { expectType, expectError, expectNotAssignable } from 'tsd'
 
-import ModernError, { InstanceOptions, Info } from 'modern-errors'
+import ModernError, { type InstanceOptions, type Info } from 'modern-errors'
 
 const AttributesError = ModernError.subclass('AttributesError', {
   custom: class extends ModernError {

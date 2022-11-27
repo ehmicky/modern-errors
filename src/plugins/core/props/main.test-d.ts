@@ -5,7 +5,10 @@ import {
   expectError,
 } from 'tsd'
 
-import ModernError, { ClassOptions, InstanceOptions } from 'modern-errors'
+import ModernError, {
+  type ClassOptions,
+  type InstanceOptions,
+} from 'modern-errors'
 
 ModernError.subclass('TestError', { props: {} })
 new ModernError('', { props: {} })

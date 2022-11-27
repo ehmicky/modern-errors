@@ -1,6 +1,6 @@
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
-import { Plugin } from 'modern-errors'
+import type { Plugin } from 'modern-errors'
 
 const name = 'test' as const
 

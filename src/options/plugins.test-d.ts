@@ -1,10 +1,10 @@
 import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
 
 import ModernError, {
-  Plugin,
-  ClassOptions,
-  InstanceOptions,
-  MethodOptions,
+  type Plugin,
+  type ClassOptions,
+  type InstanceOptions,
+  type MethodOptions,
 } from 'modern-errors'
 
 const barePlugin = { name: 'test' as const }

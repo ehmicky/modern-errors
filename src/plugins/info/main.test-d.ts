@@ -1,6 +1,6 @@
 import { expectType, expectAssignable, expectError } from 'tsd'
 
-import { Info, ErrorClass } from 'modern-errors'
+import type { Info, ErrorClass } from 'modern-errors'
 
 const instanceMethodsInfo = {} as Info['instanceMethods']
 expectError(instanceMethodsInfo.other)

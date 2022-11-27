@@ -1,12 +1,12 @@
-import ModernError, { ErrorInstance } from 'modern-errors'
+import ModernError, { type ErrorInstance } from 'modern-errors'
 import bugsPlugin from 'modern-errors-bugs'
 import cleanPlugin from 'modern-errors-clean'
 import cliPlugin from 'modern-errors-cli'
-import httpPlugin, { HttpResponse } from 'modern-errors-http'
+import httpPlugin, { type HttpResponse } from 'modern-errors-http'
 import processPlugin from 'modern-errors-process'
-import serializePlugin, { ErrorObject } from 'modern-errors-serialize'
+import serializePlugin, { type ErrorObject } from 'modern-errors-serialize'
 import switchPlugin from 'modern-errors-switch'
-import winstonPlugin, { Format } from 'modern-errors-winston'
+import winstonPlugin, { type Format } from 'modern-errors-winston'
 import { expectAssignable, expectType } from 'tsd'
 
 const plugins = [
