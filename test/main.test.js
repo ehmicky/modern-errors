@@ -37,7 +37,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`error.stack does not include the constructor | ${title}`, (t) => {
     const lines = error.stack.split('\n')
     const stackIndex = lines.findIndex(isStackLine)
-    t.true(lines[stackIndex].includes('main.js'))
+    t.true(lines[stackIndex].includes('main.test.js'))
   })
 
   test(`error.toString() is correct | ${title}`, (t) => {
