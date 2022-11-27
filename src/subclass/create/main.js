@@ -7,7 +7,7 @@ import { addAllStaticMethods } from '../../plugins/static/main.js'
 import { setNonEnumProp } from '../../utils/descriptors.js'
 import { getErrorClass } from '../custom/main.js'
 import { classesData } from '../map.js'
-import { normalize } from '../normalize.js'
+import { normalize } from '../normalize/main.js'
 
 // Create a new error class.
 // We allow `ErrorClass.subclass()` to create subclasses. This can be used to:

@@ -1,7 +1,7 @@
 import normalizeException from 'normalize-exception'
 
-import { setNonEnumProp } from '../utils/descriptors.js'
-import { isSubclass } from '../utils/subclass.js'
+import { setNonEnumProp } from '../../utils/descriptors.js'
+import { isSubclass } from '../../utils/subclass.js'
 
 // `ErrorClass.normalize()` has two purposes:
 //  - Normalizing exceptions:
