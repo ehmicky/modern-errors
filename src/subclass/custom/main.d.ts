@@ -5,7 +5,7 @@ import type {
   SpecificInstanceOptions,
 } from '../../options/instance.js'
 import type { ErrorProps } from '../../plugins/core/props/main.js'
-import type { Plugins } from '../../plugins/shape.js'
+import type { Plugins } from '../../plugins/shape/main.js'
 
 /**
  * `custom` option

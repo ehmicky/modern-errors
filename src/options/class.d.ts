@@ -1,5 +1,5 @@
 import type { ErrorProps } from '../plugins/core/props/main.js'
-import type { Plugins } from '../plugins/shape.js'
+import type { Plugins } from '../plugins/shape/main.js'
 import type { CustomClass } from '../subclass/custom/main.js'
 import type { PluginsOptions } from './plugins.js'
 

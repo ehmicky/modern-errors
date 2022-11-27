@@ -1,7 +1,7 @@
 import type { MethodOptions } from '../options/method.js'
-import type { SliceFirst, UnionToIntersection } from '../utils.js'
-import type { InstanceMethod, InstanceMethods } from './instance.js'
-import type { Plugin, Plugins } from './shape.js'
+import type { SliceFirst, UnionToIntersection } from '../utils/main.js'
+import type { InstanceMethod, InstanceMethods } from './instance/add.js'
+import type { Plugin, Plugins } from './shape/main.js'
 
 /**
  * Bound mixed method parameters

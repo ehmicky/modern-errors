@@ -8,13 +8,16 @@ import type {
   ErrorProps,
   MergeErrorProps,
 } from '../../plugins/core/props/main.js'
-import type { Plugins } from '../../plugins/shape.js'
-import type { PluginsStaticMethods } from '../../plugins/static.js'
 import type { PluginsMixedMethods } from '../../plugins/mixed.js'
-import type { OmitKeys } from '../../utils.js'
+import type { Plugins } from '../../plugins/shape/main.js'
+import type { PluginsStaticMethods } from '../../plugins/static/add.js'
+import type { OmitKeys } from '../../utils/main.js'
+import type {
+  CustomClass,
+  ParentExtra,
+  ParentInstanceOptions,
+} from '../custom/main.js'
 import type { NormalizeError } from '../normalize/main.js'
-import type { ParentExtra, ParentInstanceOptions } from '../custom/main.js'
-import type { CustomClass } from '../custom/main.js'
 
 /**
  * `ErrorClass.subclass()`

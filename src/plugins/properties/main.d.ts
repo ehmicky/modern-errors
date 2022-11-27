@@ -1,6 +1,6 @@
-import type { UnionToIntersection } from '../utils.js'
-import type { InfoParameter } from './info.js'
-import type { Plugin, Plugins } from './shape.js'
+import type { UnionToIntersection } from '../../utils/main.js'
+import type { InfoParameter } from '../info/main.js'
+import type { Plugin, Plugins } from '../shape/main.js'
 
 /**
  * Unbound added properties of a plugin

@@ -1,10 +1,10 @@
 import type { Cause, NormalizedCause } from '../../options/instance.js'
 import type { ErrorProps } from '../../plugins/core/props/main.js'
-import type { PluginsInstanceMethods } from '../../plugins/instance.js'
-import type { PluginsProperties } from '../../plugins/properties.js'
-import type { Plugins } from '../../plugins/shape.js'
+import type { PluginsInstanceMethods } from '../../plugins/instance/add.js'
+import type { PluginsProperties } from '../../plugins/properties/main.js'
+import type { Plugins } from '../../plugins/shape/main.js'
 import type { CustomClass } from '../../subclass/custom/main.js'
-import type { SetProps } from '../../utils.js'
+import type { SetProps } from '../../utils/main.js'
 import type { AggregateErrors, AggregateErrorsProperty } from '../aggregate.js'
 
 /**

@@ -1,7 +1,7 @@
-import type { MethodOptions } from '../options/method.js'
-import type { SliceFirst, UnionToIntersection } from '../utils.js'
-import type { InfoParameter } from './info.js'
-import type { Plugin, Plugins } from './shape.js'
+import type { MethodOptions } from '../../options/method.js'
+import type { SliceFirst, UnionToIntersection } from '../../utils/main.js'
+import type { InfoParameter } from '../info/main.js'
+import type { Plugin, Plugins } from '../shape/main.js'
 
 /**
  * Unbound static method of a plugin

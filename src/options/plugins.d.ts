@@ -1,5 +1,5 @@
 import type { ErrorProps } from '../plugins/core/props/main.js'
-import type { Plugin, Plugins } from '../plugins/shape.js'
+import type { Plugin, Plugins } from '../plugins/shape/main.js'
 
 /**
  * Options of a plugin
