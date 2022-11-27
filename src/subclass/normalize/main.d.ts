@@ -5,7 +5,7 @@ import type {
 import type { ErrorInstance } from '../../merge/cause/main.js'
 import type { ErrorProps } from '../../plugins/core/props/main.js'
 import type { Plugins } from '../../plugins/shape/main.js'
-import type { SetProps } from '../../utils/main.js'
+import type { SetProps } from '../../utils/omit.js'
 import type { SpecificErrorClass } from '../create/main.js'
 import type { CustomClass } from '../custom/main.js'
 

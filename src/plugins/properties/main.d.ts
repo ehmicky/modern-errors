@@ -1,4 +1,4 @@
-import type { UnionToIntersection } from '../../utils/main.js'
+import type { UnionToIntersection } from '../../utils/intersect.js'
 import type { InfoParameter } from '../info/main.js'
 import type { Plugin, Plugins } from '../shape/main.js'
 

@@ -11,7 +11,7 @@ import type {
 import type { PluginsMixedMethods } from '../../plugins/instance/mixed.js'
 import type { Plugins } from '../../plugins/shape/main.js'
 import type { PluginsStaticMethods } from '../../plugins/static/main.js'
-import type { OmitKeys } from '../../utils/main.js'
+import type { OmitKeys } from '../../utils/omit.js'
 import type {
   CustomClass,
   ParentExtra,
