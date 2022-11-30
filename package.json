@@ -9,7 +9,9 @@
   "main": "./build/src/main.js",
   "types": "./build/src/main.d.ts",
   "files": [
-    "build/src/**/*.{js,json,d.ts}"
+    "build/src/**/*.{js,json,d.ts}",
+    "!build/src/**/*.test.js",
+    "!build/src/{helpers,fixtures}/**/*.js"
   ],
   "sideEffects": false,
   "scripts": {
