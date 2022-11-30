@@ -5,12 +5,12 @@ import {
   callStaticMethod,
   callInstanceMethod,
   callMixMethod,
-} from '../helpers/info.js'
-import { ErrorSubclasses } from '../helpers/main.js'
+} from '../helpers/info.test.js'
+import { ErrorSubclasses } from '../helpers/main.test.js'
 import {
   ErrorSubclasses as PluginErrorClasses,
   TEST_PLUGIN,
-} from '../helpers/plugin.js'
+} from '../helpers/plugin.test.js'
 
 each(
   PluginErrorClasses,

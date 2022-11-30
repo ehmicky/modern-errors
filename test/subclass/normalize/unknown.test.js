@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses } from '../../helpers/main.js'
-import { getUnknownErrors } from '../../helpers/unknown.js'
+import { ErrorClasses } from '../../helpers/main.test.js'
+import { getUnknownErrors } from '../../helpers/unknown.test.js'
 
 each(
   ErrorClasses,

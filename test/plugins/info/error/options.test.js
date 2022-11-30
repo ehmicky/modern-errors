@@ -6,8 +6,8 @@ import {
   getInstanceInfo,
   getMixInfo,
   getStaticInfo,
-} from '../../../helpers/info.js'
-import { ErrorSubclasses } from '../../../helpers/plugin.js'
+} from '../../../helpers/info.test.js'
+import { ErrorSubclasses } from '../../../helpers/plugin.test.js'
 
 each(
   ErrorSubclasses,

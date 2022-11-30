@@ -6,8 +6,8 @@ import {
   getInstanceInfo,
   getMixInfo,
   getStaticInfo,
-} from '../../helpers/info.js'
-import { ErrorSubclasses, getPluginClasses } from '../../helpers/plugin.js'
+} from '../../helpers/info.test.js'
+import { ErrorSubclasses, getPluginClasses } from '../../helpers/plugin.test.js'
 
 const { ErrorSubclasses: OtherSubclasses } = getPluginClasses()
 const { propertyIsEnumerable: isEnum } = Object.prototype

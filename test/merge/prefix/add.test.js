@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses } from '../../helpers/main.js'
-import { getUnknownErrorInstances } from '../../helpers/unknown.js'
+import { ErrorClasses } from '../../helpers/main.test.js'
+import { getUnknownErrorInstances } from '../../helpers/unknown.test.js'
 
 const messages = ['', 'test: ']
 

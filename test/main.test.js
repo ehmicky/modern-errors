@@ -3,8 +3,12 @@ import { basename } from 'node:path'
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses, ErrorSubclasses, ModernError } from './helpers/main.js'
-import { getUnknownErrors } from './helpers/unknown.js'
+import {
+  ErrorClasses,
+  ErrorSubclasses,
+  ModernError,
+} from './helpers/main.test.js'
+import { getUnknownErrors } from './helpers/unknown.test.js'
 
 const { propertyIsEnumerable: isEnum } = Object.prototype
 

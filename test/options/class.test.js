@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses, ErrorSubclasses } from '../helpers/plugin.js'
+import { ErrorClasses, ErrorSubclasses } from '../helpers/plugin.test.js'
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Validate invalid class options | ${title}`, (t) => {

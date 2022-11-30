@@ -1,6 +1,6 @@
 import isPlainObj from 'is-plain-obj'
 
-import { getClasses } from './main.js'
+import { getClasses } from './main.test.js'
 
 const validateContext = function (context) {
   if (context !== undefined) {

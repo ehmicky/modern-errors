@@ -1,8 +1,8 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { getClasses } from '../helpers/main.js'
-import { ErrorSubclasses, TEST_PLUGIN } from '../helpers/plugin.js'
+import { getClasses } from '../helpers/main.test.js'
+import { ErrorSubclasses, TEST_PLUGIN } from '../helpers/plugin.test.js'
 
 const { ErrorSubclasses: NoOptionsErrorClasses } = getClasses({
   plugins: [{ ...TEST_PLUGIN, getOptions: undefined }],

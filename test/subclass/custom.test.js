@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses } from '../helpers/main.js'
+import { ErrorClasses } from '../helpers/main.test.js'
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`"custom" option defaults to parent class | ${title}`, (t) => {

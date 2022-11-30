@@ -5,7 +5,7 @@ import {
   ErrorClasses,
   ErrorSubclasses,
   ModernError,
-} from '../../helpers/main.js'
+} from '../../helpers/main.test.js'
 
 each([null, '', Function, Object, Error], ({ title }, invalidErrorClass) => {
   test(`ErrorClass.normalize() second argument must be a ModernError class | ${title}`, (t) => {

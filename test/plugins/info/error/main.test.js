@@ -6,9 +6,9 @@ import {
   getInstanceInfo,
   getMixInfo,
   getStaticInfo,
-} from '../../../helpers/info.js'
-import { ErrorSubclasses } from '../../../helpers/plugin.js'
-import { getUnknownErrors } from '../../../helpers/unknown.js'
+} from '../../../helpers/info.test.js'
+import { ErrorSubclasses } from '../../../helpers/plugin.test.js'
+import { getUnknownErrors } from '../../../helpers/unknown.test.js'
 
 each(
   ErrorSubclasses,

@@ -1,7 +1,7 @@
 import test from 'ava'
 import { each } from 'test-each'
 
-import { ErrorClasses } from '../helpers/main.js'
+import { ErrorClasses } from '../helpers/main.test.js'
 
 const { hasOwnProperty: hasOwn } = Object.prototype
 
