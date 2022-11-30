@@ -11,7 +11,7 @@
   "files": [
     "build/src/**/*.{js,json,d.ts}",
     "!build/src/**/*.test.js",
-    "!build/src/{helpers,fixtures}/**/*.{js,json,d.ts}"
+    "!build/src/{helpers,fixtures}"
   ],
   "sideEffects": false,
   "scripts": {
