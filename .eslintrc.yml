@@ -9,56 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # Test files, including helpers
-  - files: ['src/**/*.test.{js,cjs,mjs,ts,cts,mts}']
-    rules:
-      # When using data-driven testing, an extra level of depth is implied
-      # Also, test() creates a depth level as well
-      max-nested-callbacks:
-        - 2
-        - 3
-      max-lines-per-function: 0
-
-      # Self imports
-      import/no-unresolved: 0
-      n/no-missing-import: 0
-      n/no-extraneous-import: 0
-
-      # Empty functions can be useful in tests
-      no-empty: 0
-
-      # Often tested as an invalid input
-      unicorn/no-null: 0
-
-  - files: ['src/**/*.test.{js,cjs,mjs}']
-    rules:
-      {}
-      # TODO: fix.
-      # # Enforce integration testing
-      # no-restricted-imports:
-      #   - 2
-      #   - patterns:
-      #       - group:
-      #           ['node:assert', assert, 'node:assert/strict', assert/strict]
-      #         message: Please throw an Error instead
-      #       - group: ['./*', '!./helpers', '!./fixtures']
-      #         message:
-      #           Individual files should not be imported in tests. Instead please
-      #           use import the main module.
-
-  - files: ['src/**/*.test.{ts,cts,mts}']
-    rules:
-      '@typescript-eslint/no-restricted-imports':
-        - 2
-        - patterns:
-            - group:
-                ['node:assert', assert, 'node:assert/strict', assert/strict]
-              message: Please throw an Error instead
-            - group: ['./*', '!./helpers', '!./fixtures']
-              message:
-                Individual files should not be imported in tests. Instead please
-                use import the main module.
-
   # Test helpers and fixtures
   - files: ['src/helpers/**/*.{js,cjs,mjs}', 'src/fixtures/**/*.{js,cjs,mjs}']
     rules:
