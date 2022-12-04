@@ -141,10 +141,14 @@ overrides:
       '@typescript-eslint/consistent-type-imports':
         - 2
         - fixStyle: inline-type-imports
-      # '@typescript-eslint/no-require-imports': 2
-      # '@typescript-eslint/no-var-requires': 2
-      # '@typescript-eslint/no-useless-empty-export': 2
-      # '@typescript-eslint/triple-slash-reference': 2
+      '@typescript-eslint/no-require-imports': 2
+      '@typescript-eslint/no-var-requires': 2
+      '@typescript-eslint/no-useless-empty-export': 2
+      '@typescript-eslint/triple-slash-reference':
+        - 2
+        - lib: never
+          path: never
+          types: never
 
       # ## Forbid
       # '@typescript-eslint/ban-types': 2
