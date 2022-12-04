@@ -1214,7 +1214,7 @@ overrides:
       no-unused-vars: 0
 
   # Examples and documentation files
-  - files: ['**/*.md/*.js', examples/**/*.js]
+  - files: ['**/*.md/*.js', 'examples/**/*.{js,cjs,mjs}']
     rules:
       # Examples print their output at the end of the file
       # It might happen in documentation as well
@@ -1279,7 +1279,7 @@ overrides:
         - patterns: []
 
   # Test files, including helpers
-  - files: [src/**/*.test.js]
+  - files: ['src/**/*.test.{js,cjs,mjs}']
     rules:
       # When using data-driven testing, an extra level of depth is implied
       # Also, test() creates a depth level as well
@@ -1317,13 +1317,13 @@ overrides:
       unicorn/no-null: 0
 
   # Test helpers and fixtures
-  - files: [src/helpers/**/*.js, src/fixtures/**/*.js]
+  - files: ['src/helpers/**/*.{js,cjs,mjs}', 'src/fixtures/**/*.{js,cjs,mjs}']
     rules:
       # Allow including sibling files
       no-restricted-imports: 0
 
   # Test fixtures
-  - files: [src/fixtures/**/*.js]
+  - files: ['src/fixtures/**/*.{js,cjs,mjs}']
     rules:
       # Fixture files are sometimes executed by a CLI without exporting nor
       # importing anything
@@ -1344,7 +1344,7 @@ overrides:
       n/no-unpublished-import: 0
 
   # Gulpfile and gulp tasks
-  - files: [gulpfile.js, gulp/**/*.js]
+  - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs}']
     rules:
       # Gulp tasks sometimes print to console
       no-console: 0
@@ -1376,7 +1376,7 @@ overrides:
       import/no-default-export: 0
 
   # CLI
-  - files: [src/bin/**/*.js, src/bin.js]
+  - files: ['src/bin/**/*.{js,cjs,mjs}', 'src/bin.{js,cjs,mjs}']
     rules:
       # CLI often prints to console
       no-console: 0
@@ -1391,7 +1391,7 @@ overrides:
       import/no-namespace: 0
 
   # Benchmark files
-  - files: [benchmark/**/*.js]
+  - files: ['benchmark/**/*.{js,cjs,mjs}']
     rules:
       # Often used to signify number of iterations
       no-magic-numbers: 0
