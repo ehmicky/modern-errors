@@ -3,7 +3,7 @@ import type { UnionToIntersection } from '../../utils/intersect.js'
 import type { SliceFirst } from '../../utils/slice.js'
 import type { Plugin, Plugins } from '../shape/main.js'
 
-import type { InstanceMethod, InstanceMethods } from './main.js'
+import type { InstanceMethods, InstanceMethod } from './main.js'
 
 /**
  * Bound instance method parameters
