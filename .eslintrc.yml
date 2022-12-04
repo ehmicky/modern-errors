@@ -32,9 +32,7 @@ overrides:
 
   - files: ['src/**/*.test.{js,cjs,mjs}']
     rules:
-      # Empty functions can be useful in tests
-      no-empty-function: 0
-
+      {}
       # TODO: fix.
       # # Enforce integration testing
       # no-restricted-imports:
@@ -50,7 +48,6 @@ overrides:
 
   - files: ['src/**/*.test.{ts,cts,mts}']
     rules:
-      '@typescript-eslint/no-empty-function': 0
       '@typescript-eslint/no-restricted-imports':
         - 2
         - patterns:

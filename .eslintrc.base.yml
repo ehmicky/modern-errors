@@ -1485,10 +1485,18 @@ overrides:
 
       # Empty functions can be useful in tests
       no-empty: 0
-      no-empty-function: 0
 
       # Often tested as an invalid input
       unicorn/no-null: 0
+
+  - files: ['src/**/*.test.{js,cjs,mjs}']
+    rules:
+      # Empty functions can be useful in tests
+      no-empty-function: 0
+
+  - files: ['src/**/*.test.{ts,cts,mts}']
+    rules:
+      '@typescript-eslint/no-empty-function': 0
 
   # Test helpers and fixtures
   - files: ['src/helpers/**/*.{js,cjs,mjs}', 'src/fixtures/**/*.{js,cjs,mjs}']
