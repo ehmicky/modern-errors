@@ -159,9 +159,10 @@ overrides:
             # `{ ... } & object`
             '{}': false
 
-      # ## Type declaration
-      # '@typescript-eslint/no-type-alias': 2
-      # '@typescript-eslint/no-redundant-type-constituents': 2
+      ## Type declaration
+      # `type` is useful
+      '@typescript-eslint/no-type-alias': 0
+      '@typescript-eslint/no-redundant-type-constituents': 2
 
       # ## Base types
       # '@typescript-eslint/no-explicit-any': 2

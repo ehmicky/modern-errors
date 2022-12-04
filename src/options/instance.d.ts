@@ -14,7 +14,7 @@ export type NormalizedCause<CauseArg extends Cause> = CauseArg extends Error
 /**
  * Optional `cause` option
  */
-export type Cause = unknown | undefined
+export type Cause = unknown
 
 /**
  * Options passed to error constructors, excluding any plugin options
