@@ -1,0 +1,4 @@
+{
+  "extends": "@ehmicky/dev-tasks",
+  "files": ["main.d.ts", "main.test-d.ts", "main.test.ts", "main.ts"]
+}
