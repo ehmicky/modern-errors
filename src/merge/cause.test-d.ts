@@ -143,15 +143,15 @@ const InstanceMethodPropError = ModernError.subclass(
     ],
   },
 )
-expectAssignable<Function>(new InstanceMethodPropError('').prop)
+expectAssignable<() => void>(new InstanceMethodPropError('').prop)
 
 const InstanceMethodError = ModernError.subclass('InstanceMethodError', {
   plugins: [{ name, instanceMethods: { prop: () => {} } }],
 })
-expectAssignable<Function>(
+expectAssignable<() => void>(
   new InstanceMethodError('', { props: { prop: '' } }).prop,
 )
-expectAssignable<Function>(
+expectAssignable<() => void>(
   new ModernError('', { cause: new InstanceMethodError('') }).prop,
 )
 expectType<false>(
