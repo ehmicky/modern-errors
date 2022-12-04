@@ -7,6 +7,7 @@ extends:
 
 parserOptions:
   sourceType: module
+  project: tsconfig.json
 ## Added by standard/standard
 #  ecmaVersion: 2021
 #  ecmaFeatures:
@@ -33,6 +34,7 @@ plugins:
   - markdown
   - unicorn
   - ava
+  - '@typescript-eslint'
 ## Added by standard/standard
 #  - import
 #  - n
@@ -101,15 +103,6 @@ rules:
   unicorn/no-unreadable-iife: 2
 
   ## Complexity
-  max-len:
-    - 2
-    - code: 80
-      tabWidth: 2
-      ignoreUrls: true
-      ignoreStrings: true
-      ignoreTemplateLiterals: true
-      ignoreRegExpLiterals: true
-      ignorePattern: eslint-
   max-lines:
     - 2
     - max: 90
@@ -129,9 +122,7 @@ rules:
     - max: 2
   import/max-dependencies:
     - 2
-    ## This does not seem to work at the moment
-    ## TODO: re-enable
-    # - ignoreTypeImports: true
+    - ignoreTypeImports: true
   complexity:
     - 2
     - 4
@@ -565,10 +556,10 @@ rules:
   import/no-cycle: 2
   n/no-extraneous-require:
     - 2
-    - allowModules: [ava]
+    - allowModules: [ava, tsd]
   n/no-extraneous-import:
     - 2
-    - allowModules: [ava]
+    - allowModules: [ava, tsd]
   sort-imports:
     - 2
     - ignoreMemberSort: true
@@ -897,11 +888,6 @@ rules:
 #  n/process-exit-as-throw: 2
 #  promise/param-names: 2
 
-## Might conflict with Prettier, i.e. disabled by eslint-config-prettier,
-## but overridden by us.
-
-#  max-len: 0
-
 ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
 ## although added by standard/standard.
 
@@ -1102,6 +1088,15 @@ rules:
 #  jsx-quotes: 2
 #  linebreak-style: 2
 #  lines-around-comment: 2
+#  max-len:
+#    - 2
+#    - code: 80
+#      tabWidth: 2
+#      ignoreUrls: true
+#      ignoreStrings: true
+#      ignoreTemplateLiterals: true
+#      ignoreRegExpLiterals: true
+#      ignorePattern: eslint-
 #  newline-per-chained-call: 2
 #  no-confusing-arrow: 2
 #  no-extra-semi: 2
@@ -1331,14 +1326,16 @@ rules:
 settings:
   # JSON files in `build` are compiled from YAML in `src` and `test`
   n:
-    tryExtensions: [.js, .cjs, .mjs, .json, .node, .yml, .yaml]
+    tryExtensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
   import/resolver:
     node:
-      extensions: [.js, .cjs, .mjs, .json, .node, .yml, .yaml]
+      extensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
+    typescript:
+      project: tsconfig.json
 
 overrides:
   # CommonJS files
-  - files: ['**/*.cjs']
+  - files: ['**/*.{cjs,cts}']
     rules:
       import/no-commonjs: 0
       import/unambiguous: 0

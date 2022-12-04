@@ -1,38 +1,7 @@
 extends: '.eslintrc.base.yml'
-plugins: ['@typescript-eslint']
-parserOptions:
-  project: tsconfig.json
 rules:
   fp/no-class: 0
-
-  import/max-dependencies:
-    - 2
-    - ignoreTypeImports: true
-
-  n/no-extraneous-require:
-    - 2
-    - allowModules: [ava, tsd]
-  n/no-extraneous-import:
-    - 2
-    - allowModules: [ava, tsd]
-
-  ## Conflicts with Prettier
-  max-len: 0
-settings:
-  n:
-    tryExtensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
-  import/resolver:
-    node:
-      extensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
-    typescript:
-      project: tsconfig.json
 overrides:
-  # CommonJS files
-  - files: ['**/*.{cjs,cts}']
-    rules:
-      import/no-commonjs: 0
-      import/unambiguous: 0
-
   # Rules that apply to JavaScript but not TypeScript
   - files: ['**/*.js']
     rules:
