@@ -189,11 +189,11 @@ overrides:
           ignoreVoidOperator: true
       '@typescript-eslint/no-meaningless-void-operator': 2
 
-      # ## Enums
-      # '@typescript-eslint/prefer-enum-initializers': 2
-      # '@typescript-eslint/prefer-literal-enum-member': 2
-      # '@typescript-eslint/no-duplicate-enum-values': 2
-      # '@typescript-eslint/no-unnecessary-qualifier': 2
+      ## Enums
+      '@typescript-eslint/prefer-enum-initializers': 2
+      '@typescript-eslint/prefer-literal-enum-member': 2
+      '@typescript-eslint/no-duplicate-enum-values': 2
+      '@typescript-eslint/no-unnecessary-qualifier': 2
 
       # ## Readonly
       # '@typescript-eslint/prefer-as-const': 2
