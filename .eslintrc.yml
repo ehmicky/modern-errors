@@ -93,17 +93,25 @@ overrides:
       '@typescript-eslint/member-ordering': 0
       '@typescript-eslint/prefer-optional-chain': 2
 
-      # ## Classes
-      # '@typescript-eslint/unbound-method': 2
-      # '@typescript-eslint/no-this-alias': 2
-      # '@typescript-eslint/prefer-return-this-type': 2
-      # '@typescript-eslint/explicit-member-accessibility': 2
-      # '@typescript-eslint/prefer-readonly': 2
-      # '@typescript-eslint/class-literal-property-style': 2
-      # '@typescript-eslint/parameter-properties': 2
-      # '@typescript-eslint/no-unsafe-declaration-merging': 2
-      # '@typescript-eslint/no-extraneous-class': 2
-      # '@typescript-eslint/no-misused-new': 2
+      ## Classes
+      '@typescript-eslint/unbound-method': 2
+      '@typescript-eslint/no-this-alias': 2
+      '@typescript-eslint/prefer-return-this-type': 2
+      '@typescript-eslint/explicit-member-accessibility':
+        - 2
+        - accessibility: no-public
+      '@typescript-eslint/prefer-readonly': 2
+      '@typescript-eslint/class-literal-property-style':
+        - 2
+        - fields
+      '@typescript-eslint/parameter-properties': 2
+      '@typescript-eslint/no-unsafe-declaration-merging': 2
+      '@typescript-eslint/no-extraneous-class':
+        - 2
+        - allowEmpty: true
+          allowWithDecorator: true
+          allowConstructorOnly: true
+      '@typescript-eslint/no-misused-new': 2
 
       # ## Arrays
       # '@typescript-eslint/array-type': 2
