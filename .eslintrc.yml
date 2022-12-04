@@ -171,13 +171,15 @@ overrides:
       '@typescript-eslint/no-unsafe-call': 2
       '@typescript-eslint/no-unsafe-return': 2
 
-      # ## Undefined/null/void
-      # '@typescript-eslint/no-non-null-assertion': 2
-      # '@typescript-eslint/non-nullable-type-assertion-style': 2
-      # '@typescript-eslint/no-confusing-non-null-assertion': 2
-      # '@typescript-eslint/no-extra-non-null-assertion': 2
-      # '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 2
-      # '@typescript-eslint/no-non-null-asserted-optional-chain': 2
+      ## Undefined/null/void
+      # `value!` assertions are useful, e.g. when accessing an array element
+      # that we know is not out-of-bound
+      '@typescript-eslint/no-non-null-assertion': 0
+      '@typescript-eslint/non-nullable-type-assertion-style': 2
+      '@typescript-eslint/no-confusing-non-null-assertion': 2
+      '@typescript-eslint/no-extra-non-null-assertion': 2
+      '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 2
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 2
       # '@typescript-eslint/no-invalid-void-type': 2
       # '@typescript-eslint/no-confusing-void-expression': 2
       # '@typescript-eslint/no-meaningless-void-operator': 2
