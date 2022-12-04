@@ -182,10 +182,3 @@ overrides:
       # Passing `undefined` is handled differently than passing no argument by
       # TypeScript, which can be tested
       unicorn/no-useless-undefined: 0
-
-  # Files that are sibling to a `*.js` or `*.ts`
-  - files: ['**/*.{test.{js,cjs,mjs,ts,cts,mts},d.ts,test-d.ts}']
-    rules:
-      # Each source file should have a single sibling test file, regardless of
-      # its size
-      max-lines: 0
