@@ -11,6 +11,8 @@ Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 [`errors`](../README.md#aggregate-errors) and
 [`custom`](../README.md#-custom-logic) methods/properties are typed.
 
+<!-- eslint-disable class-methods-use-this -->
+
 ```ts
 const BaseError = ModernError.subclass('BaseError', {
   custom: class extends ModernError {
@@ -34,7 +36,6 @@ are typed.
 
 ```ts
 import ModernError from 'modern-errors'
-
 // This plugin adds a `BaseError.httpResponse(error)` method
 import modernErrorsHttp from 'modern-errors-http'
 
@@ -53,6 +54,8 @@ const httpResponse = BaseError.httpResponse(error) // Inferred type: response ob
 When catching exceptions, their type can be
 [narrowed](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#instanceof-narrowing)
 using [`instanceof`](../README.md#check-error-classes).
+
+<!-- eslint-disable max-depth -->
 
 ```ts
 const InputError = BaseError.subclass('InputError', {
