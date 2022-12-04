@@ -9,32 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # Gulpfile and gulp tasks
-  - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs,ts,cts,mts}']
-    rules:
-      # Gulp tasks sometimes print to console
-      no-console: 0
-      no-restricted-globals:
-        - 2
-        - global
-        - GLOBAL
-        - exports
-        - process
-        - Buffer
-      fp/no-mutation:
-        - 2
-        - commonjs: true
-          exceptions:
-            - object: process
-              property: exitCode
-            - object: error
-            - object: req
-            - object: request
-            - object: res
-            - object: response
-            - object: state
-            - property: description
-
   # Main entry point
   - files: ['src/main.{js,ts,d.ts}']
     rules:

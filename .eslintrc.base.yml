@@ -1540,7 +1540,7 @@ overrides:
       n/no-unpublished-import: 0
 
   # Gulpfile and gulp tasks
-  - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs}']
+  - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Gulp tasks sometimes print to console
       no-console: 0
