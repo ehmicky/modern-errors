@@ -1,4 +1,4 @@
-import { expectType, expectAssignable, expectError } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
 import ModernError, { type Plugin } from 'modern-errors'
 
@@ -35,7 +35,8 @@ expectType<true>(
   ParentError.normalize(new ModernError('', { props: { one: false as const } }))
     .one,
 )
-expectError(ParentError.normalize({ prop: true }).prop)
+// @ts-expect-error
+ParentError.normalize({ prop: true }).prop
 
 expectType<ParentErrorInstance>(ParentError.normalize(new ParentError('')))
 expectType<ChildErrorInstance>(ParentError.normalize(new ChildError('')))
@@ -92,10 +93,14 @@ expectType<true>(ModernError.normalize(cause).prop)
 
 ModernError.normalize('', ModernError)
 ModernError.normalize('', PropsError)
-expectError(ModernError.normalize())
-expectError(ModernError.normalize('', true))
-expectError(ModernError.normalize('', Error))
-expectError(PropsError.normalize('', ModernError))
+// @ts-expect-error
+ModernError.normalize()
+// @ts-expect-error
+ModernError.normalize('', true)
+// @ts-expect-error
+ModernError.normalize('', Error)
+// @ts-expect-error
+PropsError.normalize('', ModernError)
 
 expectType<PropsErrorInstance[]>(
   PropsError.normalize(
@@ -115,4 +120,5 @@ expectType<[PropsErrorInstance]>(
     }),
   ).errors[0].errors,
 )
-expectError(PropsError.normalize(new PropsError('')).errors)
+// @ts-expect-error
+PropsError.normalize(new PropsError('')).errors

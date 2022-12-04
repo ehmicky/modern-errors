@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
 import ModernError, { type Info, type Plugin } from 'modern-errors'
 
@@ -40,41 +40,69 @@ expectType<''>(fullUnknownError.instanceMethod(''))
 expectType<''>(fullChildError.instanceMethod(''))
 expectType<''>(mixUnknownError.instanceMethod(''))
 expectType<''>(mixChildError.instanceMethod(''))
-expectError(bareUnknownError.instanceMethod(true))
-expectError(bareChildError.instanceMethod(true))
-expectError(fullUnknownError.instanceMethod(true))
-expectError(fullChildError.instanceMethod(true))
-expectError(mixUnknownError.instanceMethod(true))
-expectError(mixChildError.instanceMethod(true))
+// @ts-expect-error
+bareUnknownError.instanceMethod(true)
+// @ts-expect-error
+bareChildError.instanceMethod(true)
+// @ts-expect-error
+fullUnknownError.instanceMethod(true)
+// @ts-expect-error
+fullChildError.instanceMethod(true)
+// @ts-expect-error
+mixUnknownError.instanceMethod(true)
+// @ts-expect-error
+mixChildError.instanceMethod(true)
 
 expectType<''>(fullUnknownError.instanceMethod('', true))
 expectType<''>(fullChildError.instanceMethod('', true))
 expectType<''>(mixUnknownError.instanceMethod('', true))
 expectType<''>(mixChildError.instanceMethod('', true))
-expectError(bareUnknownError.instanceMethod('', true))
-expectError(bareChildError.instanceMethod('', true))
-expectError(bareUnknownError.instanceMethod('', undefined))
-expectError(bareChildError.instanceMethod('', undefined))
-expectError(fullUnknownError.instanceMethod('', false))
-expectError(fullChildError.instanceMethod('', false))
-expectError(fullUnknownError.instanceMethod('', undefined))
-expectError(fullChildError.instanceMethod('', undefined))
-expectError(fullUnknownError.instanceMethod('', true, undefined))
-expectError(fullChildError.instanceMethod('', true, undefined))
-expectError(mixUnknownError.instanceMethod('', false))
-expectError(mixChildError.instanceMethod('', false))
-expectError(mixUnknownError.instanceMethod('', undefined))
-expectError(mixChildError.instanceMethod('', undefined))
-expectError(mixUnknownError.instanceMethod('', true, undefined))
-expectError(mixChildError.instanceMethod('', true, undefined))
+// @ts-expect-error
+bareUnknownError.instanceMethod('', true)
+// @ts-expect-error
+bareChildError.instanceMethod('', true)
+// @ts-expect-error
+bareUnknownError.instanceMethod('', undefined)
+// @ts-expect-error
+bareChildError.instanceMethod('', undefined)
+// @ts-expect-error
+fullUnknownError.instanceMethod('', false)
+// @ts-expect-error
+fullChildError.instanceMethod('', false)
+// @ts-expect-error
+fullUnknownError.instanceMethod('', undefined)
+// @ts-expect-error
+fullChildError.instanceMethod('', undefined)
+// @ts-expect-error
+fullUnknownError.instanceMethod('', true, undefined)
+// @ts-expect-error
+fullChildError.instanceMethod('', true, undefined)
+// @ts-expect-error
+mixUnknownError.instanceMethod('', false)
+// @ts-expect-error
+mixChildError.instanceMethod('', false)
+// @ts-expect-error
+mixUnknownError.instanceMethod('', undefined)
+// @ts-expect-error
+mixChildError.instanceMethod('', undefined)
+// @ts-expect-error
+mixUnknownError.instanceMethod('', true, undefined)
+// @ts-expect-error
+mixChildError.instanceMethod('', true, undefined)
 
 const info = {} as Info['instanceMethods']
-expectError(bareUnknownError.instanceMethod(info))
-expectError(bareChildError.instanceMethod(info))
-expectError(fullUnknownError.instanceMethod(info, ''))
-expectError(fullChildError.instanceMethod(info, ''))
-expectError(mixUnknownError.instanceMethod(info, ''))
-expectError(mixChildError.instanceMethod(info, ''))
+// @ts-expect-error
+bareUnknownError.instanceMethod(info)
+// @ts-expect-error
+bareChildError.instanceMethod(info)
+// @ts-expect-error
+fullUnknownError.instanceMethod(info, '')
+// @ts-expect-error
+fullChildError.instanceMethod(info, '')
+// @ts-expect-error
+mixUnknownError.instanceMethod(info, '')
+// @ts-expect-error
+mixChildError.instanceMethod(info, '')
 
 const WideBaseError = ModernError.subclass('WideBaseError', {
   plugins: [{} as Plugin],
@@ -83,11 +111,19 @@ const ChildWideError = WideBaseError.subclass('ChildWideError')
 const unknownWideError = new WideBaseError('')
 const childWideError = new ChildWideError('')
 
-expectError(bareUnknownError.otherMethod())
-expectError(bareChildError.otherMethod())
-expectError(fullUnknownError.otherMethod())
-expectError(fullChildError.otherMethod())
-expectError(mixUnknownError.otherMethod())
-expectError(mixChildError.otherMethod())
-expectError(unknownWideError.otherMethod())
-expectError(childWideError.otherMethod())
+// @ts-expect-error
+bareUnknownError.otherMethod()
+// @ts-expect-error
+bareChildError.otherMethod()
+// @ts-expect-error
+fullUnknownError.otherMethod()
+// @ts-expect-error
+fullChildError.otherMethod()
+// @ts-expect-error
+mixUnknownError.otherMethod()
+// @ts-expect-error
+mixChildError.otherMethod()
+// @ts-expect-error
+unknownWideError.otherMethod()
+// @ts-expect-error
+childWideError.otherMethod()

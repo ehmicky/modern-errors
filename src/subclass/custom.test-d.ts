@@ -1,4 +1,4 @@
-import { expectType, expectError, expectNotAssignable } from 'tsd'
+import { expectType, expectNotAssignable } from 'tsd'
 
 import ModernError, { type InstanceOptions, type Info } from 'modern-errors'
 
@@ -79,60 +79,107 @@ new ChildCustomError('', { prop: true }, true)
 new CustomBaseError('', { prop: true }, true)
 new DeepCustomError('', { prop: true, propTwo: true }, false)
 
-expectError(new ModernError())
-expectError(new BaseError())
-expectError(new DeepBaseError())
-expectError(new CustomError())
-expectError(new ChildCustomError())
-expectError(new CustomBaseError())
-expectError(new DeepCustomError())
+// @ts-expect-error
+new ModernError()
+// @ts-expect-error
+new BaseError()
+// @ts-expect-error
+new DeepBaseError()
+// @ts-expect-error
+new CustomError()
+// @ts-expect-error
+new ChildCustomError()
+// @ts-expect-error
+new CustomBaseError()
+// @ts-expect-error
+new DeepCustomError()
 
-expectError(new ModernError(true))
-expectError(new BaseError(true))
-expectError(new DeepBaseError(true))
-expectError(new CustomError(true))
-expectError(new ChildCustomError(true))
-expectError(new CustomBaseError(true))
-expectError(new DeepCustomError(true))
+// @ts-expect-error
+new ModernError(true)
+// @ts-expect-error
+new BaseError(true)
+// @ts-expect-error
+new DeepBaseError(true)
+// @ts-expect-error
+new CustomError(true)
+// @ts-expect-error
+new ChildCustomError(true)
+// @ts-expect-error
+new CustomBaseError(true)
+// @ts-expect-error
+new DeepCustomError(true)
 
-expectError(new ModernError('', true))
-expectError(new BaseError('', true))
-expectError(new DeepBaseError('', true))
-expectError(new CustomError('', true))
-expectError(new ChildCustomError('', true))
-expectError(new CustomBaseError('', true))
-expectError(new DeepCustomError('', true))
+// @ts-expect-error
+new ModernError('', true)
+// @ts-expect-error
+new BaseError('', true)
+// @ts-expect-error
+new DeepBaseError('', true)
+// @ts-expect-error
+new CustomError('', true)
+// @ts-expect-error
+new ChildCustomError('', true)
+// @ts-expect-error
+new CustomBaseError('', true)
+// @ts-expect-error
+new DeepCustomError('', true)
 
-expectError(new BaseError('', { other: true }))
-expectError(new DeepBaseError('', { other: true }))
-expectError(new CustomError('', { other: true }))
-expectError(new ChildCustomError('', { other: true }))
-expectError(new CustomBaseError('', { other: true }))
-expectError(new DeepCustomError('', { other: true }))
+// @ts-expect-error
+new BaseError('', { other: true })
+// @ts-expect-error
+new DeepBaseError('', { other: true })
+// @ts-expect-error
+new CustomError('', { other: true })
+// @ts-expect-error
+new ChildCustomError('', { other: true })
+// @ts-expect-error
+new CustomBaseError('', { other: true })
+// @ts-expect-error
+new DeepCustomError('', { other: true })
 
-expectError(new ModernError('', { cause: '', other: true }))
-expectError(new BaseError('', { cause: '', other: true }))
-expectError(new DeepBaseError('', { cause: '', other: true }))
-expectError(new CustomError('', { cause: '', other: true }))
-expectError(new ChildCustomError('', { cause: '', other: true }))
-expectError(new CustomBaseError('', { cause: '', other: true }))
-expectError(new DeepCustomError('', { cause: '', other: true }))
+// @ts-expect-error
+new ModernError('', { cause: '', other: true })
+// @ts-expect-error
+new BaseError('', { cause: '', other: true })
+// @ts-expect-error
+new DeepBaseError('', { cause: '', other: true })
+// @ts-expect-error
+new CustomError('', { cause: '', other: true })
+// @ts-expect-error
+new ChildCustomError('', { cause: '', other: true })
+// @ts-expect-error
+new CustomBaseError('', { cause: '', other: true })
+// @ts-expect-error
+new DeepCustomError('', { cause: '', other: true })
 
-expectError(new CustomError('', { prop: false }))
-expectError(new ChildCustomError('', { prop: false }))
-expectError(new CustomBaseError('', { prop: false }))
-expectError(new DeepCustomError('', { prop: false }))
-expectError(new DeepCustomError('', { propTwo: false }))
+// @ts-expect-error
+new CustomError('', { prop: false })
+// @ts-expect-error
+new ChildCustomError('', { prop: false })
+// @ts-expect-error
+new CustomBaseError('', { prop: false })
+// @ts-expect-error
+new DeepCustomError('', { prop: false })
+// @ts-expect-error
+new DeepCustomError('', { propTwo: false })
 
-expectError(new CustomError('', {}, false))
-expectError(new ChildCustomError('', {}, false))
-expectError(new CustomBaseError('', {}, false))
-expectError(new DeepCustomError('', {}, ''))
+// @ts-expect-error
+new CustomError('', {}, false)
+// @ts-expect-error
+new ChildCustomError('', {}, false)
+// @ts-expect-error
+new CustomBaseError('', {}, false)
+// @ts-expect-error
+new DeepCustomError('', {}, '')
 
-expectError(new CustomError('', {}, true, true))
-expectError(new ChildCustomError('', {}, true, true))
-expectError(new CustomBaseError('', {}, true, true))
-expectError(new CustomBaseError('', {}, true, true))
+// @ts-expect-error
+new CustomError('', {}, true, true)
+// @ts-expect-error
+new ChildCustomError('', {}, true, true)
+// @ts-expect-error
+new CustomBaseError('', {}, true, true)
+// @ts-expect-error
+new CustomBaseError('', {}, true, true)
 
 ModernError.subclass('TestError', {
   custom: class extends ModernError {
@@ -161,28 +208,23 @@ ModernError.subclass('TestError', {
   },
 })
 
-expectError(
-  ModernError.subclass('TestError', {
-    custom: class extends ModernError {
-      constructor(message: string, options?: true) {
-        super(message, {})
-      }
-    },
-  }),
-)
+ModernError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends ModernError {
+    constructor(message: string, options?: true) {
+      super(message, {})
+    }
+  },
+})
 
-expectError(
-  ModernError.subclass('TestError', {
-    custom: class extends ModernError {
-      constructor(
-        message: string,
-        options?: InstanceOptions & { cause: true },
-      ) {
-        super(message, options)
-      }
-    },
-  }),
-)
+ModernError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends ModernError {
+    constructor(message: string, options?: InstanceOptions & { cause: true }) {
+      super(message, options)
+    }
+  },
+})
 
 ModernError.subclass('TestError', {
   custom: class extends ModernError {
@@ -195,25 +237,23 @@ ModernError.subclass('TestError', {
   },
 })
 
-expectError(
-  ModernError.subclass('TestError', {
-    custom: class extends ModernError {
-      constructor(options?: object) {
-        super('', options)
-      }
-    },
-  }),
-)
+ModernError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends ModernError {
+    constructor(options?: object) {
+      super('', options)
+    }
+  },
+})
 
-expectError(
-  ModernError.subclass('TestError', {
-    custom: class extends ModernError {
-      constructor() {
-        super()
-      }
-    },
-  }),
-)
+ModernError.subclass('TestError', {
+  custom: class extends ModernError {
+    constructor() {
+      // @ts-expect-error
+      super()
+    }
+  },
+})
 
 CustomError.subclass('TestError', {
   custom: class extends CustomError {
@@ -223,12 +263,9 @@ CustomError.subclass('TestError', {
   },
 })
 
-// `tsd`'s `expectError()` fails at validating the following, so we need to
-// use more complex `expectNotAssignable` assertions.
-expectNotAssignable<
-  NonNullable<NonNullable<Parameters<typeof CustomError.subclass>[1]>['custom']>
->(
-  class extends CustomError {
+CustomError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends CustomError {
     constructor(
       message: string,
       options?: InstanceOptions & { prop?: false },
@@ -237,25 +274,25 @@ expectNotAssignable<
       super(message, {}, true)
     }
   },
-)
+})
 
-expectNotAssignable<
-  NonNullable<NonNullable<Parameters<typeof CustomError.subclass>[1]>['custom']>
->(
-  class extends CustomError {
+CustomError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends CustomError {
     constructor(message: string, options?: InstanceOptions, extra?: false) {
       super(message, options, true)
     }
   },
-)
+})
 
-expectError(
-  class extends CustomError {
+CustomError.subclass('TestError', {
+  custom: class TestError extends CustomError {
     constructor() {
+      // @ts-expect-error
       super('', {}, false)
     }
   },
-)
+})
 
 const plugins = [{ name: 'test' as const }]
 const PluginBaseError = ModernError.subclass('PluginBaseError', { plugins })
@@ -351,54 +388,70 @@ const PropsError = PropsBaseError.subclass('PropsError', {
 })
 expectType<true>(new PropsError('').prop)
 
-// `tsd`'s `expectError()` fails to properly lint those, so they must be
-// manually checked by uncommenting those lines.
-// expectError(
-//   class extends PropertyBaseError {
-//     property = ''
-//   },
-// )
-// expectError(
-//   class extends InstanceMethodBaseError {
-//     instanceMethod = (arg: true) => true as boolean | string
-//   },
-// )
-// expectError(
-//   class extends InstanceMethodBaseError {
-//     instanceMethod = (arg: never) => true as boolean
-//   },
-// )
-// expectError(
-//   class extends StaticMethodBaseError {
-//     static staticMethod(arg: true) {
-//       return true as boolean | string
-//     }
-//   },
-// )
-// expectError(
-//   class extends StaticMethodBaseError {
-//     static staticMethod(arg: never) {
-//       return true as boolean
-//     }
-//   },
-// )
-// expectError(
-//   class extends StaticMethodBaseError {
-//     static staticMethod = (arg: true) => true as boolean | string
-//   },
-// )
-// expectError(
-//   class extends StaticMethodBaseError {
-//     static staticMethod = (arg: never) => true as boolean
-//   },
-// )
-// expectError(
-//   class extends PropsBaseError {
-//     prop = true as boolean | string
-//   },
-// )
-// expectError(
-//   class extends ModernError {
-//     message = true
-//   },
-// )
+PropertyBaseError.subclass('TestError', {
+  custom: class extends PropertyBaseError {
+    // @ts-expect-error
+    property = ''
+  },
+})
+
+InstanceMethodBaseError.subclass('TestError', {
+  custom: class extends InstanceMethodBaseError {
+    // @ts-expect-error
+    instanceMethod = (arg: true) => true as boolean | string
+  },
+})
+
+InstanceMethodBaseError.subclass('TestError', {
+  custom: class extends InstanceMethodBaseError {
+    // @ts-expect-error
+    instanceMethod = (arg: never) => true as boolean
+  },
+})
+
+StaticMethodBaseError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends StaticMethodBaseError {
+    static staticMethod(arg: true) {
+      return true as boolean | string
+    }
+  },
+})
+
+StaticMethodBaseError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends StaticMethodBaseError {
+    static staticMethod(arg: never) {
+      return true as boolean
+    }
+  },
+})
+
+StaticMethodBaseError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends StaticMethodBaseError {
+    static staticMethod = (arg: true) => true as boolean | string
+  },
+})
+
+StaticMethodBaseError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends StaticMethodBaseError {
+    static staticMethod = (arg: never) => true as boolean
+  },
+})
+
+PropsBaseError.subclass('TestError', {
+  custom: class extends PropsBaseError {
+    // @ts-expect-error
+    prop = true as boolean | string
+  },
+})
+
+ModernError.subclass('TestError', {
+  // @ts-expect-error
+  custom: class extends ModernError {
+    // @ts-expect-error
+    message = true
+  },
+})

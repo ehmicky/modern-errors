@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
 import ModernError from 'modern-errors'
 
@@ -54,7 +54,11 @@ expectType<[Error, CustomInstance]>(
   }).errors,
 )
 
-expectError(new ModernError('').errors)
-expectError(new CustomError('').errors)
-expectError(new ModernError('', { errors: true }))
-expectError(new CustomError('', { errors: true }))
+// @ts-expect-error
+new ModernError('').errors
+// @ts-expect-error
+new CustomError('').errors
+// @ts-expect-error
+new ModernError('', { errors: true })
+// @ts-expect-error
+new CustomError('', { errors: true })

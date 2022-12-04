@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
 import ModernError, { type Info, type Plugin } from 'modern-errors'
 
@@ -34,52 +34,89 @@ expectType<''>(MixBaseError.staticMethod(''))
 expectType<''>(BareChildError.staticMethod(''))
 expectType<''>(FullChildError.staticMethod(''))
 expectType<''>(MixChildError.staticMethod(''))
-expectError(BareBaseError.staticMethod(true))
-expectError(FullBaseError.staticMethod(true))
-expectError(MixBaseError.staticMethod(true))
-expectError(BareChildError.staticMethod(true))
-expectError(FullChildError.staticMethod(true))
-expectError(MixChildError.staticMethod(true))
+// @ts-expect-error
+BareBaseError.staticMethod(true)
+// @ts-expect-error
+FullBaseError.staticMethod(true)
+// @ts-expect-error
+MixBaseError.staticMethod(true)
+// @ts-expect-error
+BareChildError.staticMethod(true)
+// @ts-expect-error
+FullChildError.staticMethod(true)
+// @ts-expect-error
+MixChildError.staticMethod(true)
 
 expectType<''>(FullBaseError.staticMethod('', true))
 expectType<''>(FullChildError.staticMethod('', true))
-expectError(BareBaseError.staticMethod('', true))
-expectError(BareBaseError.staticMethod('', undefined))
-expectError(FullBaseError.staticMethod('', false))
-expectError(FullBaseError.staticMethod('', undefined))
-expectError(FullBaseError.staticMethod('', true, undefined))
-expectError(MixBaseError.staticMethod('', false))
-expectError(MixBaseError.staticMethod('', undefined))
-expectError(MixBaseError.staticMethod('', true, undefined))
-expectError(BareChildError.staticMethod('', true))
-expectError(BareChildError.staticMethod('', undefined))
-expectError(FullChildError.staticMethod('', false))
-expectError(FullChildError.staticMethod('', undefined))
-expectError(FullChildError.staticMethod('', true, undefined))
-expectError(MixChildError.staticMethod('', false))
-expectError(MixChildError.staticMethod('', undefined))
-expectError(MixChildError.staticMethod('', true, undefined))
+// @ts-expect-error
+BareBaseError.staticMethod('', true)
+// @ts-expect-error
+BareBaseError.staticMethod('', undefined)
+// @ts-expect-error
+FullBaseError.staticMethod('', false)
+// @ts-expect-error
+FullBaseError.staticMethod('', undefined)
+// @ts-expect-error
+FullBaseError.staticMethod('', true, undefined)
+// @ts-expect-error
+MixBaseError.staticMethod('', false)
+// @ts-expect-error
+MixBaseError.staticMethod('', undefined)
+// @ts-expect-error
+MixBaseError.staticMethod('', true, undefined)
+// @ts-expect-error
+BareChildError.staticMethod('', true)
+// @ts-expect-error
+BareChildError.staticMethod('', undefined)
+// @ts-expect-error
+FullChildError.staticMethod('', false)
+// @ts-expect-error
+FullChildError.staticMethod('', undefined)
+// @ts-expect-error
+FullChildError.staticMethod('', true, undefined)
+// @ts-expect-error
+MixChildError.staticMethod('', false)
+// @ts-expect-error
+MixChildError.staticMethod('', undefined)
+// @ts-expect-error
+MixChildError.staticMethod('', true, undefined)
 
 const info = {} as Info['staticMethods']
-expectError(BareBaseError.staticMethod(info))
-expectError(FullBaseError.staticMethod(info, ''))
-expectError(MixBaseError.staticMethod(info, ''))
-expectError(BareChildError.staticMethod(info))
-expectError(FullChildError.staticMethod(info, ''))
-expectError(MixChildError.staticMethod(info, ''))
+// @ts-expect-error
+BareBaseError.staticMethod(info)
+// @ts-expect-error
+FullBaseError.staticMethod(info, '')
+// @ts-expect-error
+MixBaseError.staticMethod(info, '')
+// @ts-expect-error
+BareChildError.staticMethod(info)
+// @ts-expect-error
+FullChildError.staticMethod(info, '')
+// @ts-expect-error
+MixChildError.staticMethod(info, '')
 
 const WideBaseError = ModernError.subclass('WideBaseError', {
   plugins: [{} as Plugin],
 })
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 
-expectError(BareBaseError.otherMethod())
-expectError(FullBaseError.otherMethod())
-expectError(MixBaseError.otherMethod())
-expectError(WideBaseError.otherMethod())
-expectError(BareChildError.otherMethod())
-expectError(FullChildError.otherMethod())
-expectError(MixChildError.otherMethod())
-expectError(ChildWideError.otherMethod())
+// @ts-expect-error
+BareBaseError.otherMethod()
+// @ts-expect-error
+FullBaseError.otherMethod()
+// @ts-expect-error
+MixBaseError.otherMethod()
+// @ts-expect-error
+WideBaseError.otherMethod()
+// @ts-expect-error
+BareChildError.otherMethod()
+// @ts-expect-error
+FullChildError.otherMethod()
+// @ts-expect-error
+MixChildError.otherMethod()
+// @ts-expect-error
+ChildWideError.otherMethod()
 
-expectError(ChildWideError.staticMethod(''))
+// @ts-expect-error
+ChildWideError.staticMethod('')

@@ -1,4 +1,4 @@
-import { expectAssignable, expectNotAssignable, expectError } from 'tsd'
+import { expectAssignable, expectNotAssignable } from 'tsd'
 
 import ModernError, {
   type Plugin,
@@ -12,52 +12,49 @@ const fullPlugin = { ...barePlugin, getOptions: (input: true) => input }
 
 const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
 
-expectError(
-  ModernError.subclass('TestError', { plugins: [barePlugin], test: true }),
-)
+// @ts-expect-error
+ModernError.subclass('TestError', { plugins: [barePlugin], test: true })
 ModernError.subclass('TestError', { plugins: [fullPlugin], test: true })
 BaseError.subclass('TestError', { test: true })
 new BaseError('', { test: true })
-expectError<ClassOptions>({ test: true })
+expectNotAssignable<ClassOptions>({ test: true })
 expectAssignable<ClassOptions<[typeof fullPlugin]>>({ test: true })
-expectError<InstanceOptions>({ test: true })
+expectNotAssignable<InstanceOptions>({ test: true })
 expectAssignable<InstanceOptions<[typeof fullPlugin]>>({ test: true })
 expectAssignable<MethodOptions<typeof fullPlugin>>(true)
 
-expectError(
-  ModernError.subclass('TestError', { plugins: [barePlugin], test: 'true' }),
-)
-expectError(
-  ModernError.subclass('TestError', { plugins: [fullPlugin], test: 'true' }),
-)
-expectError(BaseError.subclass('TestError', { test: 'true' }))
-expectError(new BaseError('', { test: 'true' }))
+// @ts-expect-error
+ModernError.subclass('TestError', { plugins: [barePlugin], test: 'true' })
+// @ts-expect-error
+ModernError.subclass('TestError', { plugins: [fullPlugin], test: 'true' })
+// @ts-expect-error
+BaseError.subclass('TestError', { test: 'true' })
+// @ts-expect-error
+new BaseError('', { test: 'true' })
 expectNotAssignable<ClassOptions>({ test: 'true' })
 expectNotAssignable<ClassOptions<[typeof fullPlugin]>>({ test: 'true' })
 expectNotAssignable<InstanceOptions>({ test: 'true' })
 expectNotAssignable<InstanceOptions<[typeof fullPlugin]>>({ test: 'true' })
 expectNotAssignable<MethodOptions<typeof fullPlugin>>('true')
 
-expectError(ModernError.subclass('TestError', { other: true }))
-expectError(
-  ModernError.subclass('TestError', { plugins: [barePlugin], other: true }),
-)
-expectError(
-  ModernError.subclass('TestError', { plugins: [fullPlugin], other: true }),
-)
-expectError(
-  ModernError.subclass('TestError', {
-    plugins: [fullPlugin as Plugin],
-    other: true,
-  }),
-)
-expectError(
-  ModernError.subclass('TestError', {
-    plugins: [{ ...fullPlugin, name: '' as string }],
-    other: true,
-  }),
-)
-expectError(new BaseError('', { other: true }))
+// @ts-expect-error
+ModernError.subclass('TestError', { other: true })
+// @ts-expect-error
+ModernError.subclass('TestError', { plugins: [barePlugin], other: true })
+// @ts-expect-error
+ModernError.subclass('TestError', { plugins: [fullPlugin], other: true })
+ModernError.subclass('TestError', {
+  plugins: [fullPlugin as Plugin],
+  // @ts-expect-error
+  other: true,
+})
+ModernError.subclass('TestError', {
+  plugins: [{ ...fullPlugin, name: '' as string }],
+  // @ts-expect-error
+  other: true,
+})
+// @ts-expect-error
+new BaseError('', { other: true })
 expectNotAssignable<ClassOptions>({ other: true })
 expectNotAssignable<ClassOptions<[typeof fullPlugin]>>({ other: true })
 expectNotAssignable<InstanceOptions>({ other: true })
@@ -86,6 +83,9 @@ const SecondPluginError = BaseError.subclass('SecondPluginError', {
   second: true,
 })
 new SecondPluginError('', { test: true, second: true })
-expectError(new SecondPluginError('', { test: 'true' }))
-expectError(new SecondPluginError('', { second: 'true' }))
-expectError(new SecondPluginError('', { other: true }))
+// @ts-expect-error
+new SecondPluginError('', { test: 'true' })
+// @ts-expect-error
+new SecondPluginError('', { second: 'true' })
+// @ts-expect-error
+new SecondPluginError('', { other: true })

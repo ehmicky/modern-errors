@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
 import ModernError, { type Info, type Plugin } from 'modern-errors'
 
@@ -43,52 +43,89 @@ expectType<''>(MixBaseError.instanceMethod(error, ''))
 expectType<''>(BareChildError.instanceMethod(error, ''))
 expectType<''>(FullChildError.instanceMethod(error, ''))
 expectType<''>(MixChildError.instanceMethod(error, ''))
-expectError(BareBaseError.instanceMethod(error, true))
-expectError(FullBaseError.instanceMethod(error, true))
-expectError(MixBaseError.instanceMethod(error, true))
-expectError(BareChildError.instanceMethod(error, true))
-expectError(FullChildError.instanceMethod(error, true))
-expectError(MixChildError.instanceMethod(error, true))
+// @ts-expect-error
+BareBaseError.instanceMethod(error, true)
+// @ts-expect-error
+FullBaseError.instanceMethod(error, true)
+// @ts-expect-error
+MixBaseError.instanceMethod(error, true)
+// @ts-expect-error
+BareChildError.instanceMethod(error, true)
+// @ts-expect-error
+FullChildError.instanceMethod(error, true)
+// @ts-expect-error
+MixChildError.instanceMethod(error, true)
 
 expectType<''>(FullBaseError.instanceMethod(error, '', true))
 expectType<''>(FullChildError.instanceMethod(error, '', true))
-expectError(BareBaseError.instanceMethod(error, '', true))
-expectError(BareBaseError.instanceMethod(error, '', undefined))
-expectError(FullBaseError.instanceMethod(error, '', false))
-expectError(FullBaseError.instanceMethod(error, '', undefined))
-expectError(FullBaseError.instanceMethod(error, '', true, undefined))
-expectError(MixBaseError.instanceMethod(error, '', false))
-expectError(MixBaseError.instanceMethod(error, '', undefined))
-expectError(MixBaseError.instanceMethod(error, '', true, undefined))
-expectError(BareChildError.instanceMethod(error, '', true))
-expectError(BareChildError.instanceMethod(error, '', undefined))
-expectError(FullChildError.instanceMethod(error, '', false))
-expectError(FullChildError.instanceMethod(error, '', undefined))
-expectError(FullChildError.instanceMethod(error, '', true, undefined))
-expectError(MixChildError.instanceMethod(error, '', false))
-expectError(MixChildError.instanceMethod(error, '', undefined))
-expectError(MixChildError.instanceMethod(error, '', true, undefined))
+// @ts-expect-error
+BareBaseError.instanceMethod(error, '', true)
+// @ts-expect-error
+BareBaseError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+FullBaseError.instanceMethod(error, '', false)
+// @ts-expect-error
+FullBaseError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+FullBaseError.instanceMethod(error, '', true, undefined)
+// @ts-expect-error
+MixBaseError.instanceMethod(error, '', false)
+// @ts-expect-error
+MixBaseError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+MixBaseError.instanceMethod(error, '', true, undefined)
+// @ts-expect-error
+BareChildError.instanceMethod(error, '', true)
+// @ts-expect-error
+BareChildError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+FullChildError.instanceMethod(error, '', false)
+// @ts-expect-error
+FullChildError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+FullChildError.instanceMethod(error, '', true, undefined)
+// @ts-expect-error
+MixChildError.instanceMethod(error, '', false)
+// @ts-expect-error
+MixChildError.instanceMethod(error, '', undefined)
+// @ts-expect-error
+MixChildError.instanceMethod(error, '', true, undefined)
 
 const info = {} as Info['instanceMethods']
-expectError(BareBaseError.instanceMethod(error, info))
-expectError(FullBaseError.instanceMethod(error, info, ''))
-expectError(MixBaseError.instanceMethod(error, info, ''))
-expectError(BareChildError.instanceMethod(error, info))
-expectError(FullChildError.instanceMethod(error, info, ''))
-expectError(MixChildError.instanceMethod(error, info, ''))
+// @ts-expect-error
+BareBaseError.instanceMethod(error, info)
+// @ts-expect-error
+FullBaseError.instanceMethod(error, info, '')
+// @ts-expect-error
+MixBaseError.instanceMethod(error, info, '')
+// @ts-expect-error
+BareChildError.instanceMethod(error, info)
+// @ts-expect-error
+FullChildError.instanceMethod(error, info, '')
+// @ts-expect-error
+MixChildError.instanceMethod(error, info, '')
 
 const WideBaseError = ModernError.subclass('WideBaseError', {
   plugins: [{} as Plugin],
 })
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 
-expectError(BareBaseError.otherMethod())
-expectError(FullBaseError.otherMethod())
-expectError(MixBaseError.otherMethod())
-expectError(WideBaseError.otherMethod())
-expectError(BareChildError.otherMethod())
-expectError(FullChildError.otherMethod())
-expectError(MixChildError.otherMethod())
-expectError(ChildWideError.otherMethod())
+// @ts-expect-error
+BareBaseError.otherMethod()
+// @ts-expect-error
+FullBaseError.otherMethod()
+// @ts-expect-error
+MixBaseError.otherMethod()
+// @ts-expect-error
+WideBaseError.otherMethod()
+// @ts-expect-error
+BareChildError.otherMethod()
+// @ts-expect-error
+FullChildError.otherMethod()
+// @ts-expect-error
+MixChildError.otherMethod()
+// @ts-expect-error
+ChildWideError.otherMethod()
 
-expectError(ChildWideError.instanceMethod(error, ''))
+// @ts-expect-error
+ChildWideError.instanceMethod(error, '')

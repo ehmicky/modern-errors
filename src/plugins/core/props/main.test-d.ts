@@ -1,9 +1,4 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 import ModernError, {
   type ClassOptions,
@@ -20,8 +15,10 @@ new ModernError('', { props: { prop: true } })
 expectAssignable<ClassOptions>({ props: { prop: true } })
 expectAssignable<InstanceOptions>({ props: { prop: true } })
 
-expectError(ModernError.subclass('TestError', { props: true }))
-expectError(new ModernError('', { props: true }))
+// @ts-expect-error
+ModernError.subclass('TestError', { props: true })
+// @ts-expect-error
+new ModernError('', { props: true })
 expectNotAssignable<ClassOptions>({ props: true })
 expectNotAssignable<InstanceOptions>({ props: true })
 

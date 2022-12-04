@@ -1,17 +1,20 @@
-import { expectType, expectAssignable, expectError } from 'tsd'
+import { expectType, expectAssignable } from 'tsd'
 
 import type { Info, ErrorClass } from 'modern-errors'
 
 const instanceMethodsInfo = {} as Info['instanceMethods']
-expectError(instanceMethodsInfo.other)
+// @ts-expect-error
+instanceMethodsInfo.other
 expectAssignable<Error>(instanceMethodsInfo.error)
 expectAssignable<boolean>(instanceMethodsInfo.options)
 expectAssignable<ErrorClass>(instanceMethodsInfo.ErrorClass)
 expectAssignable<readonly ErrorClass[]>(instanceMethodsInfo.ErrorClasses)
 
 const staticMethodsInfo = {} as Info['staticMethods']
-expectError(staticMethodsInfo.other)
-expectError(staticMethodsInfo.error)
+// @ts-expect-error
+staticMethodsInfo.other
+// @ts-expect-error
+staticMethodsInfo.error
 expectType<Info['instanceMethods']['options']>(staticMethodsInfo.options)
 expectType<Info['instanceMethods']['ErrorClass']>(staticMethodsInfo.ErrorClass)
 expectType<Info['instanceMethods']['ErrorClasses']>(
@@ -20,7 +23,8 @@ expectType<Info['instanceMethods']['ErrorClasses']>(
 expectType<Info['instanceMethods']['errorInfo']>(staticMethodsInfo.errorInfo)
 
 const propertiesInfo = {} as Info['properties']
-expectError(propertiesInfo.other)
+// @ts-expect-error
+propertiesInfo.other
 expectType<Info['instanceMethods']['error']>(propertiesInfo.error)
 expectType<Info['instanceMethods']['options']>(propertiesInfo.options)
 expectType<Info['instanceMethods']['ErrorClass']>(propertiesInfo.ErrorClass)
@@ -30,9 +34,11 @@ expectType<Info['instanceMethods']['errorInfo']>(propertiesInfo.errorInfo)
 const errorInfo = instanceMethodsInfo.errorInfo('')
 instanceMethodsInfo.errorInfo('')
 expectType<Info['errorInfo']>(errorInfo)
-expectError(errorInfo.other)
+// @ts-expect-error
+errorInfo.other
 expectType<Info['instanceMethods']['error']>(errorInfo.error)
 expectType<Info['instanceMethods']['options']>(errorInfo.options)
 expectType<Info['instanceMethods']['ErrorClass']>(errorInfo.ErrorClass)
 expectType<Info['instanceMethods']['ErrorClasses']>(errorInfo.ErrorClasses)
-expectError(errorInfo.errorInfo)
+// @ts-expect-error
+errorInfo.errorInfo

@@ -1,9 +1,4 @@
-import {
-  expectType,
-  expectAssignable,
-  expectNotAssignable,
-  expectError,
-} from 'tsd'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 import ModernError, {
   type Plugin,
@@ -38,9 +33,12 @@ expectAssignable<ErrorClass>(ChildCustomError)
 expectAssignable<ErrorClass>(CustomChildError)
 expectAssignable<ErrorClass>(DeepCustomError)
 
-expectError(ModernError.subclass())
-expectError(ModernError.subclass({}))
-expectError(ModernError.subclass('Test'))
+// @ts-expect-error
+ModernError.subclass()
+// @ts-expect-error
+ModernError.subclass({})
+// @ts-expect-error
+ModernError.subclass('Test')
 
 expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)
 

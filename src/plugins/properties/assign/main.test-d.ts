@@ -1,4 +1,4 @@
-import { expectType, expectError } from 'tsd'
+import { expectType } from 'tsd'
 
 import ModernError, { type Info, type Plugin } from 'modern-errors'
 
@@ -32,12 +32,18 @@ const ChildWideError = WideBaseError.subclass('ChildWideError')
 const unknownWideError = new WideBaseError('')
 const childWideError = new ChildWideError('')
 
-expectError(unknownError.otherProperty)
-expectError(childError.otherProperty)
-expectError(mixUnknownError.otherProperty)
-expectError(mixChildError.otherProperty)
-expectError(unknownWideError.otherProperty)
-expectError(childWideError.otherProperty)
+// @ts-expect-error
+unknownError.otherProperty
+// @ts-expect-error
+childError.otherProperty
+// @ts-expect-error
+mixUnknownError.otherProperty
+// @ts-expect-error
+mixChildError.otherProperty
+// @ts-expect-error
+unknownWideError.otherProperty
+// @ts-expect-error
+childWideError.otherProperty
 
 const exception = {} as unknown
 if (exception instanceof ChildError) {
