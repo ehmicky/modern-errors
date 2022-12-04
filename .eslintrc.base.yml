@@ -1408,6 +1408,54 @@ overrides:
       '@typescript-eslint/no-empty-function': 0
       '@typescript-eslint/no-restricted-imports': 0
 
+  # `eslint-config-markdown` does not work with `parserOptions.project`, which
+  # removes some rules
+  - files: ['**/*.md/*.ts']
+    parserOptions:
+      project: null
+    rules:
+      '@typescript-eslint/await-thenable': 0
+      '@typescript-eslint/consistent-type-exports': 0
+      '@typescript-eslint/dot-notation': 0
+      '@typescript-eslint/naming-convention': 0
+      '@typescript-eslint/no-base-to-string': 0
+      '@typescript-eslint/no-confusing-void-expression': 0
+      '@typescript-eslint/no-floating-promises': 0
+      '@typescript-eslint/no-for-in-array': 0
+      '@typescript-eslint/no-implied-eval': 0
+      '@typescript-eslint/no-meaningless-void-operator': 0
+      '@typescript-eslint/no-misused-promises': 0
+      '@typescript-eslint/non-nullable-type-assertion-style': 0
+      '@typescript-eslint/no-redundant-type-constituents': 0
+      '@typescript-eslint/no-throw-literal': 0
+      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 0
+      '@typescript-eslint/no-unnecessary-condition': 0
+      '@typescript-eslint/no-unnecessary-qualifier': 0
+      '@typescript-eslint/no-unnecessary-type-arguments': 0
+      '@typescript-eslint/no-unnecessary-type-assertion': 0
+      '@typescript-eslint/no-unsafe-argument': 0
+      '@typescript-eslint/no-unsafe-assignment': 0
+      '@typescript-eslint/no-unsafe-call': 0
+      '@typescript-eslint/no-unsafe-member-access': 0
+      '@typescript-eslint/no-unsafe-return': 0
+      '@typescript-eslint/prefer-includes': 0
+      '@typescript-eslint/prefer-nullish-coalescing': 0
+      '@typescript-eslint/prefer-readonly': 0
+      '@typescript-eslint/prefer-readonly-parameter-types': 0
+      '@typescript-eslint/prefer-reduce-type-parameter': 0
+      '@typescript-eslint/prefer-regexp-exec': 0
+      '@typescript-eslint/prefer-return-this-type': 0
+      '@typescript-eslint/prefer-string-starts-ends-with': 0
+      '@typescript-eslint/promise-function-async': 0
+      '@typescript-eslint/require-array-sort-compare': 0
+      '@typescript-eslint/require-await': 0
+      '@typescript-eslint/restrict-plus-operands': 0
+      '@typescript-eslint/restrict-template-expressions': 0
+      '@typescript-eslint/return-await': 0
+      '@typescript-eslint/strict-boolean-expressions': 0
+      '@typescript-eslint/switch-exhaustiveness-check': 0
+      '@typescript-eslint/unbound-method': 0
+
   # Test files, including helpers
   - files: ['src/**/*.test.{js,cjs,mjs}']
     rules:
