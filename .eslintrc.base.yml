@@ -1134,26 +1134,6 @@ overrides:
         - 2
         - {}
 
-      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      ## although added by standard/standard.
-      #  brace-style: 0
-      #  comma-dangle: 0
-      #  comma-spacing: 0
-      #  func-call-spacing: 0
-      #  indent: 0
-      #  keyword-spacing: 0
-      #  no-extra-parens: 0
-      #  object-curly-spacing: 0
-      #  quotes: 0
-      #  semi: 0
-      #  space-before-blocks: 0
-      #  space-before-function-paren: 0
-      #  space-infix-ops: 0
-
-      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      ## otherwise we would add it
-      #  no-extra-semi: 0
-
       ## Added by standard/standard
       #  dot-notation: 2
       #  lines-between-class-members: 2
@@ -1179,6 +1159,26 @@ overrides:
       #      classes: false
       #      variables: false
       #  no-useless-constructor: 2
+
+      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      ## although added by standard/standard.
+      #  brace-style: 0
+      #  comma-dangle: 0
+      #  comma-spacing: 0
+      #  func-call-spacing: 0
+      #  indent: 0
+      #  keyword-spacing: 0
+      #  no-extra-parens: 0
+      #  object-curly-spacing: 0
+      #  quotes: 0
+      #  semi: 0
+      #  space-before-blocks: 0
+      #  space-before-function-paren: 0
+      #  space-infix-ops: 0
+
+      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      ## otherwise we would add it
+      #  no-extra-semi: 0
 
   # TypeScript files
   - files: ['**/*.{ts,cts,mts}']
@@ -1224,9 +1224,46 @@ overrides:
                 ['node:assert', assert, 'node:assert/strict', assert/strict]
               message: Please throw an Error instead
           allowTypeImports: true
+      no-unused-vars: 0
       '@typescript-eslint/no-unused-vars':
         - 2
         - {}
+      dot-notation: 0
+      '@typescript-eslint/dot-notation': 2
+      lines-between-class-members: 0
+      '@typescript-eslint/lines-between-class-members':
+        - 2
+        - always
+        - exceptAfterSingleLine: true
+      no-array-constructor: 0
+      '@typescript-eslint/no-array-constructor': 2
+      no-dupe-class-members: 0
+      '@typescript-eslint/no-dupe-class-members': 2
+      no-implied-eval: 0
+      '@typescript-eslint/no-implied-eval': 2
+      no-loss-of-precision: 0
+      '@typescript-eslint/no-loss-of-precision': 2
+      no-redeclare: 0
+      '@typescript-eslint/no-redeclare':
+        - 2
+        - builtinGlobals: false
+          ignoreDeclarationMerge: true
+      no-throw-literal: 0
+      '@typescript-eslint/no-throw-literal': 2
+      no-unused-expressions: 0
+      '@typescript-eslint/no-unused-expressions':
+        - 2
+        - allowShortCircuit: true
+          allowTernary: true
+          allowTaggedTemplates: true
+      no-use-before-define: 0
+      '@typescript-eslint/no-use-before-define':
+        - 2
+        - functions: false
+          classes: false
+          variables: false
+      no-useless-constructor: 0
+      '@typescript-eslint/no-useless-constructor': 2
       # '@typescript-eslint/brace-style': 0
       # '@typescript-eslint/comma-dangle': 0
       # '@typescript-eslint/comma-spacing': 0
@@ -1241,31 +1278,6 @@ overrides:
       # '@typescript-eslint/space-before-function-paren': 0
       # '@typescript-eslint/space-infix-ops': 0
       # '@typescript-eslint/no-extra-semi': 0
-      '@typescript-eslint/dot-notation': 2
-      '@typescript-eslint/lines-between-class-members':
-        - 2
-        - always
-        - exceptAfterSingleLine: true
-      '@typescript-eslint/no-array-constructor': 2
-      '@typescript-eslint/no-dupe-class-members': 2
-      '@typescript-eslint/no-implied-eval': 2
-      '@typescript-eslint/no-loss-of-precision': 2
-      '@typescript-eslint/no-redeclare':
-        - 2
-        - builtinGlobals: false
-          ignoreDeclarationMerge: true
-      '@typescript-eslint/no-throw-literal': 2
-      '@typescript-eslint/no-unused-expressions':
-        - 2
-        - allowShortCircuit: true
-          allowTernary: true
-          allowTaggedTemplates: true
-      '@typescript-eslint/no-use-before-define':
-        - 2
-        - functions: false
-          classes: false
-          variables: false
-      '@typescript-eslint/no-useless-constructor': 2
 
       ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
       ## although added by standard/standard.
