@@ -19,10 +19,10 @@ export type Cause = unknown | undefined
 /**
  * Options passed to error constructors, excluding any plugin options
  */
-type MainInstanceOptions<
+interface MainInstanceOptions<
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
-> = {
+> {
   /**
    * The `errors` option aggregates multiple errors into one. This is like
    * [`new AggregateError(errors)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError)

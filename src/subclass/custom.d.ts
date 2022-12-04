@@ -10,7 +10,7 @@ import type { Plugins } from '../plugins/shape/main.js'
 /**
  * `custom` option
  */
-export type CustomClass = {
+export interface CustomClass {
   new (message: string, options?: InstanceOptions): Error
   subclass: unknown
 }

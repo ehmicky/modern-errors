@@ -31,7 +31,7 @@ type ExternalPluginsOptions<PluginsArg extends Plugins> = {
 /**
  * Options of all core plugins
  */
-type CorePluginsOptions<ChildProps extends ErrorProps> = {
+interface CorePluginsOptions<ChildProps extends ErrorProps> {
   /**
    * Error properties.
    *

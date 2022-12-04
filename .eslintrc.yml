@@ -83,8 +83,8 @@ overrides:
       # in some cases
       '@typescript-eslint/unified-signatures': 0
 
-      # ## Objects
-      # '@typescript-eslint/consistent-type-definitions': 2
+      ## Objects
+      '@typescript-eslint/consistent-type-definitions': 2
       # '@typescript-eslint/consistent-indexed-object-style': 2
       # '@typescript-eslint/no-empty-interface': 2
       # '@typescript-eslint/member-ordering': 2
