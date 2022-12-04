@@ -199,8 +199,8 @@ overrides:
       '@typescript-eslint/prefer-as-const': 2
       '@typescript-eslint/prefer-readonly-parameter-types': 2
 
-      # ## Generic
-      # '@typescript-eslint/consistent-generic-constructors': 2
+      ## Generic
+      '@typescript-eslint/consistent-generic-constructors': 2
       # '@typescript-eslint/no-unnecessary-type-arguments': 2
       # '@typescript-eslint/no-unnecessary-type-constraint': 2
 
