@@ -180,9 +180,14 @@ overrides:
       '@typescript-eslint/no-extra-non-null-assertion': 2
       '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 2
       '@typescript-eslint/no-non-null-asserted-optional-chain': 2
-      # '@typescript-eslint/no-invalid-void-type': 2
-      # '@typescript-eslint/no-confusing-void-expression': 2
-      # '@typescript-eslint/no-meaningless-void-operator': 2
+      '@typescript-eslint/no-invalid-void-type':
+        - 2
+        - allowAsThisParameter: true
+      '@typescript-eslint/no-confusing-void-expression':
+        - 2
+        - ignoreArrowShorthand: true
+          ignoreVoidOperator: true
+      '@typescript-eslint/no-meaningless-void-operator': 2
 
       # ## Enums
       # '@typescript-eslint/prefer-enum-initializers': 2
@@ -209,9 +214,14 @@ overrides:
 
   - files: ['**/*.test-d.ts']
     rules:
+      # @ts-expect-error is useful in type tests
       '@typescript-eslint/ban-ts-comment':
         - 2
         - ts-expect-error: 0
+
+      # Allow using `expectType<void>(...)`
+      '@typescript-eslint/no-invalid-void-type': 0
+      '@typescript-eslint/no-confusing-void-expression': 0
 
   - files: ['**/*.md/*.ts']
     parserOptions:
