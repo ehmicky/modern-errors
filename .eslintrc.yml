@@ -72,8 +72,8 @@ overrides:
       ## Switch
       '@typescript-eslint/switch-exhaustiveness-check': 2
 
-      # ## Functions
-      # '@typescript-eslint/method-signature-style': 2
+      ## Functions
+      '@typescript-eslint/method-signature-style': 2
       # '@typescript-eslint/prefer-function-type': 2
       # '@typescript-eslint/explicit-function-return-type': 2
       # '@typescript-eslint/explicit-module-boundary-types': 2
