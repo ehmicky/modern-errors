@@ -150,8 +150,14 @@ overrides:
           path: never
           types: never
 
-      # ## Forbid
-      # '@typescript-eslint/ban-types': 2
+      ## Forbid
+      '@typescript-eslint/ban-types':
+        - 2
+        - extendDefaults: true
+          types:
+            # `{}` is useful as `{ ... } & {}` is reduced to `{ ... }`, unlike
+            # `{ ... } & object`
+            '{}': false
 
       # ## Type declaration
       # '@typescript-eslint/no-type-alias': 2
