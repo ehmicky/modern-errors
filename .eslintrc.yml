@@ -14,12 +14,14 @@ overrides:
       '@typescript-eslint/ban-ts-comment': 2
       '@typescript-eslint/prefer-ts-expect-error': 2
       '@typescript-eslint/ban-tslint-comment': 2
+
       # Enforce declaring types of parameters.
       # Use type inference otherwise, including for callbacks (arrow functions).
       '@typescript-eslint/typedef':
         - 2
         - parameter: true
           propertyDeclaration: true
+      '@typescript-eslint/no-inferrable-types': 2
 
   - files: ['**/*.test-d.ts']
     rules:
