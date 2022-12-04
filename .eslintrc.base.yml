@@ -1331,8 +1331,13 @@ overrides:
       '@typescript-eslint/no-unused-vars': 0
 
   # Examples and documentation files
-  - files: ['**/*.md/*.js', 'examples/**/*.{js,cjs,mjs}']
+  - files: ['**/*.md/*.{js,ts}', 'examples/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
+      # Examples sometimes start with a number
+      filenames/match-regex:
+        - 2
+        - ^[a-zA-Z0-9_][a-zA-Z0-9_.]+$
+
       # Examples print their output at the end of the file
       # It might happen in documentation as well
       no-console: 0
@@ -1342,9 +1347,6 @@ overrides:
       # Examples usually include the return value as inline comments
       line-comment-position: 0
       no-inline-comments: 0
-
-      # Inlining constants is simpler for examples
-      no-magic-numbers: 0
 
       # Documentation often require the module itself.
       # Also documentation can require a module that does not exist.
@@ -1378,7 +1380,6 @@ overrides:
       import/unambiguous: 0
 
       # Sometimes useful in documentation
-      no-empty-function: 0
       no-empty: 0
 
       # Filenames do not always match in documentation
@@ -1390,10 +1391,22 @@ overrides:
       # Only useful runtime, not in documentation
       symbol-description: 0
 
+  - files: ['**/*.md/*.js', 'examples/**/*.{js,cjs,mjs}']
+    rules:
+      # Inlining constants is simpler for examples
+      no-magic-numbers: 0
+
+      # Sometimes useful in documentation
+      no-empty-function: 0
+
       # We allow asserts as they are simple
-      no-restricted-imports:
-        - 2
-        - patterns: []
+      no-restricted-imports: 0
+
+  - files: ['**/*.md/*.ts', 'examples/**/*.{ts,cts,mts}']
+    rules:
+      '@typescript-eslint/no-magic-numbers': 0
+      '@typescript-eslint/no-empty-function': 0
+      '@typescript-eslint/no-restricted-imports': 0
 
   # Test files, including helpers
   - files: ['src/**/*.test.{js,cjs,mjs}']
