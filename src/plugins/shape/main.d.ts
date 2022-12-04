@@ -139,7 +139,8 @@ export interface Plugin {
    * ```js
    * export default {
    *   name: 'example',
-   *   // `ErrorClass.concatMessage(error, "one")` or `error.concatMessage("one")`
+   *   // `ErrorClass.concatMessage(error, "one")` or
+   *   // `error.concatMessage("one")`
    *   // return `${error.message} - one`
    *   instanceMethods: {
    *     concatMessage(info, string) {

@@ -1,4 +1,5 @@
 import type { Plugin } from '../plugins/shape/main.js'
+
 import type { ExternalPluginOptions } from './plugins.js'
 
 /**

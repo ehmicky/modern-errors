@@ -31,7 +31,8 @@ interface CommonInfo {
    *   getOptions(options) {
    *     return options
    *   },
-   *   // `new ErrorClass('message', { example: value })` sets `error.example: value`
+   *   // `new ErrorClass('message', { example: value })` sets
+   *   // `error.example: value`
    *   properties({ options }) {
    *     return { example: options }
    *   },
@@ -88,7 +89,11 @@ interface CommonInfo {
    *       return function logErrors(errors) {
    *         errors.forEach((error) => {
    *           const { options } = errorInfo(error)
-   *           console.error(options.example?.stack ? error.stack : error.message)
+   *           console.error(
+   *             options.example?.stack
+   *               ? error.stack
+   *               : error.message
+   *           )
    *         })
    *       }
    *     },

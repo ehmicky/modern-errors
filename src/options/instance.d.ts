@@ -1,6 +1,7 @@
 import type { AggregateErrors } from '../merge/aggregate.js'
 import type { ErrorProps } from '../plugins/core/props/main.js'
 import type { Plugins } from '../plugins/shape/main.js'
+
 import type { PluginsOptions } from './plugins.js'
 
 /**
