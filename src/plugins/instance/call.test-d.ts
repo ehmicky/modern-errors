@@ -110,6 +110,7 @@ const ChildWideError = WideBaseError.subclass('ChildWideError')
 const unknownWideError = new WideBaseError('')
 const childWideError = new ChildWideError('')
 
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 // @ts-expect-error
 bareUnknownError.otherMethod()
 // @ts-expect-error
@@ -126,3 +127,4 @@ mixChildError.otherMethod()
 unknownWideError.otherMethod()
 // @ts-expect-error
 childWideError.otherMethod()
+/* eslint-enable @typescript-eslint/no-unsafe-call */

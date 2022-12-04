@@ -1,5 +1,5 @@
 import ModernError, { type InstanceOptions, type Info } from 'modern-errors'
-import { expectType } from 'tsd'
+import { expectType, expectNotType } from 'tsd'
 
 const AttributesError = ModernError.subclass('AttributesError', {
   custom: class extends ModernError {
@@ -375,7 +375,10 @@ const StaticMethodArrowError = StaticMethodBaseError.subclass(
     },
   },
 )
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call
 expectType<true>(StaticMethodArrowError.staticMethod(true))
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+expectNotType<false>(StaticMethodArrowError.staticMethod(true))
 
 const PropsBaseError = ModernError.subclass('PropsBaseError', {
   props: { prop: true as boolean },

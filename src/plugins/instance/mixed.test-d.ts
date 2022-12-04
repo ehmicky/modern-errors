@@ -109,6 +109,7 @@ const WideBaseError = ModernError.subclass('WideBaseError', {
 })
 const ChildWideError = WideBaseError.subclass('ChildWideError')
 
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 // @ts-expect-error
 BareBaseError.otherMethod()
 // @ts-expect-error
@@ -128,3 +129,4 @@ ChildWideError.otherMethod()
 
 // @ts-expect-error
 ChildWideError.instanceMethod(error, '')
+/* eslint-enable @typescript-eslint/no-unsafe-call */
