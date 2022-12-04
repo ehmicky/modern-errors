@@ -3,7 +3,7 @@
  * debugging.
  */
 export type OmitKeys<
-  Source extends unknown,
+  Source,
   OmittedKeys extends PropertyKey,
 > = keyof Source extends OmittedKeys ? {} : Omit<Source, OmittedKeys>
 

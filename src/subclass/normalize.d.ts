@@ -18,7 +18,7 @@ export type NormalizeError<
   ErrorPropsArg extends ErrorProps,
   CustomClassArg extends CustomClass,
 > = <
-  ErrorArg extends unknown,
+  ErrorArg,
   NewErrorClass extends SpecificErrorClass<
     PluginsArg,
     ErrorPropsArg,
@@ -38,7 +38,7 @@ export type NormalizeError<
  * Apply `ErrorClass.normalize()` on both `error` and `error.errors`
  */
 type NormalizeDeepError<
-  ErrorArg extends unknown,
+  ErrorArg,
   ParentError extends ErrorInstance,
   NewError extends ErrorInstance,
 > = ErrorArg extends {
@@ -72,7 +72,7 @@ type NormalizeManyErrors<
  * Apply `ErrorClass.normalize()` on `error`, but not `error.errors`
  */
 type NormalizeOneError<
-  ErrorArg extends unknown,
+  ErrorArg,
   ParentError extends ErrorInstance,
   NewError extends ErrorInstance,
 > = ErrorArg extends ParentError
