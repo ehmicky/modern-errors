@@ -1074,7 +1074,7 @@ settings:
       project: tsconfig.json
 
 overrides:
-  # Rules that apply to JavaScript but not TypeScript.
+  # Rules that apply to JavaScript but not to TypeScript.
   # Includes all rules which have an equivalent @typescript-eslint extension.
   - files: ['**/*.{js,cjs,mjs}']
     rules:

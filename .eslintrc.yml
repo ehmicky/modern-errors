@@ -3,7 +3,7 @@ rules:
   fp/no-class: 0
 overrides:
   # TypeScript files
-  - files: ['**/*.ts']
+  - files: ['**/*.{ts,cts,mts}']
     parser: '@typescript-eslint/parser'
     rules:
       '@typescript-eslint/padding-line-between-statements':
@@ -137,7 +137,7 @@ overrides:
     rules:
       '@typescript-eslint/no-unused-vars': 0
 
-  - files: ['**/*.md/*.{js,ts}', 'examples/**/*.{js,ts}']
+  - files: ['**/*.md/*.{js,ts}', 'examples/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Examples sometimes start with a number
       filenames/match-regex:
@@ -200,7 +200,7 @@ overrides:
       # We allow asserts as they are simple
       no-restricted-imports: 0
 
-  - files: ['**/*.md/*.js', 'examples/**/*.js']
+  - files: ['**/*.md/*.js', 'examples/**/*.{js,cjs,mjs}']
     rules:
       # Inlining constants is simpler for examples
       no-magic-numbers: 0
@@ -211,7 +211,7 @@ overrides:
       # We allow asserts as they are simple
       no-restricted-imports: 0
 
-  - files: ['**/*.md/*.ts', 'examples/**/*.ts']
+  - files: ['**/*.md/*.ts', 'examples/**/*.{ts,cts,mts}']
     rules:
       '@typescript-eslint/no-magic-numbers': 0
       '@typescript-eslint/no-empty-function': 0
@@ -266,7 +266,7 @@ overrides:
       '@typescript-eslint/unbound-method': 0
 
   # Test files, including helpers
-  - files: ['src/**/*.test.{js,ts}']
+  - files: ['src/**/*.test.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # When using data-driven testing, an extra level of depth is implied
       # Also, test() creates a depth level as well
@@ -286,7 +286,7 @@ overrides:
       # Often tested as an invalid input
       unicorn/no-null: 0
 
-  - files: ['src/**/*.test.js']
+  - files: ['src/**/*.test.{js,cjs,mjs}']
     rules:
       # Empty functions can be useful in tests
       no-empty-function: 0
@@ -304,7 +304,7 @@ overrides:
       #           Individual files should not be imported in tests. Instead please
       #           use import the main module.
 
-  - files: ['src/**/*.test.ts']
+  - files: ['src/**/*.test.{ts,cts,mts}']
     rules:
       '@typescript-eslint/no-empty-function': 0
       '@typescript-eslint/no-restricted-imports':
@@ -319,24 +319,24 @@ overrides:
                 use import the main module.
 
   # Test helpers and fixtures
-  - files: ['src/helpers/**/*.js', 'src/fixtures/**/*.js']
+  - files: ['src/helpers/**/*.{js,cjs,mjs}', 'src/fixtures/**/*.{js,cjs,mjs}']
     rules:
       # Allow including sibling files
       no-restricted-imports: 0
 
-  - files: ['src/helpers/**/*.ts', 'src/fixtures/**/*.ts']
+  - files: ['src/helpers/**/*.{ts,cts,mts}', 'src/fixtures/**/*.{ts,cts,mts}']
     rules:
       '@typescript-eslint/no-restricted-imports': 0
 
   # Test fixtures
-  - files: ['src/fixtures/**/*.{js,ts}']
+  - files: ['src/fixtures/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Fixture files are sometimes executed by a CLI without exporting nor
       # importing anything
       import/unambiguous: 0
 
   # Gulpfile and gulp tasks
-  - files: [gulpfile.js, 'gulp/**/*.{js,ts}']
+  - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Gulp tasks sometimes print to console
       no-console: 0
@@ -368,7 +368,11 @@ overrides:
       import/no-default-export: 0
 
   # CLI
-  - files: ['src/bin/**/*.{js,ts}', 'src/bin.{js,ts}']
+  - files:
+      [
+        'src/bin/**/*.{js,cjs,mjs,ts,cts,mts}',
+        'src/bin.{js,cjs,mjs,ts,cts,mts}',
+      ]
     rules:
       # CLI often prints to console
       no-console: 0
@@ -383,7 +387,7 @@ overrides:
       import/no-namespace: 0
 
   # Benchmark files
-  - files: ['benchmark/**/*.{js,ts}']
+  - files: ['benchmark/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Often used to signify number of iterations
       filenames/no-index: 0
@@ -393,7 +397,7 @@ overrides:
       n/no-missing-import: 0
       n/no-extraneous-import: 0
 
-  - files: ['benchmark/**/*.js']
+  - files: ['benchmark/**/*.{js,cjs,mjs}']
     rules:
       # Often used to signify number of iterations
       no-magic-numbers: 0
@@ -401,7 +405,7 @@ overrides:
       # Unused expressions are useful in benchmarks
       no-unused-expressions: 0
 
-  - files: ['benchmark/**/*.ts']
+  - files: ['benchmark/**/*.{ts,cts,mts}']
     rules:
       '@typescript-eslint/no-magic-numbers': 0
       '@typescript-eslint/no-unused-expressions': 0
@@ -436,7 +440,7 @@ overrides:
       unicorn/no-useless-undefined: 0
 
   # Files that are sibling to a `*.js` or `*.ts`
-  - files: ['**/*.{test.{js,ts},d.ts,test-d.ts}']
+  - files: ['**/*.{test.{js,cjs,mjs,ts,cts,mts},d.ts,test-d.ts}']
     rules:
       # Each source file should have a single sibling test file, regardless of
       # its size
