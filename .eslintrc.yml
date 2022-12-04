@@ -85,8 +85,10 @@ overrides:
 
       ## Objects
       '@typescript-eslint/consistent-type-definitions': 2
-      # '@typescript-eslint/consistent-indexed-object-style': 2
-      # '@typescript-eslint/no-empty-interface': 2
+      '@typescript-eslint/consistent-indexed-object-style':
+        - 2
+        - index-signature
+      '@typescript-eslint/no-empty-interface': 2
       # '@typescript-eslint/member-ordering': 2
       # '@typescript-eslint/prefer-optional-chain': 2
 
