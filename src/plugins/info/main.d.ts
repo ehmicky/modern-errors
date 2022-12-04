@@ -158,7 +158,7 @@ export interface Info {
  * Remove the types of all `info.*` members to fix some type conflict issues
  */
 type UntypedInfo<SpecificInfo> = {
-  [InfoPropName in keyof SpecificInfo]: never
+  readonly [InfoPropName in keyof SpecificInfo]: never
 }
 
 /**
@@ -166,5 +166,5 @@ type UntypedInfo<SpecificInfo> = {
  * but for plugin consumption.
  */
 export type InfoParameter = {
-  [InfoName in keyof Info]: UntypedInfo<Info[InfoName]>
+  readonly [InfoName in keyof Info]: UntypedInfo<Info[InfoName]>
 }
