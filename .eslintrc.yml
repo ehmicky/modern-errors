@@ -74,11 +74,14 @@ overrides:
 
       ## Functions
       '@typescript-eslint/method-signature-style': 2
-      # '@typescript-eslint/prefer-function-type': 2
-      # '@typescript-eslint/explicit-function-return-type': 2
-      # '@typescript-eslint/explicit-module-boundary-types': 2
-      # '@typescript-eslint/adjacent-overload-signatures': 2
-      # '@typescript-eslint/unified-signatures': 2
+      '@typescript-eslint/prefer-function-type': 2
+      # Prefer inferring return types instead
+      '@typescript-eslint/explicit-function-return-type': 0
+      '@typescript-eslint/explicit-module-boundary-types': 0
+      '@typescript-eslint/adjacent-overload-signatures': 2
+      # Overloading functions is a more readable alternative to generic types
+      # in some cases
+      '@typescript-eslint/unified-signatures': 0
 
       # ## Objects
       # '@typescript-eslint/consistent-type-definitions': 2
