@@ -64,7 +64,7 @@
     "set-error-stack": "^1.0.0"
   },
   "devDependencies": {
-    "@ehmicky/dev-tasks": "^2.0.33",
+    "@ehmicky/dev-tasks": "^2.0.34",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "eslint-import-resolver-typescript": "^3.5.2",
