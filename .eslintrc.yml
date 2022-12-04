@@ -195,8 +195,8 @@ overrides:
       '@typescript-eslint/no-duplicate-enum-values': 2
       '@typescript-eslint/no-unnecessary-qualifier': 2
 
-      # ## Readonly
-      # '@typescript-eslint/prefer-as-const': 2
+      ## Readonly
+      '@typescript-eslint/prefer-as-const': 2
       # '@typescript-eslint/prefer-readonly-parameter-types': 2
 
       # ## Generic
