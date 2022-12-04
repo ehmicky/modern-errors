@@ -6,7 +6,7 @@ const emptyPlugin = { name }
 const barePlugin = {
   ...emptyPlugin,
   staticMethods: {
-    staticMethod: (info: Info['staticMethods'], arg: '') => arg,
+    staticMethod: (infoArg: Info['staticMethods'], arg: '') => arg,
   },
 }
 const fullPlugin = {
