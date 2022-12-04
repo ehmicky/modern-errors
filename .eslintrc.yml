@@ -204,13 +204,15 @@ overrides:
       '@typescript-eslint/no-unnecessary-type-arguments': 2
       '@typescript-eslint/no-unnecessary-type-constraint': 2
 
-      # ## Type assertions
-      # '@typescript-eslint/consistent-type-assertions': 2
-      # '@typescript-eslint/no-unnecessary-type-assertion': 2
+      ## Type assertions
+      '@typescript-eslint/consistent-type-assertions': 2
+      '@typescript-eslint/no-unnecessary-type-assertion': 2
 
-      # ## Namespaces
-      # '@typescript-eslint/no-namespace': 2
-      # '@typescript-eslint/prefer-namespace-keyword': 2
+      ## Namespaces
+      '@typescript-eslint/no-namespace':
+        - 2
+        - allowDefinitionFiles: false
+      '@typescript-eslint/prefer-namespace-keyword': 2
 
   - files: ['**/*.test-d.ts']
     rules:
