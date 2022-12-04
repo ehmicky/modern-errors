@@ -201,7 +201,7 @@ overrides:
 
       ## Generic
       '@typescript-eslint/consistent-generic-constructors': 2
-      # '@typescript-eslint/no-unnecessary-type-arguments': 2
+      '@typescript-eslint/no-unnecessary-type-arguments': 2
       # '@typescript-eslint/no-unnecessary-type-constraint': 2
 
       # ## Type assertions

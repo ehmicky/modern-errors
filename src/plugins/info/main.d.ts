@@ -1,6 +1,5 @@
 import type { ErrorInstance } from '../../merge/cause.js'
 import type { ErrorClass } from '../../subclass/create.js'
-import type { Plugins } from '../shape/main.js'
 
 /**
  * Properties shared by all `info` objects.
@@ -56,7 +55,7 @@ interface CommonInfo {
    * }
    * ```
    */
-  readonly ErrorClass: ErrorClass<Plugins>
+  readonly ErrorClass: ErrorClass
 
   /**
    * Array containing both the current error class and all its subclasses
