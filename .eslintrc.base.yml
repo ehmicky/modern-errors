@@ -1514,8 +1514,12 @@ overrides:
       # Allow including sibling files
       no-restricted-imports: 0
 
+  - files: ['src/helpers/**/*.{ts,cts,mts}', 'src/fixtures/**/*.{ts,cts,mts}']
+    rules:
+      '@typescript-eslint/no-restricted-imports': 0
+
   # Test fixtures
-  - files: ['src/fixtures/**/*.{js,cjs,mjs}']
+  - files: ['src/fixtures/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Fixture files are sometimes executed by a CLI without exporting nor
       # importing anything

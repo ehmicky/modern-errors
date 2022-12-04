@@ -9,23 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # Test helpers and fixtures
-  - files: ['src/helpers/**/*.{js,cjs,mjs}', 'src/fixtures/**/*.{js,cjs,mjs}']
-    rules:
-      # Allow including sibling files
-      no-restricted-imports: 0
-
-  - files: ['src/helpers/**/*.{ts,cts,mts}', 'src/fixtures/**/*.{ts,cts,mts}']
-    rules:
-      '@typescript-eslint/no-restricted-imports': 0
-
-  # Test fixtures
-  - files: ['src/fixtures/**/*.{js,cjs,mjs,ts,cts,mts}']
-    rules:
-      # Fixture files are sometimes executed by a CLI without exporting nor
-      # importing anything
-      import/unambiguous: 0
-
   # Gulpfile and gulp tasks
   - files: [gulpfile.js, 'gulp/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
