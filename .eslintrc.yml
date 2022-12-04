@@ -2,97 +2,6 @@ extends: '.eslintrc.base.yml'
 rules:
   fp/no-class: 0
 overrides:
-  # Rules that apply to JavaScript but not TypeScript
-  - files: ['**/*.js']
-    rules:
-      'padding-line-between-statements':
-        - 2
-        - blankLine: always
-          prev: [multiline-block-like, directive]
-          next: '*'
-        - blankLine: always
-          prev: '*'
-          next: multiline-block-like
-      'no-unused-vars':
-        - 2
-        - {}
-      'no-shadow':
-        - 2
-        - builtinGlobals: true
-          hoist: all
-          allow:
-            - process
-            - Buffer
-      'no-magic-numbers':
-        - 2
-        - ignore: [-2, -1, 0, 1, 2, 3, 10, 0n, 1n]
-          enforceConst: true
-      'init-declarations': 2
-      'no-loop-func': 2
-      'default-param-last': 2
-      'no-empty-function': 2
-      'no-invalid-this': 2
-      'require-await': 2
-      'no-return-await': 0
-      'no-duplicate-imports':
-        - 2
-        - includeExports: true
-      'no-restricted-imports':
-        - 2
-        - patterns:
-            - group:
-                ['node:assert', assert, 'node:assert/strict', assert/strict]
-              message: Please throw an Error instead
-
-      # # Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      # # although added by standard/standard.
-      # 'quotes': 0
-      # 'brace-style': 0
-      # 'comma-dangle': 0
-      # 'comma-spacing': 0
-      # 'func-call-spacing': 0
-      # 'indent': 0
-      # 'keyword-spacing': 0
-      # 'member-delimiter-style': 0
-      # 'no-extra-parens': 0
-      # 'object-curly-spacing': 0
-      # 'semi': 0
-      # 'space-before-blocks': 0
-      # 'space-before-function-paren': 0
-      # 'space-infix-ops': 0
-      # 'type-annotation-spacing': 0
-
-      # # Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      # # otherwise we would add it (using those commented lines).
-      # 'no-extra-semi': 0
-
-      ## Extension rules matching standard/standard
-      # 'lines-between-class-members':
-      #   - 2
-      #   - always
-      #   - exceptAfterSingleLine: true
-      # 'no-unused-expressions':
-      #   - 2
-      #   - allowShortCircuit: true
-      #     allowTernary: true
-      #     allowTaggedTemplates: true
-      # 'no-use-before-define':
-      #   - 2
-      #   - functions: false
-      #     classes: false
-      #     variables: false
-      # 'no-redeclare':
-      #   - 2
-      #   - builtinGlobals: false
-      #     ignoreDeclarationMerge: true
-      # 'no-throw-literal': 2
-      # 'dot-notation': 2
-      # 'no-useless-constructor': 2
-      # 'no-dupe-class-members': 2
-      # 'no-array-constructor': 2
-      # 'no-loss-of-precision': 2
-      # 'no-implied-eval': 2
-
   # TypeScript files
   - files: ['**/*.ts']
     parser: '@typescript-eslint/parser'
@@ -141,7 +50,7 @@ overrides:
           allowTypeImports: true
 
       ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      ## although added by standard/standard.
+      ## although added by standard/standard. Extension rules.
       # '@typescript-eslint/quotes': 0
       # '@typescript-eslint/brace-style': 0
       # '@typescript-eslint/comma-dangle': 0
@@ -149,24 +58,37 @@ overrides:
       # '@typescript-eslint/func-call-spacing': 0
       # '@typescript-eslint/indent': 0
       # '@typescript-eslint/keyword-spacing': 0
-      # '@typescript-eslint/member-delimiter-style': 0
       # '@typescript-eslint/no-extra-parens': 0
       # '@typescript-eslint/object-curly-spacing': 0
       # '@typescript-eslint/semi': 0
       # '@typescript-eslint/space-before-blocks': 0
       # '@typescript-eslint/space-before-function-paren': 0
       # '@typescript-eslint/space-infix-ops': 0
+
+      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      ## although added by standard/standard. TypeScript specific
+      # '@typescript-eslint/member-delimiter-style': 0
       # '@typescript-eslint/type-annotation-spacing': 0
 
       ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
-      ## otherwise we would add it (using those commented lines).
+      ## otherwise we would add it.
       # '@typescript-eslint/no-extra-semi': 0
 
-      ## Extension rules matching standard/standard
+      ## Added by standard/standard
+      '@typescript-eslint/dot-notation': 2
       '@typescript-eslint/lines-between-class-members':
         - 2
         - always
         - exceptAfterSingleLine: true
+      '@typescript-eslint/no-array-constructor': 2
+      '@typescript-eslint/no-dupe-class-members': 2
+      '@typescript-eslint/no-implied-eval': 2
+      '@typescript-eslint/no-loss-of-precision': 2
+      '@typescript-eslint/no-redeclare':
+        - 2
+        - builtinGlobals: false
+          ignoreDeclarationMerge: true
+      '@typescript-eslint/no-throw-literal': 2
       '@typescript-eslint/no-unused-expressions':
         - 2
         - allowShortCircuit: true
@@ -177,17 +99,7 @@ overrides:
         - functions: false
           classes: false
           variables: false
-      '@typescript-eslint/no-redeclare':
-        - 2
-        - builtinGlobals: false
-          ignoreDeclarationMerge: true
-      '@typescript-eslint/no-throw-literal': 2
-      '@typescript-eslint/dot-notation': 2
       '@typescript-eslint/no-useless-constructor': 2
-      '@typescript-eslint/no-dupe-class-members': 2
-      '@typescript-eslint/no-array-constructor': 2
-      '@typescript-eslint/no-loss-of-precision': 2
-      '@typescript-eslint/no-implied-eval': 2
 
       # TypeScript already checks for missing imports.
       # Also this does not work when importing:
