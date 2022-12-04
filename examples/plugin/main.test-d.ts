@@ -1,7 +1,6 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError from 'modern-errors'
 import modernErrorsExample, { Options } from 'modern-errors-example'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 // Check the plugin shape by passing it to `modernErrors()`
 const BaseError = ModernError.subclass('BaseError', {
