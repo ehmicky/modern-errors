@@ -197,7 +197,7 @@ overrides:
 
       ## Readonly
       '@typescript-eslint/prefer-as-const': 2
-      # '@typescript-eslint/prefer-readonly-parameter-types': 2
+      '@typescript-eslint/prefer-readonly-parameter-types': 2
 
       # ## Generic
       # '@typescript-eslint/consistent-generic-constructors': 2
@@ -222,6 +222,10 @@ overrides:
       # Allow using `expectType<void>(...)`
       '@typescript-eslint/no-invalid-void-type': 0
       '@typescript-eslint/no-confusing-void-expression': 0
+
+      # This rule seems to bug sometimes, which is inconvenient when typing
+      # callbacks in type tests
+      '@typescript-eslint/prefer-readonly-parameter-types': 0
 
   - files: ['**/*.md/*.ts']
     parserOptions:
