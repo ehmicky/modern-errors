@@ -9,30 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # Benchmark files
-  - files: ['benchmark/**/*.{js,cjs,mjs,ts,cts,mts}']
-    rules:
-      # Often used to signify number of iterations
-      filenames/no-index: 0
-
-      # Self imports
-      import/no-unresolved: 0
-      n/no-missing-import: 0
-      n/no-extraneous-import: 0
-
-  - files: ['benchmark/**/*.{js,cjs,mjs}']
-    rules:
-      # Often used to signify number of iterations
-      no-magic-numbers: 0
-
-      # Unused expressions are useful in benchmarks
-      no-unused-expressions: 0
-
-  - files: ['benchmark/**/*.{ts,cts,mts}']
-    rules:
-      '@typescript-eslint/no-magic-numbers': 0
-      '@typescript-eslint/no-unused-expressions': 0
-
   # Type tests
   - files: ['**/*.test-d.ts']
     rules:
