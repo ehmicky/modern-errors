@@ -1,21 +1,13 @@
-import type { ErrorInstance } from './merge/cause.js'
-import type { ClassOptions } from './options/class.js'
-import type { InstanceOptions } from './options/instance.js'
-import type { MethodOptions } from './options/method.js'
-import type { Info } from './plugins/info/main.js'
-import type { Plugin } from './plugins/shape/main.js'
 import type { ErrorClass, SpecificErrorClass } from './subclass/create.js'
 import type { CustomClass } from './subclass/custom.js'
 
-export type {
-  Plugin,
-  Info,
-  MethodOptions,
-  InstanceOptions,
-  ClassOptions,
-  ErrorInstance,
-  ErrorClass,
-}
+export type { ErrorInstance } from './merge/cause.js'
+export type { ClassOptions } from './options/class.js'
+export type { InstanceOptions } from './options/instance.js'
+export type { MethodOptions } from './options/method.js'
+export type { Info } from './plugins/info/main.js'
+export type { Plugin } from './plugins/shape/main.js'
+export type { ErrorClass }
 
 /**
  * Top-level `ErrorClass`.
