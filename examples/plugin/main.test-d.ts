@@ -1,5 +1,5 @@
 import ModernError from 'modern-errors'
-import modernErrorsExample, { Options } from 'modern-errors-example'
+import modernErrorsExample, { type Options } from 'modern-errors-example'
 import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 // Check the plugin shape by passing it to `modernErrors()`

@@ -134,9 +134,13 @@ overrides:
       '@typescript-eslint/promise-function-async': 2
       '@typescript-eslint/no-floating-promises': 2
 
-      # ## Modules
-      # '@typescript-eslint/consistent-type-exports': 2
-      # '@typescript-eslint/consistent-type-imports': 2
+      ## Modules
+      '@typescript-eslint/consistent-type-exports':
+        - 2
+        - fixMixedExportsWithInlineTypeSpecifier: true
+      '@typescript-eslint/consistent-type-imports':
+        - 2
+        - fixStyle: inline-type-imports
       # '@typescript-eslint/no-require-imports': 2
       # '@typescript-eslint/no-var-requires': 2
       # '@typescript-eslint/no-useless-empty-export': 2
