@@ -1,3 +1,562 @@
-extends: '@ehmicky/eslint-config/.eslintrc.yml'
+extends: '.eslintrc.base.yml'
+plugins: ['@typescript-eslint']
+parserOptions:
+  project: tsconfig.json
 rules:
   fp/no-class: 0
+
+  import/max-dependencies:
+    - 2
+    - ignoreTypeImports: true
+
+  n/no-extraneous-require:
+    - 2
+    - allowModules: [ava, tsd]
+  n/no-extraneous-import:
+    - 2
+    - allowModules: [ava, tsd]
+
+  ## Conflicts with Prettier
+  max-len: 0
+settings:
+  n:
+    tryExtensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
+  import/resolver:
+    node:
+      extensions: [.js, .cjs, .mjs, .ts, .cts, .mts, .json, .node, .yml, .yaml]
+    typescript:
+      project: tsconfig.json
+overrides:
+  # CommonJS files
+  - files: ['**/*.{cjs,cts}']
+    rules:
+      import/no-commonjs: 0
+      import/unambiguous: 0
+
+  # Rules that apply to JavaScript but not TypeScript
+  - files: ['**/*.js']
+    rules:
+      'padding-line-between-statements':
+        - 2
+        - blankLine: always
+          prev: [multiline-block-like, directive]
+          next: '*'
+        - blankLine: always
+          prev: '*'
+          next: multiline-block-like
+      'no-unused-vars':
+        - 2
+        - {}
+      'no-shadow':
+        - 2
+        - builtinGlobals: true
+          hoist: all
+          allow:
+            - process
+            - Buffer
+      'no-magic-numbers':
+        - 2
+        - ignore: [-2, -1, 0, 1, 2, 3, 10, 0n, 1n]
+          enforceConst: true
+      'init-declarations': 2
+      'no-loop-func': 2
+      'default-param-last': 2
+      'no-empty-function': 2
+      'no-invalid-this': 2
+      'require-await': 2
+      'no-return-await': 0
+      'no-duplicate-imports':
+        - 2
+        - includeExports: true
+      'no-restricted-imports':
+        - 2
+        - patterns:
+            - group:
+                ['node:assert', assert, 'node:assert/strict', assert/strict]
+              message: Please throw an Error instead
+
+      # # Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      # # although added by standard/standard.
+      # 'quotes': 0
+      # 'brace-style': 0
+      # 'comma-dangle': 0
+      # 'comma-spacing': 0
+      # 'func-call-spacing': 0
+      # 'indent': 0
+      # 'keyword-spacing': 0
+      # 'member-delimiter-style': 0
+      # 'no-extra-parens': 0
+      # 'object-curly-spacing': 0
+      # 'semi': 0
+      # 'space-before-blocks': 0
+      # 'space-before-function-paren': 0
+      # 'space-infix-ops': 0
+      # 'type-annotation-spacing': 0
+
+      # # Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      # # otherwise we would add it (using those commented lines).
+      # 'no-extra-semi': 0
+
+      ## Extension rules matching standard/standard
+      # 'lines-between-class-members':
+      #   - 2
+      #   - always
+      #   - exceptAfterSingleLine: true
+      # 'no-unused-expressions':
+      #   - 2
+      #   - allowShortCircuit: true
+      #     allowTernary: true
+      #     allowTaggedTemplates: true
+      # 'no-use-before-define':
+      #   - 2
+      #   - functions: false
+      #     classes: false
+      #     variables: false
+      # 'no-redeclare':
+      #   - 2
+      #   - builtinGlobals: false
+      #     ignoreDeclarationMerge: true
+      # 'no-throw-literal': 2
+      # 'dot-notation': 2
+      # 'no-useless-constructor': 2
+      # 'no-dupe-class-members': 2
+      # 'no-array-constructor': 2
+      # 'no-loss-of-precision': 2
+      # 'no-implied-eval': 2
+
+  # TypeScript files
+  - files: ['**/*.ts']
+    parser: '@typescript-eslint/parser'
+    rules:
+      '@typescript-eslint/padding-line-between-statements':
+        - 2
+        - blankLine: always
+          prev: [multiline-block-like, directive, interface, type]
+          next: '*'
+        - blankLine: always
+          prev: '*'
+          next: multiline-block-like
+      '@typescript-eslint/no-unused-vars':
+        - 2
+        - {}
+      '@typescript-eslint/no-shadow':
+        - 2
+        - builtinGlobals: true
+          hoist: all
+          allow:
+            - process
+            - Buffer
+      '@typescript-eslint/no-magic-numbers':
+        - 2
+        - ignore: [-2, -1, 0, 1, 2, 3, 10, 0n, 1n]
+          enforceConst: true
+          ignoreEnums: true
+          ignoreNumericLiteralTypes: true
+          ignoreTypeIndexes: true
+      '@typescript-eslint/init-declarations': 2
+      '@typescript-eslint/no-loop-func': 2
+      '@typescript-eslint/default-param-last': 2
+      '@typescript-eslint/no-empty-function': 2
+      '@typescript-eslint/no-invalid-this': 2
+      '@typescript-eslint/require-await': 2
+      '@typescript-eslint/return-await': 2
+      '@typescript-eslint/no-duplicate-imports':
+        - 2
+        - includeExports: true
+      '@typescript-eslint/no-restricted-imports':
+        - 2
+        - patterns:
+            - group:
+                ['node:assert', assert, 'node:assert/strict', assert/strict]
+              message: Please throw an Error instead
+          allowTypeImports: true
+
+      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      ## although added by standard/standard.
+      # '@typescript-eslint/quotes': 0
+      # '@typescript-eslint/brace-style': 0
+      # '@typescript-eslint/comma-dangle': 0
+      # '@typescript-eslint/comma-spacing': 0
+      # '@typescript-eslint/func-call-spacing': 0
+      # '@typescript-eslint/indent': 0
+      # '@typescript-eslint/keyword-spacing': 0
+      # '@typescript-eslint/member-delimiter-style': 0
+      # '@typescript-eslint/no-extra-parens': 0
+      # '@typescript-eslint/object-curly-spacing': 0
+      # '@typescript-eslint/semi': 0
+      # '@typescript-eslint/space-before-blocks': 0
+      # '@typescript-eslint/space-before-function-paren': 0
+      # '@typescript-eslint/space-infix-ops': 0
+      # '@typescript-eslint/type-annotation-spacing': 0
+
+      ## Conflicts with Prettier, i.e. disabled by eslint-config-prettier,
+      ## otherwise we would add it (using those commented lines).
+      # '@typescript-eslint/no-extra-semi': 0
+
+      ## Extension rules matching standard/standard
+      '@typescript-eslint/lines-between-class-members':
+        - 2
+        - always
+        - exceptAfterSingleLine: true
+      '@typescript-eslint/no-unused-expressions':
+        - 2
+        - allowShortCircuit: true
+          allowTernary: true
+          allowTaggedTemplates: true
+      '@typescript-eslint/no-use-before-define':
+        - 2
+        - functions: false
+          classes: false
+          variables: false
+      '@typescript-eslint/no-redeclare':
+        - 2
+        - builtinGlobals: false
+          ignoreDeclarationMerge: true
+      '@typescript-eslint/no-throw-literal': 2
+      '@typescript-eslint/dot-notation': 2
+      '@typescript-eslint/no-useless-constructor': 2
+      '@typescript-eslint/no-dupe-class-members': 2
+      '@typescript-eslint/no-array-constructor': 2
+      '@typescript-eslint/no-loss-of-precision': 2
+      '@typescript-eslint/no-implied-eval': 2
+
+      # TypeScript already checks for missing imports.
+      # Also this does not work when importing:
+      #  - A `*.d.ts` without a sibling `.js`
+      #  - The module itself, in `*.test-d.ts`
+      n/no-missing-import: 0
+
+  - files: ['**/*.md/*.{js,ts}']
+    # `use strict` is too verbose in documentation
+    parserOptions:
+      ecmaFeatures:
+        impliedStrict: true
+    rules:
+      # We want to keep Markdown code examples short
+      strict: 0
+      import/newline-after-import: 0
+
+      # Markdown filenames do not match code examples
+      camelcase: 0
+      filenames/match-exported: 0
+      filenames/match-regex: 0
+      unicorn/filename-case: 0
+
+      # Documentation code often misses context lines, leading to variables
+      # looking unused or undefined
+      no-undef: 0
+
+  - files: ['**/*.md/*.js']
+    rules:
+      # Documentation code often misses context lines, leading to variables
+      # looking unused or undefined
+      no-unused-vars: 0
+
+  - files: ['**/*.md/*.ts']
+    rules:
+      '@typescript-eslint/no-unused-vars': 0
+
+  - files: ['**/*.md/*.{js,ts}', 'examples/**/*.{js,ts}']
+    rules:
+      # Examples sometimes start with a number
+      filenames/match-regex:
+        - 2
+        - ^[a-zA-Z0-9_][a-zA-Z0-9_.]+$
+
+      # Examples print their output at the end of the file
+      # It might happen in documentation as well
+      no-console: 0
+      no-restricted-globals: 0
+
+      # Inline comments can be nicer in documentation
+      # Examples usually include the return value as inline comments
+      line-comment-position: 0
+      no-inline-comments: 0
+
+      # Documentation often require the module itself.
+      # Also documentation can require a module that does not exist.
+      # Examples point to already built files which might not be created yet
+      # if the user just cloned the repository
+      import/no-unresolved: 0
+      import/no-extraneous-dependencies: 0
+      n/no-missing-require: 0
+      n/no-extraneous-require: 0
+      n/no-extraneous-import: 0
+      n/no-unpublished-require: 0
+      n/no-missing-import: 0
+
+      # Examples sometimes use default exports
+      import/no-default-export: 0
+      import/no-anonymous-default-export: 0
+
+      # Using those globals is simpler in documentation
+      n/prefer-global/buffer: 0
+      n/prefer-global/process: 0
+      n/prefer-global/url: 0
+
+      # Example test files
+      ava/no-ignored-test-files: 0
+
+      # Too verbose for documentation
+      strict: 0
+
+      # Fixture files are sometimes executed by a CLI without exporting nor
+      # importing anything
+      import/unambiguous: 0
+
+      # Sometimes useful in documentation
+      no-empty: 0
+
+      # Filenames do not always match in documentation
+      filenames/match-exported: 0
+
+      # Short variables can be useful in examples
+      id-length: 0
+
+      # Only useful runtime, not in documentation
+      symbol-description: 0
+
+      # We allow asserts as they are simple
+      no-restricted-imports: 0
+
+  - files: ['**/*.md/*.js', 'examples/**/*.js']
+    rules:
+      # Inlining constants is simpler for examples
+      no-magic-numbers: 0
+
+      # Sometimes useful in documentation
+      no-empty-function: 0
+
+      # We allow asserts as they are simple
+      no-restricted-imports: 0
+
+  - files: ['**/*.md/*.ts', 'examples/**/*.ts']
+    rules:
+      '@typescript-eslint/no-magic-numbers': 0
+      '@typescript-eslint/no-empty-function': 0
+      '@typescript-eslint/no-restricted-imports': 0
+
+  # `eslint-config-markdown` does not work with `parserOptions.project`, which
+  # removes some rules
+  - files: ['**/*.md/*.ts']
+    parserOptions:
+      project: null
+    rules:
+      '@typescript-eslint/await-thenable': 0
+      '@typescript-eslint/consistent-type-exports': 0
+      '@typescript-eslint/dot-notation': 0
+      '@typescript-eslint/naming-convention': 0
+      '@typescript-eslint/no-base-to-string': 0
+      '@typescript-eslint/no-confusing-void-expression': 0
+      '@typescript-eslint/no-floating-promises': 0
+      '@typescript-eslint/no-for-in-array': 0
+      '@typescript-eslint/no-implied-eval': 0
+      '@typescript-eslint/no-meaningless-void-operator': 0
+      '@typescript-eslint/no-misused-promises': 0
+      '@typescript-eslint/non-nullable-type-assertion-style': 0
+      '@typescript-eslint/no-redundant-type-constituents': 0
+      '@typescript-eslint/no-throw-literal': 0
+      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 0
+      '@typescript-eslint/no-unnecessary-condition': 0
+      '@typescript-eslint/no-unnecessary-qualifier': 0
+      '@typescript-eslint/no-unnecessary-type-arguments': 0
+      '@typescript-eslint/no-unnecessary-type-assertion': 0
+      '@typescript-eslint/no-unsafe-argument': 0
+      '@typescript-eslint/no-unsafe-assignment': 0
+      '@typescript-eslint/no-unsafe-call': 0
+      '@typescript-eslint/no-unsafe-member-access': 0
+      '@typescript-eslint/no-unsafe-return': 0
+      '@typescript-eslint/prefer-includes': 0
+      '@typescript-eslint/prefer-nullish-coalescing': 0
+      '@typescript-eslint/prefer-readonly': 0
+      '@typescript-eslint/prefer-readonly-parameter-types': 0
+      '@typescript-eslint/prefer-reduce-type-parameter': 0
+      '@typescript-eslint/prefer-regexp-exec': 0
+      '@typescript-eslint/prefer-return-this-type': 0
+      '@typescript-eslint/prefer-string-starts-ends-with': 0
+      '@typescript-eslint/promise-function-async': 0
+      '@typescript-eslint/require-array-sort-compare': 0
+      '@typescript-eslint/require-await': 0
+      '@typescript-eslint/restrict-plus-operands': 0
+      '@typescript-eslint/restrict-template-expressions': 0
+      '@typescript-eslint/return-await': 0
+      '@typescript-eslint/strict-boolean-expressions': 0
+      '@typescript-eslint/switch-exhaustiveness-check': 0
+      '@typescript-eslint/unbound-method': 0
+
+  # Test files, including helpers
+  - files: ['src/**/*.test.{js,ts}']
+    rules:
+      # When using data-driven testing, an extra level of depth is implied
+      # Also, test() creates a depth level as well
+      max-nested-callbacks:
+        - 2
+        - 3
+      max-lines-per-function: 0
+
+      # Self imports
+      import/no-unresolved: 0
+      n/no-missing-import: 0
+      n/no-extraneous-import: 0
+
+      # Empty functions can be useful in tests
+      no-empty: 0
+
+      # Often tested as an invalid input
+      unicorn/no-null: 0
+
+  - files: ['src/**/*.test.js']
+    rules:
+      # Empty functions can be useful in tests
+      no-empty-function: 0
+
+      # TODO: fix.
+      # # Enforce integration testing
+      # no-restricted-imports:
+      #   - 2
+      #   - patterns:
+      #       - group:
+      #           ['node:assert', assert, 'node:assert/strict', assert/strict]
+      #         message: Please throw an Error instead
+      #       - group: ['./*', '!./helpers', '!./fixtures']
+      #         message:
+      #           Individual files should not be imported in tests. Instead please
+      #           use import the main module.
+
+  - files: ['src/**/*.test.ts']
+    rules:
+      '@typescript-eslint/no-empty-function': 0
+      '@typescript-eslint/no-restricted-imports':
+        - 2
+        - patterns:
+            - group:
+                ['node:assert', assert, 'node:assert/strict', assert/strict]
+              message: Please throw an Error instead
+            - group: ['./*', '!./helpers', '!./fixtures']
+              message:
+                Individual files should not be imported in tests. Instead please
+                use import the main module.
+
+  # Test helpers and fixtures
+  - files: ['src/helpers/**/*.js', 'src/fixtures/**/*.js']
+    rules:
+      # Allow including sibling files
+      no-restricted-imports: 0
+
+  - files: ['src/helpers/**/*.ts', 'src/fixtures/**/*.ts']
+    rules:
+      '@typescript-eslint/no-restricted-imports': 0
+
+  # Test fixtures
+  - files: ['src/fixtures/**/*.{js,ts}']
+    rules:
+      # Fixture files are sometimes executed by a CLI without exporting nor
+      # importing anything
+      import/unambiguous: 0
+
+  # Gulpfile and gulp tasks
+  - files: [gulpfile.js, 'gulp/**/*.{js,ts}']
+    rules:
+      # Gulp tasks sometimes print to console
+      no-console: 0
+      no-restricted-globals:
+        - 2
+        - global
+        - GLOBAL
+        - exports
+        - process
+        - Buffer
+      fp/no-mutation:
+        - 2
+        - commonjs: true
+          exceptions:
+            - object: process
+              property: exitCode
+            - object: error
+            - object: req
+            - object: request
+            - object: res
+            - object: response
+            - object: state
+            - property: description
+
+  # Main entry point
+  - files: ['src/main.{js,ts}']
+    rules:
+      filenames/match-exported: 0
+      import/no-default-export: 0
+
+  # CLI
+  - files: ['src/bin/**/*.{js,ts}', 'src/bin.{js,ts}']
+    rules:
+      # CLI often prints to console
+      no-console: 0
+      no-restricted-globals:
+        - 2
+        - global
+        - GLOBAL
+        - exports
+        - process
+        - Buffer
+      # CLI often forwards to main commands using `import * as commands`
+      import/no-namespace: 0
+
+  # Benchmark files
+  - files: ['benchmark/**/*.{js,ts}']
+    rules:
+      # Often used to signify number of iterations
+      filenames/no-index: 0
+
+      # Self imports
+      import/no-unresolved: 0
+      n/no-missing-import: 0
+      n/no-extraneous-import: 0
+
+  - files: ['benchmark/**/*.js']
+    rules:
+      # Often used to signify number of iterations
+      no-magic-numbers: 0
+
+      # Unused expressions are useful in benchmarks
+      no-unused-expressions: 0
+
+  - files: ['benchmark/**/*.ts']
+    rules:
+      '@typescript-eslint/no-magic-numbers': 0
+      '@typescript-eslint/no-unused-expressions': 0
+
+  # Type tests
+  - files: ['**/*.test-d.ts']
+    rules:
+      # Unused expressions and arguments are useful in type tests
+      no-new: 0
+      '@typescript-eslint/no-unused-expressions': 0
+      '@typescript-eslint/no-unused-vars':
+        - 2
+        - args: none
+
+      # Unusual functions or methods or are useful in type tests
+      'class-methods-use-this': 0
+      '@typescript-eslint/no-useless-constructor': 0
+      '@typescript-eslint/no-empty-function': 0
+
+      # `test-d` is dasherized, but rest must use underscores
+      filenames/match-regex:
+        - 2
+        - ^[a-zA-Z_][a-zA-Z0-9_.]+\.test-d$
+      unicorn/filename-case:
+        - 2
+        - case: snakeCase
+          ignore:
+            - ^[a-zA-Z_][a-zA-Z0-9_.]+\.test-d\.ts$
+
+      # Passing `undefined` is handled differently than passing no argument by
+      # TypeScript, which can be tested
+      unicorn/no-useless-undefined: 0
+
+  # Files that are sibling to a `*.js` or `*.ts`
+  - files: ['**/*.{test.{js,ts},d.ts,test-d.ts}']
+    rules:
+      # Each source file should have a single sibling test file, regardless of
+      # its size
+      max-lines: 0
