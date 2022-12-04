@@ -8,32 +8,3 @@ overrides:
     rules:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
-
-  # Type tests
-  - files: ['**/*.test-d.ts']
-    rules:
-      # Unused expressions and arguments are useful in type tests
-      no-new: 0
-      '@typescript-eslint/no-unused-expressions': 0
-      '@typescript-eslint/no-unused-vars':
-        - 2
-        - args: none
-
-      # Unusual functions or methods or are useful in type tests
-      'class-methods-use-this': 0
-      '@typescript-eslint/no-useless-constructor': 0
-      '@typescript-eslint/no-empty-function': 0
-
-      # `test-d` is dasherized, but rest must use underscores
-      filenames/match-regex:
-        - 2
-        - ^[a-zA-Z_][a-zA-Z0-9_.]+\.test-d$
-      unicorn/filename-case:
-        - 2
-        - case: snakeCase
-          ignore:
-            - ^[a-zA-Z_][a-zA-Z0-9_.]+\.test-d\.ts$
-
-      # Passing `undefined` is handled differently than passing no argument by
-      # TypeScript, which can be tested
-      unicorn/no-useless-undefined: 0
