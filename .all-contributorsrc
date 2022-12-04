@@ -24,5 +24,6 @@
     }
   ],
   "contributorsPerLine": 7,
+  "skipCi": true,
   "commitConvention": "none"
 }
