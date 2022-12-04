@@ -9,36 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  - files: ['**/*.md/*.{js,ts}']
-    # `use strict` is too verbose in documentation
-    parserOptions:
-      ecmaFeatures:
-        impliedStrict: true
-    rules:
-      # We want to keep Markdown code examples short
-      strict: 0
-      import/newline-after-import: 0
-
-      # Markdown filenames do not match code examples
-      camelcase: 0
-      filenames/match-exported: 0
-      filenames/match-regex: 0
-      unicorn/filename-case: 0
-
-      # Documentation code often misses context lines, leading to variables
-      # looking unused or undefined
-      no-undef: 0
-
-  - files: ['**/*.md/*.js']
-    rules:
-      # Documentation code often misses context lines, leading to variables
-      # looking unused or undefined
-      no-unused-vars: 0
-
-  - files: ['**/*.md/*.ts']
-    rules:
-      '@typescript-eslint/no-unused-vars': 0
-
   - files: ['**/*.md/*.{js,ts}', 'examples/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:
       # Examples sometimes start with a number

@@ -1300,7 +1300,7 @@ overrides:
   - files: ['**/*.md']
     processor: 'markdown/markdown'
 
-  - files: ['**/*.md/*.js']
+  - files: ['**/*.md/*.{js,ts}']
     # `use strict` is too verbose in documentation
     parserOptions:
       ecmaFeatures:
@@ -1317,9 +1317,18 @@ overrides:
       unicorn/filename-case: 0
 
       # Documentation code often misses context lines, leading to variables
-      # looking unused or undefined
+      # looking unused
       no-undef: 0
+
+  - files: ['**/*.md/*.js']
+    rules:
+      # Documentation code often misses context lines, leading to variables
+      # looking undefined
       no-unused-vars: 0
+
+  - files: ['**/*.md/*.ts']
+    rules:
+      '@typescript-eslint/no-unused-vars': 0
 
   # Examples and documentation files
   - files: ['**/*.md/*.js', 'examples/**/*.{js,cjs,mjs}']
