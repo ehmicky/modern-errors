@@ -89,8 +89,9 @@ overrides:
         - 2
         - index-signature
       '@typescript-eslint/no-empty-interface': 2
-      # '@typescript-eslint/member-ordering': 2
-      # '@typescript-eslint/prefer-optional-chain': 2
+      # Application-specific ordering is more relevant than type-specific
+      '@typescript-eslint/member-ordering': 0
+      '@typescript-eslint/prefer-optional-chain': 2
 
       # ## Classes
       # '@typescript-eslint/unbound-method': 2
