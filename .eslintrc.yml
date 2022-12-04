@@ -9,12 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # Main entry point
-  - files: ['src/main.{js,ts,d.ts}']
-    rules:
-      filenames/match-exported: 0
-      import/no-default-export: 0
-
   # CLI
   - files:
       [

@@ -1566,7 +1566,7 @@ overrides:
             - property: description
 
   # Main entry point
-  - files: [src/main.js]
+  - files: ['src/main.{js,ts,d.ts}']
     rules:
       filenames/match-exported: 0
       import/no-default-export: 0
