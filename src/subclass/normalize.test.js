@@ -5,7 +5,10 @@ import {
   ErrorClasses,
   ErrorSubclasses,
   ModernError,
-} from '../../helpers/main.test.js'
+} from '../helpers/main.test.js'
+import { getUnknownErrors } from '../helpers/unknown.test.js'
+
+const { propertyIsEnumerable: isEnum } = Object.prototype
 
 each([null, '', Function, Object, Error], ({ title }, invalidErrorClass) => {
   test(`ErrorClass.normalize() second argument must be a ModernError class | ${title}`, (t) => {
@@ -89,5 +92,51 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const SubTestError = TestError.subclass('SubTestError')
     const error = new SubTestError('test')
     t.true(ErrorClass.normalize(error, TestError) instanceof SubTestError)
+  })
+})
+
+each(
+  ErrorClasses,
+  getUnknownErrors(),
+  ({ title }, ErrorClass, getUnknownError) => {
+    test(`ErrorClass.normalize() changes error class if unknown | ${title}`, (t) => {
+      t.true(ErrorClass.normalize(getUnknownError()) instanceof ErrorClass)
+    })
+
+    test(`ErrorClass.normalize(error, TestError) changes error class if unknown | ${title}`, (t) => {
+      const TestError = ErrorClass.subclass('TestError')
+      t.true(
+        ErrorClass.normalize(getUnknownError(), TestError) instanceof TestError,
+      )
+    })
+  },
+)
+
+each(ErrorClasses, ({ title }, ErrorClass) => {
+  test(`ErrorClass.normalize() recurse over aggregate errors | ${title}`, (t) => {
+    const error = new ErrorClass('test', { errors: [true] })
+    const normalizedError = ErrorClass.normalize(error)
+    t.true(normalizedError.errors[0] instanceof ErrorClass)
+    t.false(isEnum.call(normalizedError, 'errors'))
+  })
+
+  test(`ErrorClass.normalize() recurse over aggregate non-errors | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    error.errors = [true]
+    t.true(ErrorClass.normalize(error).errors[0] instanceof ErrorClass)
+  })
+
+  test(`ErrorClass.normalize() recurse over aggregate errors deeply | ${title}`, (t) => {
+    const innerError = new ErrorClass('test', { errors: [true] })
+    const error = new ErrorClass('test', { errors: [innerError] })
+    t.true(
+      ErrorClass.normalize(error).errors[0].errors[0] instanceof ErrorClass,
+    )
+  })
+
+  test(`ErrorClass.normalize() handles infinite recursions | ${title}`, (t) => {
+    const error = new ErrorClass('test')
+    error.errors = [error]
+    t.deepEqual(ErrorClass.normalize(error).errors, [])
   })
 })
