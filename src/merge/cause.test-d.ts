@@ -22,7 +22,7 @@ const DeepCustomError = CustomError.subclass('DeepCustomError', {
   },
 })
 
-const generalError = {} as any as ModernErrorInstance
+const generalError = {} as unknown as ModernErrorInstance
 const childError = new BaseError('')
 const deepChildError = new ChildError('')
 const customError = new CustomError('')
