@@ -113,18 +113,20 @@ overrides:
           allowConstructorOnly: true
       '@typescript-eslint/no-misused-new': 2
 
-      # ## Arrays
-      # '@typescript-eslint/array-type': 2
-      # '@typescript-eslint/prefer-includes': 2
-      # '@typescript-eslint/prefer-reduce-type-parameter': 2
-      # '@typescript-eslint/require-array-sort-compare': 2
+      ## Arrays
+      '@typescript-eslint/array-type': 2
+      '@typescript-eslint/prefer-includes': 2
+      '@typescript-eslint/prefer-reduce-type-parameter': 2
+      '@typescript-eslint/require-array-sort-compare':
+        - 2
+        - ignoreStringArrays: true
 
-      # ## Strings
-      # '@typescript-eslint/restrict-plus-operands': 2
-      # '@typescript-eslint/prefer-string-starts-ends-with': 2
+      ## Strings
+      '@typescript-eslint/restrict-plus-operands': 2
+      '@typescript-eslint/prefer-string-starts-ends-with': 2
 
-      # ## RegExps
-      # '@typescript-eslint/prefer-regexp-exec': 2
+      ## RegExps
+      '@typescript-eslint/prefer-regexp-exec': 2
 
       # ## Async
       # '@typescript-eslint/await-thenable': 2
