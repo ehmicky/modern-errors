@@ -1,6 +1,5 @@
-import { expectType } from 'tsd'
-
 import ModernError, { type Info, type Plugin } from 'modern-errors'
+import { expectType } from 'tsd'
 
 const name = 'test' as const
 const emptyPlugin = { name }
@@ -46,9 +45,11 @@ unknownWideError.otherProperty
 childWideError.otherProperty
 
 const exception = {} as unknown
+
 if (exception instanceof ChildError) {
   expectType<true>(exception.property)
 }
+
 if (exception instanceof MixChildError) {
   expectType<true>(exception.property)
 }

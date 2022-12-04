@@ -1,13 +1,12 @@
-import { expectType } from 'tsd'
-
 import ModernError, { type Info, type Plugin } from 'modern-errors'
+import { expectType } from 'tsd'
 
 const name = 'test' as const
 const emptyPlugin = { name }
 const barePlugin = {
   ...emptyPlugin,
   instanceMethods: {
-    instanceMethod: (info: Info['instanceMethods'], arg: '') => arg,
+    instanceMethod: (infoArg: Info['instanceMethods'], arg: '') => arg,
   },
 }
 const fullPlugin = {

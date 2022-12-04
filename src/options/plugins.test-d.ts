@@ -1,11 +1,10 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError, {
   type Plugin,
   type ClassOptions,
   type InstanceOptions,
   type MethodOptions,
 } from 'modern-errors'
+import { expectAssignable, expectNotAssignable } from 'tsd'
 
 const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, getOptions: (input: true) => input }

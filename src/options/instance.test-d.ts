@@ -1,6 +1,5 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
-
 import type { ClassOptions, InstanceOptions } from 'modern-errors'
+import { expectAssignable, expectNotAssignable } from 'tsd'
 
 expectAssignable<InstanceOptions>({})
 

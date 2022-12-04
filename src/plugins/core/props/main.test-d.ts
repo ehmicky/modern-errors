@@ -1,9 +1,8 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError, {
   type ClassOptions,
   type InstanceOptions,
 } from 'modern-errors'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 ModernError.subclass('TestError', { props: {} })
 new ModernError('', { props: {} })
@@ -49,6 +48,7 @@ expectAssignable<{ one: true; two: true; three: true }>(
   new PropsError('', { props: { two: true as const, three: true as const } }),
 )
 const exception = {} as unknown
+
 if (exception instanceof PropsError) {
   expectAssignable<{ one: true; three: false }>(exception)
 }

@@ -1,9 +1,8 @@
-import { expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError, {
   type ClassOptions,
   type InstanceOptions,
 } from 'modern-errors'
+import { expectAssignable, expectNotAssignable } from 'tsd'
 
 const plugin = { name: 'test' as const }
 const PluginBaseError = ModernError.subclass('PluginBaseError', {

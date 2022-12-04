@@ -1,10 +1,9 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError, {
   type Plugin,
   type ErrorClass,
   type ErrorInstance,
 } from 'modern-errors'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 const BaseError = ModernError.subclass('BaseError')
 const ChildError = BaseError.subclass('ChildError')
@@ -50,6 +49,7 @@ const fullPlugin = {
 }
 
 type BareErrorClass = ErrorClass<[typeof barePlugin]>
+
 type FullErrorClass = ErrorClass<[typeof fullPlugin]>
 
 const BasePluginError = ModernError.subclass('BaseError', {
@@ -136,21 +136,27 @@ const pluginChildCustomError = new PluginChildCustomError('')
 const pluginDeepCustomError = new PluginDeepCustomError('')
 
 const exception = {} as unknown
+
 if (exception instanceof BaseError) {
   expectType<typeof BaseError['prototype']>(exception)
 }
+
 if (exception instanceof PluginChildError) {
   expectType<typeof PluginChildError['prototype']>(exception)
 }
+
 if (exception instanceof PluginDeepChildError) {
   expectType<typeof PluginDeepChildError['prototype']>(exception)
 }
+
 if (exception instanceof PluginCustomError) {
   expectType<typeof PluginCustomError['prototype']>(exception)
 }
+
 if (exception instanceof PluginChildCustomError) {
   expectType<typeof PluginChildCustomError['prototype']>(exception)
 }
+
 if (exception instanceof PluginDeepCustomError) {
   expectType<typeof PluginDeepCustomError['prototype']>(exception)
 }
@@ -158,15 +164,19 @@ if (exception instanceof PluginDeepCustomError) {
 if (pluginChildError instanceof PluginChildError) {
   expectType<typeof pluginChildError>(pluginChildError)
 }
+
 if (pluginDeepChildError instanceof PluginDeepChildError) {
   expectType<typeof pluginDeepChildError>(pluginDeepChildError)
 }
+
 if (pluginCustomError instanceof PluginCustomError) {
   expectType<typeof pluginCustomError>(pluginCustomError)
 }
+
 if (pluginChildCustomError instanceof PluginChildCustomError) {
   expectType<typeof pluginChildCustomError>(pluginChildCustomError)
 }
+
 if (pluginDeepCustomError instanceof PluginDeepCustomError) {
   expectType<typeof pluginDeepCustomError>(pluginDeepCustomError)
 }
@@ -174,18 +184,23 @@ if (pluginDeepCustomError instanceof PluginDeepCustomError) {
 if (pluginBaseError instanceof PluginBaseError) {
   expectType<typeof pluginBaseError>(pluginBaseError)
 }
+
 if (pluginChildError instanceof PluginBaseError) {
   expectType<typeof pluginChildError>(pluginChildError)
 }
+
 if (pluginDeepChildError instanceof PluginBaseError) {
   expectType<typeof pluginDeepChildError>(pluginDeepChildError)
 }
+
 if (pluginCustomError instanceof PluginBaseError) {
   expectType<typeof pluginCustomError>(pluginCustomError)
 }
+
 if (pluginChildCustomError instanceof PluginBaseError) {
   expectType<typeof pluginChildCustomError>(pluginChildCustomError)
 }
+
 if (pluginDeepCustomError instanceof PluginBaseError) {
   expectType<typeof pluginDeepCustomError>(pluginDeepCustomError)
 }
@@ -193,18 +208,23 @@ if (pluginDeepCustomError instanceof PluginBaseError) {
 if (pluginBaseError instanceof Error) {
   expectType<typeof pluginBaseError>(pluginBaseError)
 }
+
 if (pluginChildError instanceof Error) {
   expectType<typeof pluginChildError>(pluginChildError)
 }
+
 if (pluginDeepChildError instanceof Error) {
   expectType<typeof pluginDeepChildError>(pluginDeepChildError)
 }
+
 if (pluginCustomError instanceof Error) {
   expectType<typeof pluginCustomError>(pluginCustomError)
 }
+
 if (pluginChildCustomError instanceof Error) {
   expectType<typeof pluginChildCustomError>(pluginChildCustomError)
 }
+
 if (pluginDeepCustomError instanceof Error) {
   expectType<typeof pluginDeepCustomError>(pluginDeepCustomError)
 }
@@ -212,9 +232,11 @@ if (pluginDeepCustomError instanceof Error) {
 if (pluginDeepChildError instanceof PluginChildError) {
   expectType<typeof pluginDeepChildError>(pluginDeepChildError)
 }
+
 if (pluginChildCustomError instanceof PluginCustomError) {
   expectType<typeof pluginChildCustomError>(pluginChildCustomError)
 }
+
 if (pluginDeepCustomError instanceof PluginCustomError) {
   expectType<typeof pluginDeepCustomError>(pluginDeepCustomError)
 }
@@ -222,9 +244,11 @@ if (pluginDeepCustomError instanceof PluginCustomError) {
 if (pluginCustomError instanceof ConflictCustomError) {
   expectType<never>(pluginCustomError)
 }
+
 if (pluginChildCustomError instanceof ConflictCustomError) {
   expectType<never>(pluginChildCustomError)
 }
+
 if (pluginDeepCustomError instanceof ConflictCustomError) {
   expectType<never>(pluginDeepCustomError)
 }

@@ -1,6 +1,5 @@
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
-
 import ModernError, { type Plugin, type ErrorInstance } from 'modern-errors'
+import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
 
 type ModernErrorInstance = InstanceType<typeof ModernError>
 
@@ -132,8 +131,8 @@ expectType<Error[]>(
   new ModernError('', { props: { errors: [true] }, errors: [true] }).errors,
 )
 
-const InstanceMethodPropertyError = ModernError.subclass(
-  'InstanceMethodPropertyError',
+const InstanceMethodPropError = ModernError.subclass(
+  'InstanceMethodPropError',
   {
     plugins: [
       {
@@ -144,7 +143,7 @@ const InstanceMethodPropertyError = ModernError.subclass(
     ],
   },
 )
-expectAssignable<Function>(new InstanceMethodPropertyError('').prop)
+expectAssignable<Function>(new InstanceMethodPropError('').prop)
 
 const InstanceMethodError = ModernError.subclass('InstanceMethodError', {
   plugins: [{ name, instanceMethods: { prop: () => {} } }],
@@ -188,6 +187,7 @@ const barePlugin = { name: 'test' as const }
 const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
 
 type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
+
 type FullErrorInstance = ErrorInstance<[typeof fullPlugin]>
 
 const BasePluginError = ModernError.subclass('BaseError', {
@@ -225,6 +225,7 @@ expectNotAssignable<FullErrorInstance>(widePluginError)
 expectType<WideErrorInstance>(widePluginError)
 
 const exception = {} as unknown
+
 if (exception instanceof WidePluginError) {
   expectType<WideErrorInstance>(exception)
 }

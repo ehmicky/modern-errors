@@ -1,6 +1,5 @@
-import { expectType, expectAssignable } from 'tsd'
-
 import ModernError, { type Plugin } from 'modern-errors'
+import { expectType, expectAssignable } from 'tsd'
 
 const ParentError = ModernError.subclass('ParentError', {
   props: { one: true as const },
@@ -10,6 +9,7 @@ const ChildError = ParentError.subclass('ChildError', {
 })
 
 type ParentErrorInstance = InstanceType<typeof ParentError>
+
 type ChildErrorInstance = InstanceType<typeof ChildError>
 
 expectAssignable<ParentErrorInstance>(ParentError.normalize(new Error('')))

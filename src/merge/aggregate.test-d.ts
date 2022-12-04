@@ -1,6 +1,5 @@
-import { expectType } from 'tsd'
-
 import ModernError from 'modern-errors'
+import { expectType } from 'tsd'
 
 const CustomError = ModernError.subclass('CustomError', {
   custom: class extends ModernError {
