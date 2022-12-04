@@ -9,25 +9,6 @@ overrides:
       # Plugin examples comment most of the code
       '@typescript-eslint/no-unused-vars': 0
 
-  # CLI
-  - files:
-      [
-        'src/bin/**/*.{js,cjs,mjs,ts,cts,mts}',
-        'src/bin.{js,cjs,mjs,ts,cts,mts}',
-      ]
-    rules:
-      # CLI often prints to console
-      no-console: 0
-      no-restricted-globals:
-        - 2
-        - global
-        - GLOBAL
-        - exports
-        - process
-        - Buffer
-      # CLI often forwards to main commands using `import * as commands`
-      import/no-namespace: 0
-
   # Benchmark files
   - files: ['benchmark/**/*.{js,cjs,mjs,ts,cts,mts}']
     rules:

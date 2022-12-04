@@ -1572,7 +1572,9 @@ overrides:
       import/no-default-export: 0
 
   # CLI
-  - files: ['src/bin/**/*.{js,cjs,mjs}', 'src/bin.{js,cjs,mjs}']
+  - files:
+      - 'src/bin/**/*.{js,cjs,mjs,ts,cts,mts}'
+      - 'src/bin.{js,cjs,mjs,ts,cts,mts}'
     rules:
       # CLI often prints to console
       no-console: 0
