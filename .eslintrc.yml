@@ -25,11 +25,25 @@ overrides:
           propertyDeclaration: true
       '@typescript-eslint/no-inferrable-types': 2
 
-      # ## Assignments
-      # '@typescript-eslint/no-dynamic-delete': 2
+      ## Assignments
+      '@typescript-eslint/no-dynamic-delete': 2
 
-      # ## Naming
-      # '@typescript-eslint/naming-convention': 2
+      ## Naming
+      '@typescript-eslint/naming-convention':
+        - 2
+        - selector: default
+          # Variables of classes are titleized
+          format: [camelCase, PascalCase]
+          leadingUnderscore: forbid
+          trailingUnderscore: forbid
+        - selector: variable
+          format: [camelCase, PascalCase, UPPER_CASE]
+          leadingUnderscore: forbid
+          trailingUnderscore: forbid
+        - selector: typeLike
+          format: [PascalCase]
+          leadingUnderscore: forbid
+          trailingUnderscore: forbid
 
       # ## Typecasting
       # '@typescript-eslint/no-base-to-string': 2
