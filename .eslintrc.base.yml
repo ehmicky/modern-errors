@@ -1284,6 +1284,13 @@ overrides:
       # '@typescript-eslint/member-delimiter-style': 0
       # '@typescript-eslint/type-annotation-spacing': 0
 
+      # Types requires more lines of code
+      max-lines:
+        - 2
+        - max: 120
+          skipBlankLines: true
+          skipComments: true
+
       # TypeScript already checks for missing imports.
       # Also this does not work when importing:
       #  - A `*.d.ts` without a sibling `.js`
