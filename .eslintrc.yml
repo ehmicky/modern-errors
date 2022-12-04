@@ -128,11 +128,11 @@ overrides:
       ## RegExps
       '@typescript-eslint/prefer-regexp-exec': 2
 
-      # ## Async
-      # '@typescript-eslint/await-thenable': 2
-      # '@typescript-eslint/no-misused-promises': 2
-      # '@typescript-eslint/promise-function-async': 2
-      # '@typescript-eslint/no-floating-promises': 2
+      ## Async
+      '@typescript-eslint/await-thenable': 2
+      '@typescript-eslint/no-misused-promises': 2
+      '@typescript-eslint/promise-function-async': 2
+      '@typescript-eslint/no-floating-promises': 2
 
       # ## Modules
       # '@typescript-eslint/consistent-type-exports': 2
