@@ -1,4 +1,4 @@
-extends: '.eslintrc.base.yml'
+extends: '@ehmicky/eslint-config/.eslintrc.yml'
 rules:
   fp/no-class: 0
 overrides:
