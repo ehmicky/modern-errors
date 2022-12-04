@@ -51,12 +51,19 @@ overrides:
       # unknown or of many different types
       '@typescript-eslint/restrict-template-expressions': 0
 
-      # ## Tests
-      # '@typescript-eslint/no-unnecessary-boolean-literal-compare': 2
-      # '@typescript-eslint/no-unnecessary-condition': 2
-      # '@typescript-eslint/strict-boolean-expressions': 2
-      # '@typescript-eslint/sort-type-constituents': 2
-      # '@typescript-eslint/prefer-nullish-coalescing': 2
+      ## Tests
+      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 2
+      '@typescript-eslint/no-unnecessary-condition':
+        - 2
+        - allowConstantLoopConditions: true
+      '@typescript-eslint/strict-boolean-expressions': 2
+      # Application-specific ordering is more relevant than type-specific
+      '@typescript-eslint/sort-type-constituents': 0
+      '@typescript-eslint/prefer-nullish-coalescing':
+        - 2
+        - ignoreTernaryTests: false
+          ignoreConditionalTests: false
+          ignoreMixedLogicalExpressions: false
 
       # ## Structures
       # '@typescript-eslint/prefer-for-of': 2
