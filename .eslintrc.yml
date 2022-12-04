@@ -65,12 +65,12 @@ overrides:
           ignoreConditionalTests: false
           ignoreMixedLogicalExpressions: false
 
-      # ## Structures
-      # '@typescript-eslint/prefer-for-of': 2
-      # '@typescript-eslint/no-for-in-array': 2
+      ## Structures
+      '@typescript-eslint/prefer-for-of': 2
+      '@typescript-eslint/no-for-in-array': 2
 
-      # ## Switch
-      # '@typescript-eslint/switch-exhaustiveness-check': 2
+      ## Switch
+      '@typescript-eslint/switch-exhaustiveness-check': 2
 
       # ## Functions
       # '@typescript-eslint/method-signature-style': 2
