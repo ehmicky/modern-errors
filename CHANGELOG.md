@@ -1,3 +1,9 @@
+# 5.5.0
+
+## Features
+
+- Improve TypeScript types
+
 # 5.4.0
 
 ## Features
