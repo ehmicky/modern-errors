@@ -28,11 +28,7 @@ import { isSubclass } from '../utils/subclass.js'
 // before re-throwing it if needed.
 // This is called `normalize()`, not `normalizeError()` so it does not end
 // like the error classes.
-export const normalize = function (
-  ErrorClass,
-  error,
-  UnknownError = ErrorClass,
-) {
+export const normalize = (ErrorClass, error, UnknownError = ErrorClass) => {
   if (!isSubclass(UnknownError, ErrorClass)) {
     throw new TypeError(
       `${ErrorClass.name}.normalize()'s second argument should be a subclass of ${ErrorClass.name}, not: ${UnknownError}`,
@@ -42,7 +38,7 @@ export const normalize = function (
   return normalizeError({ error, ErrorClass, UnknownError, parents: [] })
 }
 
-const normalizeError = function ({ error, ErrorClass, UnknownError, parents }) {
+const normalizeError = ({ error, ErrorClass, UnknownError, parents }) => {
   normalizeAggregateErrors({ error, ErrorClass, UnknownError, parents })
   return shouldKeepClass(error, ErrorClass, UnknownError)
     ? normalizeException(error, { shallow: true })
@@ -52,12 +48,12 @@ const normalizeError = function ({ error, ErrorClass, UnknownError, parents }) {
 // `error.errors` are normalized before `error` so that if some are missing a
 // stack trace, the generated stack trace is coming from `new ErrorClass()`
 // instead of `normalizeException()`, since this is a nicer stack
-const normalizeAggregateErrors = function ({
+const normalizeAggregateErrors = ({
   error,
   ErrorClass,
   UnknownError,
   parents,
-}) {
+}) => {
   if (!Array.isArray(error?.errors)) {
     return
   }
@@ -76,9 +72,6 @@ const normalizeAggregateErrors = function ({
   setNonEnumProp(error, 'errors', errors)
 }
 
-const shouldKeepClass = function (error, ErrorClass, UnknownError) {
-  return (
-    error?.constructor === UnknownError ||
-    (error instanceof ErrorClass && error.constructor !== ErrorClass)
-  )
-}
+const shouldKeepClass = (error, ErrorClass, UnknownError) =>
+  error?.constructor === UnknownError ||
+  (error instanceof ErrorClass && error.constructor !== ErrorClass)

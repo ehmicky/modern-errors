@@ -11,22 +11,17 @@ import { instancesData, classesData } from '../../subclass/map.js'
 //       methods are needed to return that other plugin, but they need to take
 //       errors as argument
 // If the `error` is not an `ErrorClass` instance, it is normalized to one.
-export const getAnyErrorInfo = function (
+export const getAnyErrorInfo = (
   { ErrorClass, methodOpts, plugins, plugin },
   error,
-) {
+) => {
   const errorA = ErrorClass.normalize(error)
   const info = getKnownErrorInfo({ error: errorA, methodOpts, plugins, plugin })
   return { ...info, error: errorA }
 }
 
 // Retrieve `info` of a normalized error
-export const getKnownErrorInfo = function ({
-  error,
-  methodOpts,
-  plugins,
-  plugin,
-}) {
+export const getKnownErrorInfo = ({ error, methodOpts, plugins, plugin }) => {
   const ErrorClass = error.constructor
   const ErrorClasses = getSubclasses(ErrorClass)
   const { classOpts } = classesData.get(ErrorClass)
@@ -46,7 +41,7 @@ export const getKnownErrorInfo = function ({
 // A shallow copy is done to prevent mutations.
 // This is an array, not an object, since some error classes might have
 // duplicate names.
-export const getSubclasses = function (ErrorClass) {
+export const getSubclasses = (ErrorClass) => {
   const { subclasses } = classesData.get(ErrorClass)
   return [ErrorClass, ...subclasses]
 }

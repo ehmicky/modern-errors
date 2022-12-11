@@ -2,7 +2,7 @@ import ModernError from 'modern-errors'
 
 export { ModernError }
 
-export const getClasses = function (opts) {
+export const getClasses = (opts) => {
   const BaseError = ModernError.subclass('BaseError', opts)
   const ChildError = BaseError.subclass('ChildError')
   const ErrorSubclassesArg = [BaseError, ChildError]

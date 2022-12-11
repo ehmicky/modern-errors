@@ -9,7 +9,7 @@ import { validatePluginName } from './name.js'
 
 // Validate and normalize plugins.
 // Also merge plugins of parent and child classes.
-export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
+export const normalizePlugins = (parentPlugins, plugins, ParentError) => {
   const pluginsA = normalizePluginsOpt(ParentError, plugins)
   const pluginsB = pluginsA.map((plugin) =>
     normalizePlugin(plugin, ParentError),
@@ -19,7 +19,7 @@ export const normalizePlugins = function (parentPlugins, plugins, ParentError) {
   return pluginsC
 }
 
-const normalizePluginsOpt = function (ParentError, plugins = []) {
+const normalizePluginsOpt = (ParentError, plugins = []) => {
   if (!Array.isArray(plugins)) {
     throw new TypeError(
       `The "plugins" option of "${ParentError.name}.subclass()" must be an array: ${plugins}`,
@@ -29,7 +29,7 @@ const normalizePluginsOpt = function (ParentError, plugins = []) {
   return plugins
 }
 
-const normalizePlugin = function (plugin, ParentError) {
+const normalizePlugin = (plugin, ParentError) => {
   if (!isPlainObj(plugin)) {
     throw new TypeError(
       `The "plugins" option of "${ParentError.name}.subclass()" must be an array of plugin objects: ${plugin}`,
@@ -45,7 +45,7 @@ const normalizePlugin = function (plugin, ParentError) {
   return pluginD
 }
 
-const validateOptionalFuncs = function (plugin) {
+const validateOptionalFuncs = (plugin) => {
   OPTIONAL_FUNCS.forEach((funcName) => {
     validateOptionalFunc(plugin, funcName)
   })
@@ -53,7 +53,7 @@ const validateOptionalFuncs = function (plugin) {
 
 const OPTIONAL_FUNCS = ['isOptions', 'getOptions', 'properties']
 
-const validateOptionalFunc = function (plugin, funcName) {
+const validateOptionalFunc = (plugin, funcName) => {
   const funcValue = plugin[funcName]
 
   if (funcValue !== undefined && typeof funcValue !== 'function') {

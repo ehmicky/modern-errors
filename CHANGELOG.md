@@ -91,7 +91,7 @@ must now be explicitly passed as a second argument to
 Before:
 
 ```js
-export const main = function () {
+export const main = () => {
   try {
     // ...
   } catch (error) {
@@ -103,7 +103,7 @@ export const main = function () {
 After:
 
 ```js
-export const main = function () {
+export const main = () => {
   try {
     // ...
   } catch (error) {
@@ -437,7 +437,7 @@ Before:
 
 ```js
 modernErrors({
-  onCreate(error, options) {
+  onCreate: (error, options) => {
     const { filePath } = options
 
     if (typeof filePath !== 'string') {

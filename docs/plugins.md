@@ -23,9 +23,9 @@ Plugins can add error:
 ```js
 export default {
   name: 'secret',
-  properties({ error }) {
-    return { message: error.message.replaceAll('secret', '******') }
-  },
+  properties: ({ error }) => ({
+    message: error.message.replaceAll('secret', '******'),
+  }),
 }
 ```
 
@@ -61,34 +61,28 @@ export default {
   name: 'example',
 
   // Set error properties
-  properties(info) {
-    return {}
-  },
+  properties: (info) => ({}),
 
   // Add instance methods like `ErrorClass.exampleMethod(error, ...args)` or
   // `error.exampleMethod(...args)`
   instanceMethods: {
-    exampleMethod(info, ...args) {
+    exampleMethod: (info, ...args) => {
       // ...
     },
   },
 
   // Add static methods like `ErrorClass.staticMethod(...args)`
   staticMethods: {
-    staticMethod(info, ...args) {
+    staticMethod: (info, ...args) => {
       // ...
     },
   },
 
   // Validate and normalize options
-  getOptions(options, full) {
-    return options
-  },
+  getOptions: (options, full) => options,
 
   // Determine if a value is plugin's options
-  isOptions(options) {
-    return typeof options === 'boolean'
-  },
+  isOptions: (options) => typeof options === 'boolean',
 }
 ```
 
@@ -127,9 +121,7 @@ which prevents iterating or logging them.
 export default {
   name: 'example',
   // Sets `error.example: true`
-  properties() {
-    return { example: true }
-  },
+  properties: () => ({ example: true }),
 }
 ```
 
@@ -151,9 +143,7 @@ export default {
   // `ErrorClass.concatMessage(error, "one")` or `error.concatMessage("one")`
   // return `${error.message} - one`
   instanceMethods: {
-    concatMessage(info, string) {
-      return `${info.error.message} - ${string}`
-    },
+    concatMessage: (info, string) => `${info.error.message} - ${string}`,
   },
 }
 ```
@@ -195,9 +185,7 @@ export default {
   name: 'example',
   // `ErrorClass.multiply(2, 3)` returns `6`
   staticMethods: {
-    multiply(info, first, second) {
-      return first * second
-    },
+    multiply: (info, first, second) => first * second,
   },
 }
 ```
@@ -221,7 +209,7 @@ The plugin's `options`'s type can be anything.
 ```js
 export default {
   name: 'example',
-  getOptions(options = true) {
+  getOptions: (options = true) => {
     if (typeof options !== 'boolean') {
       throw new Error('It must be true or false.')
     }
@@ -255,7 +243,7 @@ skipped. The same applies to properties depending on each other.
 ```js
 export default {
   name: 'example',
-  getOptions(options, full) {
+  getOptions: (options, full) => {
     if (typeof options !== 'object' || options === null) {
       throw new Error('It must be a plain object.')
     }
@@ -292,14 +280,10 @@ any plugin's method, `isOptions()` should still return `true`. This allows
 //   args: ['one', 'two']
 export default {
   name: 'example',
-  isOptions(options) {
-    return typeof options === 'boolean'
-  },
-  getOptions(options) {
-    return options
-  },
+  isOptions: (options) => typeof options === 'boolean',
+  getOptions: (options) => options,
   instanceMethod: {
-    exampleMethod({ options }, ...args) {
+    exampleMethod: ({ options }, ...args) => {
       // ...
     },
   },
@@ -326,9 +310,7 @@ in [static methods](#staticmethodsmethodname).
 ```js
 export default {
   name: 'example',
-  properties({ error }) {
-    return { isInputError: error.name === 'InputError' }
-  },
+  properties: ({ error }) => ({ isInputError: error.name === 'InputError' }),
 }
 ```
 
@@ -342,7 +324,7 @@ Current [error class](../README.md#%EF%B8%8F-error-classes).
 export default {
   name: 'example',
   instanceMethods: {
-    addErrors({ error, ErrorClass }, errors = []) {
+    addErrors: ({ error, ErrorClass }, errors = []) => {
       error.errors = errors.map(ErrorClass.normalize)
     },
   },
@@ -360,9 +342,8 @@ Array containing both the [current error class](#errorclass) and all its
 export default {
   name: 'example',
   staticMethods: {
-    isKnownErrorClass({ ErrorClasses }, value) {
-      return ErrorClasses.includes(value)
-    },
+    isKnownErrorClass: ({ ErrorClasses }, value) =>
+      ErrorClasses.includes(value),
   },
 }
 ```
@@ -376,13 +357,9 @@ Plugin's options, as returned by [`getOptions()`](#getoptions).
 ```js
 export default {
   name: 'example',
-  getOptions(options) {
-    return options
-  },
+  getOptions: (options) => options,
   // `new ErrorClass('message', { example: value })` sets `error.example: value`
-  properties({ options }) {
-    return { example: options }
-  },
+  properties: ({ options }) => ({ example: options }),
 }
 ```
 
@@ -397,14 +374,14 @@ present except for `info.errorInfo` itself.
 export default {
   name: 'example',
   staticMethods: {
-    getLogErrors({ errorInfo }) {
-      return function logErrors(errors) {
+    getLogErrors:
+      ({ errorInfo }) =>
+      (errors) => {
         errors.forEach((error) => {
           const { options } = errorInfo(error)
           console.error(options.example?.stack ? error.stack : error.message)
         })
-      }
-    },
+      },
   },
 }
 ```
@@ -422,7 +399,7 @@ plugin's options.
 // Any `{ example }` plugin option passed by users will be validated as boolean
 export default {
   name: 'example' as const,
-  getOptions(options: boolean): object {
+  getOptions: (options: boolean): object => {
     // ...
   },
 }
@@ -455,7 +432,7 @@ currently ignored.
 export default {
   // ...
   instanceMethods: {
-    exampleMethod(info: Info['instanceMethods'], input: boolean): void {},
+    exampleMethod: (info: Info['instanceMethods'], input: boolean): void => {},
   },
 }
 ```
@@ -470,7 +447,7 @@ import type { Info } from 'modern-errors'
 
 export default {
   // ...
-  properties(info: Info['properties']) {
+  properties: (info: Info['properties']) => {
     // ...
   },
 }
@@ -539,11 +516,9 @@ when possible.
 ```js
 export default {
   name: 'example',
-  getOptions(options) {
-    return options
-  },
+  getOptions: (options) => options,
   instanceMethods: {
-    exampleMethod(info) {
+    exampleMethod: (info) => {
       console.log(info.options.exampleOption)
     },
   },
@@ -559,7 +534,7 @@ includes:
 export default {
   name: 'example',
   instanceMethods: {
-    exampleMethod(exampleOption) {
+    exampleMethod: (exampleOption) => {
       console.log(exampleOption)
     },
   },
@@ -572,7 +547,7 @@ export default {
 export default {
   name: 'example',
   instanceMethods: {
-    exampleMethod(info) {
+    exampleMethod: (info) => {
       console.log(info.error.exampleOption)
     },
   },
@@ -587,7 +562,7 @@ export const pluginOptions = {}
 export default {
   name: 'example',
   instanceMethods: {
-    exampleMethod() {
+    exampleMethod: () => {
       console.log(pluginOptions.exampleOption)
     },
   },
@@ -597,16 +572,14 @@ export default {
 - Functions taking options as input and returning the plugin
 
 ```js
-export default function getPlugin(exampleOption) {
-  return {
-    name: 'example',
-    instanceMethods: {
-      exampleMethod() {
-        console.log(exampleOption)
-      },
+export default (exampleOption) => ({
+  name: 'example',
+  instanceMethods: {
+    exampleMethod: () => {
+      console.log(exampleOption)
     },
-  }
-}
+  },
+})
 ```
 
 ### State

@@ -7,7 +7,7 @@ import { deepClone } from './clone.js'
 import { mergePluginsOpts, getPluginNames } from './merge.js'
 
 // Split `nativeOpts` (native `Error` options like `cause`) and `pluginsOpts`
-export const computePluginsOpts = function (ErrorClass, plugins, opts = {}) {
+export const computePluginsOpts = (ErrorClass, plugins, opts = {}) => {
   validateOpts(ErrorClass, opts)
   const { errors, ...optsA } = opts
   const nativeOpts = excludeKeys(optsA, getPluginNames(plugins))
@@ -28,7 +28,7 @@ export const computePluginsOpts = function (ErrorClass, plugins, opts = {}) {
 //     - More standard
 //     - More monomorphic
 //     - Safer against injections
-const validateOpts = function (ErrorClass, opts) {
+const validateOpts = (ErrorClass, opts) => {
   if (!isPlainObj(opts)) {
     throw new TypeError(
       `Error options must be a plain object or undefined: ${opts}`,
@@ -46,7 +46,7 @@ const validateOpts = function (ErrorClass, opts) {
 // `error.*()` instance methods.
 // We merge the options before they are normalized, since this is how users who
 // pass those options understand them.
-const wrapPluginsOpts = function (plugins, pluginsOpts, { cause }) {
+const wrapPluginsOpts = (plugins, pluginsOpts, { cause }) => {
   if (!instancesData.has(cause)) {
     return pluginsOpts
   }

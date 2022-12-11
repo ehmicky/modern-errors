@@ -7,7 +7,7 @@ import {
   getUnknownErrorInstances,
 } from '../helpers/unknown.test.js'
 
-const assertInstanceOf = function (t, error, ErrorClass) {
+const assertInstanceOf = (t, error, ErrorClass) => {
   t.true(error instanceof ErrorClass)
   t.is(Object.getPrototypeOf(error), ErrorClass.prototype)
   t.is(error.name, ErrorClass.name)

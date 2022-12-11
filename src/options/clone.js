@@ -13,7 +13,7 @@ import isPlainObj from 'is-plain-obj'
 //        - Without any risk for mutations to impact the logic
 //           - E.g. shared `props` can be set and mutated on each error instance
 //             without propagating to other instances
-export const deepClone = function (value) {
+export const deepClone = (value) => {
   if (Array.isArray(value)) {
     return value.map(deepClone)
   }
@@ -25,7 +25,7 @@ export const deepClone = function (value) {
   return value
 }
 
-const deepCloneObject = function (object) {
+const deepCloneObject = (object) => {
   const copy = {}
 
   // eslint-disable-next-line fp/no-loops

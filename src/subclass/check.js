@@ -1,7 +1,7 @@
 import { isSubclass } from '../utils/subclass.js'
 
 // Confirm `custom` option is valid
-export const checkCustom = function (custom, ParentError) {
+export const checkCustom = (custom, ParentError) => {
   if (typeof custom !== 'function') {
     throw new TypeError(
       `The "custom" class of "${ParentError.name}.subclass()" must be a class: ${custom}`,
@@ -20,7 +20,7 @@ export const checkCustom = function (custom, ParentError) {
 //  - This promotes `ErrorClass.subclass()` as a pattern for subclassing, to
 //    reduce the risk of directly extending a registered class without
 //    registering the subclass
-const checkParent = function (custom, ParentError) {
+const checkParent = (custom, ParentError) => {
   if (custom === ParentError) {
     throw new TypeError(
       `The "custom" class of "${ParentError.name}.subclass()" must extend from ${ParentError.name}, but not be ${ParentError.name} itself.`,
@@ -40,7 +40,7 @@ const checkParent = function (custom, ParentError) {
   }
 }
 
-const checkPrototype = function (custom, ParentError) {
+const checkPrototype = (custom, ParentError) => {
   if (typeof custom.prototype !== 'object' || custom.prototype === null) {
     throw new TypeError(
       `The "custom" class's prototype of "${ParentError.name}.subclass()" is invalid: ${custom.prototype}`,

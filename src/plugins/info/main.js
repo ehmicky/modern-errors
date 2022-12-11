@@ -4,12 +4,7 @@ import { getAnyErrorInfo, getKnownErrorInfo, getSubclasses } from './error.js'
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods`, but not
 // `staticMethods` since it does not have access to an error.
-export const getErrorPluginInfo = function ({
-  error,
-  methodOpts,
-  plugins,
-  plugin,
-}) {
+export const getErrorPluginInfo = ({ error, methodOpts, plugins, plugin }) => {
   const { ErrorClass, options } = getKnownErrorInfo({
     error,
     methodOpts,
@@ -29,13 +24,13 @@ export const getErrorPluginInfo = function ({
 }
 
 // Retrieve `info` passed to `plugin.properties|instanceMethods|staticMethods`
-export const getPluginInfo = function ({
+export const getPluginInfo = ({
   options,
   ErrorClass,
   methodOpts,
   plugins,
   plugin,
-}) {
+}) => {
   const errorInfo = getAnyErrorInfo.bind(undefined, {
     ErrorClass,
     methodOpts,
@@ -50,7 +45,7 @@ export const getPluginInfo = function ({
 
 // `instancesData` is internal, undocumented and non-enumerable.
 // It is only needed in very specific plugins like `modern-errors-serialize`
-const setInstancesData = function (info) {
+const setInstancesData = (info) => {
   // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(info, 'instancesData', {
     value: instancesData,

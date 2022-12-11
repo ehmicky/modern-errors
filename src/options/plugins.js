@@ -34,12 +34,12 @@ import { mergeMethodOpts } from './method.js'
 //    for name conflict
 //  - This reduces cross-plugin dependencies since they cannot easily reference
 //    each other, keeping them decoupled from each other
-export const finalizePluginsOpts = function ({
+export const finalizePluginsOpts = ({
   pluginsOpts,
   methodOpts,
   plugins,
   plugin,
-}) {
+}) => {
   const pluginsOptsA = mergeMethodOpts(pluginsOpts, methodOpts, plugins)
   const pluginsOptsB = deepClone(pluginsOptsA)
   const options = getPluginOpts({

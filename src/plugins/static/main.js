@@ -34,22 +34,22 @@ import { callStaticMethod } from './call.js'
 // We do not provide with `plugin.init()`:
 //  - This would encourage stateful plugins
 //  - Instead, static methods that initialize should be used
-export const addAllStaticMethods = function (plugins, ErrorClass) {
+export const addAllStaticMethods = (plugins, ErrorClass) => {
   plugins.forEach((plugin) => {
     addStaticMethods(plugin, plugins, ErrorClass)
   })
 }
 
-const addStaticMethods = function (plugin, plugins, ErrorClass) {
+const addStaticMethods = (plugin, plugins, ErrorClass) => {
   Object.entries(plugin.staticMethods).forEach(
     addStaticMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }
 
-const addStaticMethod = function (
+const addStaticMethod = (
   { plugin, plugins, ErrorClass },
   [methodName, methodFunc],
-) {
+) => {
   setNonEnumProp(
     ErrorClass,
     methodName,

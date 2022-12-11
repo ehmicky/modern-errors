@@ -97,7 +97,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   })
 })
 
-const getExpectedMessage = function (cause) {
+const getExpectedMessage = (cause) => {
   if (isErrorInstance(cause)) {
     return cause.message
   }

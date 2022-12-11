@@ -5,22 +5,22 @@ import { callMixedMethod } from './mixed.js'
 
 // Plugins can define an `instanceMethods` object, which is merged to
 // `ErrorClass.prototype.*`.
-export const addAllInstanceMethods = function (plugins, ErrorClass) {
+export const addAllInstanceMethods = (plugins, ErrorClass) => {
   plugins.forEach((plugin) => {
     addInstanceMethods(plugin, plugins, ErrorClass)
   })
 }
 
-const addInstanceMethods = function (plugin, plugins, ErrorClass) {
+const addInstanceMethods = (plugin, plugins, ErrorClass) => {
   Object.entries(plugin.instanceMethods).forEach(
     addInstanceMethod.bind(undefined, { plugin, plugins, ErrorClass }),
   )
 }
 
-const addInstanceMethod = function (
+const addInstanceMethod = (
   { plugin, plugins, ErrorClass },
   [methodName, methodFunc],
-) {
+) => {
   setNonEnumProp(
     ErrorClass.prototype,
     methodName,
@@ -50,10 +50,8 @@ const addInstanceMethod = function (
 }
 
 // Retrieve the name of all instance methods
-export const getPluginsMethodNames = function (plugins) {
-  return plugins.flatMap(getPluginMethodNames)
-}
+export const getPluginsMethodNames = (plugins) =>
+  plugins.flatMap(getPluginMethodNames)
 
-const getPluginMethodNames = function ({ instanceMethods }) {
-  return Object.keys(instanceMethods)
-}
+const getPluginMethodNames = ({ instanceMethods }) =>
+  Object.keys(instanceMethods)

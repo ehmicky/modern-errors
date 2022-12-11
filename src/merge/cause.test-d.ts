@@ -184,7 +184,10 @@ const ConflictPropertyError = ModernError.subclass('ConflictPropertyError', {
 expectType<undefined>(new ConflictPropertyError('').prop)
 
 const barePlugin = { name: 'test' as const }
-const fullPlugin = { ...barePlugin, instanceMethods: { instanceMethod() {} } }
+const fullPlugin = {
+  ...barePlugin,
+  instanceMethods: { instanceMethod: () => {} },
+}
 
 type BareErrorInstance = ErrorInstance<[typeof barePlugin]>
 

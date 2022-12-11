@@ -26,7 +26,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const message = 'test'
     const plugin = {
       ...TEST_PLUGIN,
-      properties({ error, ErrorClass: ErrorClassArg }) {
+      properties: ({ error, ErrorClass: ErrorClassArg }) => {
         const wrappedError = error.message.startsWith(prefix)
           ? error
           : new ErrorClassArg(prefix, { cause: error })
@@ -56,7 +56,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
       plugins: [
         {
           ...TEST_PLUGIN,
-          properties() {
+          properties: () => {
             // eslint-disable-next-line fp/no-mutation
             count += 1
             return { count }

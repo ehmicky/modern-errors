@@ -84,17 +84,13 @@ interface CommonInfo {
    * export default {
    *   name: 'example',
    *   staticMethods: {
-   *     getLogErrors({ errorInfo }) {
-   *       return function logErrors(errors) {
+   *     getLogErrors:
+   *       ({ errorInfo }) =>
+   *       (errors) => {
    *         errors.forEach((error) => {
    *           const { options } = errorInfo(error)
-   *           console.error(
-   *             options.example?.stack
-   *               ? error.stack
-   *               : error.message
-   *           )
+   *           console.error(options.example?.stack ? error.stack : error.message)
    *         })
-   *       }
    *     },
    *   },
    * }

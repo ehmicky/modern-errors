@@ -68,7 +68,7 @@ each(
 
     test(`plugin methods throw if plugin.isOptions() does not return a boolean | ${title}`, (t) => {
       const TestError = ErrorClass.subclass('TestError', {
-        plugins: [{ ...TEST_PLUGIN, isOptions() {} }],
+        plugins: [{ ...TEST_PLUGIN, isOptions: () => {} }],
       })
       t.throws(callMethod.bind(undefined, TestError, 0))
     })

@@ -9,7 +9,7 @@ import { setNonEnumProp } from '../utils/descriptors.js'
 //     - This is more monomorphic
 //     - This parallels the `cause` option
 // Child `errors` are always kept, only appended to.
-export const setAggregateErrors = function (error, errors) {
+export const setAggregateErrors = (error, errors) => {
   if (errors === undefined) {
     return
   }

@@ -16,20 +16,19 @@ import isPlainObj from 'is-plain-obj'
 //  - E.g. there is no direct way to unset options
 //     - However, this can be achieved, e.g. by moving parent class options
 //       to their subclasses
-export const mergePluginsOpts = function (oldOpts, newOpts, plugins) {
-  return Object.fromEntries(
+export const mergePluginsOpts = (oldOpts, newOpts, plugins) =>
+  Object.fromEntries(
     getPluginNames(plugins)
       .map((name) => mergePluginOpts(oldOpts, newOpts, name))
       .filter(Boolean),
   )
-}
 
-const mergePluginOpts = function (oldOpts, newOpts, name) {
+const mergePluginOpts = (oldOpts, newOpts, name) => {
   const pluginOpt = mergeOpt(oldOpts[name], newOpts[name])
   return pluginOpt === undefined ? undefined : [name, pluginOpt]
 }
 
-const mergeOpt = function (oldOpt, newOpt) {
+const mergeOpt = (oldOpt, newOpt) => {
   if (newOpt === undefined) {
     return oldOpt
   }
@@ -41,10 +40,6 @@ const mergeOpt = function (oldOpt, newOpt) {
   return newOpt
 }
 
-export const getPluginNames = function (plugins) {
-  return plugins.map(getPluginName)
-}
+export const getPluginNames = (plugins) => plugins.map(getPluginName)
 
-const getPluginName = function ({ name }) {
-  return name
-}
+const getPluginName = ({ name }) => name

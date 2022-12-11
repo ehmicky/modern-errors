@@ -17,7 +17,7 @@ import { normalize } from './normalize.js'
 //  - Only export parent classes to consumers
 // We do not validate duplicate class names since sub-groups of classes might
 // be used separately, explaining those duplicate names.
-export const createSubclass = function (ParentError, className, classOpts) {
+export const createSubclass = (ParentError, className, classOpts) => {
   const { classOpts: parentOpts, plugins: parentPlugins } =
     classesData.get(ParentError)
   const { custom, plugins, ...classOptsA } = normalizeClassOpts(
@@ -38,7 +38,7 @@ export const createSubclass = function (ParentError, className, classOpts) {
 }
 
 // Keep track of error subclasses, to use as `info.ErrorClasses` in plugins
-const addParentSubclass = function (ErrorClass, ParentError) {
+const addParentSubclass = (ErrorClass, ParentError) => {
   const { subclasses, ...classProps } = classesData.get(ParentError)
   classesData.set(ParentError, {
     ...classProps,
@@ -47,7 +47,7 @@ const addParentSubclass = function (ErrorClass, ParentError) {
 }
 
 // Unlike `createSubclass()`, this is run by the top-level `ModernError` as well
-export const createClass = function ({
+export const createClass = ({
   ParentError,
   ErrorClass,
   parentOpts,
@@ -55,7 +55,7 @@ export const createClass = function ({
   parentPlugins,
   plugins,
   className,
-}) {
+}) => {
   const pluginsA = normalizePlugins(parentPlugins, plugins, ParentError)
   const classOptsA = getClassOpts(parentOpts, classOpts, pluginsA)
   classesData.set(ErrorClass, {
@@ -68,7 +68,7 @@ export const createClass = function ({
   return ErrorClass
 }
 
-const setClassMethods = function (ErrorClass, plugins) {
+const setClassMethods = (ErrorClass, plugins) => {
   setNonEnumProp(ErrorClass, 'normalize', normalize.bind(undefined, ErrorClass))
   setNonEnumProp(
     ErrorClass,

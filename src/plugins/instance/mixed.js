@@ -8,11 +8,11 @@ import { callMethod } from './call.js'
 //  - `error[methodName]` still has a few use cases though:
 //     - Method chaining
 //     - Known methods, e.g. `error.toJSON()`
-export const callMixedMethod = function (
+export const callMixedMethod = (
   { methodFunc, plugin, plugins, ErrorClass },
   error,
   ...args
-) {
+) => {
   const errorA = ErrorClass.normalize(error)
   return callMethod({ methodFunc, plugin, plugins, error: errorA, args })
 }

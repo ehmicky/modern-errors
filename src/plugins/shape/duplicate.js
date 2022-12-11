@@ -1,10 +1,10 @@
 // Ensure each plugin does not define the same method as both instanceMethod
 // and staticMethod
-export const validateSameMethods = function ({
+export const validateSameMethods = ({
   instanceMethods,
   staticMethods,
   fullName,
-}) {
+}) => {
   const duplicateName = findDuplicateKey(staticMethods, instanceMethods)
 
   if (duplicateName !== undefined) {
@@ -16,30 +16,25 @@ export const validateSameMethods = function ({
 
 // Ensure the same plugin is not passed twice.
 // Also ensure two plugins do not define the same instanceMethods|staticMethods
-export const validateDuplicatePlugins = function (plugins, ParentError) {
+export const validateDuplicatePlugins = (plugins, ParentError) => {
   plugins.forEach((pluginA, indexA) => {
     validateDuplicatePlugin({ pluginA, indexA, plugins, ParentError })
   })
 }
 
-const validateDuplicatePlugin = function ({
-  pluginA,
-  indexA,
-  plugins,
-  ParentError,
-}) {
+const validateDuplicatePlugin = ({ pluginA, indexA, plugins, ParentError }) => {
   plugins.forEach((pluginB, indexB) => {
     validateEachPlugin({ pluginA, pluginB, indexA, indexB, ParentError })
   })
 }
 
-const validateEachPlugin = function ({
+const validateEachPlugin = ({
   pluginA,
   pluginB,
   indexA,
   indexB,
   ParentError,
-}) {
+}) => {
   if (indexA === indexB) {
     return
   }
@@ -62,7 +57,7 @@ const validateEachPlugin = function ({
   }
 }
 
-const findDuplicateKey = function (objectA, objectB) {
+const findDuplicateKey = (objectA, objectB) => {
   const keysA = Object.keys(objectA)
   return Object.keys(objectB).find((key) => keysA.includes(key))
 }

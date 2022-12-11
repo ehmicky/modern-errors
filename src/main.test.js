@@ -12,9 +12,7 @@ import { getUnknownErrors } from './helpers/unknown.test.js'
 
 const { propertyIsEnumerable: isEnum } = Object.prototype
 
-const isStackLine = function (line) {
-  return line.trim().startsWith('at ')
-}
+const isStackLine = (line) => line.trim().startsWith('at ')
 
 each(ErrorClasses, ({ title }, ErrorClass) => {
   const message = 'test'

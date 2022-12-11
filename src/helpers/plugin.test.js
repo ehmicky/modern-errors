@@ -2,20 +2,19 @@ import isPlainObj from 'is-plain-obj'
 
 import { getClasses } from './main.test.js'
 
-const validateContext = function (context) {
+const validateContext = (context) => {
   if (context !== undefined) {
     throw new Error('Defined context')
   }
 }
 
-const addInstancesData = function (info, originalInfo) {
+const addInstancesData = (info, originalInfo) =>
   // eslint-disable-next-line fp/no-mutating-methods
-  return Object.defineProperty(
+  Object.defineProperty(
     info,
     'instancesData',
     Object.getOwnPropertyDescriptor(originalInfo, 'instancesData'),
   )
-}
 
 export const TEST_PLUGIN = {
   name: 'prop',
@@ -60,8 +59,6 @@ export const TEST_PLUGIN = {
   },
 }
 
-export const getPluginClasses = function () {
-  return getClasses({ plugins: [TEST_PLUGIN] })
-}
+export const getPluginClasses = () => getClasses({ plugins: [TEST_PLUGIN] })
 
 export const { ErrorClasses, ErrorSubclasses } = getPluginClasses()

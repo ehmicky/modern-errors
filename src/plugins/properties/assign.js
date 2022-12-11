@@ -17,11 +17,11 @@ import { getPluginsMethodNames } from '../instance/main.js'
 //    making it cumbersome for user to filter those.
 //  - Throwing errors at runtime should be done with care since this would
 //    happen during error handling time
-export const assignError = function (
+export const assignError = (
   error,
   { message, stack, ...newProps },
   plugins,
-) {
+) => {
   if (stack !== undefined) {
     setErrorStack(error, stack)
   }

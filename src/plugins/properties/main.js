@@ -15,18 +15,17 @@ import { assignError } from './assign.js'
 //    `properties(optionsB)`
 //  - If `options` are an object, the same applies but with
 //    `{ ...optionsA, ...optionsB }`
-export const setPluginsProperties = function (error, plugins) {
-  return plugins.forEach((plugin) => {
+export const setPluginsProperties = (error, plugins) =>
+  plugins.forEach((plugin) => {
     applyPluginProperties({ error, plugin, plugins })
   })
-}
 
-const applyPluginProperties = function ({
+const applyPluginProperties = ({
   error,
   plugin,
   plugin: { properties, fullName },
   plugins,
-}) {
+}) => {
   if (properties === undefined) {
     return
   }

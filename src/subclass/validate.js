@@ -11,7 +11,7 @@ import { classesData } from './map.js'
 // This usually happens if a class was:
 //  - Not passed to the `custom` option of `*Error.subclass()`
 //  - But was extended from a known class
-export const validateSubclass = function (ErrorClass) {
+export const validateSubclass = (ErrorClass) => {
   if (classesData.has(ErrorClass)) {
     return
   }

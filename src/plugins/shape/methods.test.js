@@ -35,7 +35,7 @@ each(
     test(`plugin.instanceMethods|staticMethods cannot redefine native Error.* | ${title}`, (t) => {
       t.throws(
         ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, [methodType]: { [propName]() {} } }],
+          plugins: [{ ...TEST_PLUGIN, [methodType]: { [propName]: () => {} } }],
         }),
       )
     })
@@ -54,7 +54,9 @@ each(
     test(`plugin.instanceMethods cannot redefine native Error.prototype.* | ${title}`, (t) => {
       t.throws(
         ErrorClass.subclass.bind(undefined, 'TestError', {
-          plugins: [{ ...TEST_PLUGIN, instanceMethods: { [propName]() {} } }],
+          plugins: [
+            { ...TEST_PLUGIN, instanceMethods: { [propName]: () => {} } },
+          ],
         }),
       )
     })

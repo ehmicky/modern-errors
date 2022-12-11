@@ -80,9 +80,7 @@ Types are automatically inferred: no explicit type declaration is needed.
 etc. can be used to retrieve the type of a variable or method.
 
 ```ts
-const printErrorClass = function (
-  ErrorClass: ReturnType<typeof BaseError.subclass>,
-) {
+const printErrorClass = (ErrorClass: ReturnType<typeof BaseError.subclass>) => {
   // ...
 }
 

@@ -6,7 +6,7 @@ import { isSubclass } from '../utils/subclass.js'
 import { shouldPrefixCause, prefixCause, undoPrefixCause } from './prefix.js'
 
 // Like `mergeCause()` but run outside of `new ErrorClass(...)`
-export const mergeSpecificCause = function (error, cause) {
+export const mergeSpecificCause = (error, cause) => {
   error.cause = cause
   error.wrap = true
   return mergeErrorCause(error)
@@ -24,7 +24,7 @@ export const mergeSpecificCause = function (error, cause) {
 //    its class
 //  - This returns a subclass of the parent class, which does not break
 //    inheritance nor user expectations
-export const mergeCause = function (error, ErrorClass) {
+export const mergeCause = (error, ErrorClass) => {
   if (!isErrorInstance(error.cause)) {
     return mergeErrorCause(error)
   }
@@ -38,7 +38,7 @@ export const mergeCause = function (error, ErrorClass) {
   return mergePrefixedError(error)
 }
 
-const mergePrefixedError = function (error) {
+const mergePrefixedError = (error) => {
   const { cause } = error
   const oldMessage = prefixCause(cause)
   const errorA = mergeErrorCause(error)

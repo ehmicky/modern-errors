@@ -1,13 +1,13 @@
 // Ensure class options:
 //  - Only contain plugins options
 //  - Do not refer to unloaded plugins
-export const validatePluginsOptsNames = function (pluginsOpts, plugins) {
+export const validatePluginsOptsNames = (pluginsOpts, plugins) => {
   Object.entries(pluginsOpts).forEach(([optName, pluginOpts]) => {
     validatePluginOptsName(optName, pluginOpts, plugins)
   })
 }
 
-const validatePluginOptsName = function (optName, pluginOpts, plugins) {
+const validatePluginOptsName = (optName, pluginOpts, plugins) => {
   if (!plugins.some(({ name }) => name === optName)) {
     throw new TypeError(
       `Invalid option "${optName}": the plugin "${NAME_PREFIX}${optName}" must be passed to ErrorClass.subclass("...", { plugins })`,
@@ -16,7 +16,7 @@ const validatePluginOptsName = function (optName, pluginOpts, plugins) {
 }
 
 // Validate `plugin.name`
-export const validatePluginName = function (plugin) {
+export const validatePluginName = (plugin) => {
   if (plugin.name === undefined) {
     throw new TypeError(`The plugin is missing a "name": ${plugin}`)
   }
@@ -32,7 +32,7 @@ export const validatePluginName = function (plugin) {
   return { ...plugin, fullName: `${NAME_PREFIX}${name}` }
 }
 
-const validateNameString = function (name) {
+const validateNameString = (name) => {
   if (FORBIDDEN_NAMES.has(name)) {
     throw new TypeError(
       `The plugin "name" must not be the following reserved word: ${name}`,

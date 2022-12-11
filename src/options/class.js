@@ -7,7 +7,7 @@ import { getPluginOpts } from './get.js'
 import { mergePluginsOpts } from './merge.js'
 
 // Simple validation and normalization of class options
-export const normalizeClassOpts = function (ParentError, classOpts = {}) {
+export const normalizeClassOpts = (ParentError, classOpts = {}) => {
   if (!isPlainObj(classOpts)) {
     throw new TypeError(
       `The second argument of "${ParentError.name}.subclass()" must be a plain object, not: ${classOpts}`,
@@ -27,7 +27,7 @@ export const normalizeClassOpts = function (ParentError, classOpts = {}) {
 //  - To ensure:
 //     - A consistent, single way of configuring plugins
 //     - Options can be specified at different levels
-export const getClassOpts = function (parentOpts, classOpts, plugins) {
+export const getClassOpts = (parentOpts, classOpts, plugins) => {
   validatePluginsOptsNames(classOpts, plugins)
   const classOptsA = mergePluginsOpts(parentOpts, classOpts, plugins)
   const classOptsB = deepClone(classOptsA)

@@ -1,7 +1,7 @@
 import isPlainObj from 'is-plain-obj'
 
 // Validate and normalize `plugin.instanceMethods|staticMethods`
-export const normalizeAllMethods = function (plugin) {
+export const normalizeAllMethods = (plugin) => {
   const pluginA = normalizeMethods({
     ...INSTANCE_METHODS,
     plugin,
@@ -32,13 +32,13 @@ const STATIC_METHODS = {
   forbiddenNames: new Set(['normalize', 'subclass']),
 }
 
-const normalizeMethods = function ({
+const normalizeMethods = ({
   plugin,
   propName,
   coreObject,
   coreObjectName,
   forbiddenNames,
-}) {
+}) => {
   const methods = plugin[propName] ?? {}
 
   if (!isPlainObj(methods)) {
@@ -61,7 +61,7 @@ const normalizeMethods = function ({
   return { ...plugin, [propName]: methods }
 }
 
-const validateMethod = function ({
+const validateMethod = ({
   methodValue,
   propName,
   methodName,
@@ -69,7 +69,7 @@ const validateMethod = function ({
   coreObject,
   coreObjectName,
   forbiddenNames,
-}) {
+}) => {
   if (typeof methodValue !== 'function') {
     throw new TypeError(
       `The plugin "${plugin.fullName}"'s "${propName}.${methodName}" property must be a function, not: ${methodValue}`,

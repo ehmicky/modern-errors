@@ -44,8 +44,8 @@ expectAssignable<ErrorInstance>({} as InstanceType<ErrorClass>)
 const barePlugin = { name: 'test' as const }
 const fullPlugin = {
   ...barePlugin,
-  instanceMethods: { instanceMethod() {} },
-  staticMethods: { staticMethod() {} },
+  instanceMethods: { instanceMethod: () => {} },
+  staticMethods: { staticMethod: () => {} },
 }
 
 type BareErrorClass = ErrorClass<[typeof barePlugin]>

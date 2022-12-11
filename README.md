@@ -436,7 +436,7 @@ ensures every error being thrown is [valid](#invalid-errors), applies
 [_known_](#create-error-classes) or [`UnknownError`](#-unknown-errors).
 
 ```js
-export const main = function () {
+export const main = () => {
   try {
     // ...
   } catch (error) {

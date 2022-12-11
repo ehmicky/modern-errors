@@ -3,13 +3,12 @@ import { each } from 'test-each'
 
 import { ErrorClasses } from '../../helpers/main.test.js'
 
-const definePluginsSameClass = function (ErrorClass, pluginA, pluginB) {
-  return ErrorClass.subclass.bind(undefined, 'TestError', {
+const definePluginsSameClass = (ErrorClass, pluginA, pluginB) =>
+  ErrorClass.subclass.bind(undefined, 'TestError', {
     plugins: [pluginA, pluginB],
   })
-}
 
-const definePluginsSubClass = function (ErrorClass, pluginA, pluginB) {
+const definePluginsSubClass = (ErrorClass, pluginA, pluginB) => {
   const TestError = ErrorClass.subclass('TestError', { plugins: [pluginA] })
   return TestError.subclass.bind(undefined, 'SubTestError', {
     plugins: [pluginB],
@@ -37,8 +36,8 @@ each(
       t.throws(
         definePlugins(
           ErrorClass,
-          { name: 'one', [methodTypeA]: { one() {} } },
-          { name: 'two', [methodTypeB]: { one() {} } },
+          { name: 'one', [methodTypeA]: { one: () => {} } },
+          { name: 'two', [methodTypeB]: { one: () => {} } },
         ),
       )
     })
@@ -52,8 +51,8 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
         plugins: [
           {
             name: 'one',
-            staticMethods: { one() {} },
-            instanceMethods: { one() {} },
+            staticMethods: { one: () => {} },
+            instanceMethods: { one: () => {} },
           },
         ],
       }),

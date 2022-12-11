@@ -4,10 +4,10 @@ import { classesData } from '../../subclass/map.js'
 import { getPluginInfo } from '../info/main.js'
 
 // Called on `ErrorClass[methodName](...args)`
-export const callStaticMethod = function (
+export const callStaticMethod = (
   { methodFunc, plugin, plugins, ErrorClass },
   ...args
-) {
+) => {
   const { classOpts } = classesData.get(ErrorClass)
   const { args: argsA, methodOpts } = getMethodOpts(args, plugin)
   const options = finalizePluginsOpts({

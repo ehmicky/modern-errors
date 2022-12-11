@@ -2,17 +2,15 @@ import { mergeSpecificCause } from '../merge/cause.js'
 
 // `options` is `undefined` unless `plugin.getOptions()` is defined
 //  - This encourages using `plugin.getOptions()`
-export const normalizeGetOptions = function ({
+export const normalizeGetOptions = ({
   plugin,
   plugin: {
     fullName,
     getOptions = defaultGetOptions.bind(undefined, fullName),
   },
-}) {
-  return { ...plugin, getOptions }
-}
+}) => ({ ...plugin, getOptions })
 
-const defaultGetOptions = function (fullName, options) {
+const defaultGetOptions = (fullName, options) => {
   if (options !== undefined) {
     throw new Error(
       `The plugin "${fullName}" does not have any options: ${options}`,
@@ -21,11 +19,11 @@ const defaultGetOptions = function (fullName, options) {
 }
 
 // Call `plugin.getOptions()`
-export const getPluginOpts = function ({
+export const getPluginOpts = ({
   pluginsOpts,
   plugin: { name, getOptions },
   full,
-}) {
+}) => {
   try {
     return getOptions(pluginsOpts[name], full)
   } catch (cause) {

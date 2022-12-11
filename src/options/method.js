@@ -4,12 +4,10 @@ import { mergePluginsOpts } from './merge.js'
 // able to use any `staticMethods|instanceMethods` with arguments.
 // However, if there are no options (i.e. `plugin.getOptions()` is undefined),
 // we return `false` since `isOptions()` is unnecessary then.
-export const normalizeIsOptions = function ({
+export const normalizeIsOptions = ({
   plugin,
   plugin: { getOptions, isOptions = () => getOptions !== undefined },
-}) {
-  return { ...plugin, isOptions }
-}
+}) => ({ ...plugin, isOptions })
 
 // Options can be passed as the last argument of `staticMethods|instanceMethods`
 // `plugin.isOptions(lastArgument) => boolean` can be defined to distinguish
@@ -30,7 +28,7 @@ export const normalizeIsOptions = function ({
 //    per error instance with different options
 // Static method options also have priority over error instance options, for
 // consistency with instance methods.
-export const getMethodOpts = function (args, plugin) {
+export const getMethodOpts = (args, plugin) => {
   if (args.length === 0) {
     return { args }
   }
@@ -41,7 +39,7 @@ export const getMethodOpts = function (args, plugin) {
     : { args }
 }
 
-const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
+const lastArgIsOptions = ({ isOptions, fullName }, lastArg) => {
   const isOptionsResult = isOptions(lastArg)
 
   if (typeof isOptionsResult !== 'boolean') {
@@ -53,8 +51,7 @@ const lastArgIsOptions = function ({ isOptions, fullName }, lastArg) {
   return isOptionsResult
 }
 
-export const mergeMethodOpts = function (pluginsOpts, methodOpts, plugins) {
-  return methodOpts === undefined
+export const mergeMethodOpts = (pluginsOpts, methodOpts, plugins) =>
+  methodOpts === undefined
     ? pluginsOpts
     : mergePluginsOpts(pluginsOpts, methodOpts, plugins)
-}

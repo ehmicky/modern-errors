@@ -17,8 +17,7 @@
 //       error names are meant to include a namespace prefix
 //  - Using a separate `namespace` property: this adds too much complexity and
 //    is less standard than `instanceof`
-export const isSubclass = function (ErrorClass, ParentClass) {
-  return ParentClass === ErrorClass || isProtoOf.call(ParentClass, ErrorClass)
-}
+export const isSubclass = (ErrorClass, ParentClass) =>
+  ParentClass === ErrorClass || isProtoOf.call(ParentClass, ErrorClass)
 
 const { isPrototypeOf: isProtoOf } = Object.prototype

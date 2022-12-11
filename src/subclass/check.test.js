@@ -66,7 +66,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 each(ErrorClasses, ['', null], ({ title }, ErrorClass, invalidPrototype) => {
   test(`Validate against invalid prototypes | ${title}`, (t) => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
-    const custom = function () {}
+    const custom = () => {}
     // eslint-disable-next-line fp/no-mutation
     custom.prototype = invalidPrototype
     // eslint-disable-next-line fp/no-mutating-methods

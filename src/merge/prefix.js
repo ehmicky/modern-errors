@@ -12,7 +12,7 @@ import { isSubclass } from '../utils/subclass.js'
 //  - When the parent is a subclass of the child, since the new class becomes
 //    the subclass, which already contains the other class in its chain, i.e.
 //    not worth adding to the message
-export const shouldPrefixCause = function (error, ErrorClass) {
+export const shouldPrefixCause = (error, ErrorClass) => {
   const { cause } = error
   return (
     hasValidName(cause) &&
@@ -20,25 +20,21 @@ export const shouldPrefixCause = function (error, ErrorClass) {
   )
 }
 
-const hasValidName = function (cause) {
-  return (
-    typeof cause.name === 'string' &&
-    cause.name !== '' &&
-    typeof cause.constructor === 'function' &&
-    typeof cause.constructor.name === 'string'
-  )
-}
+const hasValidName = (cause) =>
+  typeof cause.name === 'string' &&
+  cause.name !== '' &&
+  typeof cause.constructor === 'function' &&
+  typeof cause.constructor.name === 'string'
 
-const hasUsefulName = function (cause, ErrorClass) {
-  return !(
+const hasUsefulName = (cause, ErrorClass) =>
+  !(
     isSubclass(cause.constructor, ErrorClass) ||
     isSubclass(ErrorClass, cause.constructor) ||
     cause.constructor.name in globalThis
   )
-}
 
 // Prefix `cause.name` to its `message`
-export const prefixCause = function (cause) {
+export const prefixCause = (cause) => {
   const oldMessage = typeof cause.message === 'string' ? cause.message : ''
   const newMessage =
     oldMessage === '' ? cause.name : `${cause.name}: ${oldMessage}`
@@ -47,6 +43,6 @@ export const prefixCause = function (cause) {
 }
 
 // Undo prefixing once it's been used by `merge-error-cause`
-export const undoPrefixCause = function (cause, oldMessage) {
+export const undoPrefixCause = (cause, oldMessage) => {
   setErrorMessage(cause, oldMessage)
 }
