@@ -1,4 +1,4 @@
-// import type { Info } from 'modern-errors'
+import type { Info } from 'modern-errors'
 
 // /**
 //  * Options of `modern-errors-example`
@@ -48,6 +48,6 @@ declare const plugin: {
 
   // getOptions: (input: Options, full: boolean) => Options
 
-  // isOptions: (input: Options) => boolean
+  // isOptions: (input: unknown) => boolean
 }
 export default plugin

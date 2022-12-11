@@ -17,14 +17,13 @@ import type { Info, Plugin } from 'modern-errors'
  *
  * Description of the plugin.
  */
-export default {
+const plugin = {
   // Name used to configure the plugin
   name: 'example' as const,
 
   // // Set error properties
-  // properties(info: Info['properties']): { exampleProp: unknown } {
-  //   return {}
-  // },
+  // properties: (info: Info<Options>['properties']): { exampleProp: unknown } =>
+  //   ({})
 
   // // Add error instance methods like
   // // `ErrorClass.exampleMethod(error, ...args)`
@@ -37,7 +36,10 @@ export default {
   //    * const value = ErrorClass.exampleMethod(error, arg)
   //    * ```
   //    */
-  //   exampleMethod(info: Info['instanceMethods'], ...args: unknown[]): void {
+  //   exampleMethod: (
+  //     info: Info<Options>['instanceMethods'],
+  //     ...args: unknown[]
+  //   ): void => {
   //     // ...
   //   },
   // },
@@ -52,18 +54,19 @@ export default {
   //    * const value = ErrorClass.staticMethod(arg)
   //    * ```
   //    */
-  //   staticMethod(info: Info['staticMethods'], ...args: unknown[]): void {
+  //   staticMethod: (
+  //     info: Info<Options>['staticMethods'],
+  //     ...args: unknown[]
+  //   ): void => {
   //     // ...
   //   },
   // },
 
   // // Validate and normalize options
-  // getOptions(options: Options, full: boolean): Options {
-  //   return options
-  // },
+  // getOptions: (options: Options, full: boolean): Options => options,
 
   // // Determine if a value is plugin's options
-  // isOptions(options: Options): boolean {
-  //   return typeof options === 'boolean'
-  // },
+  // isOptions: (options: unknown): boolean => typeof options === 'boolean',
 } satisfies Plugin
+
+export default plugin
