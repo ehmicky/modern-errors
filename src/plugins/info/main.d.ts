@@ -4,7 +4,7 @@ import type { ErrorClass } from '../../subclass/create.js'
 /**
  * Properties shared by all `info` objects.
  */
-interface CommonInfo {
+interface CommonInfo<Options = never> {
   /**
    * Normalized error instance.
    *
@@ -38,7 +38,7 @@ interface CommonInfo {
    * }
    * ```
    */
-  readonly options: never
+  readonly options: Options
 
   /**
    * Current error class.
@@ -106,26 +106,26 @@ interface CommonInfo {
  * Its members are readonly and should not be mutated, except for `info.error`
  * inside instance methods (not inside `properties()`).
  */
-export interface Info {
+export interface Info<Options = never> {
   /**
    * `info` object passed to `plugin.properties()`
    */
-  readonly properties: CommonInfo
+  readonly properties: CommonInfo<Options>
 
   /**
    * `info` object passed to `plugin.instanceMethods.*()`
    */
-  readonly instanceMethods: CommonInfo
+  readonly instanceMethods: CommonInfo<Options>
 
   /**
    * `info` object passed to `plugin.staticMethods.*()`
    */
-  readonly staticMethods: Omit<CommonInfo, 'error'>
+  readonly staticMethods: Omit<CommonInfo<Options>, 'error'>
 
   /**
    * `info` object returned by `errorInfo()`
    */
-  readonly errorInfo: Omit<CommonInfo, 'errorInfo'>
+  readonly errorInfo: Omit<CommonInfo<Options>, 'errorInfo'>
 }
 
 // `Info` is exposed as a type so that plugins can:
