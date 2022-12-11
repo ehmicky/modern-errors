@@ -74,7 +74,7 @@
     "modern-errors-serialize": "^3.0.0",
     "modern-errors-switch": "^1.0.1",
     "modern-errors-winston": "^2.3.0",
-    "test-each": "^5.7.0"
+    "test-each": "^5.7.1"
   },
   "engines": {
     "node": ">=14.18.0"
