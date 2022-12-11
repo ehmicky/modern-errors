@@ -453,6 +453,20 @@ export default {
 }
 ```
 
+[`info.options`](#options) type can be passed as a generic type.
+
+```ts
+export default {
+  // ...
+  properties: (info: Info<boolean>['properties']) => {
+    // `info.options` is `boolean`
+    if (info.options) {
+      // ...
+    }
+  },
+}
+```
+
 ### `Plugin`
 
 A `Plugin` type is available to validate the plugin's shape.
