@@ -1,4 +1,4 @@
-import type { Info } from 'modern-errors'
+// import type { Info } from 'modern-errors'
 
 // /**
 //  * Options of `modern-errors-example`
