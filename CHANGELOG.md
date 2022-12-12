@@ -1,8 +1,14 @@
+# 5.4.0
+
+## Features
+
+- Improve TypeScript types
+
 # 5.3.1
 
 ## Bug fixes
 
-- Fixed TypeScript types
+- Fix TypeScript types
 
 # 5.3.0
 
