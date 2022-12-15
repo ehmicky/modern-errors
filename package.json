@@ -49,8 +49,7 @@
   "author": "ehmicky <ehmicky@gmail.com> (https://github.com/ehmicky)",
   "directories": {
     "example": "examples",
-    "lib": "src",
-    "test": "test"
+    "lib": "src"
   },
   "dependencies": {
     "error-class-utils": "^2.5.0",
