@@ -3,30 +3,6 @@
 The [API](../README.md#api) is fully typed for TypeScript users
 ([>= 4.7](https://devblogs.microsoft.com/typescript/announcing-typescript-4-7)).
 
-## CommonJS
-
-`modern-errors` is
-[an ES module](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-To use it, your TypeScript configuration must
-[output ES modules](https://www.typescriptlang.org/docs/handbook/esm-node.html),
-as opposed to CommonJS.
-
-```ts
-import ModernError from 'modern-errors'
-```
-
-If this is not possible, the following workaround can be used.
-[`"module": "node16"`](https://www.typescriptlang.org/tsconfig#node16nodenext-nightly-builds)
-(or above) must also be specified in order to support top-level `await`.
-
-<!-- eslint-disable @typescript-eslint/consistent-type-imports -->
-
-```ts
-const ModernError = (await import(
-  'modern-errors'
-)) as unknown as typeof import('modern-errors').default
-```
-
 ## Error properties and methods
 
 Error [classes'](../README.md#%EF%B8%8F-error-classes) and
