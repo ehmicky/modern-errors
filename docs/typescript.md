@@ -8,7 +8,8 @@ The [API](../README.md#api) is fully typed for TypeScript users
 `modern-errors` is
 [an ES module](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
 To use it, your TypeScript configuration must
-[output ES modules, as opposed to CommonJS](https://www.typescriptlang.org/docs/handbook/esm-node.html).
+[output ES modules](https://www.typescriptlang.org/docs/handbook/esm-node.html),
+as opposed to CommonJS.
 
 ```ts
 import ModernError from 'modern-errors'
