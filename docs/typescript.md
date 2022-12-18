@@ -3,6 +3,10 @@
 The [API](../README.md#api) is fully typed for TypeScript users
 ([>= 4.7](https://devblogs.microsoft.com/typescript/announcing-typescript-4-7)).
 
+Since this package is an ES module, TypeScript must be configured to
+[output ES modules](https://www.typescriptlang.org/docs/handbook/esm-node.html),
+not CommonJS.
+
 ## Error properties and methods
 
 Error [classes'](../README.md#%EF%B8%8F-error-classes) and
