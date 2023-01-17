@@ -21,6 +21,15 @@
         "ideas",
         "doc"
       ]
+    },
+    {
+      "login": "solution",
+      "name": "Patrik Tomášik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/700211?v=4",
+      "profile": "http://pattom.cz",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
