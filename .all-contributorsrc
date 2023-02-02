@@ -30,6 +30,16 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "abrenneke",
+      "name": "Andy Brenneke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/342540?v=4",
+      "profile": "https://github.com/abrenneke",
+      "contributions": [
+        "ideas",
+        "question"
+      ]
     }
   ],
   "contributorsPerLine": 7,
