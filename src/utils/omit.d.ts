@@ -14,9 +14,7 @@ export type OmitKeys<
 export type SimpleSetProps<
   LowObject extends object,
   HighObject extends object,
-> = keyof HighObject extends keyof LowObject
-  ? LowObject
-  : keyof LowObject extends keyof HighObject
+> = keyof LowObject extends keyof HighObject
   ? HighObject
   : keyof LowObject & keyof HighObject extends never
   ? LowObject & HighObject

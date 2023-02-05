@@ -1,3 +1,10 @@
+# 5.5.1
+
+## Bug fixes
+
+- Fix TypeScript types for error `props`
+  (https://github.com/ehmicky/modern-errors/issues/9)
+
 # 5.5.0
 
 ## Features

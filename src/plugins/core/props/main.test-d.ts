@@ -47,6 +47,9 @@ expectType<true>(new PropsError('').one)
 expectAssignable<{ one: true; two: true; three: true }>(
   new PropsError('', { props: { two: true as const, three: true as const } }),
 )
+expectAssignable<{ one: false; three: false }>(
+  new PropsError('', { props: { one: false as const } }),
+)
 const exception = {} as unknown
 
 if (exception instanceof PropsError) {
