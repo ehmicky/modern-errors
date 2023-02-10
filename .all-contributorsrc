@@ -41,6 +41,15 @@
         "ideas",
         "question"
       ]
+    },
+    {
+      "login": "tgfisher4",
+      "name": "Graham Fisher",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49082176?v=4",
+      "profile": "https://github.com/tgfisher4",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
