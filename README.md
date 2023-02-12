@@ -541,7 +541,7 @@ error[methodName](...args, options[pluginName])
 ## 🔧 Custom logic
 
 The [`custom` option](#optionscustom) can be used to provide an error `class`
-with additional methods, `constructor` or properties.
+with additional methods, `constructor`, properties or options.
 
 <!-- eslint-disable no-param-reassign, fp/no-mutation,
      class-methods-use-this -->
@@ -551,8 +551,9 @@ export const InputError = BaseError.subclass('InputError', {
   // The `class` must extend from the parent error class
   custom: class extends BaseError {
     // If a `constructor` is defined, its parameters must be (message, options)
+    // Additional `options` can be defined.
     constructor(message, options) {
-      message += message.endsWith('.') ? '' : '.'
+      message += options?.suffix ?? ''
       super(message, options)
     }
 
@@ -562,8 +563,8 @@ export const InputError = BaseError.subclass('InputError', {
   },
 })
 
-const error = new InputError('Wrong user name')
-console.log(error.message) // 'Wrong user name.'
+const error = new InputError('Wrong user name', { suffix: ': example' })
+console.log(error.message) // 'Wrong user name: example'
 console.log(error.isUserInput())
 ```
 

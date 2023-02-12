@@ -19,6 +19,7 @@ Error [classes'](../README.md#%EF%B8%8F-error-classes) and
 
 ```ts
 const BaseError = ModernError.subclass('BaseError', {
+  props: { userId: 5 as const },
   custom: class extends ModernError {
     isUserInput() {
       return true as const
@@ -26,10 +27,49 @@ const BaseError = ModernError.subclass('BaseError', {
   },
 })
 const error = new BaseError('Wrong user name', {
-  props: { userId: 5 as const },
+  props: { userName: 'Alice' as const },
 })
-const { userId } = error // Inferred type: `5`
+const { userId, userName } = error // Inferred type: `5` and `"Alice"`
 const result = error.isUserInput() // Inferred type: `true`
+```
+
+Error `props` without default values can also be typed.
+
+```ts
+const BaseError = ModernError.subclass('BaseError', {
+  props: {} as { userId: number },
+})
+
+type UserId = InstanceType<typeof BaseError>['userId'] // Type: `number`
+```
+
+## Custom options
+
+[`custom`](../README.md#-custom-logic) options can be typed.
+
+<!-- eslint-disable no-param-reassign, fp/no-mutation -->
+
+```ts
+import type { InstanceOptions } from 'modern-errors'
+
+interface InputErrorOptions {
+  suffix?: string
+}
+
+export const InputError = BaseError.subclass('InputError', {
+  custom: class extends BaseError {
+    constructor(
+      message: string,
+      options?: InstanceOptions & InputErrorOptions,
+    ) {
+      message += options?.suffix ?? ''
+      super(message, options)
+    }
+  },
+})
+
+// Type error: `suffix` must be a string
+const error = new InputError('Wrong user name', { suffix: true })
 ```
 
 ## Plugins
