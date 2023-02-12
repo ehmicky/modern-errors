@@ -124,16 +124,27 @@ Types are automatically inferred: no explicit type declaration is needed.
 etc. can be used to retrieve the type of a variable or method.
 
 ```ts
-const printErrorClass = (ErrorClass: ReturnType<typeof BaseError.subclass>) => {
-  // ...
-}
-
-const logInputError = (inputError: InstanceType<typeof InputError>) => {
-  // ...
-}
+type AnyErrorClass = ReturnType<typeof BaseError.subclass>
 
 const InputError = BaseError.subclass('InputError')
+type InputErrorClass = typeof InputError
+
+type InputErrorInstance = InstanceType<InputErrorClass>
+
+const printErrorClass = (ErrorClass: AnyErrorClass) => {
+  // ...
+}
+
+const printInputErrorClass = (InputErrorClass: InputErrorClass) => {
+  // ...
+}
+
+const logInputError = (inputError: InputErrorInstance) => {
+  // ...
+}
+
 printErrorClass(InputError)
+printInputErrorClass(InputError)
 logInputError(new InputError('Wrong user name'))
 ```
 
