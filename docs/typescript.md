@@ -128,8 +128,13 @@ const printErrorClass = (ErrorClass: ReturnType<typeof BaseError.subclass>) => {
   // ...
 }
 
+const logInputError = (inputError: InstanceType<typeof InputError>) => {
+  // ...
+}
+
 const InputError = BaseError.subclass('InputError')
 printErrorClass(InputError)
+logInputError(new InputError('Wrong user name'))
 ```
 
 ## Wide types
