@@ -123,6 +123,10 @@ Types are automatically inferred: no explicit type declaration is needed.
 [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype),
 etc. can be used to retrieve the type of a variable or method.
 
+`typeof ExampleError` returns the error class type, while
+`InstanceType<typeof ExampleError>` (not `ExampleError`) returns the error
+instance type.
+
 ```ts
 type AnyErrorClass = ReturnType<typeof BaseError.subclass>
 
