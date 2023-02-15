@@ -33,7 +33,7 @@ body:
       description: |
         Enter the following command in a terminal and copy/paste its output:
         ```bash
-        npx envinfo --system --binaries --browsers --npmPackages modern-errors typescript --npmGlobalPackages typescript
+        npx envinfo --system --binaries --browsers --npmPackages modern-errors,typescript --npmGlobalPackages typescript
         ```
     validations:
       required: true
