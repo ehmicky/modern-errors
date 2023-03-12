@@ -6,7 +6,7 @@ const CustomError = ModernError.subclass('CustomError', {
     prop = true
   },
 })
-type CustomInstance = typeof CustomError['prototype']
+type CustomInstance = (typeof CustomError)['prototype']
 
 const unknownErrorsArray = [true] as readonly true[]
 const unknownErrors = [true] as readonly [true]

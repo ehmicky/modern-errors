@@ -138,27 +138,27 @@ const pluginDeepCustomError = new PluginDeepCustomError('')
 const exception = {} as unknown
 
 if (exception instanceof BaseError) {
-  expectType<typeof BaseError['prototype']>(exception)
+  expectType<(typeof BaseError)['prototype']>(exception)
 }
 
 if (exception instanceof PluginChildError) {
-  expectType<typeof PluginChildError['prototype']>(exception)
+  expectType<(typeof PluginChildError)['prototype']>(exception)
 }
 
 if (exception instanceof PluginDeepChildError) {
-  expectType<typeof PluginDeepChildError['prototype']>(exception)
+  expectType<(typeof PluginDeepChildError)['prototype']>(exception)
 }
 
 if (exception instanceof PluginCustomError) {
-  expectType<typeof PluginCustomError['prototype']>(exception)
+  expectType<(typeof PluginCustomError)['prototype']>(exception)
 }
 
 if (exception instanceof PluginChildCustomError) {
-  expectType<typeof PluginChildCustomError['prototype']>(exception)
+  expectType<(typeof PluginChildCustomError)['prototype']>(exception)
 }
 
 if (exception instanceof PluginDeepCustomError) {
-  expectType<typeof PluginDeepCustomError['prototype']>(exception)
+  expectType<(typeof PluginDeepCustomError)['prototype']>(exception)
 }
 
 if (pluginChildError instanceof PluginChildError) {

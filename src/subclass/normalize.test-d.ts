@@ -59,7 +59,7 @@ const PropsError = ModernError.subclass('PropsError', {
 type PropsErrorInstance = InstanceType<typeof PropsError>
 
 const customError = new CustomError('')
-type CustomInstance = typeof CustomError['prototype']
+type CustomInstance = (typeof CustomError)['prototype']
 
 expectAssignable<CustomInstance>(new ModernError('', { cause: customError }))
 expectType<CustomInstance>(ModernError.normalize(customError))
@@ -73,7 +73,7 @@ const PluginCustomError = PluginBaseError.subclass('PluginCustomError', {
   },
 })
 const pluginCustomError = new PluginCustomError('')
-type PluginCustomInstance = typeof PluginCustomError['prototype']
+type PluginCustomInstance = (typeof PluginCustomError)['prototype']
 
 expectAssignable<PluginCustomInstance>(
   new PluginBaseError('', { cause: pluginCustomError }),
