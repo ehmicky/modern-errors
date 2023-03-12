@@ -1,3 +1,10 @@
+# 5.5.3
+
+## Bug fixes
+
+- Fix `error.errors` TypeScript type
+  (https://github.com/ehmicky/modern-errors/issues/15)
+
 # 5.5.2
 
 ## Bug fixes
