@@ -9,11 +9,20 @@ export type { ErrorInstance } from './merge/cause.js'
 export type { ClassOptions } from './options/class.js'
 export type { InstanceOptions } from './options/instance.js'
 export type { MethodOptions } from './options/method.js'
-export type { Info } from './plugins/info/main.js'
+export type {
+  Info,
+  // Export required due to
+  // https://github.com/ehmicky/modern-errors/issues/18
+  CommonInfo,
+} from './plugins/info/main.js'
 export type { Plugin } from './plugins/shape/main.js'
-// Some of those exports are required due to
-// https://github.com/ehmicky/modern-errors/issues/18
-export type { ErrorClass, CustomClass, ErrorSubclassCore }
+export type {
+  ErrorClass,
+  // Exports required due to
+  // https://github.com/ehmicky/modern-errors/issues/18
+  CustomClass,
+  ErrorSubclassCore,
+}
 
 /**
  * Top-level `ErrorClass`.
