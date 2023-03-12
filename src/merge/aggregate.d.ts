@@ -63,7 +63,7 @@ export type AggregateErrorsProperty<
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
 > = ConcatAggregateErrors<AggregateErrorsArg, CauseArg> extends never
-  ? {}
+  ? { errors?: Error[] }
   : {
       errors: NormalizeAggregateErrors<
         ConcatAggregateErrors<AggregateErrorsArg, CauseArg>

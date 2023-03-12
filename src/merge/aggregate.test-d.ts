@@ -12,6 +12,8 @@ const unknownErrorsArray = [true] as readonly true[]
 const unknownErrors = [true] as readonly [true]
 const knownErrors = [new CustomError('')] as const
 
+expectType<Error[] | undefined>({} as CustomInstance['errors'])
+
 expectType<Error[]>(new ModernError('', { errors: unknownErrorsArray }).errors)
 expectType<Error[]>(new CustomError('', { errors: unknownErrorsArray }).errors)
 expectType<[Error]>(new ModernError('', { errors: unknownErrors }).errors)
@@ -53,10 +55,8 @@ expectType<[Error, CustomInstance]>(
   }).errors,
 )
 
-// @ts-expect-error
-new ModernError('').errors
-// @ts-expect-error
-new CustomError('').errors
+expectType<Error[] | undefined>(new ModernError('').errors)
+expectType<Error[] | undefined>(new CustomError('').errors)
 // @ts-expect-error
 new ModernError('', { errors: true })
 // @ts-expect-error

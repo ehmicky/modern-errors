@@ -120,5 +120,4 @@ expectType<[PropsErrorInstance]>(
     }),
   ).errors[0].errors,
 )
-// @ts-expect-error
-PropsError.normalize(new PropsError('')).errors
+expectType<Error[] | undefined>(PropsError.normalize(new PropsError('')).errors)

@@ -29,8 +29,8 @@ export type SpecificErrorInstance<
       SetProps<
         PluginsInstanceMethods<PluginsArg>,
         SetProps<
-          AggregateErrorsProperty<AggregateErrorsArg, CauseArg>,
-          InstanceType<CustomClassArg>
+          InstanceType<CustomClassArg>,
+          AggregateErrorsProperty<AggregateErrorsArg, CauseArg>
         >
       >
     >
