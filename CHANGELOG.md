@@ -1,3 +1,10 @@
+# 5.5.2
+
+## Bug fixes
+
+- Fix TypeScript types inference
+  (https://github.com/ehmicky/modern-errors/issues/18)
+
 # 5.5.1
 
 ## Bug fixes
