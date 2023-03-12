@@ -1,4 +1,8 @@
-import type { ErrorClass, SpecificErrorClass } from './subclass/create.js'
+import type {
+  ErrorClass,
+  SpecificErrorClass,
+  ErrorSubclassCore,
+} from './subclass/create.js'
 import type { CustomClass } from './subclass/custom.js'
 
 export type { ErrorInstance } from './merge/cause.js'
@@ -7,7 +11,7 @@ export type { InstanceOptions } from './options/instance.js'
 export type { MethodOptions } from './options/method.js'
 export type { Info } from './plugins/info/main.js'
 export type { Plugin } from './plugins/shape/main.js'
-export type { ErrorClass }
+export type { ErrorClass, CustomClass, ErrorSubclassCore }
 
 /**
  * Top-level `ErrorClass`.
