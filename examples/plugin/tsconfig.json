@@ -1,4 +1,4 @@
 {
-  "extends": "@ehmicky/dev-tasks",
+  "extends": "@ehmicky/dev-tasks/tsconfig.json",
   "files": ["main.d.ts", "main.test-d.ts", "main.test.ts", "main.ts"]
 }
