@@ -60,6 +60,16 @@
         "question",
         "ideas"
       ]
+    },
+    {
+      "login": "eugene1g",
+      "name": "Eugene",
+      "avatar_url": "https://avatars.githubusercontent.com/u/147496?v=4",
+      "profile": "https://github.com/eugene1g",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
