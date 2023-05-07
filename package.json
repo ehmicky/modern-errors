@@ -57,7 +57,7 @@
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^3.5.0",
-    "normalize-exception": "^2.11.0",
+    "normalize-exception": "^3.0.0",
     "set-error-message": "^1.6.0",
     "set-error-props": "^4.0.0",
     "set-error-stack": "^1.0.0"
