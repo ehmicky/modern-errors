@@ -3,8 +3,6 @@ import { each } from 'test-each'
 
 import { ErrorSubclasses } from '../../helpers/plugin.test.js'
 
-const { hasOwnProperty: hasOwn } = Object.prototype
-
 each(ErrorSubclasses, ({ title }, ErrorClass) => {
   test(`plugin.instanceMethods are set on known errors | ${title}`, (t) => {
     t.is(typeof new ErrorClass('message').getInstance, 'function')
@@ -15,7 +13,7 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
   })
 
   test(`plugin.instanceMethods are inherited | ${title}`, (t) => {
-    t.false(hasOwn.call(new ErrorClass('message'), 'getInstance'))
+    t.false(Object.hasOwn(new ErrorClass('message'), 'getInstance'))
   })
 
   test(`plugin.instanceMethods are not enumerable | ${title}`, (t) => {

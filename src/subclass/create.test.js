@@ -3,8 +3,6 @@ import { each } from 'test-each'
 
 import { ErrorClasses } from '../helpers/main.test.js'
 
-const { hasOwnProperty: hasOwn } = Object.prototype
-
 each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`Does not modify invalid classes | ${title}`, (t) => {
     class custom extends Object {}
@@ -25,7 +23,7 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
 
   test(`error.name is correct | ${title}`, (t) => {
     const error = new ErrorClass('test')
-    t.false(hasOwn.call(error, 'name'))
+    t.false(Object.hasOwn(error, 'name'))
     t.is(error.name, ErrorClass.name)
   })
 
