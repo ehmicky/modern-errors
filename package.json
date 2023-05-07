@@ -67,7 +67,7 @@
     "is-error-instance": "^2.0.0",
     "modern-errors-bugs": "^3.0.0",
     "modern-errors-clean": "^4.0.0",
-    "modern-errors-cli": "^3.0.0",
+    "modern-errors-cli": "^4.0.0",
     "modern-errors-http": "^4.0.0",
     "modern-errors-process": "^4.0.0",
     "modern-errors-serialize": "^5.0.0",
