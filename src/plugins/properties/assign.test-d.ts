@@ -5,7 +5,7 @@ const name = 'test' as const
 const emptyPlugin = { name }
 const fullPlugin = {
   ...emptyPlugin,
-  properties: (info: Info['properties']) => ({ property: true } as const),
+  properties: (info: Info['properties']) => ({ property: true }) as const,
 }
 
 const BaseError = ModernError.subclass('BaseError', { plugins: [fullPlugin] })
