@@ -13,6 +13,15 @@
 
 Handle errors in a simple, stable, consistent way.
 
+# Hire me
+
+Please
+[reach out](https://www.linkedin.com/feed/update/urn:li:activity:7117265228068716545/)
+if you're looking for a Node.js API or CLI engineer (11 years of experience).
+Most recently I have been [Netlify Build](https://github.com/netlify/build)'s
+and [Netlify Plugins](https://www.netlify.com/products/build/plugins/)'
+technical lead for 2.5 years. I am available for full-time remote positions.
+
 # Features
 
 Simple patterns to:
