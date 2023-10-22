@@ -61,7 +61,7 @@
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^4.0.1",
     "normalize-exception": "^3.0.0",
-    "set-error-message": "^2.0.1",
+    "set-error-message": "^3.0.0",
     "set-error-props": "^5.0.0",
     "set-error-stack": "^2.0.0"
   },
