@@ -59,7 +59,7 @@
     "error-custom-class": "^10.0.0",
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
-    "merge-error-cause": "^4.0.1",
+    "merge-error-cause": "^5.0.0",
     "normalize-exception": "^3.0.0",
     "set-error-message": "^3.0.0",
     "set-error-props": "^6.0.0",
