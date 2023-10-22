@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "error-class-utils": "^4.0.0",
-    "error-custom-class": "^9.0.0",
+    "error-custom-class": "^10.0.0",
     "filter-obj": "^5.1.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^4.0.1",
