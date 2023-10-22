@@ -72,7 +72,7 @@
     "modern-errors-clean": "^6.0.0",
     "modern-errors-cli": "^5.0.0",
     "modern-errors-http": "^5.0.0",
-    "modern-errors-process": "^4.0.0",
+    "modern-errors-process": "^5.0.0",
     "modern-errors-serialize": "^5.0.0",
     "modern-errors-switch": "^3.0.0",
     "modern-errors-winston": "^4.0.0",
