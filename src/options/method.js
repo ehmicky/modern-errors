@@ -33,7 +33,7 @@ export const getMethodOpts = (args, plugin) => {
     return { args }
   }
 
-  const lastArg = args[args.length - 1]
+  const lastArg = args.at(-1)
   return lastArgIsOptions(plugin, lastArg)
     ? { args: args.slice(0, -1), methodOpts: { [plugin.name]: lastArg } }
     : { args }
