@@ -1,3 +1,9 @@
+# 7.0.0
+
+## Breaking changes
+
+- Minimal supported Node.js version is now `18.18.0`
+
 # 6.0.0
 
 ## Breaking changes
