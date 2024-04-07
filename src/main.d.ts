@@ -1,28 +1,13 @@
-import type {
-  ErrorClass,
-  SpecificErrorClass,
-  ErrorSubclassCore,
-} from './subclass/create.js'
+import type { ErrorClass, SpecificErrorClass } from './subclass/create.js'
 import type { CustomClass } from './subclass/custom.js'
 
 export type { ErrorInstance } from './merge/cause.js'
 export type { ClassOptions } from './options/class.js'
 export type { InstanceOptions } from './options/instance.js'
 export type { MethodOptions } from './options/method.js'
-export type {
-  Info,
-  // Export required due to
-  // https://github.com/ehmicky/modern-errors/issues/18
-  CommonInfo,
-} from './plugins/info/main.js'
+export type { Info } from './plugins/info/main.js'
 export type { Plugin } from './plugins/shape/main.js'
-export type {
-  ErrorClass,
-  // Exports required due to
-  // https://github.com/ehmicky/modern-errors/issues/18
-  CustomClass,
-  ErrorSubclassCore,
-}
+export type { ErrorClass }
 
 /**
  * Top-level `ErrorClass`.
@@ -86,3 +71,11 @@ export default ModernError
 //    (e.g. `prepareStackTrace()`)
 //  - Plugins should not be allowed to define instance|static methods already
 //    defined by other plugins
+
+// NOTE: The following exports are temporary workarounds for:
+// - [modern-errors issue #18](https://github.com/ehmicky/modern-errors/issues/18)
+// - [TypeScript issue #47663](https://github.com/microsoft/TypeScript/issues/47663)
+export type { CommonInfo } from './plugins/info/main.js'
+export type { CustomClass } from './subclass/custom.js'
+export type { CreateSubclass, ErrorSubclassCore } from './subclass/create.js'
+export type { NormalizeError } from './subclass/normalize.js'

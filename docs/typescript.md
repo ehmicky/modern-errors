@@ -172,3 +172,8 @@ generic parameter, such as `ErrorClass<[typeof plugin]>`.
 They should only be used to type unknown error instances and classes, when no
 variable nor [type inference](#type-inference) is available. For example, they
 can be useful when [creating plugins](plugins.md#typescript).
+
+## Known limitations and issues
+
+For known limitations and issues related to TypeScript's current capabilities,
+please see the comments in [src/main.d.ts](../src/main.d.ts).
