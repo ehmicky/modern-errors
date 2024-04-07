@@ -2,7 +2,8 @@
 
 ## Types
 
-- Fix TypeScript types when using the `custom` option (https://github.com/ehmicky/modern-errors/issues/18).
+- Fix TypeScript types when using the `custom` option
+  (https://github.com/ehmicky/modern-errors/issues/18).
 
 # 7.0.0
 
