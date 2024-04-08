@@ -70,9 +70,20 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "jmchambers",
+      "name": "Jonathan Chambers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49592?v=4",
+      "profile": "http://uk.linkedin.com/in/jonathanmarkchambers/",
+      "contributions": [
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "skipCi": true,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }
