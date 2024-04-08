@@ -9,6 +9,13 @@ import type { Plugins } from '../plugins/shape/main.js'
 
 /**
  * `custom` option
+ *
+ * @private This type is private and only exported as a temporary workaround
+ * for an open issue with TypeScript. It will be removed in a future release.
+ * See:
+ *
+ * - [modern-errors issue #18](https://github.com/ehmicky/modern-errors/issues/18)
+ * - [TypeScript issue #47663](https://github.com/microsoft/TypeScript/issues/47663)
  */
 export interface CustomClass {
   new (message: string, options?: InstanceOptions): Error
