@@ -3,3 +3,4 @@ on: [push, pull_request]
 jobs:
   combinations:
     uses: ehmicky/dev-tasks/.github/workflows/build.yml@main
+    secrets: inherit
