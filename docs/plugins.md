@@ -125,7 +125,7 @@ export default {
 }
 ```
 
-### instanceMethods.{methodName}
+### instanceMethods.methodName
 
 _Type_: `(info, ...args) => any`
 
@@ -168,7 +168,7 @@ try {
 }
 ```
 
-### staticMethods.{methodName}
+### staticMethods.methodName
 
 _Type_: `(info, ...args) => any`
 

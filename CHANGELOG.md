@@ -362,9 +362,8 @@ logs errors with Winston.
 
 ### Subclasses
 
-Error subclasses can now be created using
-[`ErrorClass.subclass()`](README.md#shared-custom-logic) to share custom logic
-and options between classes.
+Error subclasses can now be created using `ErrorClass.subclass()` to share
+custom logic and options between classes.
 
 <!-- eslint-disable fp/no-this -->
 
@@ -381,7 +380,7 @@ export const AuthError = SharedError.subclass('AuthError')
 
 ### Improved options
 
-Options can now be applied to [any error](README.md#configure-options).
+Options can now be applied to any error.
 
 ```js
 export const AnyError = modernErrors(plugins, options)
@@ -427,12 +426,10 @@ multiple errors into one, similarly to `new AggregateError(errors)`.
 
 ### Creating error classes
 
-The [main function](README.md#modernerrorsplugins-options) now returns the base
-error class [`AnyError`](README.md#anyerror).
+The main function now returns the base error class `AnyError`
 
-[`AnyError.subclass(name)`](README.md#anyerrorsubclassname-options) must be used
-to create each error class. The first one must now be named
-[`UnknownError`](README.md#-unknown-errors).
+`AnyError.subclass(name)` must be used to create each error class. The first one
+must now be named [`UnknownError`](README.md#-unknown-errors).
 
 Before:
 
@@ -461,8 +458,7 @@ export const DatabaseError = AnyError.subclass('DatabaseError')
 
 ### Error handler
 
-`errorHandler()` has been renamed to
-[`AnyError.normalize()`](README.md#anyerrornormalizeanyexception).
+`errorHandler()` has been renamed to `AnyError.normalize()`
 
 Before:
 
@@ -602,9 +598,9 @@ const error = AnyError.parse(errorObject)
 
 ### Error wrapping
 
-To wrap an error without changing its class, [`AnyError`](README.md#anyerror)
-must now be used instead of `Error`. When wrapping an error, its `cause` and
-`bugs` are now [merged right away](README.md#wrap-inner-error), instead of when
+To wrap an error without changing its class, `AnyError` must now be used instead
+of `Error`. When wrapping an error, its `cause` and `bugs` are now
+[merged right away](README.md#wrap-inner-error), instead of when
 `AnyError.normalize()` is called.
 
 Before:
@@ -640,7 +636,7 @@ if (error instanceof InputError) {
 }
 ```
 
-[`AnyError`](README.md#anyerror) can now be used to check for
+`AnyError` can now be used to check for
 [any errors](README.md#check-error-classes) from a specific library.
 
 ```js
@@ -667,14 +663,13 @@ Switch to MIT license.
 
 ## Bug fixes
 
-- Fix the [`bugsUrl` option](README.md#bugsurl) when the error has a known type
+- Fix the `bugsUrl` option when the error has a known type
 
 # 3.1.0
 
 ## Features
 
-- Allow the [`bugsUrl` option](README.md#bugsurl) to
-  [be a function](README.md#bug-reports)
+- Allow the `bugsUrl` option to [be a function](README.md#bug-reports)
 
 # 3.0.0
 
@@ -699,14 +694,13 @@ Switch to MIT license.
 
 ## Breaking changes
 
-- The error names must now be
-  [passed as argument](README.md#modernerrorserrornames-options)
+- The error names must now be passed as argument
 
 # 1.5.0
 
 ## Features
 
-- [Serialize/parse](README.md#serializationparsing) errors
+- Serialize/parse errors
 
 # 1.4.1
 
@@ -724,7 +718,7 @@ Switch to MIT license.
 
 ## Documentation
 
-- Add documentation about [CLI errors](./README.md#cli-errors)
+- Add documentation about CLI errors
 
 # 1.2.0
 
