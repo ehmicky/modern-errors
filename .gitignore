@@ -8,4 +8,5 @@ node_modules
 .npmrc
 .yarn-error.log
 !.github/
+/coverage
 /build
