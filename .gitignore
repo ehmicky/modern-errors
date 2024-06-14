@@ -7,7 +7,5 @@ node_modules
 .lycheecache
 .npmrc
 .yarn-error.log
-.nyc_output
 !.github/
-/coverage
 /build
