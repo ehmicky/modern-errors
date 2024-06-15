@@ -18,8 +18,8 @@ type PluginOptionName<PluginArg extends Plugin> =
   string extends PluginArg['name']
     ? never
     : ExternalPluginOptions<PluginArg> extends never
-    ? never
-    : PluginArg['name']
+      ? never
+      : PluginArg['name']
 
 /**
  * Options of all non-core plugins

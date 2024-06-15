@@ -17,8 +17,8 @@ export type SimpleSetProps<
 > = keyof LowObject extends keyof HighObject
   ? HighObject
   : keyof LowObject & keyof HighObject extends never
-  ? LowObject & HighObject
-  : SetProps<LowObject, HighObject>
+    ? LowObject & HighObject
+    : SetProps<LowObject, HighObject>
 
 /**
  * Like `LowObject & HighObject` except that if both keys are defined,

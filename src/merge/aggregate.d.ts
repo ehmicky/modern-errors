@@ -29,14 +29,14 @@ type NormalizeAggregateErrors<
 > = AggregateErrorsArg extends never[]
   ? []
   : AggregateErrorsArg extends readonly [
-      infer AggregateErrorArg extends AggregateErrorOption,
-      ...infer Rest extends DefinedAggregateErrors,
-    ]
-  ? [
-      NormalizeAggregateError<AggregateErrorArg>,
-      ...NormalizeAggregateErrors<Rest>,
-    ]
-  : NormalizeAggregateError<AggregateErrorsArg[number]>[]
+        infer AggregateErrorArg extends AggregateErrorOption,
+        ...infer Rest extends DefinedAggregateErrors,
+      ]
+    ? [
+        NormalizeAggregateError<AggregateErrorArg>,
+        ...NormalizeAggregateErrors<Rest>,
+      ]
+    : NormalizeAggregateError<AggregateErrorsArg[number]>[]
 
 /**
  * Concatenate the `errors` option with `cause.errors`, if either is defined
@@ -51,10 +51,10 @@ type ConcatAggregateErrors<
       : AggregateErrorsArg
     : AggregateErrorsArg
   : 'errors' extends keyof CauseArg
-  ? CauseArg['errors'] extends DefinedAggregateErrors
-    ? CauseArg['errors']
+    ? CauseArg['errors'] extends DefinedAggregateErrors
+      ? CauseArg['errors']
+      : never
     : never
-  : never
 
 /**
  * Object with an `errors` property to set as `error.errors`
@@ -62,10 +62,11 @@ type ConcatAggregateErrors<
 export type AggregateErrorsProperty<
   AggregateErrorsArg extends AggregateErrors,
   CauseArg extends Cause,
-> = ConcatAggregateErrors<AggregateErrorsArg, CauseArg> extends never
-  ? { errors?: Error[] }
-  : {
-      errors: NormalizeAggregateErrors<
-        ConcatAggregateErrors<AggregateErrorsArg, CauseArg>
-      >
-    }
+> =
+  ConcatAggregateErrors<AggregateErrorsArg, CauseArg> extends never
+    ? { errors?: Error[] }
+    : {
+        errors: NormalizeAggregateErrors<
+          ConcatAggregateErrors<AggregateErrorsArg, CauseArg>
+        >
+      }

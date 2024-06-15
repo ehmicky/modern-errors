@@ -66,14 +66,14 @@ type NormalizeManyErrors<
 > = AggregateErrorsArg extends never[]
   ? []
   : AggregateErrorsArg extends readonly [
-      infer AggregateErrorArg extends AggregateErrorOption,
-      ...infer Rest extends DefinedAggregateErrors,
-    ]
-  ? [
-      NormalizeDeepError<AggregateErrorArg, ParentError, NewError>,
-      ...NormalizeManyErrors<Rest, ParentError, NewError>,
-    ]
-  : NormalizeDeepError<AggregateErrorsArg[number], ParentError, NewError>[]
+        infer AggregateErrorArg extends AggregateErrorOption,
+        ...infer Rest extends DefinedAggregateErrors,
+      ]
+    ? [
+        NormalizeDeepError<AggregateErrorArg, ParentError, NewError>,
+        ...NormalizeManyErrors<Rest, ParentError, NewError>,
+      ]
+    : NormalizeDeepError<AggregateErrorsArg[number], ParentError, NewError>[]
 
 /**
  * Apply `ErrorClass.normalize()` on `error`, but not `error.errors`
@@ -85,5 +85,5 @@ type NormalizeOneError<
 > = ErrorArg extends ParentError
   ? ErrorArg
   : ErrorArg extends Error
-  ? SetProps<ErrorArg, NewError>
-  : NewError
+    ? SetProps<ErrorArg, NewError>
+    : NewError
