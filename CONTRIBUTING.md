@@ -55,6 +55,5 @@ in all of these:
 
 - the `README.md`
 - the `docs` directory (if any)
-- the `examples` directory (if any)
 
 Please use the same style as the rest of the documentation and examples.
