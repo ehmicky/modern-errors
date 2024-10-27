@@ -1,6 +1,7 @@
 import ModernError, { type Info, type Plugin } from 'modern-errors'
 import { expectType } from 'tsd'
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const name = 'test' as const
 const emptyPlugin = { name }
 const fullPlugin = {

@@ -4,7 +4,7 @@ import { each } from 'test-each'
 import { ErrorClasses } from '../helpers/main.test.js'
 
 class NullClass {}
-// eslint-disable-next-line fp/no-mutating-methods
+
 Object.setPrototypeOf(NullClass, null)
 
 each(
@@ -69,7 +69,6 @@ each(ErrorClasses, ['', null], ({ title }, ErrorClass, invalidPrototype) => {
     const custom = () => {}
     // eslint-disable-next-line fp/no-mutation
     custom.prototype = invalidPrototype
-    // eslint-disable-next-line fp/no-mutating-methods
     Object.setPrototypeOf(custom, ErrorClass)
     t.throws(ErrorClass.subclass.bind(undefined, 'TestError', { custom }))
   })

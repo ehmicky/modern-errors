@@ -47,7 +47,6 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
 
   test(`plugin.properties() non-enumerable properties can be assigned | ${title}`, (t) => {
     const cause = new ErrorClass('test')
-    // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(cause, 'nonEnumProp', {
       value: true,
       enumerable: false,
@@ -87,7 +86,6 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
 
   test(`plugin.properties() keeps descriptors | ${title}`, (t) => {
     const cause = new ErrorClass('test')
-    // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(cause, 'prop', {
       value: false,
       enumerable: false,

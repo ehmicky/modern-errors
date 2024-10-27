@@ -71,6 +71,7 @@ expectType<ModernErrorInstance>(new ModernError('', { cause: new Error('') }))
 expectType<ModernErrorInstance>(new ModernError('', { cause: undefined }))
 expectType<ModernErrorInstance>(new ModernError('', { cause: '' }))
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const name = 'test' as const
 
 expectType<true>(

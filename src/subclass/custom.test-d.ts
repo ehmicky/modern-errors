@@ -312,6 +312,7 @@ PluginBaseError.subclass('TestError', {
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const name = 'test' as const
 
 const PropertyBaseError = ModernError.subclass('PropertyBaseError', {

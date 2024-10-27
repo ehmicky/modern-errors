@@ -32,7 +32,6 @@ const deepCloneObject = (object) => {
   for (const key of Reflect.ownKeys(object)) {
     const descriptor = Object.getOwnPropertyDescriptor(object, key)
     const childCopy = deepClone(descriptor.value)
-    // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(copy, key, { ...descriptor, value: childCopy })
   }
 

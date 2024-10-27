@@ -38,7 +38,6 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
   test(`ErrorClass.normalize() normalizes known errors | ${title}`, (t) => {
     const error = new ErrorClass('test')
     const { name } = error
-    // eslint-disable-next-line fp/no-mutating-methods
     Object.defineProperty(error, 'name', {
       value: name,
       enumerable: true,
