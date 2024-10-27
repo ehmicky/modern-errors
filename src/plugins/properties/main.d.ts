@@ -15,8 +15,8 @@ type GetProperties = (info: InfoParameter['properties']) => AddedProperties
 type PluginProperties<PluginArg extends Plugin> = PluginArg extends Plugin
   ? PluginArg extends { properties: GetProperties }
     ? ReturnType<PluginArg['properties']>
-    : {}
-  : {}
+    : object
+  : object
 
 /**
  * Bound added properties of all plugins

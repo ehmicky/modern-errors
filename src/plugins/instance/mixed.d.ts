@@ -51,7 +51,7 @@ type PluginMixedMethods<PluginArg extends Plugin> = PluginArg extends {
   instanceMethods: InstanceMethods
 }
   ? ErrorMixedMethods<PluginArg['instanceMethods'], MethodOptions<PluginArg>>
-  : {}
+  : object
 
 /**
  * Bound mixed methods of all plugins

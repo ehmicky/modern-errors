@@ -50,7 +50,7 @@ type PluginInstanceMethods<PluginArg extends Plugin> = PluginArg extends {
   instanceMethods: InstanceMethods
 }
   ? ErrorInstanceMethods<PluginArg['instanceMethods'], MethodOptions<PluginArg>>
-  : {}
+  : object
 
 /**
  * Bound instance methods of all plugins

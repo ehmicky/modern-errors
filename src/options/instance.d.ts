@@ -9,7 +9,7 @@ import type { PluginsOptions } from './plugins.js'
  */
 export type NormalizedCause<CauseArg extends Cause> = CauseArg extends Error
   ? CauseArg
-  : {}
+  : object
 
 /**
  * Optional `cause` option

@@ -5,7 +5,7 @@
 export type OmitKeys<
   Source,
   OmittedKeys extends PropertyKey,
-> = keyof Source extends OmittedKeys ? {} : Omit<Source, OmittedKeys>
+> = keyof Source extends OmittedKeys ? object : Omit<Source, OmittedKeys>
 
 /**
  * Like `SetProps<LowObject, HighObject>` except it reduces empty `{}` for

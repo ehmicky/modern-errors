@@ -22,7 +22,7 @@ export type { ErrorClass }
  * export const DatabaseError = BaseError.subclass('DatabaseError')
  * ```
  */
-declare const ModernError: SpecificErrorClass<[], {}, CustomClass>
+declare const ModernError: SpecificErrorClass<[], object, CustomClass>
 export default ModernError
 
 // Major limitations of current types:

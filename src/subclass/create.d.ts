@@ -34,7 +34,7 @@ type CreateSubclass<
 > = <
   ChildPlugins extends Plugins = [],
   ChildCustomClass extends CustomClassArg = CustomClassArg,
-  ChildProps extends ErrorProps = {},
+  ChildProps extends ErrorProps = object,
 >(
   errorName: ErrorName,
   options?: SpecificClassOptions<
