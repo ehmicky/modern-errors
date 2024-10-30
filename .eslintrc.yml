@@ -1,7 +1,0 @@
-extends: '@ehmicky/eslint-config/.eslintrc.yml'
-rules:
-  fp/no-class: 0
-overrides:
-  - files: ['examples/plugin/*.ts']
-    parserOptions:
-      project: examples/plugin/tsconfig.json
