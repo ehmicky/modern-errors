@@ -2,9 +2,9 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  callStaticMethod,
   callInstanceMethod,
   callMixMethod,
+  callStaticMethod,
 } from '../helpers/info.test.js'
 import { ErrorSubclasses } from '../helpers/main.test.js'
 import {

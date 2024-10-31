@@ -1,9 +1,9 @@
 import ModernError, {
-  type Plugin,
   type ErrorClass,
   type ErrorInstance,
+  type Plugin,
 } from 'modern-errors'
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd'
 
 const BaseError = ModernError.subclass('BaseError')
 const ChildError = BaseError.subclass('ChildError')

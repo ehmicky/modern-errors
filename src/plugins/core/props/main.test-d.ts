@@ -2,7 +2,7 @@ import ModernError, {
   type ClassOptions,
   type InstanceOptions,
 } from 'modern-errors'
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd'
 
 ModernError.subclass('TestError', { props: {} })
 new ModernError('', { props: {} })

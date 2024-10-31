@@ -1,5 +1,5 @@
 import ModernError, { type Plugin } from 'modern-errors'
-import { expectType, expectAssignable } from 'tsd'
+import { expectAssignable, expectType } from 'tsd'
 
 const ParentError = ModernError.subclass('ParentError', {
   props: { one: true as const },

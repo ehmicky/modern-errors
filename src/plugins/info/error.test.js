@@ -2,9 +2,9 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import {
-  getPropertiesInfo,
   getInstanceInfo,
   getMixInfo,
+  getPropertiesInfo,
   getStaticInfo,
 } from '../../helpers/info.test.js'
 import { ErrorSubclasses } from '../../helpers/plugin.test.js'

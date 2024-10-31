@@ -1,6 +1,6 @@
 import { setErrorName } from 'error-class-utils'
 
-import { normalizeClassOpts, getClassOpts } from '../options/class.js'
+import { getClassOpts, normalizeClassOpts } from '../options/class.js'
 import { addAllInstanceMethods } from '../plugins/instance/main.js'
 import { normalizePlugins } from '../plugins/shape/main.js'
 import { addAllStaticMethods } from '../plugins/static/main.js'

@@ -2,7 +2,7 @@ import test from 'ava'
 import { each } from 'test-each'
 
 import { ErrorClasses } from '../../helpers/main.test.js'
-import { TEST_PLUGIN, ErrorSubclasses } from '../../helpers/plugin.test.js'
+import { ErrorSubclasses, TEST_PLUGIN } from '../../helpers/plugin.test.js'
 
 each(ErrorClasses, [undefined, true], ({ title }, ErrorClass, value) => {
   test(`plugin.properties() must return a plain object | ${title}`, (t) => {

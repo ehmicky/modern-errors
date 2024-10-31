@@ -1,5 +1,5 @@
-import type { Info, ErrorClass } from 'modern-errors'
-import { expectType, expectAssignable } from 'tsd'
+import type { ErrorClass, Info } from 'modern-errors'
+import { expectAssignable, expectType } from 'tsd'
 
 const instanceMethodsInfo = {} as Info['instanceMethods']
 // @ts-expect-error

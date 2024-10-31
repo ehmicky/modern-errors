@@ -4,7 +4,7 @@ import isPlainObj from 'is-plain-obj'
 import { instancesData } from '../subclass/map.js'
 
 import { deepClone } from './clone.js'
-import { mergePluginsOpts, getPluginNames } from './merge.js'
+import { getPluginNames, mergePluginsOpts } from './merge.js'
 
 // Split `nativeOpts` (native `Error` options like `cause`) and `pluginsOpts`
 export const computePluginsOpts = (ErrorClass, plugins, opts = {}) => {

@@ -3,8 +3,8 @@ import { each } from 'test-each'
 
 import { ErrorClasses } from '../helpers/main.test.js'
 import {
-  getUnknownErrors,
   getUnknownErrorInstances,
+  getUnknownErrors,
 } from '../helpers/unknown.test.js'
 
 const assertInstanceOf = (t, error, ErrorClass) => {

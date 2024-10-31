@@ -1,5 +1,5 @@
-import ModernError, { type Plugin, type ErrorInstance } from 'modern-errors'
-import { expectType, expectAssignable, expectNotAssignable } from 'tsd'
+import ModernError, { type ErrorInstance, type Plugin } from 'modern-errors'
+import { expectAssignable, expectNotAssignable, expectType } from 'tsd'
 
 type ModernErrorInstance = InstanceType<typeof ModernError>
 

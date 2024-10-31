@@ -1,8 +1,8 @@
 import ModernError, {
-  type Plugin,
   type ClassOptions,
   type InstanceOptions,
   type MethodOptions,
+  type Plugin,
 } from 'modern-errors'
 import { expectAssignable, expectNotAssignable } from 'tsd'
 
