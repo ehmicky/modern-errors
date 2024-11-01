@@ -46,6 +46,7 @@ export const getPluginInfo = ({
 // `instancesData` is internal, undocumented and non-enumerable.
 // It is only needed in very specific plugins like `modern-errors-serialize`
 const setInstancesData = (info) => {
+  // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(info, 'instancesData', {
     value: instancesData,
     enumerable: false,

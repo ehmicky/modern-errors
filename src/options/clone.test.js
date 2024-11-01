@@ -14,6 +14,7 @@ each(ErrorSubclasses, ({ title }, ErrorClass) => {
 
   test(`Options can be non-enumerable | ${title}`, (t) => {
     const { options } = new ErrorClass('test', {
+      // eslint-disable-next-line fp/no-mutating-methods
       prop: Object.defineProperty({}, 'one', {
         value: true,
         enumerable: false,

@@ -23,6 +23,7 @@ each(
     test(`plugin.properties|instanceMethods|staticMethods cannot modify ErrorClasses | ${title}`, (t) => {
       const { ErrorClasses: ErrorClassesInfo } = getInfo(ErrorClass)
       const { length } = ErrorClassesInfo
+      // eslint-disable-next-line fp/no-mutating-methods
       ErrorClassesInfo.push(true)
       t.is(ErrorClass.getProp().ErrorClasses.length, length)
     })

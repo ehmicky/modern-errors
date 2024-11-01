@@ -9,6 +9,7 @@ const validateContext = (context) => {
 }
 
 const addInstancesData = (info, originalInfo) =>
+  // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(
     info,
     'instancesData',
