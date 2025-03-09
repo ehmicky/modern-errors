@@ -1,9 +1,16 @@
+# 7.0.2
+
+## Bug fixes
+
+- Fix `error.message` repeating in `error.stack`, if an invalid `error.cause` is
+  used (https://github.com/ehmicky/modern-errors/issues/33)
+
 # 7.0.1
 
 ## Types
 
 - Fix TypeScript types when using the `custom` option
-  (https://github.com/ehmicky/modern-errors/issues/18).
+  (https://github.com/ehmicky/modern-errors/issues/18)
 
 # 7.0.0
 
