@@ -80,6 +80,15 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "heyhey123-git",
+      "name": "heyhey123",
+      "avatar_url": "https://avatars.githubusercontent.com/u/156066831?v=4",
+      "profile": "https://github.com/heyhey123-git",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

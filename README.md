@@ -720,6 +720,9 @@ If you would like to help us fix a bug or add a new feature, please check our
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/eugene1g"><img src="https://avatars.githubusercontent.com/u/147496?v=4?s=100" width="100px;" alt="Eugene"/><br /><sub><b>Eugene</b></sub></a><br /><a href="https://github.com/ehmicky/modern-errors/commits?author=eugene1g" title="Code">💻</a> <a href="https://github.com/ehmicky/modern-errors/issues?q=author%3Aeugene1g" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://uk.linkedin.com/in/jonathanmarkchambers/"><img src="https://avatars.githubusercontent.com/u/49592?v=4?s=100" width="100px;" alt="Jonathan Chambers"/><br /><sub><b>Jonathan Chambers</b></sub></a><br /><a href="https://github.com/ehmicky/modern-errors/commits?author=jmchambers" title="Tests">⚠️</a> <a href="https://github.com/ehmicky/modern-errors/issues?q=author%3Ajmchambers" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/heyhey123-git"><img src="https://avatars.githubusercontent.com/u/156066831?v=4?s=100" width="100px;" alt="heyhey123"/><br /><sub><b>heyhey123</b></sub></a><br /><a href="https://github.com/ehmicky/modern-errors/issues?q=author%3Aheyhey123-git" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
