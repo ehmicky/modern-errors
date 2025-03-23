@@ -63,7 +63,7 @@
     "normalize-exception": "^4.0.1",
     "set-error-message": "^3.0.1",
     "set-error-props": "^6.0.0",
-    "set-error-stack": "^3.0.0"
+    "set-error-stack": "^3.0.1"
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^3.0.33",
