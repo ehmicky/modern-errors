@@ -71,7 +71,7 @@
     "@ehmicky/prettier-config": "^1.0.6",
     "is-error-instance": "^3.0.1",
     "modern-errors-bugs": "^5.0.0",
-    "modern-errors-clean": "^6.0.0",
+    "modern-errors-clean": "^6.0.1",
     "modern-errors-cli": "^5.0.0",
     "modern-errors-http": "^5.0.0",
     "modern-errors-process": "^5.0.0",
