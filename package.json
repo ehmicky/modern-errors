@@ -60,7 +60,7 @@
     "filter-obj": "^6.1.0",
     "is-plain-obj": "^4.1.0",
     "merge-error-cause": "^5.0.1",
-    "normalize-exception": "^4.0.0",
+    "normalize-exception": "^4.0.1",
     "set-error-message": "^3.0.0",
     "set-error-props": "^6.0.0",
     "set-error-stack": "^3.0.0"
