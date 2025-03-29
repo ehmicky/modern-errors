@@ -1,3 +1,9 @@
+# 7.0.3
+
+## Documentation
+
+- Improve documentation in `README.md`
+
 # 7.0.2
 
 ## Bug fixes
