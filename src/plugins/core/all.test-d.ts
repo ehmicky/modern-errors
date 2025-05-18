@@ -55,6 +55,6 @@ const restore = BaseError.logProcess({ exit: true })
 expectType<void>(restore())
 expectType<ErrorInstance>(BaseError.parse(errorObject))
 expectType<ErrorInstance>(
-  BaseError.switch('').case(TypeError, BaseError).default(),
+  BaseError.switch('').case([TypeError, SyntaxError], BaseError).default(),
 )
 expectType<Format>(BaseError.fullFormat({ stack: true }))

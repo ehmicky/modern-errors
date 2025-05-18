@@ -638,3 +638,6 @@ Some examples include:
 - [`modern-errors-http`](https://github.com/ehmicky/modern-errors-http)
   (underlying module:
   [`error-http-response`](https://github.com/ehmicky/error-http-response))
+- [`modern-errors-switch`](https://github.com/ehmicky/modern-errors-switch)
+  (underlying module:
+  [`switch-functional`](https://github.com/ehmicky/switch-functional))
