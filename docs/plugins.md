@@ -623,6 +623,9 @@ Some examples include:
 - [`modern-errors-cli`](https://github.com/ehmicky/modern-errors-cli)
   (underlying module:
   [`handle-cli-error`](https://github.com/ehmicky/handle-cli-error))
+- [`modern-errors-beautiful`](https://github.com/ehmicky/modern-errors-beautiful)
+  (underlying module:
+  [`beautiful-error`](https://github.com/ehmicky/beautiful-error))
 - [`modern-errors-serialize`](https://github.com/ehmicky/modern-errors-serialize)
   (underlying module:
   [`error-serializer`](https://github.com/ehmicky/error-serializer))

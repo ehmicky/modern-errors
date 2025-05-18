@@ -1,4 +1,5 @@
 import ModernError, { type ErrorInstance } from 'modern-errors'
+import beautifulPlugin from 'modern-errors-beautiful'
 import bugsPlugin from 'modern-errors-bugs'
 import cleanPlugin from 'modern-errors-clean'
 import cliPlugin from 'modern-errors-cli'
@@ -10,6 +11,7 @@ import winstonPlugin, { type Format } from 'modern-errors-winston'
 import { expectAssignable, expectType } from 'tsd'
 
 const plugins = [
+  beautifulPlugin,
   bugsPlugin,
   cleanPlugin,
   cliPlugin,
@@ -24,6 +26,7 @@ const error = new BaseError('')
 
 ModernError.subclass('TestError', {
   plugins,
+  beautiful: { icon: 'warning' },
   bugs: 'https://example.com',
   cli: { silent: true },
   http: { type: '' },
@@ -42,6 +45,8 @@ expectType<HttpResponse>(BaseError.httpResponse(error, { type: '' }))
 expectType<HttpResponse>(error.httpResponse({ type: '' }))
 expectType<void>(BaseError.exit(error, { silent: true }))
 expectType<void>(error.exit({ silent: true }))
+expectType<string>(BaseError.beautiful(error, { stack: true }))
+expectType<string>(error.beautiful({ stack: true }))
 const errorObject = BaseError.serialize(error)
 expectType<ErrorObject>(errorObject)
 expectType<ErrorObject>(error.toJSON())
