@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@ehmicky/dev-tasks": "^3.0.34",
-    "@ehmicky/eslint-config": "^20.0.31",
+    "@ehmicky/eslint-config": "^20.0.32",
     "@ehmicky/prettier-config": "^1.0.6",
     "is-error-instance": "^3.0.1",
     "modern-errors-beautiful": "^1.0.0",
