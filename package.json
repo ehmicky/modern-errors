@@ -77,7 +77,7 @@
     "modern-errors-http": "^5.0.1",
     "modern-errors-process": "^5.0.1",
     "modern-errors-serialize": "^6.1.1",
-    "modern-errors-switch": "^4.0.1",
+    "modern-errors-switch": "^4.1.0",
     "modern-errors-winston": "^5.0.2",
     "test-each": "^7.0.1"
   },
