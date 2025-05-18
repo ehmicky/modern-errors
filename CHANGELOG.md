@@ -1,3 +1,11 @@
+# 7.1.0
+
+## Features
+
+- Add new plugin
+  [`modern-errors-beautiful`](https://github.com/ehmicky/modern-errors-beautiful)
+  which prettifies an error's message and stack.
+
 # 7.0.3
 
 ## Documentation
