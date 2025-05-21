@@ -7,7 +7,7 @@ export type { InstanceOptions } from './options/instance.js'
 export type { MethodOptions } from './options/method.js'
 export type { Info } from './plugins/info/main.js'
 export type { Plugin } from './plugins/shape/main.js'
-export type { ErrorClass }
+export type { ErrorClass, SpecificErrorClass }
 
 /**
  * Top-level `ErrorClass`.
