@@ -1,3 +1,10 @@
+# 7.1.2
+
+## Bug fixes
+
+- When wrapping an error with a different class but the same `error.name`, do
+  not repeat that name in the error message
+
 # 7.1.1
 
 ## Bug fixes

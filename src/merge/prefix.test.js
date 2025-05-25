@@ -95,6 +95,21 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     const cause = new ErrorClass('causeMessage')
     t.is(new TestError('', { cause }).message, cause.message)
   })
+
+  test(`Name of cause with same name is ignored | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const OtherError = ErrorClass.subclass('TestError')
+    const cause = new OtherError('causeMessage')
+    t.is(new TestError('', { cause }).message, cause.message)
+  })
+
+  test(`Handle invalid error message | ${title}`, (t) => {
+    const TestError = ErrorClass.subclass('TestError')
+    const OtherError = ErrorClass.subclass('OtherError')
+    const error = new OtherError('')
+    error.message = true
+    t.is(new TestError('', { cause: error }).message, error.name)
+  })
 })
 
 const getExpectedMessage = (cause) => {
@@ -132,13 +147,3 @@ each(
 )
 
 const GENERATED_STACK_HINT = 'normalize-exception'
-
-each(ErrorClasses, ({ title }, ErrorClass) => {
-  test(`Handle invalid error message | ${title}`, (t) => {
-    const TestError = ErrorClass.subclass('TestError')
-    const OtherError = ErrorClass.subclass('OtherError')
-    const error = new OtherError('')
-    error.message = true
-    t.is(new TestError('', { cause: error }).message, error.name)
-  })
-})
