@@ -79,3 +79,4 @@ export type { CommonInfo } from './plugins/info/main.js'
 export type { CustomClass } from './subclass/custom.js'
 export type { CreateSubclass, ErrorSubclassCore } from './subclass/create.js'
 export type { NormalizeError } from './subclass/normalize.js'
+export type { SpecificErrorClass }
