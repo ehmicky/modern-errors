@@ -1,3 +1,17 @@
+# 7.1.1
+
+## Bug fixes
+
+- Fix TypeScript error (https://github.com/ehmicky/modern-errors/issues/35).
+
+## Documentation
+
+- The core of the plugin
+  [`modern-errors-switch`](https://github.com/ehmicky/modern-errors-switch) has
+  been split into a separate module
+  [`switch-functional`](https://github.com/ehmicky/switch-functional). If you
+  like functional programming, this might interest you.
+
 # 7.1.0
 
 ## Features
