@@ -89,6 +89,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "benkroeger",
+      "name": "Benjamin Kroeger",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7782055?v=4",
+      "profile": "https://vegardit.com",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
