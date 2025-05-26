@@ -717,6 +717,7 @@ If you would like to help us fix a bug or add a new feature, please check our
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/heyhey123-git"><img src="https://avatars.githubusercontent.com/u/156066831?v=4?s=100" width="100px;" alt="heyhey123"/><br /><sub><b>heyhey123</b></sub></a><br /><a href="https://github.com/ehmicky/modern-errors/issues?q=author%3Aheyhey123-git" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://vegardit.com"><img src="https://avatars.githubusercontent.com/u/7782055?v=4?s=100" width="100px;" alt="Benjamin Kroeger"/><br /><sub><b>Benjamin Kroeger</b></sub></a><br /><a href="https://github.com/ehmicky/modern-errors/issues?q=author%3Abenkroeger" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
