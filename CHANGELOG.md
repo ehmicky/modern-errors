@@ -3,7 +3,7 @@
 ## Bug fixes
 
 - Fix
-  [`BaseError.normalize(error, NewErrorClass)](README.md#errorclassnormalizeerror-newerrorclass).
+  [`BaseError.normalize(error, NewErrorClass)`](README.md#errorclassnormalizeerror-newerrorclass).
   `error` is converted to `NewErrorClass` if it was an instance of a
   `BaseError`'s subclass. However, `error` was not converted when it was an
   instance of `BaseError` itself, which was incorrect.
