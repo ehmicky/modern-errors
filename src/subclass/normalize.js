@@ -73,5 +73,4 @@ const normalizeAggregateErrors = ({
 }
 
 const shouldKeepClass = (error, ErrorClass, UnknownError) =>
-  error?.constructor === UnknownError ||
-  (error instanceof ErrorClass && error.constructor !== ErrorClass)
+  error?.constructor === UnknownError || error instanceof ErrorClass

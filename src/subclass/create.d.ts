@@ -111,9 +111,9 @@ interface ErrorSubclassCore<
   /**
    * Normalizes invalid errors.
    *
-   * If the `error`'s class is a subclass of `ErrorClass`, it is left as is.
-   * Otherwise, it is converted to `NewErrorClass`, which defaults to
-   * `ErrorClass` itself.
+   * If `error` is an instance of `ErrorClass` (or one of its subclasses), it is
+   * left as is. Otherwise, it is converted to `NewErrorClass`, which defaults
+   * to `ErrorClass` itself.
    *
    * @example
    * ```js

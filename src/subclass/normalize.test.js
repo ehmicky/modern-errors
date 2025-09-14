@@ -70,10 +70,10 @@ each(ErrorClasses, ({ title }, ErrorClass) => {
     t.true(ErrorClass.normalize(error) instanceof ErrorClass)
   })
 
-  test(`ErrorClass.normalize(error, TestError) changes error class if same class as ErrorClass | ${title}`, (t) => {
+  test(`ErrorClass.normalize(error, TestError) keeps error class if same class as ErrorClass | ${title}`, (t) => {
     const TestError = ErrorClass.subclass('TestError')
     const error = new ErrorClass('test')
-    t.true(ErrorClass.normalize(error, TestError) instanceof TestError)
+    t.false(ErrorClass.normalize(error, TestError) instanceof TestError)
   })
 
   test(`ErrorClass.normalize(error, TestError) keeps error class if same class as TestError | ${title}`, (t) => {
