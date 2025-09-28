@@ -70,7 +70,7 @@
     "@ehmicky/eslint-config": "^20.0.32",
     "@ehmicky/prettier-config": "^1.0.6",
     "is-error-instance": "^3.0.1",
-    "modern-errors-beautiful": "^1.0.1",
+    "modern-errors-beautiful": "^2.0.0",
     "modern-errors-bugs": "^5.0.1",
     "modern-errors-clean": "^6.0.1",
     "modern-errors-cli": "^5.2.0",
