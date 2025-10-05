@@ -1,3 +1,11 @@
+# 7.1.4
+
+## Bug fixes
+
+- Fix [`is-error-instance`](https://github.com/ehmicky/is-error-instance) being
+  incorrectly listed in `devDependencies` instead of `dependencies`
+  (https://github.com/ehmicky/modern-errors/issues/40).
+
 # 7.1.3
 
 ## Bug fixes
